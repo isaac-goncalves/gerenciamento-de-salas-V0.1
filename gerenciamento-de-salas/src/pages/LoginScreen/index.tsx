@@ -45,6 +45,7 @@ const LoginScreen: React.FC = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
     const [registration, setRegistration] = useState(false);
+    const [role, setRole] = useState("");
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -58,6 +59,12 @@ const LoginScreen: React.FC = () => {
 
     return (
         <>
+        <div>
+            <h1>Sistema de agendamento de salas de aula</h1>
+            <p>
+                Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
+            </p>
+        </div>
             {
                 registration ? (
                     <form onSubmit={handleSubmit} >
@@ -75,7 +82,14 @@ const LoginScreen: React.FC = () => {
                             onChange={(event) => setPassword(event.target.value)}
                             hasError={error}
                         />
-                        <Button type="submit">Login</Button>
+                        <label>Role:</label>
+                        <select value={role} onChange={(event) => setRole(event.target.value)}>
+                            <option value="">Select a role</option>
+                            <option value="admin">Admin</option>
+                            <option value="coordenador">Coordenador</option>
+                            <option value="professor">Professor</option>
+                        </select>
+                        <Button type="submit">Entrar</Button>
                         <Button type="button" onClick={() => setRegistration(false)}>Login</Button>
                     </form >
                 ) : (
@@ -94,7 +108,7 @@ const LoginScreen: React.FC = () => {
                             onChange={(event) => setPassword(event.target.value)}
                             hasError={error}
                         />
-                        <Button type="submit">Login</Button>
+                        <Button type="submit">Entrar</Button>
                         <Button type="button" onClick={() => setRegistration(true)}>Register</Button>
                     </form>
                 )
