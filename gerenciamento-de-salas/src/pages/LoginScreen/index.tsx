@@ -1,44 +1,46 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+import { Button, ButtonsWrapper, Container, Form, Input } from "./Login.styles"
+
 interface InputProps {
     hasError: boolean;
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f8f8f8;
-`;
+// const Container = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   height: 100vh;
+//   background-color: #f8f8f8;
+// `;
 
-const Title = styled.h1`
-  font-size: 36px;
-  margin-bottom: 30px;
-`;
+// const Title = styled.h1`
+//   font-size: 36px;
+//   margin-bottom: 30px;
+// `;
 
-const Input = styled.input<InputProps>`
-  width: 100%;
-  height: 40px;
-  margin-bottom: 20px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid ${(props) => (props.hasError ? "#ff0000" : "#ccc")};
-  border-radius: 4px;
-`;
+// const Input = styled.input<InputProps>`
+//   width: 100%;
+//   height: 40px;
+//   margin-bottom: 20px;
+//   padding: 10px;
+//   font-size: 16px;
+//   border: 1px solid ${(props) => (props.hasError ? "#ff0000" : "#ccc")};
+//   border-radius: 4px;
+// `;
 
-const Button = styled.button`
-  width: 100%;
-  height: 40px;
-  background-color: #333;
-  color: #fff;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-`;
+// const Button = styled.button`
+//   width: 100%;
+//   height: 40px;
+//   background-color: #333;
+//   color: #fff;
+//   font-size: 16px;
+//   border: none;
+//   border-radius: 4px;
+//   cursor: pointer;
+// `;
 
 const LoginScreen: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -58,16 +60,16 @@ const LoginScreen: React.FC = () => {
     };
 
     return (
-        <>
-        <div>
-            <h1>Sistema de agendamento de salas de aula</h1>
-            <p>
-                Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
-            </p>
-        </div>
+        <Container>
+            <div>
+                <h1>Sistema de agendamento de salas de aula</h1>
+                <p>
+                    Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
+                </p>
+            </div>
             {
                 registration ? (
-                    <form onSubmit={handleSubmit} >
+                    <Form onSubmit={handleSubmit} >
                         <Input
                             type="text"
                             placeholder="Username"
@@ -89,11 +91,13 @@ const LoginScreen: React.FC = () => {
                             <option value="coordenador">Coordenador</option>
                             <option value="professor">Professor</option>
                         </select>
+                        <ButtonsWrapper>
                         <Button type="submit">Entrar</Button>
-                        <Button type="button" onClick={() => setRegistration(false)}>Login</Button>
-                    </form >
+                        <Button type="button" onClick={() => setRegistration(false)}>Register</Button>
+                        </ButtonsWrapper>
+                    </ Form>
                 ) : (
-                    <form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit}>
                         <Input
                             type="text"
                             placeholder="Username"
@@ -108,12 +112,14 @@ const LoginScreen: React.FC = () => {
                             onChange={(event) => setPassword(event.target.value)}
                             hasError={error}
                         />
-                        <Button type="submit">Entrar</Button>
-                        <Button type="button" onClick={() => setRegistration(true)}>Register</Button>
-                    </form>
+                        <ButtonsWrapper>
+                            <Button type="submit">Entrar</Button>
+                            <Button type="button" onClick={() => setRegistration(true)}>Login</Button>
+                        </ButtonsWrapper>
+                    </Form>
                 )
             }
-        </>
+        </Container>
     );
 };
 
