@@ -1,0 +1,11 @@
+{
+  "name": "gerenciamento-de-salas",
+  "version": "1.0.0",
+  "description": "Sistema desenvolvido para disciplina de ####### na faculdade de tecnplogia de taubatÃ©.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
