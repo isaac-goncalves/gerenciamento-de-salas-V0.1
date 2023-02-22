@@ -10,8 +10,8 @@ export const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     username: "postgres",
-    password: "postgres",
-    database: "rentx",
+    password: "2406",
+    database: "gerenciamento-de-salas",
     entities:   [`${__dirname}/**/entities/*.{ts,js}`],
     migrations:   [`${__dirname}/**/migrations/*.{ts,js}`],
 })
