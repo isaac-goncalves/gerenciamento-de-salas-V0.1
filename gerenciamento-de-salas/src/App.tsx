@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
+import Calendar from './pages/Calendar'
 import LoginScreen from './pages/LoginScreen'
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
 
   return (
     <div>
-      <LoginScreen />
+      {/* <LoginScreen /> */}
+      <Calendar />
     </div>
   )
 }
