@@ -8,16 +8,26 @@ import styled from 'styled-components';
 //   height: 100vh;
 //   background-color: #f8f8f8;
 // `;
+
 export const Container = styled.div`
+background-color: rgb(0,55,105);
+height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+`
+export const LoginContainer = styled.div`
   width: 800px;
   height: 700px;
   background-color: #fff;
-  gap:8rem;
+  
   display: flex;
   flex-direction: column;
+
   align-items: center;
-  justify-content: center;
-  margin: 4rem auto;
+  justify-content: space-between;
+  border-radius: 1rem;
 `;
 
 export const Title = styled.h1`
@@ -56,7 +66,7 @@ export const Form = styled.form`
 
 `
 
-export const  ButtonsWrapper = styled.div`
+export const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
  `

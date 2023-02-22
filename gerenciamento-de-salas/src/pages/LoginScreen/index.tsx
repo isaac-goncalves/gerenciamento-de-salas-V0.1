@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { Button, ButtonsWrapper, Container, Form, Input } from "./Login.styles"
+import { Button, ButtonsWrapper, Container, Form, Input, LoginContainer } from "./Login.styles"
 
 interface InputProps {
     hasError: boolean;
@@ -61,64 +61,72 @@ const LoginScreen: React.FC = () => {
 
     return (
         <Container>
-            <div>
-                <h1>Sistema de agendamento de salas de aula</h1>
-                <p>
-                    Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
-                </p>
-            </div>
-            {
-                registration ? (
-                    <Form onSubmit={handleSubmit} >
-                        <Input
-                            type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(event) => setUsername(event.target.value)}
-                            hasError={error}
-                        />
-                        <Input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            hasError={error}
-                        />
-                        <label>Role:</label>
-                        <select value={role} onChange={(event) => setRole(event.target.value)}>
-                            <option value="">Select a role</option>
-                            <option value="admin">Admin</option>
-                            <option value="coordenador">Coordenador</option>
-                            <option value="professor">Professor</option>
-                        </select>
-                        <ButtonsWrapper>
-                        <Button type="submit">Entrar</Button>
-                        <Button type="button" onClick={() => setRegistration(false)}>Register</Button>
-                        </ButtonsWrapper>
-                    </ Form>
-                ) : (
-                    <Form onSubmit={handleSubmit}>
-                        <Input
-                            type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(event) => setUsername(event.target.value)}
-                            hasError={error}
-                        />
-                        <Input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            hasError={error}
-                        />
-                        <ButtonsWrapper>
-                            <Button type="submit">Entrar</Button>
-                            <Button type="button" onClick={() => setRegistration(true)}>Login</Button>
-                        </ButtonsWrapper>
-                    </Form>
-                )
-            }
+            <LoginContainer>
+
+                <div>
+                    <h1>Sistema de agendamento de salas de aula</h1>
+                    <p>
+                        Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
+                    </p>
+                </div>
+                {
+                    registration ? (<>
+                        <h1>Registrar novo Usuário</h1>
+                        <Form onSubmit={handleSubmit} >
+                            <Input
+                                type="text"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(event) => setUsername(event.target.value)}
+                                hasError={error}
+                            />
+                            <Input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(event) => setPassword(event.target.value)}
+                                hasError={error}
+                            />
+                            <label>Role:</label>
+                            <select value={role} onChange={(event) => setRole(event.target.value)}>
+                                <option value="">Select a role</option>
+                                <option value="admin">Admin</option>
+                                <option value="coordenador">Coordenador</option>
+                                <option value="professor">Professor</option>
+                            </select>
+                            <ButtonsWrapper>
+                                <Button type="submit">Entrar</Button>
+                                <Button type="button" onClick={() => setRegistration(false)}>Register</Button>
+                            </ButtonsWrapper>
+                        </ Form>
+                    </>
+                    ) : (
+                        <>
+                            <h1>Entrar com usuário já existente</h1>
+                            <Form onSubmit={handleSubmit}>
+                                <Input
+                                    type="text"
+                                    placeholder="Username"
+                                    value={username}
+                                    onChange={(event) => setUsername(event.target.value)}
+                                    hasError={error}
+                                />
+                                <Input
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(event) => setPassword(event.target.value)}
+                                    hasError={error}
+                                />
+                                <ButtonsWrapper>
+                                    <Button type="submit">Entrar</Button>
+                                    <Button type="button" onClick={() => setRegistration(true)}>Login</Button>
+                                </ButtonsWrapper>
+                            </Form>
+                        </>
+                    )
+                }
+            </LoginContainer>
         </Container>
     );
 };
