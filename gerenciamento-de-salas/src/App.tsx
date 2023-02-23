@@ -8,8 +8,8 @@ function App() {
 
   return (
     <div>
-      {/* <LoginScreen /> */}
-      <Calendar />
+      <LoginScreen />
+      {/* <Calendar /> */}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { Button, ButtonsWrapper, Container, Form, Input, LoginContainer } from "./Login.styles"
@@ -49,13 +49,60 @@ const LoginScreen: React.FC = () => {
     const [registration, setRegistration] = useState(false);
     const [role, setRole] = useState("");
 
-    const handleSubmit = (event: React.FormEvent) => {
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            // Handle login logic here
+        }
+
+    }, []);
+
+
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         if (username === "" || password === "") {
             setError(true);
         } else {
             setError(false);
-            // Handle login logic here
+
+            if (registration) {
+
+                const response = await fetch("http://localhost:3333/users", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password,
+                        role: role,
+                    }),
+                });
+                const data = await response.json();
+                console.log(data);
+                if (data.token) {
+                    localStorage.setItem("token", data.token);
+                    // Handle login logic here
+                }
+
+            }
+            else {
+                const response = await fetch("http://localhost:3333/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password,
+                    }),
+                });
+                const data = await response.json();
+                if (data.token) {
+                    localStorage.setItem("token", data.token);
+                    // Handle login logic here
+                }
+            }
         }
     };
 

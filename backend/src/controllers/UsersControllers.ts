@@ -12,7 +12,11 @@ import jwt from 'jsonwebtoken'
 export class UserController {
 
     async create(request: Request, response: Response) {
-        const { username, password } = request.body;
+        const { 
+            username, 
+            password, 
+            role 
+        } = request.body;
 
         if (!username || !password) {
             return response.status(400).json({ error: "Username or password is missing" });
@@ -23,7 +27,6 @@ export class UserController {
         if (userExists) {
             return response.status(400).json({ error: "User already exists" });
         }
-
 
         try {
 
@@ -36,6 +39,7 @@ export class UserController {
             const newUser = userRepository.create({ username, password: hashPassword, accountid: newAccount });
 
             console.log(newUser);
+            console.log(newAccount + role)
 
             await userRepository.save(newUser); //creating user with hashed password
 

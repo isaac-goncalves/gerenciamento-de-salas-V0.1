@@ -8,30 +8,30 @@ import { transactionsRepository } from "../repositories/transactionsRepositories
 export class TransactionsController {
 
     async create(request: Request, response: Response) {
-        const { 
+        const {
             debitedAccountId,
             creditedAccountId,
             amount,
-         } = request.body;
+        } = request.body;
 
         if (!debitedAccountId || !creditedAccountId) {
             return response.status(400).json({ error: "Debited or credited account is missing" });
         }
 
-        if(!amount){ 
+        if (!amount) {
             return response.status(400).json({ error: "Amount is missing" });
         }
 
         try {
-            
+
             const debitedAccount = await accountsRepository.findOneBy({ id: debitedAccountId });
             const creditedAccount = await accountsRepository.findOneBy({ id: creditedAccountId });
 
-            if(!debitedAccount || !creditedAccount){
+            if (!debitedAccount || !creditedAccount) {
                 return response.status(400).json({ error: "Debited or credited account is missing" });
             }
 
-            if(debitedAccount.balance < amount){
+            if (debitedAccount.balance < amount) {
                 return response.status(400).json({ error: "Insufficient balance" });
             }
 
@@ -41,22 +41,22 @@ export class TransactionsController {
             await accountsRepository.save(debitedAccount);
             await accountsRepository.save(creditedAccount);
 
-            const newTransaction = transactionsRepository.create({  
-        
-                debitedAccountId: debitedAccount,
-                creditedAccountId: creditedAccount,
-                value: amount
+            // const newTransaction = transactionsRepository.create({
 
-            });
+            //     debitedAccountId:  debitedAccount,
+            //     creditedAccountId: creditedAccount,
+            //     value: amount
 
-            await transactionsRepository.save(newTransaction);
+            // });
+
+            // await transactionsRepository.save(newTransaction);
 
             return response.status(201).json({ message: "Transaction created" });
-           
+
         }
-        catch(error) {
+        catch (error) {
             console.log(error);
-            return response.status(500).json({ message:"internal server error" });
+            return response.status(500).json({ message: "internal server error" });
         }
 
     }
