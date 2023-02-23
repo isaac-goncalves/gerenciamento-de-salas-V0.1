@@ -1,4 +1,3 @@
-
 import { Request, Response } from "express";
 
 import { accountsRepository } from "../repositories/accountsRepositories";
@@ -12,10 +11,10 @@ import jwt from 'jsonwebtoken'
 export class UserController {
 
     async create(request: Request, response: Response) {
-        const { 
-            username, 
-            password, 
-            role 
+        const {
+            username,
+            password,
+            role
         } = request.body;
 
         if (!username || !password) {
@@ -55,6 +54,8 @@ export class UserController {
     async login(request: Request, response: Response) {
         const { username, password } = request.body;
 
+            console.log(username, password)
+
         if (!username || !password) {
             return response.status(400).json({ error: "Username or password is missing" });
         }
@@ -74,16 +75,16 @@ export class UserController {
                 return response.status(400).json({ error: "E-mail ou senha inválidos" });
 
             }
-
+            
             const token = jwt.sign({ id: userExists.id }, process.env.JWT_PASS ?? '', {
                 expiresIn: '8h',
             })
 
             const { password: _, ...userLogin } = userExists
 
-            return response.status(201).json({ 
+            return response.status(201).json({
                 user: userLogin,
-               token: token
+                token: token
             });
 
         }
