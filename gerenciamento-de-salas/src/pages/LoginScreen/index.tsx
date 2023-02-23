@@ -1,46 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Button, ButtonsWrapper, Container, Form, Input, LoginContainer } from "./Login.styles"
 
 interface InputProps {
     hasError: boolean;
 }
-
-// const Container = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   height: 100vh;
-//   background-color: #f8f8f8;
-// `;
-
-// const Title = styled.h1`
-//   font-size: 36px;
-//   margin-bottom: 30px;
-// `;
-
-// const Input = styled.input<InputProps>`
-//   width: 100%;
-//   height: 40px;
-//   margin-bottom: 20px;
-//   padding: 10px;
-//   font-size: 16px;
-//   border: 1px solid ${(props) => (props.hasError ? "#ff0000" : "#ccc")};
-//   border-radius: 4px;
-// `;
-
-// const Button = styled.button`
-//   width: 100%;
-//   height: 40px;
-//   background-color: #333;
-//   color: #fff;
-//   font-size: 16px;
-//   border: none;
-//   border-radius: 4px;
-//   cursor: pointer;
-// `;
 
 const LoginScreen: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -52,22 +20,23 @@ const LoginScreen: React.FC = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            // Handle login logic here
+            console.log("token exists");
+            window.location.href = "/calendar";
         }
-
+        console.log("token does not exists");
     }, []);
 
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+
         if (username === "" || password === "") {
             setError(true);
         } else {
             setError(false);
 
             if (registration) {
-
-                const response = await fetch("http://localhost:3333/users", {
+                const response = await fetch("http://localhost:3333/register", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -80,11 +49,12 @@ const LoginScreen: React.FC = () => {
                 });
                 const data = await response.json();
                 console.log(data);
-                if (data.token) {
-                    localStorage.setItem("token", data.token);
-                    // Handle login logic here
-                }
 
+                if (data.message === "User created") {
+                    // localStorage.setItem("token", data.token);
+                    toast.success("Usuário criado com sucesso!");   
+                    setRegistration(false);
+                }
             }
             else {
                 const response = await fetch("http://localhost:3333/login", {
@@ -100,7 +70,7 @@ const LoginScreen: React.FC = () => {
                 const data = await response.json();
                 if (data.token) {
                     localStorage.setItem("token", data.token);
-                    // Handle login logic here
+                    window.location.href = "/calendar";
                 }
             }
         }
@@ -143,7 +113,7 @@ const LoginScreen: React.FC = () => {
                             </select>
                             <ButtonsWrapper>
                                 <Button type="submit">Entrar</Button>
-                                <Button type="button" onClick={() => setRegistration(false)}>Register</Button>
+                                <Button type="button" onClick={() => setRegistration(false)}>Login</Button>
                             </ButtonsWrapper>
                         </ Form>
                     </>
@@ -167,7 +137,7 @@ const LoginScreen: React.FC = () => {
                                 />
                                 <ButtonsWrapper>
                                     <Button type="submit">Entrar</Button>
-                                    <Button type="button" onClick={() => setRegistration(true)}>Login</Button>
+                                    <Button type="button" onClick={() => setRegistration(true)}>Register</Button>
                                 </ButtonsWrapper>
                             </Form>
                         </>
@@ -179,3 +149,5 @@ const LoginScreen: React.FC = () => {
 };
 
 export default LoginScreen;
+
+
