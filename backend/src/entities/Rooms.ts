@@ -1,22 +1,19 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn } from "typeorm"
 
 @Entity()
-export class Users {
-
+export class Rooms {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    email: string;
-
-
-    @Column()
-    password: string;
+    name: string;
 
     @Column()
-    role: string;
-    
-    @Column()
-    user_verified: boolean;
+    capacity: number;
 
+    @CreateDateColumn()
+    created_at: Date;
+
+    @Column()
+    updated_at: Date;
 }

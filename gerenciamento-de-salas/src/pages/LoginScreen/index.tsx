@@ -5,17 +5,17 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Button, ButtonsWrapper, Container, Form, Input, LoginContainer } from "./Login.styles"
+import { side_container, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, Side_container } from "./Login.styles"
 
 interface InputProps {
     hasError: boolean;
 }
 
 const LoginScreen: React.FC = () => {
-    const [username, setUsername] = useState("");
+    const [email, setemail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
-    const [registration, setRegistration] = useState(false);
+    const [form, setForm] = useState("login");
     const [role, setRole] = useState("");
 
     useEffect(() => {
@@ -31,21 +31,21 @@ const LoginScreen: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         console.log("submit");
-        if (username === "" || password === "") {
+        if (email === "" || password === "") {
             toast.error("Preencha todos os campos");
         } else {
 
-            if (registration) {
+            if (form == "register") {
 
                 try {
 
-                    const response = await fetch("http://localhost:3333/register", {
+                    const response = await fetch("http://localhost:3333/verify", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            username,
+                            email,
                             password,
                             role: role,
                         }),
@@ -53,10 +53,10 @@ const LoginScreen: React.FC = () => {
                     const data = await response.json();
                     console.log(data);
 
-                    if (data.message === "User created") {
+                    if (data.message === "User does not exists") {
                         // localStorage.setItem("token", data.token);
                         toast.success("Usuário criado com sucesso!");
-                        setRegistration(false);
+                        setForm("registration");
                     } else
                         if (data.error == "User already exists") {
                             toast.error("Usuário já existe");
@@ -69,7 +69,7 @@ const LoginScreen: React.FC = () => {
                     toast.error("Erro ao fazer registrar nova conta");
                 }
             }
-            else {
+            else if (form == "login") {
                 console.log("login")
                 try {
                     const response = await fetch("http://localhost:3333/login", {
@@ -78,7 +78,7 @@ const LoginScreen: React.FC = () => {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            username,
+                            email,
                             password,
                         }),
                     });
@@ -103,6 +103,42 @@ const LoginScreen: React.FC = () => {
                     toast.error("Erro ao fazer login!");
                 }
             }
+            else if (form == "registration") {
+
+                try {
+
+                    const response = await fetch("http://localhost:3333/verify", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            email,
+                            password,
+                            role: role,
+                            name: name,
+                            degree: degree,
+                            phone: phone,
+                            address: address,
+                            city: city,
+                            country: country,
+                            zip: zip,
+                        }),
+                    });
+                    const data = await response.json();
+                    console.log(data);
+                    if (data.message === "") {
+                        // localStorage.setItem("token", data.token);
+                        toast.success("Usuário criado com sucesso!");
+                        setForm("login");
+                    } else
+                        toast.error("Erro ao criar usuário!");
+                }
+                catch (error) {
+                    toast.error("Erro ao fazer registrar nova conta");
+                }
+
+            }
         }
     };
 
@@ -110,53 +146,52 @@ const LoginScreen: React.FC = () => {
         <Container>
             <ToastContainer />
             <LoginContainer>
-
-                <div>
+                <Side_container>
                     <h1>Sistema de agendamento de salas de aula</h1>
                     <p>
                         Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
                     </p>
-                </div>
+                </Side_container>
                 {
-                    registration ? (<>
-                        <h1>Registrar novo Usuário</h1>
-                        <Form onSubmit={handleSubmit} >
-                            <Input
-                                type="text"
-                                placeholder="Username"
-                                value={username}
-                                onChange={(event: any) => setUsername(event.target.value)}
-                                hasError={error}
-                            />
-                            <Input
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(event: any) => setPassword(event.target.value)}
-                                hasError={error}
-                            />
-                            <label>Role:</label>
-                            <select value={role} onChange={(event) => setRole(event.target.value)}>
-                                <option value="">Select a role</option>
-                                <option value="admin">Admin</option>
-                                <option value="coordenador">Coordenador</option>
-                                <option value="professor">Professor</option>
-                            </select>
-                            <ButtonsWrapper>
-                                <Button type="submit">Criar Usuário</Button>
-                                <Button type="button" onClick={() => setRegistration(false)}>Login</Button>
-                            </ButtonsWrapper>
-                        </ Form>
-                    </>
-                    ) : (
+                    form ? (
                         <>
-                            <h1>Entrar com usuário já existente</h1>
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={handleSubmit} >
+                                <h1>Registrar novo Usuário</h1>
                                 <Input
                                     type="text"
-                                    placeholder="Username"
-                                    value={username}
-                                    onChange={(event: any) => setUsername(event.target.value)}
+                                    placeholder="email"
+                                    value={email}
+                                    onChange={(event: any) => setemail(event.target.value)}
+
+                                />
+                                <Input
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(event: any) => setPassword(event.target.value)}
+                                />
+                                <label>Role:</label>
+                                <select value={role} onChange={(event) => setRole(event.target.value)}>
+                                    <option value="">Select a role</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="coordenador">Coordenador</option>
+                                    <option value="professor">Professor</option>
+                                </select>
+                                <ButtonsWrapper>
+                                    <Button type="submit">Criar Usuário</Button>
+                                    <Button type="button" onClick={() => setForm("login")}>Login</Button>
+                                </ButtonsWrapper>
+                            </ Form>
+                        </>
+                    ) : (
+                        <>
+                            <Form onSubmit={handleSubmit}>
+                                <h1>Entrar com usuário já existente</h1>
+                                <Input
+                                    type="text"
+                                    placeholder="email"
+                                    value={email}
+                                    onChange={(event: any) => setemail(event.target.value)}
                                     hasError={error}
                                 />
                                 <Input
@@ -168,7 +203,7 @@ const LoginScreen: React.FC = () => {
                                 />
                                 <ButtonsWrapper>
                                     <Button type="submit">Entrar</Button>
-                                    <Button type="button" onClick={() => setRegistration(true)}>Registrar</Button>
+                                    <Button type="button" onClick={() => setForm("registration")}>Registrar</Button>
                                 </ButtonsWrapper>
                             </Form>
                         </>
