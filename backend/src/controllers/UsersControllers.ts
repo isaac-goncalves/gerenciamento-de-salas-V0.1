@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 
 import { usersRepository } from "../repositories/usersRepositories";
 
+import { employeesRepository } from "../repositories/employeesRepository";
+
 import bcrypt from 'bcrypt'
 
 import jwt from 'jsonwebtoken'
@@ -10,10 +12,16 @@ export class UserController {
 
     async create(request: Request, response: Response) {
         const {
+            name,
             email,
             password,
             role,
-
+            degree,
+            phone,
+            address,
+            city,
+            state,
+            zip
         } = request.body;
 
         if (!email || !password) {
@@ -27,19 +35,38 @@ export class UserController {
                 return response.status(400).json({ error: "User already exists" });
             }
 
+            const newuser = usersRepository.create({ email, password, role, user_verified: false });
+
+            await usersRepository.save(newuser);
+            console.log(newuser)
+            
             if (role === 'admin') {
-
-                const newuser = usersRepository.create({ email, password, role });
-
-                await usersRepository.save(newuser);
-                console.log(newuser)
+                
                 return response.status(201).json({ message: "Admin created" });
-
+                
             }
 
             if (role === 'professor') {
 
                 console.log('professor selected')
+
+                const newEmployee = employeesRepository.create({
+                    name,
+                    role,
+                    degree,
+                    email,
+                    phone,
+                    address,
+                    city,
+                    state,
+                    zip,
+                    updated_at: new Date(),
+                });
+
+                console.log(newEmployee)
+
+                await employeesRepository.save(newEmployee);
+
                 return response.status(201).json({ message: "professor created" });
 
             }
@@ -79,7 +106,7 @@ export class UserController {
         const {
             email,
             password,
-            
+
         } = request.body;
 
         if (!email || !password) {

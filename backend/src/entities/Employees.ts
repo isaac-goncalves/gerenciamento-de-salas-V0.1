@@ -2,12 +2,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn } from "typeorm"
 
 @Entity()
-export class Funcionarios {
+export class Employees {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
     name: string;
+
+    @Column()
+    role: string;
 
     @Column()
     degree: string;
@@ -25,7 +28,7 @@ export class Funcionarios {
     city: string;
 
     @Column()
-    country: string;
+    state: string;
 
     @Column()
     zip: string;
@@ -37,5 +40,5 @@ export class Funcionarios {
 
     @Column()
     updated_at: Date;
-   
+
 }
