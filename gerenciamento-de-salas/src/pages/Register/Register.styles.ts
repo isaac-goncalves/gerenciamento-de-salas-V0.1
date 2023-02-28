@@ -67,3 +67,15 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
  `
+
+export const PasswordContainer = styled.div`
+display: flex;
+`
+
+export const AddressWrapper = styled.div`
+display: flex;
+`
+
+export const ContactWrapper = styled.div`
+display: flex;
+`

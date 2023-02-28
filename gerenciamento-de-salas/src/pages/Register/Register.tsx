@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Button, ButtonsWrapper, Container, Form, Input, LoginContainer } from "./Register.styles"
+import { AddressWrapper, Button, ButtonsWrapper, ContactWrapper, Container, Form, Input, LoginContainer, PasswordContainer } from "./Register.styles"
 
 const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -38,60 +38,74 @@ const RegisterScreen: React.FC = () => {
                         onChange={(event: any) => setemail(event.target.value)}
 
                     />
-                    <Input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(event: any) => setPassword(event.target.value)}
-                    />
+                    <PasswordContainer>
+                        <Input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(event: any) => setPassword(event.target.value)}
+                        />
+                        <Input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(event: any) => setPassword(event.target.value)}
+                        />
+                    </PasswordContainer>
+                    <ContactWrapper>
+
+                        <Input
+                            type="text"
+                            placeholder="Nome"
+                            value={name}
+                            onChange={(event: any) => setName(event.target.value)}
+                        />
+                        <Input
+                            type="text"
+                            placeholder="Telefone"
+                            value={phone}
+                            onChange={(event: any) => setPhone(event.target.value)}
+                        />
+                    </ContactWrapper>
                     <Input
                         type="text"
-                        placeholder="Nome"
-                        value={name}
-                        onChange={(event: any) => setName(event.target.value)}
-                    />
-                    <Input
-                        type="text"
-                        placeholder="Grau"
+                        placeholder="Formação"
                         value={degree}
                         onChange={(event: any) => setDegree(event.target.value)}
                     />
-                    <Input
-                        type="text"
-                        placeholder="Telefone"
-                        value={phone}
-                        onChange={(event: any) => setPhone(event.target.value)}
-                    />
-                    <Input
-                        type="text"
-                        placeholder="Endereço"
-                        value={address}
-                        onChange={(event: any) => setAddress(event.target.value)}
-                    />
-                     <Input
-                        type="text"
-                        placeholder="State"
-                        value={state}
-                        onChange={(event: any) => setAddress(event.target.value)}
-                    />
-                    <Input
-                        type="text"
-                        placeholder="Cidade"
-                        value={city}
-                        onChange={(event: any) => setCity(event.target.value)}
-                    />
-                    <Input
-                        type="text"
-                        placeholder="País"
-                        value={country}
-                        onChange={(event: any) => setCountry(event.target.value)}
-                    />
-                    <Input
-                        type="text"
-                        placeholder="CEP"
-                        value={zip}
-                        onChange={(event: any) => setZip(event.target.value)}
-                    />
+                    <AddressWrapper>
+
+                        <Input
+                            type="text"
+                            placeholder="Endereço"
+                            value={address}
+                            onChange={(event: any) => setAddress(event.target.value)}
+                        />
+                        <Input
+                            type="text"
+                            placeholder="State"
+                            value={state}
+                            onChange={(event: any) => setAddress(event.target.value)}
+                        />
+                        <Input
+                            type="text"
+                            placeholder="Cidade"
+                            value={city}
+                            onChange={(event: any) => setCity(event.target.value)}
+                        />
+                        <Input
+                            type="text"
+                            placeholder="País"
+                            value={country}
+                            onChange={(event: any) => setCountry(event.target.value)}
+                        />
+                        <Input
+                            type="text"
+                            placeholder="CEP"
+                            value={zip}
+                            onChange={(event: any) => setZip(event.target.value)}
+                        />
+                    </AddressWrapper>
                     <label>Role:</label>
                     <select value={role} onChange={(event) => setRole(event.target.value)}>
                         <option value="">Select a role</option>
