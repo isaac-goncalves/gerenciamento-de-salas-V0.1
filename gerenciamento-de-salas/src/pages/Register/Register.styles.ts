@@ -1,33 +1,5 @@
 import styled from 'styled-components';
 
-// export const Container = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   height: 100vh;
-//   background-color: #f8f8f8;
-// `;
-
-
-export const SideContainer = styled.div`
- width: 100%;
- background-color: grey;
-  height: 100%;
- margin: 0;
- border-radius:  1rem 0 0 1rem;
- h1{
-    font-size: 36px;
-    padding: 1rem;
-    margin-bottom: 200px;
-
- }
- p{
-    font-size: 24px;
-    padding: 1rem;
- }
- `
-
 export const Container = styled.div`
 background-color: rgb(0,55,105);
 height: 100vh;
@@ -57,10 +29,10 @@ export const Title = styled.h1`
 
 export const Input = styled.input`
   width: 80%;
-  height: 30px;
+  height: 15px;
   margin-bottom: 20px;
   padding: 10px;
-  font-size: 1.25rem;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
@@ -89,14 +61,9 @@ export const Form = styled.form`
   h1 {
     font-size: 36px;
     padding: 1rem;
-    margin-bottom: 200px;
   }
-
 `
-
 export const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
  `
-
-

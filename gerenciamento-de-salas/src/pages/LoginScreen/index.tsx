@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { side_container, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, Side_container } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer } from "./Login.styles"
 
 interface InputProps {
     hasError: boolean;
@@ -103,42 +103,6 @@ const LoginScreen: React.FC = () => {
                     toast.error("Erro ao fazer login!");
                 }
             }
-            else if (form == "registration") {
-
-                try {
-
-                    const response = await fetch("http://localhost:3333/verify", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            email,
-                            password,
-                            role: role,
-                            name: name,
-                            degree: degree,
-                            phone: phone,
-                            address: address,
-                            city: city,
-                            country: country,
-                            zip: zip,
-                        }),
-                    });
-                    const data = await response.json();
-                    console.log(data);
-                    if (data.message === "") {
-                        // localStorage.setItem("token", data.token);
-                        toast.success("Usuário criado com sucesso!");
-                        setForm("login");
-                    } else
-                        toast.error("Erro ao criar usuário!");
-                }
-                catch (error) {
-                    toast.error("Erro ao fazer registrar nova conta");
-                }
-
-            }
         }
     };
 
@@ -146,14 +110,39 @@ const LoginScreen: React.FC = () => {
         <Container>
             <ToastContainer />
             <LoginContainer>
-                <Side_container>
+                <SideContainer>
                     <h1>Sistema de agendamento de salas de aula</h1>
                     <p>
                         Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
                     </p>
-                </Side_container>
+                </SideContainer>
                 {
-                    form ? (
+
+                    form == "login" ?
+                        <>
+                            <Form onSubmit={handleSubmit}>
+                                <h1>Entrar com usuário já existente</h1>
+                                <Input
+                                    type="text"
+                                    placeholder="email"
+                                    value={email}
+                                    onChange={(event: any) => setemail(event.target.value)}
+
+                                />
+                                <Input
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(event: any) => setPassword(event.target.value)}
+
+                                />
+                                <ButtonsWrapper>
+                                    <Button type="submit">Entrar</Button>
+                                    <Button type="button" onClick={() => setForm("registration")}>Registrar</Button>
+                                </ButtonsWrapper>
+                            </Form>
+                        </>
+                        :
                         <>
                             <Form onSubmit={handleSubmit} >
                                 <h1>Registrar novo Usuário</h1>
@@ -183,31 +172,6 @@ const LoginScreen: React.FC = () => {
                                 </ButtonsWrapper>
                             </ Form>
                         </>
-                    ) : (
-                        <>
-                            <Form onSubmit={handleSubmit}>
-                                <h1>Entrar com usuário já existente</h1>
-                                <Input
-                                    type="text"
-                                    placeholder="email"
-                                    value={email}
-                                    onChange={(event: any) => setemail(event.target.value)}
-                                    hasError={error}
-                                />
-                                <Input
-                                    type="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(event: any) => setPassword(event.target.value)}
-                                    hasError={error}
-                                />
-                                <ButtonsWrapper>
-                                    <Button type="submit">Entrar</Button>
-                                    <Button type="button" onClick={() => setForm("registration")}>Registrar</Button>
-                                </ButtonsWrapper>
-                            </Form>
-                        </>
-                    )
                 }
             </LoginContainer>
         </Container>

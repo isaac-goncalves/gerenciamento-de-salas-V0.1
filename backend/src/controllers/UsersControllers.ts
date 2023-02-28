@@ -39,11 +39,11 @@ export class UserController {
 
             await usersRepository.save(newuser);
             console.log(newuser)
-            
+
             if (role === 'admin') {
-                
+
                 return response.status(201).json({ message: "Admin created" });
-                
+
             }
 
             if (role === 'professor') {
@@ -74,6 +74,24 @@ export class UserController {
             if (role === 'cordenador') {
 
                 console.log('cordenador selected')
+
+                const newEmployee = employeesRepository.create({
+                    name,
+                    role,
+                    degree,
+                    email,
+                    phone,
+                    address,
+                    city,
+                    state,
+                    zip,
+                    updated_at: new Date(),
+                });
+
+                console.log(newEmployee)
+
+                await employeesRepository.save(newEmployee);
+
                 return response.status(201).json({ message: "cordenador created" });
 
             }
