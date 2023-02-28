@@ -74,7 +74,7 @@ const RegisterScreen: React.FC = () => {
                         onChange={(event: any) => setDegree(event.target.value)}
                     />
                     <AddressWrapper>
-
+                        
                         <Input
                             type="text"
                             placeholder="Endereço"

@@ -1,5 +1,6 @@
 
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn } from "typeorm"
+import { Users } from "./Users";
 
 @Entity()
 export class Employees {
@@ -13,7 +14,7 @@ export class Employees {
     role: string;
 
     @Column()
-    degree: string;
+    class_name: string;
 
     @Column()
     email: string;
@@ -32,6 +33,10 @@ export class Employees {
 
     @Column()
     zip: string;
+
+    @OneToOne(() => Users)
+    @JoinColumn()
+    user_id: Users;
 
     @CreateDateColumn()
     created_at: Date;

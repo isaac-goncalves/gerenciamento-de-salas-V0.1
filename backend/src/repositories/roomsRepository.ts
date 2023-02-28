@@ -1,4 +1,4 @@
 import { AppDataSource } from "../data-source";
-import { Rooms } from "../entities/Rooms";
+import { Rooms } from "../entities/Classrooms";
 
 export const userRepository = AppDataSource.getRepository(Rooms);
