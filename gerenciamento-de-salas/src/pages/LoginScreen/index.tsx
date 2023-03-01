@@ -5,7 +5,9 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper } from "./Login.styles"
+
+import myImage from '../../../public/images/background.jpg';
 
 interface InputProps {
     hasError: boolean;
@@ -111,7 +113,8 @@ const LoginScreen: React.FC = () => {
             <ToastContainer />
             <LoginContainer>
                 <SideContainer>
-                    <h1>Sistema de agendamento de salas de aula</h1>
+                    <BackgroundImage src={myImage} />
+                    <h1>Sistema de Gerenciamento de Salas de aula</h1>
                     <p>
                         Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
                     </p>
@@ -122,54 +125,67 @@ const LoginScreen: React.FC = () => {
                         <>
                             <Form onSubmit={handleSubmit}>
                                 <h1>Entrar com usuário já existente</h1>
-                                <Input
-                                    type="text"
-                                    placeholder="email"
-                                    value={email}
-                                    onChange={(event: any) => setemail(event.target.value)}
+                                <div>
+                                    <InputWrapper>
+                                        <Input
+                                            type="text"
+                                            placeholder="Email"
+                                            value={email}
+                                            onChange={(event: any) => setemail(event.target.value)}
+                                        />
+                                        <Input
+                                            type="password"
+                                            placeholder="PassDigite sua senha"
+                                            value={password}
+                                            onChange={(event: any) => setPassword(event.target.value)}
 
-                                />
-                                <Input
-                                    type="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(event: any) => setPassword(event.target.value)}
-
-                                />
-                                <ButtonsWrapper>
-                                    <Button type="submit">Entrar</Button>
-                                    <Button type="button" onClick={() => setForm("registration")}>Registrar</Button>
-                                </ButtonsWrapper>
+                                        />
+                                    </InputWrapper>
+                                    <ButtonsWrapper>
+                                        <Button type="submit">Entrar</Button>
+                                        <Button type="button" onClick={() => setForm("registration")}>Registrar</Button>
+                                    </ButtonsWrapper>
+                                </div>
                             </Form>
                         </>
                         :
                         <>
                             <Form onSubmit={handleSubmit} >
                                 <h1>Registrar novo Usuário</h1>
-                                <Input
-                                    type="text"
-                                    placeholder="email"
-                                    value={email}
-                                    onChange={(event: any) => setemail(event.target.value)}
+                                <div>
+                                    <InputWrapper>
+                                        <Input
+                                            type="text"
+                                            placeholder="Email"
+                                            value={email}
+                                            onChange={(event: any) => setemail(event.target.value)}
 
-                                />
-                                <Input
-                                    type="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(event: any) => setPassword(event.target.value)}
-                                />
-                                <label>Role:</label>
-                                <select value={role} onChange={(event) => setRole(event.target.value)}>
-                                    <option value="">Select a role</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="coordenador">Coordenador</option>
-                                    <option value="professor">Professor</option>
-                                </select>
-                                <ButtonsWrapper>
-                                    <Button type="submit">Criar Usuário</Button>
-                                    <Button type="button" onClick={() => setForm("login")}>Login</Button>
-                                </ButtonsWrapper>
+                                        />
+                                        <Input
+                                            type="password"
+                                            placeholder="Digite sua senha"
+                                            value={password}
+                                            onChange={(event: any) => setPassword(event.target.value)}
+                                        />
+                                        <Input
+                                            type="password"
+                                            placeholder="Confirme sua senha"
+                                            value={password}
+                                            onChange={(event: any) => setPassword(event.target.value)}
+                                        />
+                                        <label>Role:</label>
+                                        <select value={role} onChange={(event) => setRole(event.target.value)}>
+                                            <option value="">Select a role</option>
+                                            <option value="admin">Admin</option>
+                                            <option value="coordenador">Coordenador</option>
+                                            <option value="professor">Professor</option>
+                                        </select>
+                                    </InputWrapper>
+                                    <ButtonsWrapper>
+                                        <Button type="submit">Criar Usuário</Button>
+                                        <Button type="button" onClick={() => setForm("login")}>Login</Button>
+                                    </ButtonsWrapper>
+                                </div>
                             </ Form>
                         </>
                 }

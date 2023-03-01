@@ -61,6 +61,7 @@ export const Form = styled.form`
   h1 {
     font-size: 36px;
     padding: 1rem;
+      
   }
 `
 export const ButtonsWrapper = styled.div`

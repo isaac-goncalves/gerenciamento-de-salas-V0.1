@@ -4,6 +4,7 @@ import Calendar from './pages/Calendar'
 import LoginScreen from './pages/LoginScreen'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import RegisterScreen from './pages/Register/Register';
+import GlobalStyle from './globalStyles';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,7 +19,9 @@ function App() {
       </Routes>
       {/* <LoginScreen />
       <Calendar /> */}
+      <GlobalStyle />
     </Router>
+
   )
 }
 
