@@ -11,33 +11,13 @@ import styled from 'styled-components';
 
 
 export const SideContainer = styled.div`
- width: 100%;
- background-color: grey;
- height: 100%;
- margin: 0;
- border-radius:  1rem 0 0 1rem;
+ width: 95%;
+ background-color: F4F4F4;
+ height: 95%;
+ margin: 1.5%;
+ border-radius:  8rem 0 0 8rem;
  position: relative;
-
- h1{
-    font-size: 2rem;
-    padding: 1rem;
-    margin-bottom:450px;
-    position: relative;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color : #fff;
-    /* other CSS proper ties */
- }
-
- p{
-    font-size: 1.25rem;
-    padding: 1rem;
-    position: relative;
-    color:rgb(204,204,204);
- }
- `
-
+`
 export const BackgroundImage = styled.img`
  position: absolute;
  top: 0;
@@ -46,10 +26,20 @@ export const BackgroundImage = styled.img`
   height: 100%;
   object-fit: cover;
   filter: brightness(50%);
+  border-radius: 8px;
 `
+export const FatecImage = styled.img`
+  position: absolute;
+  bottom: 14%;
+  left: 10%;
+  width: 200px;
+ 
+  object-fit: cover;
+  filter: brightness(50%);
+   `
 
 export const Container = styled.div`
-background-color: rgb(0,55,105);
+background-color: #F4F4F4;
 height: 100vh;
 width: 100vw;
 overflow: hidden;
@@ -58,17 +48,22 @@ flex-direction: column;
 align-items: center;
 justify-content: center;
 `
+
+export const ContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+`
+
 export const LoginContainer = styled.div`
-  width: 60rem;
-  height: 700px;
-  background-color: #fff;
-  overflow: hidden;
+  width: 95%;
+  height: 90%;
   display: flex;
   flex-direction: row;
-
   align-items: center;
   justify-content: space-around;
-  border-radius: 1rem;
 `;
 
 export const Title = styled.h1`
@@ -105,10 +100,18 @@ export const Button = styled.button`
 export const Form = styled.form`
   display: flex;
   height: 95%;
-  width: 80%;
+  width: 90%;
+  background-color: #fff;
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
+  border-radius: 8px;
+
+
+
+p {
+    font-weight: 500;
+}
 
   input {  
     height: 3rem;
@@ -118,15 +121,24 @@ export const Form = styled.form`
 
   h1 {
     font-size: 2rem;
-    padding: 1rem;
-    width: 100%;
+    font-weight: 900;
     text-align: center;
   }
+
 `
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.75rem;
+  width: 42.5rem;
+   `
 
 export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
    `
+
+
 

@@ -5,9 +5,11 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper } from "./Login.styles"
 
-import myImage from '../../../public/images/background.jpg';
+import background from '../../../public/images/background.jpg';
+import fatec from '../../../public/images/fatec.svg';
+
 
 interface InputProps {
     hasError: boolean;
@@ -111,20 +113,23 @@ const LoginScreen: React.FC = () => {
     return (
         <Container>
             <ToastContainer />
+
             <LoginContainer>
                 <SideContainer>
-                    <BackgroundImage src={myImage} />
-                    <h1>Sistema de Gerenciamento de Salas de aula</h1>
-                    <p>
-                        Sistema de agendamento e controle de salas de aula, desenvolvido para a disciplina de ######
-                    </p>
+                    <BackgroundImage src={background} />
+                    <FatecImage src={fatec} />
                 </SideContainer>
                 {
 
                     form == "login" ?
                         <>
                             <Form onSubmit={handleSubmit}>
-                                <h1>Entrar com usuário já existente</h1>
+                                <TitleWrapper>
+                                    <p>Bem vindo ao
+                                    </p>
+                                    <h1>
+                                        Sistema de Gerenciamento de Salas de Aula  </h1>
+                                </TitleWrapper>
                                 <div>
                                     <InputWrapper>
                                         <Input
@@ -190,6 +195,7 @@ const LoginScreen: React.FC = () => {
                         </>
                 }
             </LoginContainer>
+
         </Container>
     );
 };
