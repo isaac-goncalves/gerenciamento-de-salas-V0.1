@@ -130,6 +130,11 @@ const LoginScreen: React.FC = () => {
                                     <h1>
                                         Sistema de Gerenciamento de Salas de Aula  </h1>
                                 </TitleWrapper>
+                                <TeamsWrapper>
+                                    <TeamsLogo src={teamsLogo}/>
+                                    <p>Entrar com o Teams</p>
+                                </TeamsWrapper>
+
                                 <div>
                                     <InputWrapper>
                                         <Input
