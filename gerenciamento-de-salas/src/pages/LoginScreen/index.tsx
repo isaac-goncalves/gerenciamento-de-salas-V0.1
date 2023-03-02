@@ -5,11 +5,13 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon } from "./Login.styles"
 
 import background from '../../../public/images/background.jpg';
 import fatec from '../../../public/images/fatec.svg';
-
+import teamsLogo from '../../../public/images/teamsIcon.svg';
+import mailIcon from '../../../public/images/emaiIcon.svg';
+import passwordIcon from '../../../public/images/passwordIcon.svg';
 
 interface InputProps {
     hasError: boolean;
@@ -131,26 +133,37 @@ const LoginScreen: React.FC = () => {
                                         Sistema de Gerenciamento de Salas de Aula  </h1>
                                 </TitleWrapper>
                                 <TeamsWrapper>
-                                    <TeamsLogo src={teamsLogo}/>
+                                    <TeamsLogo src={teamsLogo} />
                                     <p>Entrar com o Teams</p>
                                 </TeamsWrapper>
 
                                 <div>
-                                    <InputWrapper>
-                                        <Input
-                                            type="text"
-                                            placeholder="Email"
-                                            value={email}
-                                            onChange={(event: any) => setemail(event.target.value)}
-                                        />
-                                        <Input
-                                            type="password"
-                                            placeholder="PassDigite sua senha"
-                                            value={password}
-                                            onChange={(event: any) => setPassword(event.target.value)}
-
-                                        />
-                                    </InputWrapper>
+                                    <InputsWrapper>
+                                        <InputWrapper>
+                                            <MailIcon src={mailIcon} />
+                                            <div>
+                                                <p>Email</p>
+                                                <Input
+                                                    type="text"
+                                                    placeholder="Email"
+                                                    value={email}
+                                                    onChange={(event: any) => setemail(event.target.value)}
+                                                />
+                                            </div>
+                                        </InputWrapper>
+                                        <InputWrapper>
+                                            <PasswordIcon src={passwordIcon} />
+                                            <div>
+                                                <p>Password</p>
+                                                <Input
+                                                    type="password"
+                                                    placeholder="Digite sua senha"
+                                                    value={password}
+                                                    onChange={(event: any) => setPassword(event.target.value)}
+                                                />
+                                            </div>
+                                        </InputWrapper>
+                                    </InputsWrapper>
                                     <ButtonsWrapper>
                                         <Button type="submit">Entrar</Button>
                                         <Button type="button" onClick={() => setForm("registration")}>Registrar</Button>

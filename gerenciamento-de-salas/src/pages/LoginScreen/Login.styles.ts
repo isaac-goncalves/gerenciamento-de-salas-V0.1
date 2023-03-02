@@ -136,10 +136,49 @@ export const Form = styled.form`
   }
 `
 
-export const InputWrapper = styled.div`
+export const InputsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  gap: 1rem;
+   `
+
+export const InputWrapper = styled.div`
+display: flex;
+width: 100%;
+height: 77px;
+align-items: center;
+background-color: ${Colors.lightgray};
+ `
+
+
+export const TeamsWrapper = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+
+width: 681px;
+height: 78px;
+
+background: #FFFFFF;
+box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.11);
+border-radius: 8px;
+   `
+
+
+export const TeamsLogo = styled.img`
+ width: 74px;
+height: 73px;
+   `
+
+export const MailIcon = styled.img`
+width: 30px;
+height: 24px;
+ `
+
+export const PasswordIcon = styled.img`
+width: 30px;
+height: 24px;
    `
 
 
