@@ -26,8 +26,10 @@ export const BackgroundImage = styled.img`
   height: 100%;
   object-fit: cover;
   filter: brightness(90%);
-  filter: ;
+  mix-blend-mode: normal;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 8px;
+
 `
 export const FatecImage = styled.img`
   position: absolute;
@@ -74,25 +76,45 @@ export const Title = styled.h1`
 export const Input = styled.input`
   width: 80%;
   height: 30px;
-  margin-bottom: 20px;
- 
+  border: none;
+  outline: none;
+  font-weight: 700;
   font-size: 1.25rem;
-  border: 1px solid #ccc;
   border-radius: 4px;
+  ::placeholder {
+  color: #BFBFBF;
+}
   `
 
 export const ButtonsWrapper = styled.div`
   display: flex;
-    justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  gap: 2rem;
+
+div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5rem;
+  P{
+    span{
+      color: ${Colors.mainpurple};
+    }
+  }
+}
+
    `
 
 export const Button = styled.button`
-  width: 8rem;
-  height: 3rem;
+  width: 100%;
+  height: 5rem;
   background-color: ${Colors.mainpurple};
   color: #fff;
-  font-size: 1.25rem;
+  font-size: 1rem;
   border: none;
+  font-weight: 500;
   border-radius: 4px;
   cursor: pointer;
 `;
@@ -106,11 +128,8 @@ export const TitleWrapper = styled.div`
    `
 
 export const Separator = styled.div`
-margin: 4rem 0;
-
+margin: 2rem 0;
 width: 100%;
-
-
 display: flex;
 align-items: center;
 
@@ -124,12 +143,8 @@ div:nth-child(1), div:nth-child(3) {
 div:nth-child(2) {
     color: var(--grey-blue);
     font-family: 'Poppins', sans-serif;
-    padding: 0 1.35rem;
+    padding: 0 2rem;
 }
-
-
-
-
 
 `
 
@@ -144,12 +159,10 @@ export const Form = styled.form`
   border-radius: 8px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.08);
 
-  p {
-      font-weight: 500;
-  }
+
 
   input {  
-    height: 3rem;
+    height: 2.5rem;
     width: 100%;
     box-sizing: border-box;
     color: ${Colors.textcolor};
@@ -180,25 +193,79 @@ export const InputsWrapper = styled.div`
   margin-bottom: 1rem;
    `
 
+export const MantenhaMeConectadoWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;  
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    align-items: center; 
+
+    p{
+      font-size: 1rem;
+    }
+
+    input {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 4px;
+      background-color: ${Colors.lightgrayInput};
+      border: none;
+      margin-right: 1rem;
+      :checked {
+        background-color: ${Colors.mainpurple};
+      }
+    }
+
+    p{
+      font-size: 1rem;
+    }
+  }
+   `
+
+export const EsqueceuSenha = styled.p`
+  font-size: 1rem;
+font-weight: 400  ; 
+color: ${Colors.mainpurple};
+   `
+
+
 export const InputWrapper = styled.div`
 display: flex;
 width: 100%;
-height: 77px;
+height: 5rem;
 border-radius: 8px;
 align-items: center;
 background-color: ${Colors.lightgray};
 
   div{
-    height: 100%;
+      display: flex;
+      flex-direction: column;
     width: 100%;
-margin-top: .85rem;
+    
+    margin-top: .85rem;
     p{
       font-size: 0.85rem;
     }
+    span{ 
+      display: flex;
+      height: 100%;
   }
 
  `
 
+export const EyePassword = styled.img`
+width: 30px;
+height: 24px;
+margin: 0 1rem;
+`
 
 export const TeamsWrapper = styled.div`
 display: flex;

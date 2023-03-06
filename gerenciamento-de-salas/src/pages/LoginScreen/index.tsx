@@ -5,13 +5,14 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword } from "./Login.styles"
 
 import background from '../../../public/images/background.jpg';
 import fatec from '../../../public/images/fatec.svg';
 import teamsLogo from '../../../public/images/teamsIcon.svg';
 import mailIcon from '../../../public/images/emaiIcon.svg';
 import passwordIcon from '../../../public/images/passwordIcon.svg';
+import eyePassword from '../../../public/images/eyePassword.svg';
 
 interface InputProps {
     hasError: boolean;
@@ -134,15 +135,15 @@ const LoginScreen: React.FC = () => {
                                     </h1>
                                 </TitleWrapper>
                                 <ContentWrapper>
-                                <TeamsWrapper>
-                                    <TeamsLogo src={teamsLogo} />
-                                    <p>Entrar com o Teams</p>
-                                </TeamsWrapper>
-                                <Separator   >
-                                    <div></div>
-                                    <div>ou</div>
-                                    <div></div>
-                                </Separator>
+                                    <TeamsWrapper>
+                                        <TeamsLogo src={teamsLogo} />
+                                        <p>Entrar com o Teams</p>
+                                    </TeamsWrapper>
+                                    <Separator   >
+                                        <div></div>
+                                        <div>ou</div>
+                                        <div></div>
+                                    </Separator>
                                 </ContentWrapper>
                                 <FormInputsWrapper>
                                     <InputsWrapper>
@@ -152,7 +153,7 @@ const LoginScreen: React.FC = () => {
                                                 <p>Email</p>
                                                 <Input
                                                     type="text"
-                                                    placeholder="Email"
+                                                    placeholder="Digite seu email"
                                                     value={email}
                                                     onChange={(event: any) => setemail(event.target.value)}
                                                 />
@@ -162,18 +163,33 @@ const LoginScreen: React.FC = () => {
                                             <PasswordIcon src={passwordIcon} />
                                             <div>
                                                 <p>Password</p>
-                                                <Input
-                                                    type="password"
-                                                    placeholder="Digite sua senha"
-                                                    value={password}
-                                                    onChange={(event: any) => setPassword(event.target.value)}
-                                                />
+                                                <span>
+                                                    <Input
+                                                        type="password"
+                                                        placeholder="********"
+                                                        value={password}
+                                                        onChange={(event: any) => setPassword(event.target.value)}
+                                                    />
+                                                    <EyePassword src={eyePassword} />
+                                                </span>
                                             </div>
                                         </InputWrapper>
                                     </InputsWrapper>
+                                    <MantenhaMeConectadoWrapper>
+                                        <div>
+                                            <input type="checkbox" />
+                                            <p>Mantenha-me conectado</p>
+                                        </div>
+                                        <EsqueceuSenha>Esqueceu sua senha?</EsqueceuSenha>
+                                    </MantenhaMeConectadoWrapper>
                                     <ButtonsWrapper>
-                                        <Button type="submit">Entrar</Button>
-                                        <Button type="button" onClick={() => setForm("registration")}>Registrar</Button>
+                                        <Button type="submit">Login</Button>
+                                        <div>
+                                            <p>
+                                                Não possui uma conta?
+                                                <span onClick={() => setForm("registration")}> Registre-se</span>
+                                            </p>
+                                        </div>
                                     </ButtonsWrapper>
                                 </FormInputsWrapper>
                             </Form>
