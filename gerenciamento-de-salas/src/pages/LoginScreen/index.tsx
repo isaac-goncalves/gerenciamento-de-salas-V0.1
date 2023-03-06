@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper } from "./Login.styles"
 
 import background from '../../../public/images/background.jpg';
 import fatec from '../../../public/images/fatec.svg';
@@ -130,14 +130,21 @@ const LoginScreen: React.FC = () => {
                                     <p>Bem vindo ao
                                     </p>
                                     <h1>
-                                        Sistema de Gerenciamento de Salas de Aula  </h1>
+                                        Sistema de Gerenciamento de Salas de Aula
+                                    </h1>
                                 </TitleWrapper>
+                                <ContentWrapper>
                                 <TeamsWrapper>
                                     <TeamsLogo src={teamsLogo} />
                                     <p>Entrar com o Teams</p>
                                 </TeamsWrapper>
-
-                                <div>
+                                <Separator   >
+                                    <div></div>
+                                    <div>ou</div>
+                                    <div></div>
+                                </Separator>
+                                </ContentWrapper>
+                                <FormInputsWrapper>
                                     <InputsWrapper>
                                         <InputWrapper>
                                             <MailIcon src={mailIcon} />
@@ -168,7 +175,7 @@ const LoginScreen: React.FC = () => {
                                         <Button type="submit">Entrar</Button>
                                         <Button type="button" onClick={() => setForm("registration")}>Registrar</Button>
                                     </ButtonsWrapper>
-                                </div>
+                                </FormInputsWrapper>
                             </Form>
                         </>
                         :

@@ -5,5 +5,5 @@ export const Colors = {
     textcolor: '#2F2F2F',
     lightgray: '#ECECEC',
     mainpurple: '#6358DC',
-  
+    separator: '#BFBFBF',
   };

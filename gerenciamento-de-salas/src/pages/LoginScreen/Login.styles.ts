@@ -49,11 +49,12 @@ justify-content: center;
 `
 
 export const ContentWrapper = styled.div`
-  width: 100%;
-  display: flex;
+  width: 90%;
   justify-content: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 4rem;
+
 `
 
 export const LoginContainer = styled.div`
@@ -74,7 +75,7 @@ export const Input = styled.input`
   width: 80%;
   height: 30px;
   margin-bottom: 20px;
-  padding: 10px;
+ 
   font-size: 1.25rem;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -103,6 +104,34 @@ export const TitleWrapper = styled.div`
   max-width: 42.5rem;
   margin: 1rem;
    `
+
+export const Separator = styled.div`
+margin: 4rem 0;
+
+width: 100%;
+
+
+display: flex;
+align-items: center;
+
+div:nth-child(1), div:nth-child(3) {
+    background: ${Colors.separator};
+    width: 100%;
+    height: 1px;
+}
+
+
+div:nth-child(2) {
+    color: var(--grey-blue);
+    font-family: 'Poppins', sans-serif;
+    padding: 0 1.35rem;
+}
+
+
+
+
+
+`
 
 export const Form = styled.form`
   display: flex;
@@ -134,32 +163,49 @@ export const Form = styled.form`
     font-weight: 900;
     color:${Colors.mainpurple};
   }
+
 `
+
+export const FormInputsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+   `
 
 export const InputsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 1rem;
+  margin-bottom: 1rem;
    `
 
 export const InputWrapper = styled.div`
 display: flex;
 width: 100%;
 height: 77px;
+border-radius: 8px;
 align-items: center;
 background-color: ${Colors.lightgray};
+
+  div{
+    height: 100%;
+    width: 100%;
+margin-top: .85rem;
+    p{
+      font-size: 0.85rem;
+    }
+  }
+
  `
 
 
 export const TeamsWrapper = styled.div`
 display: flex;
 align-items: center;
+width: 100%;
 justify-content: center;
-
-width: 681px;
 height: 78px;
-
 background: #FFFFFF;
 box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.11);
 border-radius: 8px;
@@ -174,11 +220,13 @@ height: 73px;
 export const MailIcon = styled.img`
 width: 30px;
 height: 24px;
+margin: 1rem;
  `
 
 export const PasswordIcon = styled.img`
 width: 30px;
 height: 24px;
+margin: 1rem;
    `
 
 
