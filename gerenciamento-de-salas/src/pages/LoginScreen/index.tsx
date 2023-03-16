@@ -116,7 +116,6 @@ const LoginScreen: React.FC = () => {
     return (
         <Container>
             <ToastContainer />
-
             <LoginContainer>
                 <SideContainer>
                     <BackgroundImage src={background} />

@@ -11,6 +11,16 @@ import { Colors } from '../../colors';
 //   background-color: #f8f8f8;
 // `;
 
+export const Container = styled.div`
+background-color: #F4F4F4;
+height: 100vh;
+width: 100vw;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+`
 export const SideContainer = styled.div`
   width: 95%;
   height: 95%;
@@ -39,16 +49,6 @@ export const FatecImage = styled.img`
   object-fit: cover;
   `
 
-export const Container = styled.div`
-background-color: #F4F4F4;
-height: 100vh;
-width: 100vw;
-overflow: hidden;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-`
 
 export const ContentWrapper = styled.div`
   width: 90%;
@@ -101,11 +101,11 @@ div {
   P{
     span{
       color: ${Colors.mainpurple};
+      cursor: pointer;
     }
   }
 }
-
-   `
+`
 
 export const Button = styled.button`
   width: 100%;
@@ -213,12 +213,14 @@ export const MantenhaMeConectadoWrapper = styled.div`
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-      width: 1rem;
-      height: 1rem;
+      width: 1.25rem;
+      height: 1.25rem;
       border-radius: 4px;
       background-color: ${Colors.lightgrayInput};
       border: none;
       margin-right: 1rem;
+      cursor:pointer;
+      
       :checked {
         background-color: ${Colors.mainpurple};
       }
@@ -234,6 +236,7 @@ export const EsqueceuSenha = styled.p`
   font-size: 1rem;
 font-weight: 400  ; 
 color: ${Colors.mainpurple};
+cursor: pointer;
    `
 
 
@@ -259,7 +262,7 @@ background-color: ${Colors.lightgray};
       height: 100%;
   }
 
- `
+  `
 
 export const EyePassword = styled.img`
 width: 30px;
