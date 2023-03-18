@@ -56,14 +56,14 @@ function Dashboard() {
   return (
     <div>
       <Navbar/>
-      <h1 className='text-center'>Calendar</h1>
+      {/* <h1 className='text-center'>Calendar</h1>
       <div className='calendar-container'>
         <h1>Dash</h1>
       </div>
       <p className='text-center'>
         <span className='bold'>Selected Date:</span>{' '}
         {date.toDateString()}
-      </p>
+      </p> */}
     </div>
   )
 }
