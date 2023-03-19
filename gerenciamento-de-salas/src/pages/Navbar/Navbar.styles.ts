@@ -9,7 +9,7 @@ import { Colors } from '../../colors';
 //     top: 0;
 //     left: 0;
 //     width: 15.5rem;
-    
+
 //     z-index: 14;
 //     height: 100vh;
 //     display: flex;
@@ -17,21 +17,42 @@ import { Colors } from '../../colors';
 //     padding-left: 1.5rem;
 //     background: ${Colors.white};
 //     `
+
+export const PrimaryNav = styled.nav`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: ${({ menuOpen }) => (menuOpen ? '15.5rem' : '5rem')};
+    border-right : 2px solid #E8EaF6;
+    transition: width 0.1s ease-in-out;
+    z-index: 14;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: ${Colors.white};
+    `
+
 export const AvatarWrapper = styled.div`
         display: flex;
-        gap: 0.75rem;
-        margin: 1.5rem 0;
+        width: 100%;
+        flex-direction: row;
+        margin: 1.5rem 1rem;
+        align-items: center;
+
         `
 export const Avatar = styled.img`
     border-radius: 50%;
     height: 3rem;
     width: 3rem;
+    margin-right: 0.75rem;
+     object-fit: cover;
     `
 
 export const UserName = styled.p`
     color : ${Colors.mainpurple};
     font-size: 0,875rem;
     font-weight : 500;
+  white-space: nowrap;
         `
 
 export const UserInfo = styled.p`
@@ -40,7 +61,7 @@ export const UserInfo = styled.p`
     `
 
 export const UserWrapper = styled.div`
-    
+      
     `
 export const MenuLink = styled(Link)`
  
@@ -72,7 +93,7 @@ export const Menu = styled.div`
   flex-direction: column;
   width: 12.5rem;
   height: 100%;
-
+  margin-left: 1rem;
   a:nth-of-type(4) {
   
     margin-top: auto;
@@ -96,6 +117,13 @@ export const RowWrapper = styled.div`
         height: 100%;
         color: "red";
         padding: 0 1rem;
+        :hover {
+
+            color: ${Colors.mainpurple};
+
+            
+        }
+
     }
     
     `

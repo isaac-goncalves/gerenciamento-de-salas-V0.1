@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { MenuLink, Menu, Hamburger, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper } from './Navbar.styles'
+import { PrimaryNav, MenuLink, Menu, Hamburger, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper } from './Navbar.styles'
 import styled from 'styled-components'
+
+import { Colors } from '../../colors';
 
 import { GrSchedule } from 'react-icons/gr';
 import { GrSchedules } from 'react-icons/gr';
@@ -9,20 +11,7 @@ import { GrLogout } from 'react-icons/gr'
 
 import avatar from '../../../public/images/avatar.png';
 
-const PrimaryNav = styled.nav`
-    position: fixed;
-    top: 0;
-    left: 0;
-    /* width: 15.5rem; */
-    width: ${{menuOpen} => menuOpen ? '15.5rem' : '4.5rem'};
-     transition: width 0.3s ease-in-out;
-    z-index: 14;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding-left: 1.5rem;
-    /* background: ${Colors.white}; */
-    `
+
 
 const Navbar = () => {
 
@@ -30,42 +19,52 @@ const Navbar = () => {
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
-      };
+    };
 
     return (
         <>
-            <PrimaryNav menuOpen={menuOpen} >
+            <PrimaryNav menuOpen={menuOpen} onClick={toggleMenu}>
                 <AvatarWrapper >
                     <Avatar src={avatar} />
+                        {menuOpen && <>
                     <UserWrapper>
-                        <UserName>GABRIEL SANTOS</UserName>
-                        <UserInfo>5º ADS</UserInfo>
+                            <UserName>GABRIEL SANTOS</UserName>
+                            <UserInfo >5º ADS</UserInfo>
                     </UserWrapper>
+                        </>
+                        }
                 </AvatarWrapper >
                 {/* <Hamburger /> */}
                 <Menu>
                     <MenuLink to="/horarios" >
                         <RowWrapper >
-                            <GrSchedule/>
-                            Horários
+                            <GrSchedule />
+                            {
+                                menuOpen && <>HORÁRIOS</>
+                            }
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="/agendamentos" >
                         <RowWrapper>
                             <GrSchedules />
-                            Agendamento
+                            {
+                                menuOpen && <>AGENDAMENTOS</>
+                            }
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="/perfil" >
                         <RowWrapper>
-                            <CgProfile />
-                            Perfil
+                            <CgProfile />{
+                                menuOpen && <>PERFIL</>
+                            }
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="/logout">
                         <RowWrapper>
                             <GrLogout />
-                            Logout
+                            {
+                                menuOpen && <>LOGOUT</>
+                            }
                         </RowWrapper>
                     </MenuLink>
                 </Menu>

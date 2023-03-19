@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn } from "typeorm"
 
 @Entity()
-export class Schedules {
+export class Agendamento {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -9,19 +9,19 @@ export class Schedules {
     date: string;
 
     @Column()
-    start_time: Date;
+    horario_inicio: Date;
 
     @Column()
-    end_time: Date;
+    horario_fim: Date;
 
     @Column()
-    class_id: string;
+    id_professor: string;
 
     @Column()
-    professor_id: string;
-
+    id_grade: string;
+    
     @Column()
-    capacity: string;
+    id_laboratorio: string;
 
     @CreateDateColumn()
     created_at: Date;
