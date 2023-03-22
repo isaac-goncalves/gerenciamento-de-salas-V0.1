@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { usersRepository } from "../repositories/usersRepositories";
+import { usersRepository } from "../repositories/professoresRepositories";
 
 import { employeesRepository } from "../repositories/employeesRepository";
 

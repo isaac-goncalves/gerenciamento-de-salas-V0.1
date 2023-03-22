@@ -12,13 +12,15 @@ gerar o conteudo de um csv para inserir esses dados no banco incluindo:  horario
 INSERT INTO public.grade(horario_inicio, horario_fim, id_professor, id_disciplina, semestre, id_sala, created_at, updated_at)
 VALUES ('2023-03-20 08:00:00', '2023-03-20 10:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW());
 
-INSERT INTO public.grade(horario_inicio, horario_fim, id_professor, id_disciplina, semestre, id_sala, created_at, updated_at)
+INSERT INTO public.grade(dia_da_semana,horario_inicio, horario_fim, id_professor, id_disciplina, semestre, id_sala, created_at, updated_at)
 VALUES 
-  ('2023-03-20 08:00:00', '2023-03-20 10:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW()),
-  ('2023-03-20 10:00:00', '2023-03-20 12:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW()),
-  ('2023-03-20 12:00:00', '2023-03-20 14:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW()),
-  ('2023-03-20 14:00:00', '2023-03-20 16:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW()),
-  ('2023-03-20 16:00:00', '2023-03-20 18:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW());
+  ('2','2023-03-20 08:00:00', '2023-03-20 10:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW()),
+  ('2','2023-03-20 10:00:00', '2023-03-20 12:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW()),
+  ('2','2023-03-20 12:00:00', '2023-03-20 14:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW()),
+  ('2','2023-03-20 14:00:00', '2023-03-20 16:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW()),
+  ('2','2023-03-20 16:00:00', '2023-03-20 18:00:00', 'Professor Teste', 'Disciplina Teste', '1º Semestre 2023', 'Sala 1', NOW(), NOW());
+
+  
 
 
 "1º Semestre 2023						
@@ -253,4 +255,4 @@ Francisco"
 
 "
 
-contar quantos nomes de pessoa unicos tem nesses dados e fazer uma tabela com o id e uma coluna com o nome da pessoa e outra com a quantidade de vezes que ela aparece 
+contar quantos nomes de pessoa unicos tem nesses dados e fazer uma tabela com o id e uma coluna com o nome da pessoa e outra com a quantidade de vezes que ela aparece awdadawdawdawd

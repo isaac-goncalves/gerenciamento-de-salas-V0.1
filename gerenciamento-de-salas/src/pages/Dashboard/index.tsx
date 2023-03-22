@@ -5,8 +5,11 @@ import Navbar from '../Navbar';
 
 import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester } from './Dashboard.styles'
 
-function Dashboard() {
+
+const Dashboard: React.FC = () => {
   const [date, setDate] = useState(new Date());
+  const [grade, setgrade] = useState([]);
+
 
   //verifies if token stored on localstorage is valid
 
@@ -54,6 +57,27 @@ function Dashboard() {
   }, []);
 
 
+
+  useEffect(() => {
+    async function fetchData(){
+      fetch('http://localhost:3333/grade', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          semestre: "1",
+        })
+      }).then((response) => response.json()).then((data) => {
+        console.log(data)
+        return setgrade(data) 
+      }
+      )
+    }
+
+    fetchData();
+  }, [])
+
   return (
     <>
       <Navbar />
@@ -86,7 +110,9 @@ function Dashboard() {
             <p>22:15</p>
           </ClockContainer>
           <WeekContainer>
-            <WeekdayContainer>
+            {
+            }
+            {/* <WeekdayContainer>
               <h2>Segunda</h2>
               <SchedulesContainer>
                 <Schedule>
@@ -118,7 +144,7 @@ function Dashboard() {
                   <p>Lab. 1</p>
                 </Schedule>
               </SchedulesContainer>
-            </WeekdayContainer>
+            </WeekdayContainer> */}
             <WeekdayContainer>
               <h2>Terça</h2>
               <SchedulesContainer>

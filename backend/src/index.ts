@@ -12,6 +12,6 @@ AppDataSource.initialize().then(() => {
 
     app.use(routes)
 
-    return app.listen(process.env.PORT, () => console.log("Server is running"));
+    return app.listen(3333, () => console.log("Ola Isaac: Servidor rodando na porta 3333"));
 });
 
