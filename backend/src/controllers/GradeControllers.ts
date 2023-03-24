@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 
 import { gradeRepositories } from "../repositories/gradeRepositories";
-import { professoresRepository } from "../repositories/professoresRepositories";
-import { laboratoriosRepository } from "../repositories/laboratoriosRepository";
-import { disciplinasRepository } from "../repositories/disciplinasRepositories";
+// import { professoresRepository } from "../repositories/professoresRepository";
+// import { laboratoriosRepository } from "../repositories/laboratoriosRepository";
+// import { disciplinasRepository } from "../repositories/disciplinasRepositories";
+// import { dia_da_semanaRepositories } from "../repositories/dia_da_semanaRepositories";
+
 
 // interface IGrade {
 //     id: number;
@@ -26,8 +28,6 @@ export class GradeController {
             semestre
         } = request.body;
         console.log(request.body);
-
-        const teste = 1 
 
         try {
             //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
@@ -54,11 +54,13 @@ export class GradeController {
                     INNER JOIN 
                         laboratorios ON CAST(grade.id_sala AS INTEGER) = laboratorios.id 
                     WHERE 
-                        grade.semestre = '${teste}'
+                        grade.semestre = '${1}'
             `
 
 
             const gradeWithProfessor = await gradeRepositories.query(query);
+
+            console.log(gradeWithProfessor)
 
             return response.status(200).json(gradeWithProfessor);
 

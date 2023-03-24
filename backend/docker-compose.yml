@@ -1,0 +1,27 @@
+version: "3"
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2406
+      POSTGRES_DB: gerenciamento-de-salas
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  app:
+    build: .
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: 2406
+      DB_NAME: gerenciamento-de-salas
+    ports:
+      - "3333:3333"
+    command: sh -c "npm run migration:generate && npm run migration:run && npm run dev"

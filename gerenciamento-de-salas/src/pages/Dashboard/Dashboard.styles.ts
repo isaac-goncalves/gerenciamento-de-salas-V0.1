@@ -31,19 +31,16 @@ export const Header = styled.div`
 export const CourseSemester = styled.div`
  margin-top: 4 rem;
   font-size: 1.8rem;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 0.5rem;
   color: ${Colors.textcolor};
 `  ;
 
 
 export const CourseName = styled.h1`
-  margin-top: 4 rem;
   font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
   color: ${Colors.mainpurple};
-
 `;
 
 export const Semester = styled.h2`
@@ -77,11 +74,11 @@ export const ClassesContainer = styled.div`
 `;
 
 export const ClockContainer = styled.div`
-  padding-top: 8rem;
+  padding-top: 8.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4.3rem;
+  gap: 5.3rem;
   margin: 0 1rem;
 
   p {
@@ -105,12 +102,13 @@ export const WeekdayContainer = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
+  padding-top: 1rem;
 
 
   h2 {
     font-size: 1.5rem;
     font-weight: 500;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     text-transform: uppercase;
     color: ${Colors.textcolor};
   }
@@ -120,7 +118,7 @@ export const WeekdayContainer = styled.div`
     transform: scale(1.03);
     transition: 0.8s;
 
-    background-color: ${Colors.hoverCard};
+    background-color: ${Colors.lightgrayInput};
     p {
     color: ${Colors.white};
     }
@@ -151,17 +149,21 @@ export const Schedule = styled.div`
   border-radius: 0px 0px 8px 8px;
   width: 14.5rem;
   height: 6rem;
+  padding: 0.5rem 0;
+  gap: 0.3rem;
   
   :hover {
-    
     background-color: ${Colors.hoverCard};
     transition: 0.5s;
     p {
     color: ${Colors.white}; 
+    
+      }
   }
-  }
-  
   p {
+    padding: 0 0.5rem;
     color: ${Colors.textcolor};
+    text-align: justify;
+    text-align-last: center;
   }
 `;

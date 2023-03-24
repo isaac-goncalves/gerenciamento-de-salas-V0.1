@@ -11,8 +11,6 @@ import { GrLogout } from 'react-icons/gr'
 
 import avatar from '../../../public/images/avatar.png';
 
-
-
 const Navbar = () => {
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -36,7 +34,7 @@ const Navbar = () => {
                 </AvatarWrapper >
                 {/* <Hamburger /> */}
                 <Menu>
-                    <MenuLink to="/horarios" >
+                    <MenuLink to="/dashboard" >
                         <RowWrapper >
                             <GrSchedule />
                             {
@@ -44,7 +42,7 @@ const Navbar = () => {
                             }
                         </RowWrapper>
                     </MenuLink>
-                    <MenuLink to="/agendamentos" >
+                    <MenuLink to="/dashboard" >
                         <RowWrapper>
                             <GrSchedules />
                             {
@@ -59,7 +57,7 @@ const Navbar = () => {
                             }
                         </RowWrapper>
                     </MenuLink>
-                    <MenuLink to="/logout">
+                    <MenuLink to="/">
                         <RowWrapper>
                             <GrLogout />
                             {
