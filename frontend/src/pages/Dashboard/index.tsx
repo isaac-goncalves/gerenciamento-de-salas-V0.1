@@ -1,29 +1,89 @@
 import React, { useEffect, useState } from 'react'
 
 import { Navigate } from 'react-router-dom'
-import Navbar from '../Navbar';
 
-import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester } from './Dashboard.styles'
+import BsFillCalendarDateFill from 'react-icons/bs';
+// import { GrSchedule } from 'react-icons/gr';
 
-function groupByDay(data) {
-  const daysOfWeek = ["00001", "00002", "00003", "00004", "00005", "00006", "00007"];
-  const groupedData = {};
+import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon } from './Dashboard.styles'
 
-  daysOfWeek.forEach(day => {
-    const filteredData = data.filter(item => item.dia_da_semana === day);
-    const intervalo = {"intervalo": "intervalo"};
-    if (filteredData.length > 0) {
-      filteredData.splice(2, 0, intervalo);
-      groupedData[day] = filteredData;
+import dateIcon from '../../../public/images/dia_de_hoje.png';
+
+interface ScheduleItem {
+  id: number;
+  horario_inicio: string;
+  horario_fim: string;
+  id_professor: string;
+  dia_da_semana: string;
+  id_disciplina: string;
+  id_sala: string;
+  semestre: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface IntervalItem {
+  semestre: string;
+  disciplina: string;
+}
+
+type GroupedData = {
+  [key: string]: Array<ScheduleItem | IntervalItem>;
+}
+
+function groupByWeekday(data: ScheduleItem[]): GroupedData {
+  const groupedData: GroupedData = {};
+  const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
+
+  for (const item of data) {
+    const dayIndex = parseInt(item.dia_da_semana) - 1;
+    const day = daysOfWeek[dayIndex];
+
+    if (!groupedData[day]) {
+      groupedData[day] = [];
     }
-  });
+
+    groupedData[day].push(item);
+  }
+
+  for (const day in groupedData) {
+    if (groupedData[day].length >= 3) {
+      groupedData[day].splice(2, 0, {
+        semestre: "1",
+        disciplina: "Intervalo",
+      });
+    }
+  }
 
   return groupedData;
 }
 
+function printGradeValue(gradeValue) {
+
+  console.log("Grade Value: " + JSON.stringify(gradeValue, null, 2))
+
+}
+
+// function groupByDay(data) {
+//   const daysOfWeek = ["00001", "00002", "00003", "00004", "00005", "00006", "00007"];
+//   const groupedData = {};
+
+//   daysOfWeek.forEach(day => {
+//     const filteredData = data.filter(item => item.dia_da_semana === day);
+//     const intervalo = { "intervalo": "intervalo" };
+//     if (filteredData.length > 0) {
+//       filteredData.splice(2, 0, intervalo);
+//       groupedData[day] = filteredData;
+//     }
+//   });
+
+//   return groupedData;
+// }
+
 const Dashboard: React.FC = () => {
   const [date, setDate] = useState(new Date());
-  const [grade, setgrade] = useState([]);
+  const [grade, setgrade] = useState();
+  const [loading, setLoading] = useState(false);
 
 
   //verifies if token stored on localstorage is valid
@@ -52,24 +112,6 @@ const Dashboard: React.FC = () => {
   //       // eslint-disable-next-line react-hooks/exhaustive-deps
 
   //     }, []);
-
-
-  useEffect(() => {
-    // const localStorageData = localStorage.getItem("gerenciamento-de-salas@v1.0");
-
-    // const parsedData = JSON.parse(localStorageData);
-
-    // console.log(parsedData);
-
-
-
-    // // if (localStorageData.token !== undefined) {
-    // //   console.log("token exists");
-    // //   console.log(localStorageData.token);
-    // //   // window.location.href = "/calendar";
-    // // }
-    // console.log("token does not exists");
-  }, []);
 
   const mockdata = {
     "segunda": [
@@ -406,6 +448,7 @@ const Dashboard: React.FC = () => {
 
 
   useEffect(() => {
+
     async function fetchData() {
       fetch('http://localhost:3333/grade', {
         method: 'POST',
@@ -417,132 +460,150 @@ const Dashboard: React.FC = () => {
         })
       }).then((response) => response.json()).then((data) => {
         console.log(data)
-        const teste = groupByDay(data)
-        console.log(teste)
-        return setgrade(teste)
+        const transformedData = groupByWeekday(data)
+        console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+        printGradeValue(transformedData)
+        setTimeout(() => {
+          setLoading(true) // teste de loading
+        }, 2000)
+        // setLoading(true)
+        return setgrade(transformedData)
       }
       )
     }
 
     fetchData();
+
   }, [])
 
   return (
-    <>
-      <Navbar />
-      <Container>
-        <Header>
+    <Container>
+      <Header>
+        <div>
+          <CourseName>
+            <p>Analise e Desenvolvimento de Sistemas</p>
+          </CourseName>
           <CourseSemester>
             1º Semestre de 2023
           </CourseSemester>
+        </div>
+        <DatePicker>
           <div>
-            <CourseName>
-              <p>Analise e Desenvolvimento de Sistemas</p>
-            </CourseName>
-            <Semester>
-              <p>
-                5º
-              </p>
-              <span>
-                Semestre
-              </span>
-            </Semester>
+            <DateIcon src={dateIcon} />
+            <p>Pular para hoje</p>
+            <p>Março 2023</p>
           </div>
-        </Header>
-        <ClassesContainer>
-          <ClockContainer>
-            <p>18:45</p>
-            <p>19:35</p>
-            <p>20:25</p>
-            <p>20:35</p>
-            <p>21:25</p>
-            <p>22:15</p>
-          </ClockContainer>
-          <WeekContainer>
-            <WeekdayContainer>
-              <h2>Segunda</h2>
-              <SchedulesContainer>
-                {
-                  mockdata.segunda.map((item) => {
-                    return (
-                      <Schedule>
-                        <p>{item.disciplina}</p>
-                        <p>{item.professor}</p>
-                        <p>{item.laboratorio}</p>
-                      </Schedule>
-                    )
-                  })
-                }
-              </SchedulesContainer>
-            </WeekdayContainer>
-            <WeekdayContainer>
-              <h2>Terça</h2>
-              <SchedulesContainer>
-                {
-                  mockdata.terca.map((item) => {
-                    return (
-                      <Schedule>
-                        <p>{item.disciplina}</p>
-                        <p>{item.professor}</p>
-                        <p>{item.laboratorio}</p>
-                      </Schedule>
-                    )
-                  })
-                }
-              </SchedulesContainer>
-            </WeekdayContainer>
-            <WeekdayContainer>
-              <h2>Quarta</h2>
-              <SchedulesContainer>
-                {
-                  mockdata.quarta.map((item) => {
-                    return (
-                      <Schedule>
-                        <p>{item.disciplina}</p>
-                        <p>{item.professor}</p>
-                        <p>{item.laboratorio}</p>
-                      </Schedule>
-                    )
-                  })
-                }
-              </SchedulesContainer>
-            </WeekdayContainer>
-            <WeekdayContainer>
-              <h2>Quinta</h2>
-              <SchedulesContainer>
-                {
-                  mockdata.quinta.map((item) => {
-                    return (
-                      <Schedule>
-                        <p>{item.disciplina}</p>
-                        <p>{item.professor}</p>
-                        <p>{item.laboratorio}</p>
-                      </Schedule>
-                    )
-                  })
-                }
-              </SchedulesContainer>
-            </WeekdayContainer>
-            <WeekdayContainer>
-              <h2>Sexta</h2>
-              <SchedulesContainer>
-                {
-                  mockdata.sexta.map((item) => {
-                    return (
-                      <Schedule>
-                        <p>{item.disciplina}</p>
-                        <p>{item.professor}</p>
-                        <p>{item.laboratorio}</p>
-                      </Schedule>
-                    )
-                  })
-                }
-              </SchedulesContainer>
-            </WeekdayContainer>
-          </WeekContainer>
-        </ClassesContainer>
-      </Container>
-    </>
+          <Semester>
+            <p>
+              5º
+            </p>
+            <span>
+              Semestre
+            </span>
+          </Semester>
+        </DatePicker>
+      </Header>
+      <ClassesContainer>
+        <ClockContainer>
+          <p>18:45</p>
+          <p>19:35</p>
+          <p>20:25</p>
+          <p>20:35</p>
+          <p>21:25</p>
+          <p>22:15</p>
+        </ClockContainer>
+        {
+          loading ?
+            (
+              <WeekContainer>
+                <WeekdayContainer>
+                  <h2>Segunda</h2>
+                  <SchedulesContainer>
+                    {
+                      grade.segunda.map((item) => {
+                        return (
+                          <Schedule>
+                            <p>{item.disciplina}</p>
+                            <p>{item.professor}</p>
+                            <p>{item.laboratorio}</p>
+                          </Schedule>
+                        )
+                      })
+                    }
+                  </SchedulesContainer>
+                </WeekdayContainer>
+                <WeekdayContainer>
+                  <h2>Terça</h2>
+                  <SchedulesContainer>
+                    {
+                      grade.terca.map((item) => {
+                        return (
+                          <Schedule>
+                            <p>{item.disciplina}</p>
+                            <p>{item.professor}</p>
+                            <p>{item.laboratorio}</p>
+                          </Schedule>
+                        )
+                      })
+                    }
+                  </SchedulesContainer>
+                </WeekdayContainer>
+                <WeekdayContainer>
+                  <h2>Quarta</h2>
+                  <SchedulesContainer>
+                    {
+                      grade.quarta.map((item) => {
+                        return (
+                          <Schedule>
+                            <p>{item.disciplina}</p>
+                            <p>{item.professor}</p>
+                            <p>{item.laboratorio}</p>
+                          </Schedule>
+                        )
+                      })
+                    }
+                  </SchedulesContainer>
+                </WeekdayContainer>
+                <WeekdayContainer>
+                  <h2>Quinta</h2>
+                  <SchedulesContainer>
+                    {
+                      grade.quinta.map((item) => {
+                        return (
+                          <Schedule>
+                            <p>{item.disciplina}</p>
+                            <p>{item.professor}</p>
+                            <p>{item.laboratorio}</p>
+                          </Schedule>
+                        )
+                      })
+                    }
+                  </SchedulesContainer>
+                </WeekdayContainer>
+                <WeekdayContainer>
+                  <h2>Sexta</h2>
+                  <SchedulesContainer>
+                    {
+                      mockdata.sexta.map((item) => {
+                        return (
+                          <Schedule>
+                            <p>{item.disciplina}</p>
+                            <p>{item.professor}</p>
+                            <p>{item.laboratorio}</p>
+                          </Schedule>
+                        )
+                      })
+                    }
+                  </SchedulesContainer>
+                </WeekdayContainer>
+              </WeekContainer>
+            ) : (
+              <p>Loading...</p>
+            )
+        }
+
+      </ClassesContainer>
+    </Container>
   )
 }
 

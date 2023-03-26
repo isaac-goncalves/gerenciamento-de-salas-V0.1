@@ -7,46 +7,68 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: ${Colors.lightgray};
-  height: 100vh;
-  
+  /* background-color: yellow; */
+  height: 100%;
+  width: calc(100% - 5rem );
+  margin-left: 5rem;
   `;
 
 export const Header = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 2rem 0;
+  justify-content: center;
 
   div{
     display: flex;
     flex-direction: row;
-    gap: 8rem;
+    justify-content: space-between;
     align-items: center; 
+    width: 95%;
     height: 100%;
+    padding: 0 1rem;
   }
 
 `;
 
-export const CourseSemester = styled.div`
- margin-top: 4 rem;
-  font-size: 1.8rem;
+export const ClassesContainer = styled.div`
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2rem;
+  background-color: ${Colors.white};
+  /* background-color: blue  ; */// alternate color
+  padding: 2rem;
+  border-radius: 12px;
+  width: 95%;
+  height: 100%;
+  gap: 2rem;
+`;
+
+export const CourseSemester = styled.p`
+  font-size: 1.5rem;
   font-weight: 400;
-  margin-bottom: 0.5rem;
   color: ${Colors.textcolor};
 `  ;
 
 
 export const CourseName = styled.h1`
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: ${Colors.mainpurple};
 `;
 
 export const Semester = styled.h2`
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
+  font-size: 1.1rem;
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  width: 100%;
 
   p, span{
     font-size: 2rem;
@@ -63,23 +85,37 @@ export const Semester = styled.h2`
 
 `;
 
-export const ClassesContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-bottom: 2rem;
-  background-color: ${Colors.white};
-  padding: 1rem;
-  border-radius: 12px;
-`;
+
+export const DatePicker = styled.div`
+display: flex;
+background-color: ${Colors.white};
+border-radius: 12px;
+width: 100%;
+padding: 1rem;
+margin-bottom: 1rem;
+
+  div{
+    display: flex;  
+    width: 30rem;
+  }
+
+
+`
+export const DateIcon = styled.img`
+    height: 3rem;
+    width: 3rem;
+    margin-right: 0.75rem;
+     object-fit: cover;
+    `
 
 export const ClockContainer = styled.div`
-  padding-top: 8.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5.3rem;
-  margin: 0 1rem;
+  justify-content: center;
+  gap: 6rem;
+  /* background-color: red; */
+  width: 5rem;
 
   p {
     font-size: 1.125rem;
@@ -91,30 +127,31 @@ export const ClockContainer = styled.div`
 
 export const WeekContainer = styled.div`
   display: flex;
-  gap: 3rem;
-  height: 70%;
-  padding: 1rem;
+  flex-direction: row;
+  gap: 1rem;
+  height: 100%;
+  width: 100%;
+  
 `;
-
 
 export const WeekdayContainer = styled.div`
   display: flex;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
-  padding-top: 1rem;
-
+  /* background-color: cyan; //remove later */
+  padding-bottom: 0.5rem;
 
   h2 {
     font-size: 1.5rem;
     font-weight: 500;
-    margin-bottom: 1rem;
     text-transform: uppercase;
     color: ${Colors.textcolor};
   }
 
   :hover {
-  
     transform: scale(1.03);
     transition: 0.8s;
 
@@ -135,7 +172,8 @@ export const SchedulesContainer = styled.div`
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
-  width: 15.5rem;
+  width: 95%;
+  height: 100%;
   background-color: ${Colors.lightgrayInput};
   border-radius: 8px;
 `;
@@ -147,9 +185,10 @@ export const Schedule = styled.div`
   justify-content: center;
   background-color: ${Colors.horariosCard};
   border-radius: 0px 0px 8px 8px;
-  width: 14.5rem;
-  height: 6rem;
-  padding: 0.5rem 0;
+  width: 95%;
+  height: 100%;
+  min-height: 4rem;
+  padding: 0.4rem 0;// #TODO
   gap: 0.3rem;
   
   :hover {
@@ -163,7 +202,9 @@ export const Schedule = styled.div`
   p {
     padding: 0 0.5rem;
     color: ${Colors.textcolor};
-    text-align: justify;
+    text-align: center;
     text-align-last: center;
+    font-size: 0.9rem;
+   
   }
 `;

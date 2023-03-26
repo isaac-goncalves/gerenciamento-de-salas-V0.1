@@ -54,7 +54,7 @@ export class GradeController {
                     INNER JOIN 
                         laboratorios ON CAST(grade.id_sala AS INTEGER) = laboratorios.id 
                     WHERE 
-                        grade.semestre = '${1}'
+                        grade.semestre = '${semestre}'
             `
 
 

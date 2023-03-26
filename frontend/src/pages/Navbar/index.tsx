@@ -23,7 +23,7 @@ const Navbar = () => {
         <>
             <PrimaryNav menuOpen={menuOpen} onClick={toggleMenu}>
                 <AvatarWrapper >
-                    <Avatar src={avatar} />
+                    <Avatar src={avatar} /> 
                         {menuOpen && <>
                     <UserWrapper>
                             <UserName>GABRIEL SANTOS</UserName>

@@ -44,6 +44,7 @@ export const Avatar = styled.img`
     border-radius: 50%;
     height: 3rem;
     width: 3rem;
+    border: 2px solid ${Colors.hoverCard};
     margin-right: 0.75rem;
      object-fit: cover;
     `

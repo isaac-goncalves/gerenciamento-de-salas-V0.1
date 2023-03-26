@@ -6,15 +6,19 @@ const GlobalStyle = createGlobalStyle`
   *, body {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: 'Poppins', Helvetica, Sans-Serif;
     text-rendering: optimizeLegibility;
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-
   }
   
+  #root {
+    height: 100vh;
+    width: 100vw;
+  }
+
 `;
 
 //color variables 
