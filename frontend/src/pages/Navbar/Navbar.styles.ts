@@ -44,10 +44,15 @@ export const Avatar = styled.img`
     border-radius: 50%;
     height: 3rem;
     width: 3rem;
-    border: 2px solid ${Colors.hoverCard};
     margin-right: 0.75rem;
      object-fit: cover;
     `
+
+export const CalendarIcon = styled.img`
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-right: 0.75rem;
+` 
 
 export const UserName = styled.p`
     color : ${Colors.mainpurple};
@@ -119,10 +124,7 @@ export const RowWrapper = styled.div`
         color: "red";
         padding: 0 1rem;
         :hover {
-
             color: ${Colors.mainpurple};
-
-            
         }
 
     }

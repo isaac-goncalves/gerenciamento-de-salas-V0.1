@@ -5,7 +5,25 @@ import { Navigate } from 'react-router-dom'
 import BsFillCalendarDateFill from 'react-icons/bs';
 // import { GrSchedule } from 'react-icons/gr';
 
-import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon } from './Dashboard.styles'
+import {
+  Container,
+  Header,
+  CourseName,
+  Semester,
+  ClassesContainer,
+  ClockContainer,
+  WeekdayContainer,
+  SchedulesContainer,
+  Schedule, WeekContainer,
+  CourseSemester,
+  DatePickWrapper,
+  Laboratorios,
+  DateIcon,
+  CalendarWrapper
+}
+  from './Agendamento.styles'
+
+import Calendar from '../Components/Laboratorios/Calendar'
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
@@ -61,6 +79,8 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
   return groupedData;
 }
 
+
+
 function printGradeValue(gradeValue: any) {
 
   console.log("Grade Value: " + JSON.stringify(gradeValue, null, 2))
@@ -83,13 +103,12 @@ function printGradeValue(gradeValue: any) {
 //   return groupedData;
 // }
 
-
-
-const Dashboard: React.FC = () => {
+const Agendamentos: React.FC = () => {
   const [date, setDate] = useState(new Date());
   const [grade, setgrade] = useState();
   const [loading, setLoading] = useState(false);
-
+  const [selectingLaboratory, setSelectingLaboratory] = useState(false)
+  const [startDate, setStartDate] = useState(new Date());
 
   //verifies if token stored on localstorage is valid
 
@@ -128,9 +147,9 @@ const Dashboard: React.FC = () => {
         "semestre": "1",
         "created_at": "2023-03-23T01:24:00.965Z",
         "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Divani",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        // "professor": "Divani",
+        // "disciplina": "Arquitetura e Organização de Computadores",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 2,
@@ -142,7 +161,11 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Cilmara",
         "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
+      },
+      {
+        "semestre": "1",
+        "disciplina": "Intervalo",
       },
       {
         "id": 3,
@@ -154,11 +177,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Michel",
         "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Sala-14"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 4,
@@ -170,7 +189,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       },
       {
         "id": 5,
@@ -182,7 +201,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       }
     ],
     "terca": [
@@ -194,9 +213,9 @@ const Dashboard: React.FC = () => {
         "semestre": "1",
         "created_at": "2023-03-23T01:24:00.965Z",
         "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Divani",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        // "professor": "Divani",
+        // "disciplina": "Arquitetura e Organização de Computadores",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 7,
@@ -206,9 +225,13 @@ const Dashboard: React.FC = () => {
         "semestre": "1",
         "created_at": "2023-03-23T01:24:00.965Z",
         "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Cilmara",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        // "professor": "Cilmara",
+        // "disciplina": "Arquitetura e Organização de Computadores",
+        "laboratorio": "Disponivel"
+      },
+      {
+        "semestre": "1",
+        "disciplina": "Intervalo",
       },
       {
         "id": 8,
@@ -220,11 +243,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Michel",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 9,
@@ -236,7 +255,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       },
       {
         "id": 10,
@@ -248,7 +267,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       }
     ],
     "quarta": [
@@ -260,9 +279,9 @@ const Dashboard: React.FC = () => {
         "semestre": "1",
         "created_at": "2023-03-23T01:24:00.965Z",
         "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Divani",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        // "professor": "Divani",
+        // "disciplina": "Arquitetura e Organização de Computadores",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 12,
@@ -272,9 +291,13 @@ const Dashboard: React.FC = () => {
         "semestre": "1",
         "created_at": "2023-03-23T01:24:00.965Z",
         "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Cilmara",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        // "professor": "Cilmara",
+        // "disciplina": "Arquitetura e Organização de Computadores",
+        "laboratorio": "Disponivel"
+      },
+      {
+        "semestre": "1",
+        "disciplina": "Intervalo",
       },
       {
         "id": 13,
@@ -286,11 +309,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Michel",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 14,
@@ -302,7 +321,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       },
       {
         "id": 15,
@@ -314,7 +333,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       }
     ],
     "quinta": [
@@ -326,9 +345,9 @@ const Dashboard: React.FC = () => {
         "semestre": "1",
         "created_at": "2023-03-23T01:24:00.965Z",
         "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Divani",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        // "professor": "Divani",
+        // "disciplina": "Arquitetura e Organização de Computadores",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 17,
@@ -338,9 +357,13 @@ const Dashboard: React.FC = () => {
         "semestre": "1",
         "created_at": "2023-03-23T01:24:00.965Z",
         "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Cilmara",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        // "professor": "Cilmara",
+        // "disciplina": "Arquitetura e Organização de Computadores",
+        "laboratorio": "Disponivel"
+      },
+      {
+        "semestre": "1",
+        "disciplina": "Intervalo",
       },
       {
         "id": 18,
@@ -352,11 +375,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Michel",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 19,
@@ -368,7 +387,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       },
       {
         "id": 20,
@@ -380,7 +399,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       }
     ],
     "sexta": [
@@ -394,7 +413,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       },
       {
         "id": 22,
@@ -406,7 +425,11 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
+      },
+      {
+        "semestre": "1",
+        "disciplina": "Intervalo",
       },
       {
         "id": 23,
@@ -418,11 +441,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
+        "laboratorio": "Disponivel"
       },
       {
         "id": 24,
@@ -434,7 +453,7 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       },
       {
         "id": 25,
@@ -446,11 +465,10 @@ const Dashboard: React.FC = () => {
         "updated_at": "2023-03-23T01:24:00.965Z",
         "professor": "Manuela",
         "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Sala-14"
+        "laboratorio": "Disponivel"
       }
     ]
   }
-
 
   useEffect(() => {
 
@@ -481,18 +499,23 @@ const Dashboard: React.FC = () => {
 
   }, [])
 
+  function handleSelection(key) {
+    console.log(key)
+    setSelectingLaboratory(true)
+  }
+
   return (
     <Container>
       <Header>
         <div>
           <CourseName>
-            <p>Analise e Desenvolvimento de Sistemas</p>
+            <p>Agendamento de Laboratório</p>
           </CourseName>
           <CourseSemester>
             1º Semestre de 2023
           </CourseSemester>
         </div>
-        <DatePicker>
+        <DatePickWrapper>
           <div>
             <DateIcon src={dateIcon} />
             <p>Pular para hoje</p>
@@ -500,6 +523,10 @@ const Dashboard: React.FC = () => {
             <DateIcon src={arrowRight} />
             <p>Março 2023</p>
             <DateIcon src={arrowDown} />
+            <CalendarWrapper>
+              <Calendar />
+            </CalendarWrapper>
+            {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </div>
           <Semester>
             <p>
@@ -509,113 +536,252 @@ const Dashboard: React.FC = () => {
               Semestre
             </span>
           </Semester>
-        </DatePicker>
+        </DatePickWrapper>
       </Header>
-      <ClassesContainer>
-        <ClockContainer>
-          <p>18:45</p>
-          <p>19:35</p>
-          <p>20:25</p>
-          <p>20:35</p>
-          <p>21:25</p>
-          <p>22:15</p>
-        </ClockContainer>
-        {
-          loading
-            &&
-            grade
-            ?
-            (
-              <WeekContainer>
-                <WeekdayContainer>
-                  <h2>Segunda</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.segunda.map((item) => {
-                        return (
-                          <Schedule key={item.id}>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-                <WeekdayContainer>
-                  <h2>Terça</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.terca.map((item) => {
-                        return (
-                          <Schedule>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-                <WeekdayContainer>
-                  <h2>Quarta</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.quarta.map((item) => {
-                        return (
-                          <Schedule>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-                <WeekdayContainer>
-                  <h2>Quinta</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.quinta.map((item) => {
-                        return (
-                          <Schedule>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-                <WeekdayContainer>
-                  <h2>Sexta</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.sexta.map((item) => {
-                        return (
-                          <Schedule>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-              </WeekContainer>
-            ) : (
-              <p>Loading...</p>
-            )
-        }
+      {
+        selectingLaboratory ?
+          <Laboratorios>
+            <ClockContainer>
+              <p>18:45</p>
+              <p>19:35</p>
+              <p>20:25</p>
+              <p>20:35</p>
+              <p>21:25</p>
+              <p>22:15</p>
+            </ClockContainer>
+            {
+              loading
+                &&
+                grade
+                ?
+                (
+                  <WeekContainer>
+                    <WeekdayContainer>
+                      <h2>LAB 1</h2>
+                      <SchedulesContainer>
+                        {
+                          mockdata.segunda.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>LAB 2</h2>
+                      <SchedulesContainer>
+                        {
+                          mockdata.terca.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>LAB 3</h2>
+                      <SchedulesContainer>
+                        {
+                          mockdata.quarta.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>LAB 4</h2>
+                      <SchedulesContainer>
+                        {
+                          mockdata.quinta.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>LAB 5</h2>
+                      <SchedulesContainer>
+                        {
+                          mockdata.sexta.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>LAB 6</h2>
+                      <SchedulesContainer>
+                        {
+                          mockdata.sexta.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>Sala Maker</h2>
+                      <SchedulesContainer>
+                        {
+                          mockdata.sexta.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                  </WeekContainer>
 
-      </ClassesContainer>
+                ) : (
+                  <p>Loading...</p>
+                )
+            }
+          </Laboratorios>
+          :
+          <ClassesContainer>
+            <ClockContainer>
+              <p>18:45</p>
+              <p>19:35</p>
+              <p>20:25</p>
+              <p>20:35</p>
+              <p>21:25</p>
+              <p>22:15</p>
+            </ClockContainer>
+            {
+              loading
+                &&
+                grade
+                ?
+                (
+                  <WeekContainer>
+                    <WeekdayContainer>
+                      <h2>Segunda</h2>
+                      <SchedulesContainer>
+                        {
+                          grade.segunda.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>Terça</h2>
+                      <SchedulesContainer>
+                        {
+                          grade.terca.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>Quarta</h2>
+                      <SchedulesContainer>
+                        {
+                          grade.quarta.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>Quinta</h2>
+                      <SchedulesContainer>
+                        {
+                          grade.quinta.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                    <WeekdayContainer>
+                      <h2>Sexta</h2>
+                      <SchedulesContainer>
+                        {
+                          grade.sexta.map((item) => {
+                            return (
+                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                                <p>{item.disciplina}</p>
+                                <p>{item.professor}</p>
+                                <p>{item.laboratorio}</p>
+                              </Schedule>
+                            )
+                          })
+                        }
+                      </SchedulesContainer>
+                    </WeekdayContainer>
+                  </WeekContainer>
+                ) : (
+                  <p>Loading...</p>
+                )
+            }
+
+          </ClassesContainer>
+      }
     </Container>
   )
 }
 
-export default Dashboard
+export default Agendamentos

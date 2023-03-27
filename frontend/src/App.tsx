@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 
-import Calendar from './pages/Calendar'
 import Dashboard from './pages/Dashboard'
+import Agendamentos from './pages/Agendamentos/Agendamentos'
 
 import LoginScreen from './pages/LoginScreen'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -25,7 +25,13 @@ function App() {
               <Dashboard />
             </>
           } />
-          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/agendamentos" element={
+            <>
+              <Navbar />
+              <Agendamentos />
+            </>
+          } />
+         
           <Route path="/register" element={<RegisterScreen />} />
           <Route element={<LoginScreen />} />
         </Routes>

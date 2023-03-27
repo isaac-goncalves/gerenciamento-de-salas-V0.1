@@ -36,13 +36,14 @@ const Navbar = () => {
                 <Menu>
                     <MenuLink to="/dashboard" >
                         <RowWrapper >
-                            <GrSchedule />
+                            {/* <CalendarIcon src={}/> */}
+                                
                             {
                                 menuOpen && <>HORÁRIOS</>
                             }
                         </RowWrapper>
                     </MenuLink>
-                    <MenuLink to="/dashboard" >
+                    <MenuLink to="/agendamentos" >
                         <RowWrapper>
                             <GrSchedules />
                             {

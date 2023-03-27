@@ -48,6 +48,20 @@ export const ClassesContainer = styled.div`
   gap: 2rem;
 `;
 
+export const Laboratorios = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2rem;
+  background-color: ${Colors.white};
+  /* background-color: blue  ; */// alternate color
+  padding: 2rem;
+  border-radius: 12px;
+  width: 95%;
+  height: 100%;
+  gap: 2rem;
+`;
+
 export const CourseSemester = styled.p`
   font-size: 1.5rem;
   font-weight: 400;
@@ -80,12 +94,13 @@ export const Semester = styled.h2`
     color: ${Colors.mainpurple};
   }
   span{
-  
+
   }
 
 `;
 
-export const DatePicker = styled.div`
+
+export const DatePickWrapper = styled.div`
 display: flex;
 flex-direction: row;
 gap: 1rem;
@@ -98,12 +113,19 @@ margin-bottom: 1rem;
   div{
     display: flex;  
     gap: 1rem;
-    width: 30rem;
+    
     p{
       white-space: nowrap;
     }
+
   }
-`
+  
+  `
+
+export const CalendarWrapper= styled.div`
+    width: 30rem;
+  `
+
 export const DateIcon = styled.img`
     height: 1.5rem;
     width: 1.5rem;
@@ -134,7 +156,6 @@ export const WeekContainer = styled.div`
   gap: 1rem;
   height: 100%;
   width: 100%;
-  
 `;
 
 export const WeekdayContainer = styled.div`
@@ -152,6 +173,7 @@ export const WeekdayContainer = styled.div`
     font-weight: 500;
     text-transform: uppercase;
     color: ${Colors.textcolor};
+    white-space: nowrap;
   }
 
   :hover {
