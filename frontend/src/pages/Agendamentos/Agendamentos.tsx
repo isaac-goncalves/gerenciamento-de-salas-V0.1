@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import { Navigate } from 'react-router-dom'
 
-import BsFillCalendarDateFill from 'react-icons/bs';
-// import { GrSchedule } from 'react-icons/gr';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 import {
   Container,
@@ -19,7 +20,10 @@ import {
   DatePickWrapper,
   Laboratorios,
   DateIcon,
-  CalendarWrapper
+  CalendarWrapper,
+  CoursesWrapper,
+  DatepickContainer,
+  Laboratorio
 }
   from './Agendamento.styles'
 
@@ -87,28 +91,15 @@ function printGradeValue(gradeValue: any) {
 
 }
 
-// function groupByDay(data) {
-//   const daysOfWeek = ["00001", "00002", "00003", "00004", "00005", "00006", "00007"];
-//   const groupedData = {};
-
-//   daysOfWeek.forEach(day => {
-//     const filteredData = data.filter(item => item.dia_da_semana === day);
-//     const intervalo = { "intervalo": "intervalo" };
-//     if (filteredData.length > 0) {
-//       filteredData.splice(2, 0, intervalo);
-//       groupedData[day] = filteredData;
-//     }
-//   });
-
-//   return groupedData;
-// }
-
 const Agendamentos: React.FC = () => {
   const [date, setDate] = useState(new Date());
   const [grade, setgrade] = useState();
   const [loading, setLoading] = useState(false);
   const [selectingLaboratory, setSelectingLaboratory] = useState(false)
   const [startDate, setStartDate] = useState(new Date());
+
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedWeekday, setSelectedWeekday] = useState([]);
 
   //verifies if token stored on localstorage is valid
 
@@ -486,9 +477,9 @@ const Agendamentos: React.FC = () => {
         const transformedData = groupByWeekday(data)
         console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
         printGradeValue(transformedData)
-        setTimeout(() => {
-          setLoading(true) // teste de loading
-        }, 2000)
+       
+        setLoading(true) // teste de loading
+       
         // setLoading(true)
         return setgrade(transformedData)
       }
@@ -499,24 +490,36 @@ const Agendamentos: React.FC = () => {
 
   }, [])
 
-  function handleSelection(key) {
-    console.log(key)
+  const handleSelection = (id) => {
+    console.log(id)
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
+    } else {
+      setSelectedIds([...selectedIds, id]);
+    }
+
+  }
+
+  const handleWeekdaySelection = (id) => {
+    console.log(id)
+    setSelectedWeekday(id)
     setSelectingLaboratory(true)
   }
+
 
   return (
     <Container>
       <Header>
-        <div>
+        <CoursesWrapper>
           <CourseName>
             <p>Agendamento de Laboratório</p>
           </CourseName>
           <CourseSemester>
             1º Semestre de 2023
           </CourseSemester>
-        </div>
+        </CoursesWrapper>
         <DatePickWrapper>
-          <div>
+          <DatepickContainer>
             <DateIcon src={dateIcon} />
             <p>Pular para hoje</p>
             <DateIcon src={arrowLeft} />
@@ -524,11 +527,12 @@ const Agendamentos: React.FC = () => {
             <p>Março 2023</p>
             <DateIcon src={arrowDown} />
             <CalendarWrapper>
-              <Calendar />
+              <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
             </CalendarWrapper>
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
-          </div>
+          </DatepickContainer>
           <Semester>
+            {selectingLaboratory && <p>Finalizar agendamento</p>}
             <p>
               5º
             </p>
@@ -562,11 +566,11 @@ const Agendamentos: React.FC = () => {
                         {
                           mockdata.segunda.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
-                              </Schedule>
+                              </Laboratorio>
                             )
                           })
                         }
@@ -578,11 +582,11 @@ const Agendamentos: React.FC = () => {
                         {
                           mockdata.terca.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
-                              </Schedule>
+                              </Laboratorio>
                             )
                           })
                         }
@@ -594,11 +598,11 @@ const Agendamentos: React.FC = () => {
                         {
                           mockdata.quarta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
-                              </Schedule>
+                              </Laboratorio>
                             )
                           })
                         }
@@ -610,11 +614,11 @@ const Agendamentos: React.FC = () => {
                         {
                           mockdata.quinta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
-                              </Schedule>
+                              </Laboratorio>
                             )
                           })
                         }
@@ -626,11 +630,11 @@ const Agendamentos: React.FC = () => {
                         {
                           mockdata.sexta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
-                              </Schedule>
+                              </Laboratorio>
                             )
                           })
                         }
@@ -642,11 +646,11 @@ const Agendamentos: React.FC = () => {
                         {
                           mockdata.sexta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleWeekdaySelection(item.id)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
-                              </Schedule>
+                              </Laboratorio>
                             )
                           })
                         }
@@ -658,11 +662,11 @@ const Agendamentos: React.FC = () => {
                         {
                           mockdata.sexta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleWeekdaySelection(item.id)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
-                              </Schedule>
+                              </Laboratorio>
                             )
                           })
                         }
@@ -698,7 +702,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.segunda.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection(item.id)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -714,7 +718,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.terca.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection(item.id)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -730,7 +734,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.quarta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection(item.id)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -746,7 +750,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.quinta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection(item.id)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
