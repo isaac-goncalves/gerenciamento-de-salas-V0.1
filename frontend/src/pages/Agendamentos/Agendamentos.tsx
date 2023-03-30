@@ -6,6 +6,21 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
+type Lab = {
+  name: string;
+  ids: number[];
+};
+
+const labs: Lab[] = [
+  { name: "lab1", ids: [1, 2, 3, 4, 5] },
+  { name: "lab2", ids: [6, 7, 8, 9, 10] },
+  { name: "lab3", ids: [11, 12, 13, 14, 15] },
+  { name: "lab4", ids: [16, 17, 18, 19, 20] },
+  { name: "lab5", ids: [21, 22, 23, 24, 25] },
+  { name: "lab6", ids: [26, 27, 28, 29, 30] },
+  { name: "lab7", ids: [31, 32, 33, 34, 35] },
+];
+
 import {
   Container,
   Header,
@@ -33,6 +48,228 @@ import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
+import Modal from '../Components/Modal';
+
+const mockdata = {
+  "laboratorio1": [
+    {
+      "id": 1,
+      "laboratorio": "Disponivel",
+      "id_laboratorio": "1",
+    },
+    {
+      "id": 2,
+      "semestre": "1",
+      "created_at": "2023-03-23T01:24:00.965Z",
+      "updated_at": "2023-03-23T01:24:00.965Z",
+      "professor": "Cilmara",
+      "disciplina": "Algoritmos e Lógica de Programação",
+      "laboratorio": "Indisponivel",
+      "ScheduleData": {
+        "id": 2,
+        "horario_inicio": "19:45",
+        "horario_fim": "20:35",
+        "dia_da_semana": "00001",
+        "semestre": "1",
+        "created_at": "2023-03-23T01:24:00.965Z",
+      }
+    },
+    {
+      "id": 3,
+      "horario_inicio": "20:35",
+      "horario_fim": "21:25",
+      "dia_da_semana": "00002",
+      "semestre": "1",
+      "created_at": "2023-03-23T01:24:00.965Z",
+      "updated_at": "2023-03-23T01:24:00.965Z",
+      "professor": "Michel",
+      "disciplina": "Algoritmos e Lógica de Programação",
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 4,
+      "horario_inicio": "21:25",
+      "horario_fim": "22:15",
+      "dia_da_semana": "00002",
+      "semestre": "1",
+      "created_at": "2023-03-23T01:24:00.965Z",
+      "updated_at": "2023-03-23T01:24:00.965Z",
+      "professor": "Manuela",
+      "disciplina": "Algoritmos e Lógica de Programação",
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 5,
+      "horario_inicio": "22:15",
+      "horario_fim": "23:05",
+      "dia_da_semana": "00002",
+      "semestre": "1",
+      "created_at": "2023-03-23T01:24:00.965Z",
+      "updated_at": "2023-03-23T01:24:00.965Z",
+      "professor": "Manuela",
+      "disciplina": "Algoritmos e Lógica de Programação",
+      "laboratorio": "Disponivel"
+    }
+  ],
+  "laboratorio2": [
+    {
+      "id": 6,
+      "horario_inicio": "18:45",
+      "horario_fim": "19:35",
+      "dia_da_semana": "00003",
+      "semestre": "1",
+      "created_at": "2023-03-23T01:24:00.965Z",
+      "updated_at": "2023-03-23T01:24:00.965Z",
+      // "professor": "Divani",
+      // "disciplina": "Arquitetura e Organização de Computadores",
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 7,
+      "horario_inicio": "19:35",
+      "horario_fim": "20:25",
+      "dia_da_semana": "00003",
+      "semestre": "1",
+      "created_at": "2023-03-23T01:24:00.965Z",
+      "updated_at": "2023-03-23T01:24:00.965Z",
+      // "professor": "Cilmara",
+      // "disciplina": "Arquitetura e Organização de Computadores",
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 8,
+      "horario_inicio": "20:35",
+      "horario_fim": "21:25",
+      "dia_da_semana": "00003",
+      "semestre": "1",
+      "created_at": "2023-03-23T01:24:00.965Z",
+      "updated_at": "2023-03-23T01:24:00.965Z",
+      "professor": "Michel",
+      "disciplina": "Arquitetura e Organização de Computadores",
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 9,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 10,
+      "laboratorio": "Disponivel"
+    },
+  ],
+  "laboratorio3": [
+    {
+      "id": 11,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 12,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 13,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 14,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 15,
+      "laboratorio": "Disponivel"
+    },
+  ],
+  "laboratorio4": [
+    {
+      "id": 16,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 17,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 18,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 19,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 20,
+      "laboratorio": "Disponivel"
+    },
+  ],
+  "laboratorio5": [
+    {
+      "id": 21,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 22,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 23,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 24,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 25,
+      "laboratorio": "Disponivel"
+    },
+  ],
+  "laboratorio6": [
+    {
+      "id": 26,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 27,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 28,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 29,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 30,
+      "laboratorio": "Disponivel"
+    },
+  ],
+  "salamaker": [
+    {
+      "id": 31,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 32,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 33,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 34,
+      "laboratorio": "Disponivel"
+    },
+    {
+      "id": 35,
+      "laboratorio": "Disponivel"
+    },
+  ],
+
+
+}
 
 interface ScheduleItem {
   id: number;
@@ -92,374 +329,31 @@ function printGradeValue(gradeValue: any) {
 }
 
 const Agendamentos: React.FC = () => {
-  const [date, setDate] = useState(new Date());
   const [grade, setgrade] = useState();
+
   const [loading, setLoading] = useState(false);
+
   const [selectingLaboratory, setSelectingLaboratory] = useState(false)
+
   const [startDate, setStartDate] = useState(new Date());
 
-  const [selectedIds, setSelectedIds] = useState([]);
-  const [selectedWeekday, setSelectedWeekday] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  //verifies if token stored on localstorage is valid
 
-  //  useEffect(
-  //    async () => {
-  //       const token = localStorage.getItem('token')
-  //       if (token) {
+  const [WeekdayGradeIds, setWeekdayGradeIds] = useState<number[]>([])
+  const [selectedWeekday, setSelectedWeekday] = useState<string>('');
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedLaboratory, setSelectedLaboratory] = useState(-1);
 
-  //         const response = await fetch('http://localhost:3333/verify', {
-  //           method: 'POST',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify({
-  //             token,
-  //           }),
-  //         })
-  //         const data = await response.json()
-  //         if (data.token) {
-  //         } else {
 
-  //         }
-  //       }
+  const handleButtonClick = () => {
+    console.log("Button clicked");
+    setModalVisible(true);
+  };
 
-  //       // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  //     }, []);
-
-  const mockdata = {
-    "segunda": [
-      {
-        "id": 1,
-        "horario_inicio": "18:45",
-        "horario_fim": "19:35",
-        "dia_da_semana": "00002",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        // "professor": "Divani",
-        // "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 2,
-        "horario_inicio": "19:35",
-        "horario_fim": "20:25",
-        "dia_da_semana": "00002",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Cilmara",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
-      },
-      {
-        "id": 3,
-        "horario_inicio": "20:35",
-        "horario_fim": "21:25",
-        "dia_da_semana": "00002",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Michel",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 4,
-        "horario_inicio": "21:25",
-        "horario_fim": "22:15",
-        "dia_da_semana": "00002",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 5,
-        "horario_inicio": "22:15",
-        "horario_fim": "23:05",
-        "dia_da_semana": "00002",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
-      }
-    ],
-    "terca": [
-      {
-        "id": 6,
-        "horario_inicio": "18:45",
-        "horario_fim": "19:35",
-        "dia_da_semana": "00003",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        // "professor": "Divani",
-        // "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 7,
-        "horario_inicio": "19:35",
-        "horario_fim": "20:25",
-        "dia_da_semana": "00003",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        // "professor": "Cilmara",
-        // "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
-      },
-      {
-        "id": 8,
-        "horario_inicio": "20:35",
-        "horario_fim": "21:25",
-        "dia_da_semana": "00003",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Michel",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 9,
-        "horario_inicio": "21:25",
-        "horario_fim": "22:15",
-        "dia_da_semana": "00003",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 10,
-        "horario_inicio": "22:15",
-        "horario_fim": "23:05",
-        "dia_da_semana": "00003",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      }
-    ],
-    "quarta": [
-      {
-        "id": 11,
-        "horario_inicio": "18:45",
-        "horario_fim": "19:35",
-        "dia_da_semana": "00004",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        // "professor": "Divani",
-        // "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 12,
-        "horario_inicio": "19:35",
-        "horario_fim": "20:25",
-        "dia_da_semana": "00004",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        // "professor": "Cilmara",
-        // "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
-      },
-      {
-        "id": 13,
-        "horario_inicio": "20:35",
-        "horario_fim": "21:25",
-        "dia_da_semana": "00004",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Michel",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 14,
-        "horario_inicio": "21:25",
-        "horario_fim": "22:15",
-        "dia_da_semana": "00004",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 15,
-        "horario_inicio": "22:15",
-        "horario_fim": "23:05",
-        "dia_da_semana": "00004",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      }
-    ],
-    "quinta": [
-      {
-        "id": 16,
-        "horario_inicio": "18:45",
-        "horario_fim": "19:35",
-        "dia_da_semana": "00005",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        // "professor": "Divani",
-        // "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 17,
-        "horario_inicio": "19:35",
-        "horario_fim": "20:25",
-        "dia_da_semana": "00005",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        // "professor": "Cilmara",
-        // "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
-      },
-      {
-        "id": 18,
-        "horario_inicio": "20:35",
-        "horario_fim": "21:25",
-        "dia_da_semana": "00005",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Michel",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 19,
-        "horario_inicio": "21:25",
-        "horario_fim": "22:15",
-        "dia_da_semana": "00005",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 20,
-        "horario_inicio": "22:15",
-        "horario_fim": "23:05",
-        "dia_da_semana": "00005",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      }
-    ],
-    "sexta": [
-      {
-        "id": 21,
-        "horario_inicio": "18:45",
-        "horario_fim": "19:35",
-        "dia_da_semana": "00006",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 22,
-        "horario_inicio": "19:35",
-        "horario_fim": "20:25",
-        "dia_da_semana": "00006",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "semestre": "1",
-        "disciplina": "Intervalo",
-      },
-      {
-        "id": 23,
-        "horario_inicio": "20:35",
-        "horario_fim": "21:25",
-        "dia_da_semana": "00006",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 24,
-        "horario_inicio": "21:25",
-        "horario_fim": "22:15",
-        "dia_da_semana": "00006",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
-      },
-      {
-        "id": 25,
-        "horario_inicio": "22:15",
-        "horario_fim": "23:05",
-        "dia_da_semana": "00006",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Arquitetura e Organização de Computadores",
-        "laboratorio": "Disponivel"
-      }
-    ]
-  }
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
 
   useEffect(() => {
 
@@ -477,9 +371,9 @@ const Agendamentos: React.FC = () => {
         const transformedData = groupByWeekday(data)
         console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
         printGradeValue(transformedData)
-       
+
         setLoading(true) // teste de loading
-       
+
         // setLoading(true)
         return setgrade(transformedData)
       }
@@ -490,25 +384,57 @@ const Agendamentos: React.FC = () => {
 
   }, [])
 
-  const handleSelection = (id) => {
-    console.log(id)
-    if (selectedIds.includes(id)) {
+  useEffect(() => {
+    console.log("SelectedIds: " + selectedIds)
+    console.log("SelectedLaboratory: " + selectedLaboratory)
+  }, [selectedIds, selectedLaboratory])
+
+
+  const handleSelection = (id, labId) => {
+    // console.log(id)
+    // console.log(selectedIds)
+    // console.log("LaboratoryID= "+labId)
+
+    if (labId !== selectedLaboratory) {
+      // console.log("Different Laboratory")
+      setSelectedLaboratory(labId)
+      // clear selectedIds
+      setSelectedIds([id])
+    } else if (selectedIds.includes(id)) {
       setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
     } else {
       setSelectedIds([...selectedIds, id]);
     }
+  }
+
+  function extractGradeId(grades) {
+    const gradeIds = [];
+
+    for (let i = 0; i < grades.length; i++) {
+      const grade = grades[i];
+      if (grade.id) {
+        gradeIds.push(grade.id);
+      }
+    }
+
+    return gradeIds;
 
   }
 
-  const handleWeekdaySelection = (id) => {
-    console.log(id)
-    setSelectedWeekday(id)
+  const handleWeekdaySelection = (weekDay: string, dayInfo: object) => {
+    console.log(weekDay)
+    console.log(dayInfo)
+    const gradeIds = extractGradeId(dayInfo)
+    console.log(gradeIds)
+
+    setWeekdayGradeIds(gradeIds)
+    setSelectedWeekday(weekDay)
     setSelectingLaboratory(true)
   }
 
-
   return (
     <Container>
+      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} startDate={startDate} />
       <Header>
         <CoursesWrapper>
           <CourseName>
@@ -532,7 +458,7 @@ const Agendamentos: React.FC = () => {
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>
           <Semester>
-            {selectingLaboratory && <p>Finalizar agendamento</p>}
+            {selectingLaboratory && <button onClick={handleButtonClick}>Confirmar Agendamento</button>}
             <p>
               5º
             </p>
@@ -546,12 +472,11 @@ const Agendamentos: React.FC = () => {
         selectingLaboratory ?
           <Laboratorios>
             <ClockContainer>
-              <p>18:45</p>
-              <p>19:35</p>
-              <p>20:25</p>
-              <p>20:35</p>
-              <p>21:25</p>
-              <p>22:15</p>
+              <p>Primeira Aula</p>
+              <p>Segunda Aula</p>
+              <p>Terceira Aula</p>
+              <p>Quarta Aula</p>
+              <p>Quinta Aula</p>
             </ClockContainer>
             {
               loading
@@ -564,9 +489,9 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 1</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.segunda.map((item) => {
+                          mockdata.laboratorio1.map((item) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 1)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -580,9 +505,9 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 2</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.terca.map((item) => {
+                          mockdata.laboratorio2.map((item) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 2)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -596,9 +521,9 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 3</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.quarta.map((item) => {
+                          mockdata.laboratorio3.map((item) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 3)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -612,9 +537,9 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 4</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.quinta.map((item) => {
+                          mockdata.laboratorio4.map((item) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 4)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -628,9 +553,9 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 5</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.sexta.map((item) => {
+                          mockdata.laboratorio5.map((item) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 5)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -644,9 +569,9 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 6</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.sexta.map((item) => {
+                          mockdata.laboratorio6.map((item) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleWeekdaySelection(item.id)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 6)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -660,9 +585,9 @@ const Agendamentos: React.FC = () => {
                       <h2>Sala Maker</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.sexta.map((item) => {
+                          mockdata.salamaker.map((item) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleWeekdaySelection(item.id)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 7)}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -702,7 +627,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.segunda.map((item) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -718,7 +643,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.terca.map((item) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Terça-feira", grade.terca)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -734,7 +659,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.quarta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Quarta-feira", grade.quarta)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -750,7 +675,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.quinta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Quinta-feira", grade.quinta)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -766,7 +691,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.sexta.map((item) => {
                             return (
-                              <Schedule onClick={() => handleSelection(item.id)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Sexta-feira", grade.sexta)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>

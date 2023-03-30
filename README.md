@@ -256,3 +256,24 @@ Francisco"
 "
 
 contar quantos nomes de pessoa unicos tem nesses dados e fazer uma tabela com o id e uma coluna com o nome da pessoa e outra com a quantidade de vezes que ela aparece awdadawdawdawd
+
+
+A tela de Agendamento ira mostrar uma grade personalizada para cada professor onde sera mostrado a semana e os horarios de aula do professor
+
+Ao selecionar um dia da semana o sistema ira mostrar os laboratorios disponiveis para o professor selecionado
+
+A tela de agendamentos ira contar com 7 colunas uma para cada laboratorio
+
+O sistema ira mostrar ao Professor os laboratorios disponiveis para o dia selecionado
+
+Se o laboratorios estiver ocupado o sistema ira mostrar a mensagem "Laboratorio Ocupado"
+
+Se o laboratorio estiver disponivel o sistema ira mostrar a mensagem "Laboratorio Disponivel"
+
+O professor ira selecionar o laboratorio desejado e as aulas que deseja agendar
+
+Ao apertar o Botão Finalizar o agendamento uma modal contendo os dados do agendamento sera mostrada ao professor
+
+Os seguintes dados serao mostrados: Nome do Professor, Laboratorio, Dia da Semana, Horario de Inicio e Horario de Termino
+
+O professor ira confirmar o agendamento e o sistema ira mostrar a mensagem "Agendamento Realizado com Sucesso"
