@@ -11,6 +11,15 @@ export const Container = styled.div`
   height: 100%;
   width: calc(100% - 5rem);
   margin-left: 5rem;
+  animation: appear 1s;
+    @keyframes appear {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 `
 
 export const Header = styled.div`
@@ -251,6 +260,16 @@ export const Laboratorio = styled.div`
   min-height: 4rem;
   padding: 0.4rem 0; // #TODO
   gap: 0.3rem;
+
+  animation: appear 1.5s;
+    @keyframes appear {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 
   :hover {
     background-color: ${Colors.hoverCard};

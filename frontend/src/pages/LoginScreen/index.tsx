@@ -138,7 +138,7 @@ const LoginScreen: React.FC = () => {
                                         <TeamsLogo src={teamsLogo} />
                                         <p>Entrar com o Teams</p>
                                     </TeamsWrapper>
-                                    <Separator   >
+                                    <Separator>
                                         <div></div>
                                         <div>ou</div>
                                         <div></div>

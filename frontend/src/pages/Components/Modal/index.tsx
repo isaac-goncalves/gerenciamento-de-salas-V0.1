@@ -11,6 +11,17 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  animation: appear 0.8s;
+    @keyframes appear {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
 `;
 
 const ModalContent = styled.div`
@@ -63,6 +74,22 @@ const labs = [[1, 2, 3, 4, 5],
 [31, 32, 33, 34, 35]
 ];
 
+function mapValuesToStrings(array) {
+  const strings = [
+    '1ª Aula: 18:45 - 19:35',
+    '2ª Aula: 19:35 - 20:25',
+    '3ª Aula: 20:25 - 20:35',
+    '4ª Aula: 20:35 - 21:25',
+    '5ª Aula: 21:25 - 22:15'
+  ];
+  const result = [];
+  for (let i = 0; i < array.length; i++) {
+    const index = array[i] - 1; // Adjust index to match the 0-based array index
+    result.push(strings[index]);
+  }
+  return result;
+}
+
 function idsToGroups(ids: number[]) {
   const groups = [];
   for (let i = 0; i < labs.length; i++) {
@@ -97,16 +124,24 @@ interface ModalProps {
 const Modal = ({ isVisible, onClose, WeekdayGradeIds, selectedWeekday, selectedIds, selectedLaboratory, startDate }: ModalProps) => {
   if (!isVisible) return null;
 
+  const transformedIds = idsToGroups(selectedIds);
+
+  const HorariosTranformed = mapValuesToStrings(transformedIds[0]);
+
   useEffect(() => {
 
     console.log(selectedIds)
     console.log(WeekdayGradeIds)
 
-    const transformesIds = idsToGroups(selectedIds);
+    const transformedIds = idsToGroups(selectedIds);
 
-    console.log(transformesIds)
+    console.log(transformedIds)
 
-    const gradeIds = mapResultToSelected(WeekdayGradeIds, transformesIds[0])
+    const gradeIds = mapResultToSelected(WeekdayGradeIds, transformedIds[0])
+
+    const HorariosTransformed = mapValuesToStrings(transformedIds[0]);
+   
+    console.log(HorariosTransformed);
 
     console.log("Final grade Ids= " + gradeIds)
 
@@ -126,12 +161,16 @@ const Modal = ({ isVisible, onClose, WeekdayGradeIds, selectedWeekday, selectedI
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={e => e.stopPropagation()}>
-        <h2>Nome do Professor</h2>
+        <h2>Confirme os dados do agendamento</h2>
+        <p>Nome do Professor: </p>
         <p>Laboratorio: {selectedLaboratory}</p>
         <p>Data: {String(startDate)}</p>
         <p>Dia da Semana: {selectedWeekday}</p>
-        <p>Horario de Inicio</p>
-        <p>Horario de Termino</p>
+        <h3>Horarios:</h3>
+        {HorariosTranformed.map((id) => {
+          return <p>{id}</p>
+        })
+        }
         <button onClick={() => handleSubmitAgendamento(selectedIds)}>
           Confirmar agendamento
         </button>

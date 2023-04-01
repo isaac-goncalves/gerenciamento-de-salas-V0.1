@@ -11,6 +11,15 @@ export const Container = styled.div`
   height: 100%;
   width: calc(100% - 5rem );
   margin-left: 5rem;
+  animation: appear 1s;
+    @keyframes appear {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
   `;
 
 export const Header = styled.div`
