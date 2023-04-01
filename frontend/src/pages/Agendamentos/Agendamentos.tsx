@@ -50,7 +50,20 @@ import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
 import Modal from '../Components/Modal';
 
-const mockdata = {
+interface LaboratorioData {
+  id: number;
+  disciplina: string;
+  professor: string;
+  laboratorio: string;
+  horario_inicio: string;
+  horario_fim: string;
+  dia_da_semana: string;
+  semestre: string;
+  created_at: string;
+  updated_at: string;
+}
+
+const mockdata: any = {
   "laboratorio1": [
     {
       "id": 1,
@@ -284,6 +297,19 @@ interface ScheduleItem {
   updated_at: string;
 }
 
+interface gradeData {
+  id: number;
+  disciplina: string;
+  professor: string;
+  laboratorio: string;
+  horario_inicio: string;
+  horario_fim: string;
+  dia_da_semana: string;
+  semestre: string;
+  created_at: string;
+  updated_at: string;
+}
+
 interface IntervalItem {
   semestre: string;
   disciplina: string;
@@ -328,14 +354,23 @@ function printGradeValue(gradeValue: any) {
 
 }
 
+interface GradeProps {
+  grade: any;
+  segunda: any;
+  terca: any;
+  quarta: any;
+  quinta: any;
+  sexta: any;
+}
+
 const Agendamentos: React.FC = () => {
-  const [grade, setgrade] = useState();
+  const [grade, setgrade] = useState<GradeProps>();
 
   const [loading, setLoading] = useState(false);
 
   const [selectingLaboratory, setSelectingLaboratory] = useState(false)
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -375,7 +410,7 @@ const Agendamentos: React.FC = () => {
         setLoading(true) // teste de loading
 
         // setLoading(true)
-        return setgrade(transformedData)
+        return setgrade(transformedData as any)
       }
       )
     }
@@ -390,7 +425,7 @@ const Agendamentos: React.FC = () => {
   }, [selectedIds, selectedLaboratory])
 
 
-  const handleSelection = (id, labId) => {
+  const handleSelection = (id: number, labId: number) => {
     // console.log(id)
     // console.log(selectedIds)
     // console.log("LaboratoryID= "+labId)
@@ -407,7 +442,7 @@ const Agendamentos: React.FC = () => {
     }
   }
 
-  function extractGradeId(grades) {
+  function extractGradeId(grades: any) {
     const gradeIds = [];
 
     for (let i = 0; i < grades.length; i++) {
@@ -489,7 +524,7 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 1</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.laboratorio1.map((item) => {
+                          mockdata.laboratorio1.map((item: LaboratorioData) => {
                             return (
                               <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 1)}>
                                 <p>{item.disciplina}</p>
@@ -505,7 +540,7 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 2</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.laboratorio2.map((item) => {
+                          mockdata.laboratorio2.map((item: LaboratorioData) => {
                             return (
                               <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 2)}>
                                 <p>{item.disciplina}</p>
@@ -521,7 +556,7 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 3</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.laboratorio3.map((item) => {
+                          mockdata.laboratorio3.map((item: LaboratorioData) => {
                             return (
                               <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 3)}>
                                 <p>{item.disciplina}</p>
@@ -537,7 +572,7 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 4</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.laboratorio4.map((item) => {
+                          mockdata.laboratorio4.map((item: LaboratorioData) => {
                             return (
                               <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 4)}>
                                 <p>{item.disciplina}</p>
@@ -553,7 +588,7 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 5</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.laboratorio5.map((item) => {
+                          mockdata.laboratorio5.map((item: LaboratorioData) => {
                             return (
                               <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 5)}>
                                 <p>{item.disciplina}</p>
@@ -569,7 +604,7 @@ const Agendamentos: React.FC = () => {
                       <h2>LAB 6</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.laboratorio6.map((item) => {
+                          mockdata.laboratorio6.map((item: LaboratorioData) => {
                             return (
                               <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 6)}>
                                 <p>{item.disciplina}</p>
@@ -585,7 +620,7 @@ const Agendamentos: React.FC = () => {
                       <h2>Sala Maker</h2>
                       <SchedulesContainer>
                         {
-                          mockdata.salamaker.map((item) => {
+                          mockdata.salamaker.map((item: LaboratorioData) => {
                             return (
                               <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 7)}>
                                 <p>{item.disciplina}</p>
@@ -625,7 +660,7 @@ const Agendamentos: React.FC = () => {
                       <h2>Segunda</h2>
                       <SchedulesContainer>
                         {
-                          grade.segunda.map((item) => {
+                          grade.segunda.map((item: gradeData) => {
                             return (
                               <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda)} key={item.id}>
                                 <p>{item.disciplina}</p>
@@ -641,7 +676,7 @@ const Agendamentos: React.FC = () => {
                       <h2>Terça</h2>
                       <SchedulesContainer>
                         {
-                          grade.terca.map((item) => {
+                          grade.terca.map((item: gradeData) => {
                             return (
                               <Schedule onClick={() => handleWeekdaySelection("Terça-feira", grade.terca)} key={item.id}>
                                 <p>{item.disciplina}</p>
@@ -657,7 +692,7 @@ const Agendamentos: React.FC = () => {
                       <h2>Quarta</h2>
                       <SchedulesContainer>
                         {
-                          grade.quarta.map((item) => {
+                          grade.quarta.map((item: gradeData) => {
                             return (
                               <Schedule onClick={() => handleWeekdaySelection("Quarta-feira", grade.quarta)} key={item.id}>
                                 <p>{item.disciplina}</p>
@@ -673,7 +708,7 @@ const Agendamentos: React.FC = () => {
                       <h2>Quinta</h2>
                       <SchedulesContainer>
                         {
-                          grade.quinta.map((item) => {
+                          grade.quinta.map((item: gradeData) => {
                             return (
                               <Schedule onClick={() => handleWeekdaySelection("Quinta-feira", grade.quinta)} key={item.id}>
                                 <p>{item.disciplina}</p>
@@ -689,7 +724,7 @@ const Agendamentos: React.FC = () => {
                       <h2>Sexta</h2>
                       <SchedulesContainer>
                         {
-                          grade.sexta.map((item) => {
+                          grade.sexta.map((item: gradeData) => {
                             return (
                               <Schedule onClick={() => handleWeekdaySelection("Sexta-feira", grade.sexta)} key={item.id}>
                                 <p>{item.disciplina}</p>

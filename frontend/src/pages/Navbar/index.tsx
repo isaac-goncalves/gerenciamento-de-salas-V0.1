@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PrimaryNav, MenuLink, Menu, Hamburger, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon } from './Navbar.styles'
+import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon } from './Navbar.styles'
 import styled from 'styled-components'
 
 import { Colors } from '../../colors';
@@ -14,7 +14,7 @@ import avatar from '../../../public/images/avatar.png';
 
 const Navbar = () => {
 
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
     const toggleMenu = () => {
         setTimeout(() => {

@@ -18,11 +18,15 @@ import { Colors } from '../../colors'
 //     background: ${Colors.white};
 //     `
 
+interface Props {
+  menuOpen: boolean
+}
+
 export const PrimaryNav = styled.nav`
   position: fixed;
   top: 0;
   left: 0;
-  width: ${({ menuOpen }) => (menuOpen ? '15.5rem' : '5rem')};
+  width: ${({ menuOpen }: Props) => (menuOpen ? '15.5rem' : '5rem')};
   border-right: 2px solid #e8eaf6;
   transition: width 0.15s ease-in-out;
   z-index: 14;

@@ -247,12 +247,17 @@ export const Schedule = styled.div`
     font-size: 0.9rem;
   }
 `
+
+interface IProps {
+  selected: boolean
+}
+
 export const Laboratorio = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${({ selected }) => selected ? Colors.hoverCard : Colors.horariosCard};
+  background-color: ${({ selected }: IProps) => selected ? Colors.hoverCard : Colors.horariosCard};
   ;
   border-radius: 0px 0px 8px 8px;
   width: 95%;

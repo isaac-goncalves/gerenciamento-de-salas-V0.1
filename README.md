@@ -1,10 +1,20 @@
+
+docker build -t **** . //constroi a imagem do frontend
+
+docker run -p 4173:3000 --name frontend-sgsa-v1 frontend-sgsa //roda o container do frontend
+
 SQL para gerar modelo de dados
 
 
 
 
 
-gerar o conteudo de um csv para inserir esses dados no banco incluindo:  horario_inicio, horario_fim, id_professor, id_disciplina, semestre, id_sala, created_at, updated_at sendo que id_sala = 14 e semestre = 1 para todos. fazer muito bem feito
+
+
+
+
+****
+gerar o conteudo de um csv para inserir esses dados no banco incluindo:  horario_inicio, horario_fim, id_professor, id_disciplina, semestre, id_sala, created_at, updated_at sendo que id_sala = 14 e semestre = 1 para todos. fazer muito bem **feito**
 
 
 

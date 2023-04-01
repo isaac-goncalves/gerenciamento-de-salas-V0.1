@@ -16,10 +16,10 @@ interface ScheduleItem {
   id: number;
   horario_inicio: string;
   horario_fim: string;
-  id_professor: string;
+  professor: string;
   dia_da_semana: string;
-  id_disciplina: string;
-  id_sala: string;
+  disciplina: string;
+  sala: string;
   semestre: string;
   created_at: string;
   updated_at: string;
@@ -83,11 +83,24 @@ function printGradeValue(gradeValue: any) {
 //   return groupedData;
 // }
 
-
+interface GradeData {
+  id: number;
+  horario_inicio: string;
+  horario_fim: string;
+  professor: string;
+  dia_da_semana: string;
+  laboratorio: string;
+  disciplina: string;
+  id_sala: string;
+  semestre: string;
+  created_at: string;
+  updated_at: string;
+}
 
 const Dashboard: React.FC = () => {
+  const [grade, setgrade] = useState<any>();
+
   const [date, setDate] = useState(new Date());
-  const [grade, setgrade] = useState();
   const [loading, setLoading] = useState(false);
 
 
@@ -531,7 +544,7 @@ const Dashboard: React.FC = () => {
                   <h2>Segunda</h2>
                   <SchedulesContainer>
                     {
-                      grade.segunda.map((item) => {
+                      grade.segunda.map((item: GradeData ) => {
                         return (
                           <Schedule key={item.id}>
                             <p>{item.disciplina}</p>
@@ -547,7 +560,7 @@ const Dashboard: React.FC = () => {
                   <h2>Terça</h2>
                   <SchedulesContainer>
                     {
-                      grade.terca.map((item) => {
+                      grade.terca.map((item: GradeData) => {
                         return (
                           <Schedule>
                             <p>{item.disciplina}</p>
@@ -563,7 +576,7 @@ const Dashboard: React.FC = () => {
                   <h2>Quarta</h2>
                   <SchedulesContainer>
                     {
-                      grade.quarta.map((item) => {
+                      grade.quarta.map((item: GradeData) => {
                         return (
                           <Schedule>
                             <p>{item.disciplina}</p>
@@ -579,7 +592,7 @@ const Dashboard: React.FC = () => {
                   <h2>Quinta</h2>
                   <SchedulesContainer>
                     {
-                      grade.quinta.map((item) => {
+                      grade.quinta.map((item: GradeData) => {
                         return (
                           <Schedule>
                             <p>{item.disciplina}</p>
@@ -595,7 +608,7 @@ const Dashboard: React.FC = () => {
                   <h2>Sexta</h2>
                   <SchedulesContainer>
                     {
-                      grade.sexta.map((item) => {
+                      grade.sexta.map((item: GradeData) => {
                         return (
                           <Schedule>
                             <p>{item.disciplina}</p>

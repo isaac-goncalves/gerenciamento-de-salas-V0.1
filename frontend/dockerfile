@@ -1,0 +1,21 @@
+# Base image
+FROM node:17-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package.json ./
+RUN yarn install
+
+# Copy project files
+COPY . .
+
+# Set environment variables
+ENV NODE_ENV=production
+
+# Expose port 3000
+EXPOSE 3000
+
+# Start the app
+CMD ["npm", "run", "serve"]

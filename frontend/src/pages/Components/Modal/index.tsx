@@ -30,7 +30,7 @@ const ModalContent = styled.div`
   border-radius: 8px;
 `;
 
-async function handleSubmitAgendamento(selectedIds) {
+async function handleSubmitAgendamento(selectedIds: number[]) {
 
   console.log(selectedIds)
 
@@ -74,7 +74,7 @@ const labs = [[1, 2, 3, 4, 5],
 [31, 32, 33, 34, 35]
 ];
 
-function mapValuesToStrings(array) {
+function mapValuesToStrings(array: number[]) {
   const strings = [
     '1ª Aula: 18:45 - 19:35',
     '2ª Aula: 19:35 - 20:25',
@@ -118,7 +118,7 @@ interface ModalProps {
   selectedWeekday: string;
   selectedIds: number[];
   selectedLaboratory: number;
-  startDate: Date;
+  startDate: Date | null;
 }
 
 const Modal = ({ isVisible, onClose, WeekdayGradeIds, selectedWeekday, selectedIds, selectedLaboratory, startDate }: ModalProps) => {
