@@ -4,6 +4,8 @@ import { Navigate } from 'react-router-dom'
 
 import DatePicker from "react-datepicker";
 
+import { startOfWeek, endOfWeek, setDay, addDays } from 'date-fns';
+
 import "react-datepicker/dist/react-datepicker.css";
 
 type Lab = {
@@ -370,16 +372,40 @@ const Agendamentos: React.FC = () => {
 
   const [selectingLaboratory, setSelectingLaboratory] = useState(false)
 
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-
   const [modalVisible, setModalVisible] = useState(false);
-
 
   const [WeekdayGradeIds, setWeekdayGradeIds] = useState<number[]>([])
   const [selectedWeekday, setSelectedWeekday] = useState<string>('');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectedLaboratory, setSelectedLaboratory] = useState(-1);
 
+  const [selectedDate, setSelectedDate ] = useState<Date | null>(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
+  const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
+
+  // const [monday, friday] = getWeekDays(startDate, endDate);
+
+  // function getWeekDays(startDate: Date, endDate: Date): [Date, Date] { // get nearest Monday and Friday
+  //   const startOfWeekDate = startOfWeek(startDate, { weekStartsOn: 1 });
+  //   console.log(startOfWeekDate)
+  //   const endOfWeekDate = endOfWeek(endDate, { weekStartsOn: 1 });
+  //   const monday = setDay(startOfWeekDate, 1);
+  //   const friday = setDay(endOfWeekDate, 5);
+  //   console.log("Monday: " + monday)
+  //   console.log("Friday: " + friday)
+  //   return [monday, friday];
+  // }
+
+  const handleWeekdaySelection = (weekDay: string, dayInfo: object) => {
+    console.log(weekDay)
+    console.log(dayInfo)
+    const gradeIds = extractGradeId(dayInfo)
+    console.log(gradeIds)
+
+    setWeekdayGradeIds(gradeIds)
+    setSelectedWeekday(weekDay)
+    setSelectingLaboratory(true)
+  }
 
   const handleButtonClick = () => {
     console.log("Button clicked");
@@ -419,6 +445,10 @@ const Agendamentos: React.FC = () => {
 
   }, [])
 
+  // useEffect(() => {
+  //   setEndDate(addDays(startDate, 5));
+  // }, [startDate]);
+
   useEffect(() => {
     console.log("SelectedIds: " + selectedIds)
     console.log("SelectedLaboratory: " + selectedLaboratory)
@@ -456,16 +486,25 @@ const Agendamentos: React.FC = () => {
 
   }
 
-  const handleWeekdaySelection = (weekDay: string, dayInfo: object) => {
-    console.log(weekDay)
-    console.log(dayInfo)
-    const gradeIds = extractGradeId(dayInfo)
-    console.log(gradeIds)
+  const handleStartDateChange = (date: Date) => {
+    const monday = startOfWeek(date, { weekStartsOn: 1 });
+    const friday = endOfWeek(date, { weekStartsOn: 6 });
+    setStartDate(monday);
+    setEndDate(friday);
+  };
 
-    setWeekdayGradeIds(gradeIds)
-    setSelectedWeekday(weekDay)
-    setSelectingLaboratory(true)
+  const handleEndDateChange = (date: Date) => {
+    const monday = startOfWeek(date, { weekStartsOn: 1 });
+    const friday = endOfWeek(date, { weekStartsOn: 6 });
+    setStartDate(monday);
+    setEndDate(friday);
+  };
+
+  const selectedDay = (day: string) => {
+    console.log("Selected Day: " + day)
+    setSelectedWeekday(day)
   }
+
 
   return (
     <Container>
@@ -488,7 +527,10 @@ const Agendamentos: React.FC = () => {
             <p>Março 2023</p>
             <DateIcon src={arrowDown} />
             <CalendarWrapper>
-              <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+              Semana do dia
+              <DatePicker selected={startDate} onChange={handleStartDateChange} />
+              ao dia
+              <DatePicker selected={endDate} onChange={handleEndDateChange} />
             </CalendarWrapper>
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>

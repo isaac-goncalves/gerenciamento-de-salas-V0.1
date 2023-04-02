@@ -1,11 +1,12 @@
 # Base image
-FROM node:17-alpine
+FROM node:latest
 
 # Set working directory
 WORKDIR /app
 
 # Install dependencies
 COPY package.json ./
+
 RUN yarn install
 
 # Copy project files

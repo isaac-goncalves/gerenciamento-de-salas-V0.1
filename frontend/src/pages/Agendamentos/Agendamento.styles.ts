@@ -82,7 +82,10 @@ p {
 `
 
 export const CalendarWrapper = styled.div`
+display: flex;
   width: 15rem;
+ 
+  gap : 1rem;
 `
 
 export const DateIcon = styled.img`

@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "serve": "npm run build && npm vite preview"
+    "serve": "npm run build && vite preview"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
@@ -16,6 +16,7 @@
     "@mui/material": "^5.11.14",
     "@mui/x-date-pickers": "^6.0.3",
     "audit": "^0.0.6",
+    "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
