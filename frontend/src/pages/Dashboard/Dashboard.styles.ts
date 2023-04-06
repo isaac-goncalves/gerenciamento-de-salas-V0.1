@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Colors } from '../../colors';
 
 export const Container = styled.div`
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,6 +30,7 @@ export const Header = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 3;
 
   div{
     display: flex;
@@ -43,7 +45,7 @@ export const Header = styled.div`
 `;
 
 export const ClassesContainer = styled.div`
-
+ z-index: 3;
   display: flex;
   flex-direction: row;
   justify-content: center;

@@ -11,6 +11,7 @@ import GlobalStyle from './globalStyles';
 
 import Navbar from './pages/Navbar'
 import Perfil from './pages/Perfil'
+import { Circles } from './pages/Components/Circles'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<LoginScreen />} />
           <Route path="/dashboard" element={
             <>
+              <Circles ballCount={2} />
               <Navbar />
               <Dashboard />
             </>
