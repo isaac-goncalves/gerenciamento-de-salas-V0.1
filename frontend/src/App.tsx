@@ -11,6 +11,7 @@ import GlobalStyle from './globalStyles';
 
 import Navbar from './pages/Navbar'
 import Perfil from './pages/Perfil'
+import Register from './pages/Register'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -20,6 +21,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LoginScreen />} />
+
           <Route path="/dashboard" element={
             <>
               <Navbar />

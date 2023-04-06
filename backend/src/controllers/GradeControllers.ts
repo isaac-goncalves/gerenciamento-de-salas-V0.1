@@ -1,11 +1,10 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express'
 
-import { gradeRepositories } from "../repositories/gradeRepositories";
+import { gradeRepositories } from '../repositories/gradeRepositories'
 // import { professoresRepository } from "../repositories/professoresRepository";
 // import { laboratoriosRepository } from "../repositories/laboratoriosRepository";
 // import { disciplinasRepository } from "../repositories/disciplinasRepositories";
 // import { dia_da_semanaRepositories } from "../repositories/dia_da_semanaRepositories";
-
 
 // interface IGrade {
 //     id: number;
@@ -21,19 +20,16 @@ import { gradeRepositories } from "../repositories/gradeRepositories";
 // }
 
 export class GradeController {
+  async get (request: Request, response: Response) {
+    console.log('get grade')
+    const { semestre } = request.body
+    console.log(request.body)
 
-    async get(request: Request, response: Response) {
-        console.log("get grade");
-        const {
-            semestre
-        } = request.body;
-        console.log(request.body);
+    try {
+      //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
+      //pegar o semestre da pessoa e filtrar tambem
 
-        try {
-            //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
-            //pegar o semestre da pessoa e filtrar tambem
-
-            const query = `
+      const query = `
             SELECT 
                         grade.id, 
                         grade.horario_inicio, 
@@ -57,20 +53,50 @@ export class GradeController {
                         grade.semestre = '${semestre}'
             `
 
+      const gradeWithProfessor = await gradeRepositories.query(query)
 
-            const gradeWithProfessor = await gradeRepositories.query(query);
+      //pesdquisar sobre os agendamentos de cada grade e retornar junto com a grade
 
-            console.log(gradeWithProfessor)
-
-            return response.status(200).json(gradeWithProfessor);
-
-
+      const gradeWithAgendamento = await Promise.all(gradeWithProfessor.map(
+        async (grade: any) => {
+          const id_grade = grade.id
+      
+          const queryAgendamento = `
+            SELECT
+            agendamento.id as id_agendamento,
+            date,
+            horario_inicio,
+            horario_fim,
+            id_professor,
+            id_grade,
+            id_laboratorio,
+            created_at,
+            updated_at,
+            professores.nome_completo as professor,
+            laboratorios.descricao as laboratorio
+            FROM
+            agendamento
+            INNER JOIN
+            professores ON CAST(id_professor AS INTEGER) = professores.id
+            INNER JOIN
+            laboratorios ON CAST(id_laboratorio AS INTEGER) = laboratorios.id
+            WHERE
+            id_grade = '${id_grade}'
+          `
+          const agendamentos = await gradeRepositories.query(queryAgendamento)
+      
+          grade.agendamentos = agendamentos || []
+      
+          return grade
         }
-        catch (error) {
-            console.log(error);
-            return response.status(500).json({ message: "internal server error" });
-        }
+      ))
 
+      console.log(gradeWithAgendamento)
+
+      return response.status(200).json(gradeWithProfessor)
+    } catch (error) {
+      console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
     }
-
+  }
 }

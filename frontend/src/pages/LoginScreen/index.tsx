@@ -13,6 +13,7 @@ import teamsLogo from '../../../public/images/teamsIcon.svg';
 import mailIcon from '../../../public/images/emaiIcon.svg';
 import passwordIcon from '../../../public/images/passwordIcon.svg';
 import eyePassword from '../../../public/images/eyePassword.svg';
+import { Link, Navigate } from "react-router-dom";
 
 interface InputProps {
     hasError: boolean;
@@ -186,7 +187,9 @@ const LoginScreen: React.FC = () => {
                                         <div>
                                             <p>
                                                 Não possui uma conta?
-                                                <span onClick={() => setForm("registration")}> Registre-se</span>
+                                                <Link to="/register" >
+                                                <span> Registre-se</span>
+                                                </Link>
                                             </p>
                                         </div>
                                     </ButtonsWrapper>

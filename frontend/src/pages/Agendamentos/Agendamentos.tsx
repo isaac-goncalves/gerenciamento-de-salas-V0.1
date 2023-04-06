@@ -379,7 +379,7 @@ const Agendamentos: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectedLaboratory, setSelectedLaboratory] = useState(-1);
 
-  const [selectedDate, setSelectedDate ] = useState<Date | null>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
 
@@ -396,11 +396,43 @@ const Agendamentos: React.FC = () => {
   //   return [monday, friday];
   // }
 
-  const handleWeekdaySelection = (weekDay: string, dayInfo: object) => {
+
+  const mapWeekdayToNumber = (weekday: string) => {
+    switch (weekday) {
+      case 'Segunda-feira':
+        return 1
+      case 'Terça-feira':
+        return 2
+      case 'Quarta-feira':
+        return 3
+      case 'Quinta-feira':
+        return 4
+      case 'Sexta-feira':
+        return 5
+      default:
+        return 0
+    }
+  }
+
+  const handleWeekdaySelection = (weekDay: string, dayInfo: object, startDate: any) => {
+    console.log("Startdate selected: " + startDate)
     console.log(weekDay)
     console.log(dayInfo)
     const gradeIds = extractGradeId(dayInfo)
     console.log(gradeIds)
+
+    // map weekday string to weekday number
+
+    const weekdayNumber = mapWeekdayToNumber(weekDay)
+    console.log("weekdayNumber selected: " + weekdayNumber)
+
+    // use the day of the week to store the date to the setSelectedDate
+
+    const date = setDay(startDate, weekdayNumber)
+
+    console.log("Date: " + date)
+
+    setSelectedDate(date)
 
     setWeekdayGradeIds(gradeIds)
     setSelectedWeekday(weekDay)
@@ -468,7 +500,8 @@ const Agendamentos: React.FC = () => {
     } else if (selectedIds.includes(id)) {
       setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
     } else {
-      setSelectedIds([...selectedIds, id]);
+      const newSelectedIds = [...selectedIds, id].sort((a, b) => a - b);
+      setSelectedIds(newSelectedIds);
     }
   }
 
@@ -491,6 +524,7 @@ const Agendamentos: React.FC = () => {
     const friday = endOfWeek(date, { weekStartsOn: 6 });
     setStartDate(monday);
     setEndDate(friday);
+    setSelectingLaboratory(false)
   };
 
   const handleEndDateChange = (date: Date) => {
@@ -498,6 +532,7 @@ const Agendamentos: React.FC = () => {
     const friday = endOfWeek(date, { weekStartsOn: 6 });
     setStartDate(monday);
     setEndDate(friday);
+    setSelectingLaboratory(false)
   };
 
   const selectedDay = (day: string) => {
@@ -508,7 +543,7 @@ const Agendamentos: React.FC = () => {
 
   return (
     <Container>
-      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} startDate={startDate} />
+      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
       <Header>
         <CoursesWrapper>
           <CourseName>
@@ -704,7 +739,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.segunda.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -720,7 +755,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.terca.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Terça-feira", grade.terca)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Terça-feira", grade.terca, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -736,7 +771,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.quarta.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Quarta-feira", grade.quarta)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Quarta-feira", grade.quarta, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -752,7 +787,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.quinta.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Quinta-feira", grade.quinta)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Quinta-feira", grade.quinta, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>
@@ -768,7 +803,7 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.sexta.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Sexta-feira", grade.sexta)} key={item.id}>
+                              <Schedule onClick={() => handleWeekdaySelection("Sexta-feira", grade.sexta, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
                                 <p>{item.laboratorio}</p>

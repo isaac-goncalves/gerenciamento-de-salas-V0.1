@@ -11,6 +11,8 @@ const routes = Router();
 // routes.post("/verify", new UserController().verify);
 routes.post("/grade", new GradeController().get);
 routes.post("/agendamento", new AgendamentoController().create);
+routes.get("/agendamento", new AgendamentoController().get);
+
 // routes.post("/login", new UserController().login);
 // routes.post("/transaction", new TransactionsController().create);
 

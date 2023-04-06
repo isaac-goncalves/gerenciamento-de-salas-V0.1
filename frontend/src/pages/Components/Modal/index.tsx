@@ -30,18 +30,28 @@ const ModalContent = styled.div`
   border-radius: 8px;
 `;
 
-async function handleSubmitAgendamento(selectedIds: number[]) {
+async function handleSubmitAgendamento(gradeIds: number[], selectedLaboratory: number, selectedDate: Date | null) {
 
-  console.log(selectedIds)
+  console.log(gradeIds)
 
-  const data = {
-    "date": "2023-04-01",
-    "horario_inicio": "09:00:00",
-    "horario_fim": "12:00:00",
-    "id_professor": "1234",
-    "id_grade": "5678",
-    "id_laboratorio": "9012"
+  // const data = {
+  //   "date": "2023-04-01",
+  //   "horario_inicio": "09:00:00",
+  //   "horario_fim": "12:00:00",
+  //   "id_professor": "1234",
+  //   "id_grade": "5678",
+  //   "id_laboratorio": "9012",
+  //   "grade_ids": "1,2,3,4,5" //addition
+  // }
+
+  const finalData: any = {
+    date: selectedDate,
+    id_professor: "12",
+    ids_grade: gradeIds,
+    id_laboratorio: selectedLaboratory,
   }
+
+    
 
   fetch('http://localhost:3333/agendamento', {
     method: 'POST',
@@ -49,7 +59,7 @@ async function handleSubmitAgendamento(selectedIds: number[]) {
       'Content-Type': 'application/json',
     },
 
-    body: JSON.stringify(data),
+    body: JSON.stringify(finalData),
   })
     .then(response => response.json())
     .then(data => {
@@ -118,11 +128,21 @@ interface ModalProps {
   selectedWeekday: string;
   selectedIds: number[];
   selectedLaboratory: number;
-  startDate: Date | null;
+  selectedDate: Date | null;
 }
 
-const Modal = ({ isVisible, onClose, WeekdayGradeIds, selectedWeekday, selectedIds, selectedLaboratory, startDate }: ModalProps) => {
+const Modal = ({ 
+  isVisible, 
+  onClose, 
+  WeekdayGradeIds, 
+  selectedWeekday, 
+  selectedIds, 
+  selectedLaboratory, 
+  selectedDate 
+}: ModalProps) => {
   if (!isVisible) return null;
+
+  const [gradeIds, setGradeIds] = React.useState<number[]>([]);
 
   const transformedIds = idsToGroups(selectedIds);
 
@@ -137,7 +157,9 @@ const Modal = ({ isVisible, onClose, WeekdayGradeIds, selectedWeekday, selectedI
 
     console.log(transformedIds)
 
-    const gradeIds = mapResultToSelected(WeekdayGradeIds, transformedIds[0])
+    const gradeIdstransformed = mapResultToSelected(WeekdayGradeIds, transformedIds[0])
+
+    setGradeIds(gradeIdstransformed)
 
     const HorariosTransformed = mapValuesToStrings(transformedIds[0]);
    
@@ -164,14 +186,14 @@ const Modal = ({ isVisible, onClose, WeekdayGradeIds, selectedWeekday, selectedI
         <h2>Confirme os dados do agendamento</h2>
         <p>Nome do Professor: </p>
         <p>Laboratorio: {selectedLaboratory}</p>
-        <p>Data: {String(startDate)}</p>
+        <p>Data: {String(selectedDate)}</p>
         <p>Dia da Semana: {selectedWeekday}</p>
         <h3>Horarios:</h3>
         {HorariosTranformed.map((id) => {
           return <p>{id}</p>
         })
         }
-        <button onClick={() => handleSubmitAgendamento(selectedIds)}>
+        <button onClick={() => handleSubmitAgendamento(gradeIds, selectedLaboratory, selectedDate)}>
           Confirmar agendamento
         </button>
       </ModalContent>

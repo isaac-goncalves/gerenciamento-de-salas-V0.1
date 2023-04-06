@@ -165,9 +165,10 @@ export const TableContainer = styled.div`
     background-color: ${Colors.hoverCard};
     color: ${Colors.white};
     font-weight: 500;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
     text-align: left;
     font-size: 0.8rem;
+    white-space: nowrap;
 
     &:first-child {
       border-top-left-radius: 8px;
@@ -190,11 +191,17 @@ export const TableContainer = styled.div`
     transition: background-color 0.2s;
     width: 100%;
   }
+
+  tr td:last-child {
+ display: flex;
+}
+
   td {
     width: 25%;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
     border-bottom: 1px solid ${Colors.lightgray};
     font-size: 0.8rem;
+    white-space: nowrap;
   }
 
   tr:hover {

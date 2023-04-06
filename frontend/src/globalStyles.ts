@@ -14,6 +14,10 @@ const GlobalStyle = createGlobalStyle`
     text-rendering: optimizeLegibility;
   }
   
+  /* *:hover {
+    display:none;
+  } */
+
   #root {
     height: 100vh;
     width: 100vw;

@@ -75,8 +75,8 @@ display: flex;
 gap: 1rem;
 align-items: center;
 
+white-space: nowrap;
 p {
-  white-space: nowrap;
 }
 
 `

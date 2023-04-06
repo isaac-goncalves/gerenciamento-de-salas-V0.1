@@ -84,6 +84,7 @@ function printGradeValue(gradeValue: any) {
 // }
 
 interface GradeData {
+  agendamentos: any;
   id: number;
   horario_inicio: string;
   horario_fim: string;
@@ -485,6 +486,7 @@ const Dashboard: React.FC = () => {
           setLoading(true) // teste de loading
         }, 2000)
         // setLoading(true)
+        // console.log(transformedData.segunda[0].agendamentos.professor)
         return setgrade(transformedData)
       }
       )
@@ -493,6 +495,34 @@ const Dashboard: React.FC = () => {
     fetchData();
 
   }, [])
+
+  // {
+  //   "id": 8,
+  //   "horario_inicio": "20:35",
+  //   "horario_fim": "21:25",
+  //   "dia_da_semana": "2",
+  //   "semestre": "1",
+  //   "created_at": "2023-03-25T19:51:02.793Z",
+  //   "updated_at": "2023-03-25T19:51:02.793Z",
+  //   "professor": "Michel",
+  //   "disciplina": "Arquitetura e Organização de Computadores",
+  //   "laboratorio": "Sala-14",
+  //   "agendamentos": [
+  //     {
+  //       "id_agendamento": 404,
+  //       "date": "2023-04-04T18:52:32.284Z",
+  //       "horario_inicio": "20:35",
+  //       "horario_fim": "21:25",
+  //       "id_professor": "12",
+  //       "id_grade": "8",
+  //       "id_laboratorio": "6",
+  //       "created_at": "2023-04-02T18:52:44.383Z",
+  //       "updated_at": "2023-04-02T18:52:44.383Z",
+  //       "professor": "Michel",
+  //       "laboratorio": "Sala-6"
+  //     }
+  //   ]
+  // },
 
   return (
     <Container>
@@ -544,12 +574,16 @@ const Dashboard: React.FC = () => {
                   <h2>Segunda</h2>
                   <SchedulesContainer>
                     {
-                      grade.segunda.map((item: GradeData ) => {
+                      grade.segunda.map((item: GradeData) => {
                         return (
                           <Schedule key={item.id}>
                             <p>{item.disciplina}</p>
                             <p>{item.professor}</p>
                             <p>{item.laboratorio}</p>
+                            {
+                           
+                            }
+
                           </Schedule>
                         )
                       })
@@ -614,6 +648,8 @@ const Dashboard: React.FC = () => {
                             <p>{item.disciplina}</p>
                             <p>{item.professor}</p>
                             <p>{item.laboratorio}</p>
+                            <p>{JSON.stringify(item.agendamentos)}</p>
+
                           </Schedule>
                         )
                       })
