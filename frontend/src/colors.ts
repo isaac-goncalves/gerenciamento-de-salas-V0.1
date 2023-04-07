@@ -1,5 +1,5 @@
 export const Colors = {
-
+  circleColor: 'rgba(220, 213, 242, 0.41);',
   primary: '#F4F4F4',
   white: '#FFFFFF',
   textcolor: '#2F2F2F',
