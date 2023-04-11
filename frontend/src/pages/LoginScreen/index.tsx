@@ -20,7 +20,7 @@ interface InputProps {
 }
 
 const LoginScreen: React.FC = () => {
-    const [email, setemail] = useState("");
+    const [email, setmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
     const [form, setForm] = useState("login");
@@ -42,75 +42,38 @@ const LoginScreen: React.FC = () => {
         if (email === "" || password === "") {
             toast.error("Preencha todos os campos");
         } else {
+            console.log("login")
+            try {
+                const response = await fetch("http://localhost:3333/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    }),
+                });
+                const data = await response.json();
 
-            if (form == "register") {
+                if (data) {
+                    console.log("received data");
 
-                try {
-
-                    const response = await fetch("http://localhost:3333/verify", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            email,
-                            password,
-                            role: role,
-                        }),
-                    });
-                    const data = await response.json();
                     console.log(data);
 
-                    if (data.message === "User does not exists") {
-                        // localStorage.setItem("token", data.token);
-                        toast.success("Usuário criado com sucesso!");
-                        setForm("registration");
-                    } else
-                        if (data.error == "User already exists") {
-                            toast.error("Usuário já existe");
-                        }
-                        else {
-                            toast.error("Erro ao criar usuário!");
-                        }
+                    localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(data));
+                    toast.success("Login realizado com sucesso!");
+                    // window.location.href = "/calendar";
                 }
-                catch (error) {
-                    toast.error("Erro ao fazer registrar nova conta");
-                }
-            }
-            else if (form == "login") {
-                console.log("login")
-                try {
-                    const response = await fetch("http://localhost:3333/login", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            email,
-                            password,
-                        }),
-                    });
-                    const data = await response.json();
-
-                    if (data) {
-                        console.log("received data");
-
-                        console.log(data);
-
-                        localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(data));
-                        toast.success("Login realizado com sucesso!");
-                        // window.location.href = "/calendar";
-                    }
-                    else {
-                        toast.error("Erro ao fazer login!");
-                    }
-
-                }
-                catch (error) {
-                    console.log(error)
+                else {
                     toast.error("Erro ao fazer login!");
                 }
             }
+            catch (err) {
+                console.log(err);
+                toast.error("Erro ao fazer login!");
+            }
+
         }
     };
 
@@ -188,7 +151,7 @@ const LoginScreen: React.FC = () => {
                                             <p>
                                                 Não possui uma conta?
                                                 <Link to="/register" >
-                                                <span> Registre-se</span>
+                                                    <span> Registre-se</span>
                                                 </Link>
                                             </p>
                                         </div>

@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 
-import { usersRepository } from "../repositories/dia_da_semanaRepositories";
+// import { usersRepository } from "../repositories/dia_da_semanaRepositories";
 
-import { employeesRepository } from "../repositories/employeesRepository";
+import { usuariosRepository } from "../repositories/usuariosRepository";
+
+// import { employeesRepository } from "../repositories/employeesRepository";
 
 import bcrypt from 'bcrypt'
 
@@ -13,31 +15,28 @@ export class UserController {
     async create(request: Request, response: Response) {
         const {
             name,
+            surname,
             email,
             password,
             role,
-            degree,
-            phone,
-            address,
-            city,
-            state,
-            zip
-        } = request.body;
+            semestre,
+            disciplina
+          } = request.body;
 
         if (!email || !password) {
             return response.status(400).json({ error: "Email or password is missing" });
         }
         try {
 
-            const userExists = await usersRepository.findOneBy({ email })
+            const userExists = await usuariosRepository.findOneBy({ email })
 
             if (userExists) {
                 return response.status(400).json({ error: "User already exists" });
             }
 
-            const newuser = usersRepository.create({ email, password, role, user_verified: false });
+            const newuser = usuariosRepository.create({ email, password });
 
-            await usersRepository.save(newuser);
+            await usuariosRepository.save(newuser);
             console.log(newuser)
 
             if (role === 'admin') {
@@ -50,22 +49,22 @@ export class UserController {
 
                 console.log('professor selected')
 
-                const newEmployee = employeesRepository.create({
-                    name,
-                    role,
-                    degree,
-                    email,
-                    phone,
-                    address,
-                    city,
-                    state,
-                    zip,
-                    updated_at: new Date(),
-                });
+                // const newEmployee = employeesRepository.create({
+                //     name,
+                //     role,
+                //     degree,
+                //     email,
+                //     phone,
+                //     address,
+                //     city,
+                //     state,
+                //     zip,
+                //     updated_at: new Date(),
+                // });
 
-                console.log(newEmployee)
+                // console.log(newEmployee)
 
-                await employeesRepository.save(newEmployee);
+                // await employeesRepository.save(newEmployee);
 
                 return response.status(201).json({ message: "professor created" });
 
@@ -75,24 +74,48 @@ export class UserController {
 
                 console.log('cordenador selected')
 
-                const newEmployee = employeesRepository.create({
-                    name,
-                    role,
-                    degree,
-                    email,
-                    phone,
-                    address,
-                    city,
-                    state,
-                    zip,
-                    updated_at: new Date(),
-                });
+                // const newEmployee = employeesRepository.create({
+                //     name,
+                //     role,
+                //     degree,
+                //     email,
+                //     phone,
+                //     address,
+                //     city,
+                //     state,
+                //     zip,
+                //     updated_at: new Date(),
+                // });
 
-                console.log(newEmployee)
+                // console.log(newEmployee)
 
-                await employeesRepository.save(newEmployee);
+                // await employeesRepository.save(newEmployee);
 
                 return response.status(201).json({ message: "cordenador created" });
+
+            }
+            if (role === 'aluno') {
+
+                console.log('aluno selected')
+
+                // const newEmployee = employeesRepository.create({
+                //     name,
+                //     role,
+                //     degree,
+                //     email,
+                //     phone,
+                //     address,
+                //     city,
+                //     state,
+                //     zip,
+                //     updated_at: new Date(),
+                // });
+
+                // console.log(newEmployee)
+
+                // await employeesRepository.save(newEmployee);
+
+                return response.status(201).json({ message: "Aluno created" });
 
             }
             else {
@@ -132,7 +155,7 @@ export class UserController {
         }
         try {
 
-            const userExists = await usersRepository.findOneBy({ email })
+            const userExists = await usuariosRepository.findOneBy({ email })
 
             if (userExists) {
                 return response.status(400).json({ error: "User already exists" });
@@ -157,7 +180,7 @@ export class UserController {
         }
         try {
 
-            const userExists = await usersRepository.findOneBy({ email })
+            const userExists = await usuariosRepository.findOneBy({ email })
 
             if (!userExists) {
                 return response.status(400).json({ error: "E-mail ou senha inválidos" });

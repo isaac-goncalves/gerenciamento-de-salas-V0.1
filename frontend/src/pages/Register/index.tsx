@@ -6,17 +6,181 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
-import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper } from "./Register.styles"
+import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect } from "./Register.styles"
 
-const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log("submit");
-}
+const semestresOptions = [
+    { value: '1', label: '1º SEMESTRE ADS - 2023' },
+    { value: '2', label: '2º SEMESTRE ADS - 2023' },
+    { value: '3', label: '3º SEMESTRE ADS - 2023' },
+    { value: '4', label: '4º SEMESTRE ADS - 2023' },
+    { value: '5', label: '5º SEMESTRE ADS - 2023' },
+    { value: '6', label: '6º SEMESTRE ADS - 2023' },
+  ];
+
+  const disciplinaOptions = [
+    { value: "1", label: "Administração Geral" },
+    { value: "2", label: "Algoritmos e Lógica de Programação" },
+    { value: "3", label: "Arquitetura e Organização de Computadores" },
+    { value: "4", label: "Banco de Dados" },
+    { value: "5", label: "Cálculo" },
+    { value: "6", label: "Comunicação e Expressão" },
+    { value: "7", label: "Contabilidade" },
+    { value: "8", label: "Economia e Finanças" },
+    { value: "9", label: "Eletiva - Programação para Dispositivos Móveis" },
+    { value: "10", label: "Engenharia de Software I" },
+    { value: "11", label: "Engenharia de Software II" },
+    { value: "12", label: "Engenharia de Software III" },
+    { value: "13", label: "Estatística Aplicada" },
+    { value: "14", label: "Estruturas de Dados" },
+    { value: "15", label: "Inglês I" },
+    { value: "16", label: "Inglês II" },
+    { value: "17", label: "Inglês III" },
+    { value: "18", label: "Inglês IV" },
+    { value: "19", label: "Interação Humano Computador" },
+    { value: "20", label: "Laboratório de Hardware" },
+    { value: "21", label: "Linguagem de Programação" },
+    { value: "22", label: "Matemática Discreta" },
+    { value: "23", label: "Metodologia da Pesquisa Científico-Tecnológica" },
+    { value: "24", label: "Programação em Microinformática" },
+    { value: "25", label: "Programação Orientada a Objetos" },
+    { value: "26", label: "Sistemas de Informação" },
+    { value: "27", label: "Sistemas Operacionais I" },
+    { value: "28", label: "Sistemas Operacionais II" },
+    { value: "29", label: "Sociedade e Tecnologia" }
+  ];
 
 const RegisterScreen: React.FC = () => {
 
-    const [email, setemail] = useState("");
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [semestre, setSemestre] = useState("");
+    const [disciplina, setDisciplina] = useState("");
+
+
+    const [role, setRole] = useState("aluno");
+
+    const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRole(event.target.value);
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSemestre(event.target.value);
+      };
+
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+
+        console.log("Register")
+
+        if (password !== confirmPassword) {
+            toast.error("As senhas não conferem!");
+            return;
+        }
+
+        if (name === "") {
+            toast.error("O campo nome não pode estar vazio!");
+            return;
+        }
+
+        if (surname === "") {
+            toast.error("O campo sobrenome não pode estar vazio!");
+            return;
+        }
+
+        if (email === "") {
+            toast.error("O campo email não pode estar vazio!");
+            return;
+        }
+         //password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character
+        if (password === "") {
+            toast.error("O campo senha não pode estar vazio!");
+            return;
+        }
+
+        if (password.length < 8) {
+            toast.error("A senha deve ter no mínimo 8 caracteres!");
+            return;
+        }
+
+        if (password.search(/[a-z]/i) < 0) {
+            toast.error("A senha deve conter pelo menos uma letra!");
+            return;
+        }
+
+        if (password.search(/[0-9]/) < 0) {
+            toast.error("A senha deve conter pelo menos um número!");
+            return;
+        }
+
+        if (password.search(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/) < 0) {
+            toast.error("A senha deve conter pelo menos um caractere especial!");
+            return;
+        }
+
+        if (password.search(/[A-Z]/) < 0) {
+            toast.error("A senha deve conter pelo menos uma letra maiúscula!");
+            return;
+        }
+
+        if (password.search(/[a-z]/) < 0) {
+
+            toast.error("A senha deve conter pelo menos uma letra minúscula!");
+            return;
+        }
+
+        if (semestre === "" && role === "aluno") {
+            toast.error("O campo semestre não pode estar vazio!");
+            return;
+        }
+
+       
+        try {
+
+            const params = {
+                name: name,
+                surname: surname,
+                email: email,
+                password: password,
+                role: role,
+                semestre: semestre,
+                disciplina: disciplina
+            }
+
+            console.log(params);
+
+            const response = await fetch("http://localhost:3333/Register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(params),
+            });
+            const data = await response.json();
+
+            if (data) {
+                console.log("received data");
+
+                console.log(data);
+
+                localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(data));
+                toast.success("Login realizado com sucesso!");
+                // window.location.href = "/calendar";
+            }
+            else {
+                toast.error("Erro ao fazer Registro!");
+            }
+        }
+        catch (err) {
+            console.log(err);
+            toast.error("Erro ao fazer Registro!");
+        }
+
+        console.log("submit");
+    }
 
     return (
         <Container>
@@ -28,31 +192,82 @@ const RegisterScreen: React.FC = () => {
                 <LoginContainer>
                     <Form onSubmit={handleSubmit}>
                         <h1>Preencha o Formulário para se Registrar!</h1>
-                        <InputWrapper>
-                            <label>Full name:</label>
+                        <NameWrapper>
+                            <label>Nome</label>
                             <Input
                                 type="text"
                                 placeholder=""
-                                value={email}
-                                onChange={(event: any) => setemail(event.target.value)}
+                                value={name}
+                                onChange={(event: any) => setName(event.target.value)}
                             />
-                        </InputWrapper>
+                            <label>Sobrenome</label>
+                            <Input
+                                type="text"
+                                placeholder=""
+                                value={surname}
+                                onChange={(event: any) => setSurname(event.target.value)}
+                            />
+                        </NameWrapper>
                         <div>
-                            <input type="radio" id="admin" name="role" value="admin" />
-                            <label >Aluno</label>
-                            <input type="radio" id="coordenador" name="role" value="coordenador" />
+                            <input
+                                type="radio"
+                                id="aluno"
+                                name="role"
+                                value="aluno"
+                                onChange={handleRoleChange}
+                            />
+                            <label>Aluno</label>
+                            <input
+                                type="radio"
+                                id="professor"
+                                name="role"
+                                value="professor"
+                                onChange={handleRoleChange}
+                            />
+                            <label>Professor</label>
+                            <input
+                                type="radio"
+                                id="professor"
+                                name="role"
+                                value="professor"
+                                onChange={handleRoleChange}
+                            />
+                            <label>Coordenador</label>
 
-                            <label >Professor</label>
-                            <input type="radio" id="professor" name="role" value="professor" />
-                            <label >Coordenador</label>
                         </div>
+                        <>
+                            {role === "aluno" &&
+                                <InputWrapper>
+                                    <label>Semestre:</label>
+                                    <StyledSelect value={semestre} onChange={handleChange}>
+                                        {semestresOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </StyledSelect>
+                                </InputWrapper>
+                            }
+                            {role === "professor" &&
+                                <InputWrapper>
+                                    <label>Disciplina:</label>
+                                    <StyledSelect value={semestre} onChange={handleChange}>
+                                        {disciplinaOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </StyledSelect>
+                                </InputWrapper>
+                            }
+                        </>
                         <InputWrapper>
-                            <label>Emai:</label>
+                            <label>Email:</label>
                             <Input
                                 type="text"
                                 placeholder=""
                                 value={email}
-                                onChange={(event: any) => setemail(event.target.value)}
+                                onChange={(event: any) => setEmail(event.target.value)}
                             />
                         </InputWrapper>
 
@@ -71,8 +286,8 @@ const RegisterScreen: React.FC = () => {
                                 <Input
                                     type="password"
                                     placeholder="Password"
-                                    value={password}
-                                    onChange={(event: any) => setPassword(event.target.value)}
+                                    value={confirmPassword}
+                                    onChange={(event: any) => setConfirmPassword(event.target.value)}
                                 />
                             </InputWrapper>
                         </PasswordContainer>

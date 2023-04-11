@@ -54,7 +54,13 @@ export const Title = styled.h1`
 
 export const InputWrapper = styled.div`
 display:flex;
+gap: 1;
 flex-direction: column;
+`
+
+export const NameWrapper = styled.div`
+display:flex;
+flex-direction: row;
 `
 
 export const Input = styled.input`
@@ -106,3 +112,12 @@ display: flex;
 export const ContactWrapper = styled.div`
 display: flex;
 `
+
+export const StyledSelect = styled.select`
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width:90%;
+`;
