@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom'
 
 import DatePicker from "react-datepicker";
 
-import { startOfWeek, endOfWeek, setDay, addDays } from 'date-fns';
+import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -40,7 +40,8 @@ import {
   CalendarWrapper,
   CoursesWrapper,
   DatepickContainer,
-  Laboratorio
+  Laboratorio,
+  DatepickArrowsContainer
 }
   from './Agendamento.styles'
 
@@ -540,6 +541,37 @@ const Agendamentos: React.FC = () => {
     setSelectedWeekday(day)
   }
 
+  const handleSelectToday = () => {
+    const today = new Date()
+    const monday = startOfWeek(today, { weekStartsOn: 1 });
+    const friday = endOfWeek(today, { weekStartsOn: 6 });
+    setStartDate(monday);
+    setEndDate(friday);
+    setSelectingLaboratory(false)
+  }
+
+  const handleArrowLeft = () => {
+    const startDateTransformed = new Date(startDate as any)
+    const endDateTransformed = new Date(endDate as any)
+    const monday = subWeeks(startDateTransformed, 1)
+    const friday = subWeeks(endDateTransformed, 1)
+    setStartDate(monday);
+
+    setEndDate(friday);
+    setSelectingLaboratory(false)
+  }
+
+  const handleArrowRight = () => {
+    const startDateTransformed = new Date(startDate as any)
+    const endDateTransformed = new Date(endDate as any)
+    const monday = addWeeks(startDateTransformed, 1)
+    const friday = addWeeks(endDateTransformed, 1)
+    setStartDate(monday);
+
+    setEndDate(friday);
+    setSelectingLaboratory(false)
+  }
+
 
   return (
     <Container>
@@ -555,10 +587,22 @@ const Agendamentos: React.FC = () => {
         </CoursesWrapper>
         <DatePickWrapper>
           <DatepickContainer>
-            <DateIcon src={dateIcon} />
-            <p>Pular para hoje</p>
-            <DateIcon src={arrowLeft} />
-            <DateIcon src={arrowRight} />
+            <DatepickArrowsContainer onClick={() => handleSelectToday()}
+            >
+              <DateIcon src={dateIcon}
+              />
+              <p>Pular para hoje</p>
+            </DatepickArrowsContainer>
+            <DatepickArrowsContainer
+              onClick={() => handleArrowLeft()}>
+              <DateIcon src={arrowLeft} />
+            </DatepickArrowsContainer>
+            <DatepickArrowsContainer
+              onClick={() => handleArrowRight()}
+            >
+              <DateIcon src={arrowRight}
+              />
+            </DatepickArrowsContainer>
             <p>Março 2023</p>
             <DateIcon src={arrowDown} />
             <CalendarWrapper>
@@ -821,7 +865,7 @@ const Agendamentos: React.FC = () => {
 
           </ClassesContainer>
       }
-    </Container>
+    </Container >
   )
 }
 

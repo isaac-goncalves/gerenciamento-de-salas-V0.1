@@ -20,11 +20,13 @@
     "dayjs": "^1.11.7",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
+    "react-confetti": "^6.1.0",
     "react-datepicker": "^4.10.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-router-dom": "^6.8.1",
     "react-toastify": "^9.1.1",
+    "react-use": "^17.4.0",
     "react-widgets": "^5.8.4",
     "styled-components": "5.3.3"
   },

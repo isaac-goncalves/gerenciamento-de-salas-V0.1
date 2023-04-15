@@ -179,7 +179,17 @@ export const WeekdayContainer = styled.div`
   //css for when i stop hovering
   `;
 
-export const SchedulesContainer = styled.div`
+// const StyledWeekdayContainer = styled.div<{ isCurrentDay: boolean }>`
+//   background-color: ${({ isCurrentDay }) => (isCurrentDay ? 'lightblue' : 'white')};
+//   // Add other styles as required
+// `;
+
+// const StyledSchedule = styled.div<{ isCurrentTime: boolean }>`
+//   background-color: ${({ isCurrentTime }) => (isCurrentTime ? 'yellow' : 'white')};
+//   // Add other styles as required
+// `;
+
+export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
   display: flex;
   padding: 0.5rem 0 ;
   flex-direction: column;
@@ -187,38 +197,39 @@ export const SchedulesContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 95%;
-  height: 100%;
-  background-color: ${Colors.lightgrayInput};
+  //background-color: ${({ isCurrentDay }) => (isCurrentDay ? 'lightblue' : Colors.lightgrayInput)};
+  background-color: ${Colors.lightgrayInput}; 
   border-radius: 8px;
-`;
+  height: 100%;
+  `;
 
-export const Schedule = styled.div`
+export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${Colors.horariosCard};
+  background-color: ${({ isCurrentTime }) => (isCurrentTime ? 'yellow' : Colors.horariosCard)};
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;
   min-height: 4rem;
-  padding: 0.4rem 0;// #TODO
+  padding: 0.4rem 0;
   gap: 0.3rem;
-  
-  :hover {
+
+  &.hoverEffect:hover {
     background-color: ${Colors.hoverCard};
     transition: 0.5s;
+
     p {
-    color: ${Colors.white}; 
-    
-      }
+      color: ${Colors.white};
+    }
   }
+
   p {
     padding: 0 0.5rem;
     color: ${Colors.textcolor};
     text-align: center;
     text-align-last: center;
     font-size: 0.9rem;
-   
   }
 `;

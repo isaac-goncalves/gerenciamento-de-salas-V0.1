@@ -79,6 +79,12 @@ white-space: nowrap;
 p {
 }
 
+
+`
+export const DatepickArrowsContainer = styled.div`
+
+display : flex;
+
 `
 
 export const CalendarWrapper = styled.div`

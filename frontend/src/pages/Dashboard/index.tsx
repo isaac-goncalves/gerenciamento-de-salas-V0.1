@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 
 import { Navigate } from 'react-router-dom'
 
+import * as GradeData from '../../../types/GradeData';
+
 import BsFillCalendarDateFill from 'react-icons/bs';
 // import { GrSchedule } from 'react-icons/gr';
 
@@ -83,54 +85,37 @@ function printGradeValue(gradeValue: any) {
 //   return groupedData;
 // }
 
-interface GradeData {
-  agendamentos: any;
-  id: number;
-  horario_inicio: string;
-  horario_fim: string;
-  professor: string;
-  dia_da_semana: string;
-  laboratorio: string;
-  disciplina: string;
-  id_sala: string;
-  semestre: string;
-  created_at: string;
-  updated_at: string;
-}
-
 const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
 
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
 
+  const [currentDay, setCurrentDay] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
 
-  //verifies if token stored on localstorage is valid
 
-  //  useEffect(
-  //    async () => {
-  //       const token = localStorage.getItem('token')
-  //       if (token) {
 
-  //         const response = await fetch('http://localhost:3333/verify', {
-  //           method: 'POST',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify({
-  //             token,
-  //           }),
-  //         })
-  //         const data = await response.json()
-  //         if (data.token) {
-  //         } else {
+  useEffect(() => {
+    const updateCurrentDayAndTime = () => {
+      const now = new Date();
+      const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      setCurrentDay(days[now.getDay()]);
 
-  //         }
-  //       }
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      setCurrentTime(`${hours}:${minutes}`);
+    };
 
-  //       // eslint-disable-next-line react-hooks/exhaustive-deps
+    updateCurrentDayAndTime();
+    const timerId = setInterval(updateCurrentDayAndTime, 60000); // Update every minute
 
-  //     }, []);
+    return () => {
+      clearInterval(timerId);
+    };
+  }, []);
+
+
 
   const mockdata = {
     "segunda": [
@@ -496,33 +481,60 @@ const Dashboard: React.FC = () => {
 
   }, [])
 
-  // {
-  //   "id": 8,
-  //   "horario_inicio": "20:35",
-  //   "horario_fim": "21:25",
-  //   "dia_da_semana": "2",
-  //   "semestre": "1",
-  //   "created_at": "2023-03-25T19:51:02.793Z",
-  //   "updated_at": "2023-03-25T19:51:02.793Z",
-  //   "professor": "Michel",
-  //   "disciplina": "Arquitetura e Organização de Computadores",
-  //   "laboratorio": "Sala-14",
-  //   "agendamentos": [
-  //     {
-  //       "id_agendamento": 404,
-  //       "date": "2023-04-04T18:52:32.284Z",
-  //       "horario_inicio": "20:35",
-  //       "horario_fim": "21:25",
-  //       "id_professor": "12",
-  //       "id_grade": "8",
-  //       "id_laboratorio": "6",
-  //       "created_at": "2023-04-02T18:52:44.383Z",
-  //       "updated_at": "2023-04-02T18:52:44.383Z",
-  //       "professor": "Michel",
-  //       "laboratorio": "Sala-6"
-  //     }
-  //   ]
-  // },
+  const isWithinClassTime = (startTime, endTime) => {
+
+    console.log("Start Time: " + startTime)
+    console.log("End Time: " + endTime)
+
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+  
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const [endHour, endMinute] = endTime.split(':').map(Number);
+  
+    const start = new Date();
+    start.setHours(startHour, startMinute, 0, 0);
+  
+    const end = new Date();
+    end.setHours(endHour, endMinute, 0, 0);
+  
+    return now >= start && now <= end;
+  };
+
+  const renderWeekday = (dayName: string, dayData: GradeData[]) => (
+    <WeekdayContainer>
+      <SchedulesContainer isCurrentDay={currentDay === dayName}>
+        <h2>{dayName}</h2>
+        {dayData.map((item: GradeData) => {
+          const {
+            disciplina,
+            professor,
+            laboratorio,
+            agendamentos,
+          } = item;
+
+          const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
+          const isCurrentTime = isWithinClassTime(item.horario_inicio, item.horario_fim);
+
+          console.log(isCurrentTime)
+          console.log(currentTime)
+
+          return (
+            <Schedule isCurrentTime={isCurrentTime}
+              className={isCurrentTime ? '' : 'hoverEffect'}>
+              <p>{disciplina}</p>
+              <p>{professor}</p>
+              <p>
+                {laboratorio}
+                {agendamento && ` - ${agendamento.laboratorio}`}
+              </p>
+            </Schedule>
+          );
+        })}
+      </SchedulesContainer>
+    </WeekdayContainer>
+  );
 
   return (
     <Container>
@@ -570,101 +582,19 @@ const Dashboard: React.FC = () => {
             ?
             (
               <WeekContainer>
-                <WeekdayContainer>
-                  <h2>Segunda</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.segunda.map((item: GradeData) => {
-                        return (
-                          <Schedule key={item.id}>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                            {
-                           
-                            }
-
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-                <WeekdayContainer>
-                  <h2>Terça</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.terca.map((item: GradeData) => {
-                        return (
-                          <Schedule>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-                <WeekdayContainer>
-                  <h2>Quarta</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.quarta.map((item: GradeData) => {
-                        return (
-                          <Schedule>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-                <WeekdayContainer>
-                  <h2>Quinta</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.quinta.map((item: GradeData) => {
-                        return (
-                          <Schedule>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
-                <WeekdayContainer>
-                  <h2>Sexta</h2>
-                  <SchedulesContainer>
-                    {
-                      grade.sexta.map((item: GradeData) => {
-                        return (
-                          <Schedule>
-                            <p>{item.disciplina}</p>
-                            <p>{item.professor}</p>
-                            <p>{item.laboratorio}</p>
-                            <p>{JSON.stringify(item.agendamentos)}</p>
-
-                          </Schedule>
-                        )
-                      })
-                    }
-                  </SchedulesContainer>
-                </WeekdayContainer>
+                {renderWeekday('Segunda', grade.segunda)}
+                {renderWeekday('Terça', grade.terca)}
+                {renderWeekday('Quarta', grade.quarta)}
+                {renderWeekday('Quinta', grade.quinta)}
+                {renderWeekday('Sexta', grade.sexta)}
               </WeekContainer>
             ) : (
               <p>Loading...</p>
             )
         }
-
       </ClassesContainer>
     </Container>
-  )
-}
+  );
+};
 
 export default Dashboard

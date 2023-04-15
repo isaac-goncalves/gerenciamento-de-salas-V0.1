@@ -22,6 +22,10 @@ const Navbar = () => {
         }, 0);
     };
 
+    const handleLogout = async () => {
+       await localStorage.removeItem('gerenciamento-de-salas@v1.0');
+        // window.location.href = '/';
+    }
 
     const closeMenu = () => {
         setMenuOpen(false);
@@ -75,12 +79,15 @@ const Navbar = () => {
                             }
                         </RowWrapper>
                     </MenuLink>
-                    <MenuLink to="/">
+                    <MenuLink to="/"
+                    onClick={() => handleLogout()}
+                    >
                         <RowWrapper>
                             <GrLogout style={{ 
                                 color: Colors.mainpurple,
                                 fontSize: '1.2rem',
-                            }}/>
+                            }}
+                            />
                             {
                                 menuOpen && <p>LOGOUT</p>
                             }

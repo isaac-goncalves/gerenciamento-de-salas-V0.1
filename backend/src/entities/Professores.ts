@@ -1,18 +1,48 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn } from "typeorm"
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+  CreateDateColumn
+} from 'typeorm'
 
 @Entity()
 export class Professores {
+  
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  name: string
 
-    @Column()
-    nome_completo: string;
+  @Column({
+    nullable: true
+  })
+  surname: string
 
-    @Column({
-        nullable: true,
-    })
-    id_perfil_usuario: number;
+  @Column({
+    nullable: true
+  })
+  email: string
 
+  @Column({
+    nullable: true
+  })
+  user_id: number
 
+  @Column({
+    nullable: true
+  })
+  disciplina: string
+
+  @Column({
+    nullable: true
+  })
+  created_at: Date
+
+  @Column({
+    nullable: true
+  })
+  updated_at: Date
 }

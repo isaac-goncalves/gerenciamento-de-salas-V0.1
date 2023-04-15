@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
 
+import {useWindowSize} from 'react-use';
+
+import Confetti from 'react-confetti';
+
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+
 
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
@@ -15,9 +20,9 @@ const semestresOptions = [
     { value: '4', label: '4º SEMESTRE ADS - 2023' },
     { value: '5', label: '5º SEMESTRE ADS - 2023' },
     { value: '6', label: '6º SEMESTRE ADS - 2023' },
-  ];
+];
 
-  const disciplinaOptions = [
+const disciplinaOptions = [
     { value: "1", label: "Administração Geral" },
     { value: "2", label: "Algoritmos e Lógica de Programação" },
     { value: "3", label: "Arquitetura e Organização de Computadores" },
@@ -47,7 +52,7 @@ const semestresOptions = [
     { value: "27", label: "Sistemas Operacionais I" },
     { value: "28", label: "Sistemas Operacionais II" },
     { value: "29", label: "Sociedade e Tecnologia" }
-  ];
+];
 
 const RegisterScreen: React.FC = () => {
 
@@ -59,6 +64,9 @@ const RegisterScreen: React.FC = () => {
     const [semestre, setSemestre] = useState("");
     const [disciplina, setDisciplina] = useState("");
 
+    const [confetti, setConfetti] = useState(false);
+
+    const { width, height } = useWindowSize()
 
     const [role, setRole] = useState("aluno");
 
@@ -68,7 +76,7 @@ const RegisterScreen: React.FC = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSemestre(event.target.value);
-      };
+    };
 
 
     const handleSubmit = async (event: React.FormEvent) => {
@@ -95,7 +103,7 @@ const RegisterScreen: React.FC = () => {
             toast.error("O campo email não pode estar vazio!");
             return;
         }
-         //password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character
+        //password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character
         if (password === "") {
             toast.error("O campo senha não pode estar vazio!");
             return;
@@ -137,7 +145,7 @@ const RegisterScreen: React.FC = () => {
             return;
         }
 
-       
+
         try {
 
             const params = {
@@ -163,12 +171,19 @@ const RegisterScreen: React.FC = () => {
 
             if (data) {
                 console.log("received data");
-
+                if (data.error) {
+                    toast.error(data.error);
+                    return;
+                }
                 console.log(data);
 
-                localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(data));
-                toast.success("Login realizado com sucesso!");
-                // window.location.href = "/calendar";
+                localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(data.userData));
+                toast.success("Registro realizado com sucesso!");
+                setConfetti(true);
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 6000);
+
             }
             else {
                 toast.error("Erro ao fazer Registro!");
@@ -184,6 +199,13 @@ const RegisterScreen: React.FC = () => {
 
     return (
         <Container>
+            {
+                confetti &&
+                <Confetti
+                width={width}
+                height={height}
+                />
+            }
             <ToastContainer />
             <ImageContainer>
                 <RegisterLogo src={registerLogo} />

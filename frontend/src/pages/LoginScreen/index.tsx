@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { useWindowSize } from 'react-use';
+
+import Confetti from 'react-confetti';
+
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,18 +24,38 @@ interface InputProps {
 }
 
 const LoginScreen: React.FC = () => {
-    const [email, setmail] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(false);
     const [form, setForm] = useState("login");
     const [role, setRole] = useState("");
 
+    const { width, height } = useWindowSize()
+
+    const [confetti, setConfetti] = useState(false);
+
+    const [error, setError] = useState(false);
+
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            console.log("token exists");
-            window.location.href = "/calendar";
+        const localStorageData = localStorage.getItem("gerenciamento-de-salas@v1.0");
+
+        if (localStorageData) {
+            const data = JSON.parse(localStorageData);
+            if (data.token) {
+                console.log("token exists");
+                toast.success("Você já está logado!");
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 6000);
+            }
         }
+
+        // if (data.token) {
+        //     console.log("token exists");
+        //     toast.success("Você já está logado!");
+        //     setTimeout(() => {
+        //         window.location.href = "/calendar";
+        //     }, 6000);
+        // }
         console.log("token does not exists");
     }, []);
 
@@ -56,14 +80,22 @@ const LoginScreen: React.FC = () => {
                 });
                 const data = await response.json();
 
+                if (data.error) return toast.error(data.error);
+
                 if (data) {
                     console.log("received data");
 
                     console.log(data);
 
-                    localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(data));
+                    localStorage.setItem("gerenciamento-de-salas@v1.0", JSON.stringify(data));
+                    setConfetti(true);
                     toast.success("Login realizado com sucesso!");
-                    // window.location.href = "/calendar";
+
+                    setTimeout(() => {
+                        console.log("redirecting")
+                        window.location.href = "/dashboard";
+                    }
+                        , 6000);
                 }
                 else {
                     toast.error("Erro ao fazer login!");
@@ -80,126 +112,87 @@ const LoginScreen: React.FC = () => {
     return (
         <Container>
             <ToastContainer />
+            {
+                confetti &&
+                <Confetti
+                    width={width}
+                    height={height}
+                />
+            }
             <LoginContainer>
                 <SideContainer>
                     <BackgroundImage src={background} />
                     <FatecImage src={fatec} />
                 </SideContainer>
-                {
-
-                    form == "login" ?
-                        <>
-                            <Form onSubmit={handleSubmit}>
-                                <TitleWrapper>
-                                    <p>Bem vindo ao
-                                    </p>
-                                    <h1>
-                                        Sistema de Gerenciamento de Salas de Aula
-                                    </h1>
-                                </TitleWrapper>
-                                <ContentWrapper>
-                                    <TeamsWrapper>
-                                        <TeamsLogo src={teamsLogo} />
-                                        <p>Entrar com o Teams</p>
-                                    </TeamsWrapper>
-                                    <Separator>
-                                        <div></div>
-                                        <div>ou</div>
-                                        <div></div>
-                                    </Separator>
-                                </ContentWrapper>
-                                <FormInputsWrapper>
-                                    <InputsWrapper>
-                                        <InputWrapper>
-                                            <MailIcon src={mailIcon} />
-                                            <div>
-                                                <p>Email</p>
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Digite seu email"
-                                                    value={email}
-                                                    onChange={(event: any) => setemail(event.target.value)}
-                                                />
-                                            </div>
-                                        </InputWrapper>
-                                        <InputWrapper>
-                                            <PasswordIcon src={passwordIcon} />
-                                            <div>
-                                                <p>Password</p>
-                                                <span>
-                                                    <Input
-                                                        type="password"
-                                                        placeholder="********"
-                                                        value={password}
-                                                        onChange={(event: any) => setPassword(event.target.value)}
-                                                    />
-                                                    <EyePassword src={eyePassword} />
-                                                </span>
-                                            </div>
-                                        </InputWrapper>
-                                    </InputsWrapper>
-                                    <MantenhaMeConectadoWrapper>
-                                        <div>
-                                            <input type="checkbox" />
-                                            <p>Mantenha-me conectado</p>
-                                        </div>
-                                        <EsqueceuSenha>Esqueceu sua senha?</EsqueceuSenha>
-                                    </MantenhaMeConectadoWrapper>
-                                    <ButtonsWrapper>
-                                        <Button type="submit">Login</Button>
-                                        <div>
-                                            <p>
-                                                Não possui uma conta?
-                                                <Link to="/register" >
-                                                    <span> Registre-se</span>
-                                                </Link>
-                                            </p>
-                                        </div>
-                                    </ButtonsWrapper>
-                                </FormInputsWrapper>
-                            </Form>
-                        </>
-                        :
-                        <>
-                            <Form onSubmit={handleSubmit} >
-                                <h1>Registrar novo Usuário</h1>
+                <Form onSubmit={handleSubmit}>
+                    <TitleWrapper>
+                        <p>Bem vindo ao
+                        </p>
+                        <h1>
+                            Sistema de Gerenciamento de Salas de Aula
+                        </h1>
+                    </TitleWrapper>
+                    <ContentWrapper>
+                        <TeamsWrapper>
+                            <TeamsLogo src={teamsLogo} />
+                            <p>Entrar com o Teams</p>
+                        </TeamsWrapper>
+                        <Separator>
+                            <div></div>
+                            <div>ou</div>
+                            <div></div>
+                        </Separator>
+                    </ContentWrapper>
+                    <FormInputsWrapper>
+                        <InputsWrapper>
+                            <InputWrapper>
+                                <MailIcon src={mailIcon} />
                                 <div>
-                                    <InputWrapper>
-                                        <Input
-                                            type="text"
-                                            placeholder="Email"
-                                            value={email}
-                                            onChange={(event: any) => setemail(event.target.value)}
-
-                                        />
-                                        <Input
-                                            type="password"
-                                            placeholder="Digite sua senha"
-                                            value={password}
-                                            onChange={(event: any) => setPassword(event.target.value)}
-                                        />
-                                        <Input
-                                            type="password"
-                                            placeholder="Confirme sua senha"
-                                            value={password}
-                                            onChange={(event: any) => setPassword(event.target.value)}
-                                        />
-                                        <label>Role:</label>
-                                        <select value={role} onChange={(event) => setRole(event.target.value)}>
-                                            <option value="">Select a role</option>
-                                            <option value="admin">Admin</option>
-                                            <option value="coordenador">Coordenador</option>
-                                            <option value="professor">Professor</option>
-                                        </select>
-                                    </InputWrapper>
-                                    <ButtonsWrapper>
-                                        <Button type="submit">Criar Usuário</Button>
-                                        <Button type="button" onClick={() => setForm("login")}>Login</Button>
-                                    </ButtonsWrapper>
+                                    <p>Email</p>
+                                    <Input
+                                        type="text"
+                                        placeholder="Digite seu email"
+                                        value={email}
+                                        onChange={(event: any) => setEmail(event.target.value)}
+                                    />
                                 </div>
-                            </ Form>
-                        </>
-                }
+                            </InputWrapper>
+                            <InputWrapper>
+                                <PasswordIcon src={passwordIcon} />
+                                <div>
+                                    <p>Password</p>
+                                    <span>
+                                        <Input
+                                            type="password"
+                                            placeholder="********"
+                                            value={password}
+                                            onChange={(event: any) => setPassword(event.target.value)}
+                                        />
+                                        <EyePassword src={eyePassword} />
+                                    </span>
+                                </div>
+                            </InputWrapper>
+                        </InputsWrapper>
+                        <MantenhaMeConectadoWrapper>
+                            <div>
+                                <input type="checkbox" />
+                                <p>Mantenha-me conectado</p>
+                            </div>
+                            <EsqueceuSenha>Esqueceu sua senha?</EsqueceuSenha>
+                        </MantenhaMeConectadoWrapper>
+                        <ButtonsWrapper>
+                            <Button type="submit">Login</Button>
+                            <div>
+                                <p>
+                                    Não possui uma conta?
+                                    <Link to="/register" >
+                                        <span> Registre-se</span>
+                                    </Link>
+                                </p>
+                            </div>
+                        </ButtonsWrapper>
+                    </FormInputsWrapper>
+                </Form>
             </LoginContainer>
 
         </Container>

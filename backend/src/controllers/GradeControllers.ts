@@ -38,7 +38,7 @@ export class GradeController {
                         grade.semestre, 
                         grade.created_at, 
                         grade.updated_at, 
-                        professores.nome_completo as professor, 
+                        professores.name as professor, 
                         disciplinas.descricao as disciplina, 
                         laboratorios.descricao as laboratorio 
                     FROM 
@@ -70,9 +70,7 @@ export class GradeController {
             id_professor,
             id_grade,
             id_laboratorio,
-            created_at,
-            updated_at,
-            professores.nome_completo as professor,
+            professores.name as professor,
             laboratorios.descricao as laboratorio
             FROM
             agendamento
