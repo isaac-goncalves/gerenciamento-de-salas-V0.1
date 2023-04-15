@@ -15,100 +15,72 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 export class UserController {
-  async create (request: Request, response: Response) {
-    const { name, surname, email, password, role, semestre, disciplina } =
-      request.body
-
+  async create(request: Request, response: Response) {
+    const { name, surname, email, password, role, semester , discipline } = request.body;
+  
     if (!email || !password) {
-      return response
-        .status(400)
-        .json({ error: 'Email or password is missing' })
+      return response.status(400).json({ error: 'Email or password is missing' });
     }
+  
     try {
-      const userExists = await usuariosRepository.findOneBy({ email })
-
+      const userExists = await usuariosRepository.findOneBy({ email });
+  
       if (userExists) {
-        console.log('user already exists')
-        return response.status(400).json({ error: 'User already exists' })
+        console.log('user already exists');
+        return response.status(400).json({ error: 'User already exists' });
       }
-
-      const newuser = usuariosRepository.create({ email, password })
-
-      await usuariosRepository.save(newuser)
-      console.log(newuser)
-
+  
+      const newUser = usuariosRepository.create({ email, password });
+      const savedUser = await usuariosRepository.save(newUser);
+  
+      console.log(savedUser);
+  
       if (role === 'aluno') {
-        console.log('aluno selected')
-
+        console.log('aluno selected');
+  
         const newAluno = await alunosRepository.create({
           name,
           surname,
           email,
-          semestre,
-          user_id: newuser.id,
+          semestre: semester,
+          user_id: savedUser.id,
           created_at: new Date(),
-          updated_at: new Date()
-        })
-
-        //save
-        await alunosRepository.save(newAluno)
-
-        console.log(newAluno)
-
+          updated_at: new Date(),
+        });
+  
+        await alunosRepository.save(newAluno);
+  
+        console.log(newAluno);
+  
         return response.status(201).json({
-          message: 'aluno created',
-          userData: newAluno
-        })
-      }
-      else
-      if (role === 'professor') {
-        console.log('professor selected')
-
+          message: 'Aluno created',
+          userData: newAluno,
+        });
+      } else if (role === 'professor') {
+        console.log('professor selected');
+  
         const obj = {
           name,
           surname,
           email,
-          disciplina,
-          user_id: newuser.id,
+          discipline,
+          user_id: savedUser.id,
           created_at: new Date(),
-          updated_at: new Date()
+          updated_at: new Date(),
         };
-      
-        console.log(obj);
-      
+  
         const newProfessor = await professoresRepository.create(obj);
-      
         const savedProfessor = await professoresRepository.save(newProfessor);
-      
+  
         console.log(savedProfessor);
-        console.log("savedProfessor");
-
+  
         return response.status(201).json({
           message: 'Professor created',
-          userData: savedProfessor
-        })
-      }
-      else
-      if (role === 'cordenador') {
-        console.log('cordenador selected')
-
-        // const newEmployee = employeesRepository.create({
-        //     name,
-        //     role,
-        //     degree,
-        //     email,
-        //     phone,
-        //     address,
-        //     city,
-        //     state,
-        //     zip,
-        //     updated_at: new Date(),
-        // });
-
-        // console.log(newEmployee)
-
-        // await employeesRepository.save(newEmployee);
-
+          userData: savedProfessor,
+        });
+      } else if (role === 'coordenador') {
+        console.log('coordenador selected');
+  
         return response.status(201).json({
           message: 'Coordenador created',
           userData: {
@@ -117,15 +89,16 @@ export class UserController {
             email,
             password,
             role,
-            disciplina
-          }
-        })
+            discipline,
+          },
+        });
       } else {
-        return response.status(400).json({ error: 'Role is missing' })
+        return response.status(400).json({ error: 'Role is missing' });
       }
     } catch (error) {
-      console.log(error)
-      return response.status(500).json({ message: 'internal server error' })
+      console.log(error);
+  
+      return response.status(500).json({ message: 'Internal server error' });
     }
   }
   async verify (request: Request, response: Response) {

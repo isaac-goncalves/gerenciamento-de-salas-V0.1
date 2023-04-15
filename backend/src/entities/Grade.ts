@@ -10,21 +10,27 @@ export class Grade {
 
     @Column()
     horario_fim: string;
+    
+    @Column()
+    dia_da_semana: number;
+
+    @Column({
+        type: 'integer',
+        nullable: true // sets the column to allow NULL as a valid value
+    })
+    id_professor: number;
+
+    @Column({
+        type: 'integer',
+        nullable: true // sets the column to allow NULL as a valid value
+    })
+    id_disciplina: number;
 
     @Column()
-    id_professor: string;
+    semestre: number;
 
     @Column()
-    dia_da_semana: string;
-
-    @Column()
-    id_disciplina: string;
-
-    @Column()
-    id_sala: string;
-
-    @Column()
-    semestre: string;
+    id_sala: number;
 
     @CreateDateColumn()
     created_at: Date;
