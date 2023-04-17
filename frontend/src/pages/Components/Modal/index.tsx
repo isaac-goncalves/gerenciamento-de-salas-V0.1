@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 const ModalOverlay = styled.div`
@@ -29,51 +30,6 @@ const ModalContent = styled.div`
   padding: 2rem;
   border-radius: 8px;
 `;
-
-async function handleSubmitAgendamento(gradeIds: number[], selectedLaboratory: number, selectedDate: Date | null) {
-
-  console.log(gradeIds)
-
-  // const data = {
-  //   "date": "2023-04-01",
-  //   "horario_inicio": "09:00:00",
-  //   "horario_fim": "12:00:00",
-  //   "id_professor": "1234",
-  //   "id_grade": "5678",
-  //   "id_laboratorio": "9012",
-  //   "grade_ids": "1,2,3,4,5" //addition
-  // }
-
-  const finalData: any = {
-    date: selectedDate,
-    id_professor: "12",
-    ids_grade: gradeIds,
-    id_laboratorio: selectedLaboratory,
-  }
-
-    
-
-  fetch('http://localhost:3333/agendamento', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-
-    body: JSON.stringify(finalData),
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-
-  //close modal
-
-  //send to agendamentos screen
-
-}
 
 const labs = [[1, 2, 3, 4, 5],
 [6, 7, 8, 9, 10],
@@ -123,7 +79,7 @@ function mapResultToSelected(result: number[], selected: number[]): number[] {
 
 interface ModalProps {
   isVisible: boolean;
-  onClose: () => void;
+  onClose:Function;
   WeekdayGradeIds: number[];
   selectedWeekday: string;
   selectedIds: number[];
@@ -180,8 +136,55 @@ const Modal = ({
     };
   }, []);
 
+  async function handleSubmitAgendamento(gradeIds: number[], selectedLaboratory: number, selectedDate: Date | null) {
+
+    console.log(gradeIds)
+  
+    // const data = {
+    //   "date": "2023-04-01",
+    //   "horario_inicio": "09:00:00",
+    //   "horario_fim": "12:00:00",
+    //   "id_professor": "1234",
+    //   "id_grade": "5678",
+    //   "id_laboratorio": "9012",
+    //   "grade_ids": "1,2,3,4,5" //addition
+    // }
+  
+    const finalData: any = {
+      date: selectedDate,
+      id_professor: "12",
+      ids_grade: gradeIds,
+      id_laboratorio: selectedLaboratory,
+    }
+  
+      
+  
+    fetch('http://localhost:3333/agendamento', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+  
+      body: JSON.stringify(finalData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        toast.success('Agendamento realizado com sucesso!');
+        onClose(true);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  
+    //close modal
+  
+    //send to agendamentos screen
+  
+  }
+
   return (
-    <ModalOverlay onClick={onClose}>
+    <ModalOverlay onClick={() => onClose()}>
       <ModalContent onClick={e => e.stopPropagation()}>
         <h2>Confirme os dados do agendamento</h2>
         <p>Nome do Professor: </p>
@@ -195,6 +198,9 @@ const Modal = ({
         }
         <button onClick={() => handleSubmitAgendamento(gradeIds, selectedLaboratory, selectedDate)}>
           Confirmar agendamento
+        </button>
+        <button  onClick={() => onClose()}>
+          Cancelar
         </button>
       </ModalContent>
     </ModalOverlay>

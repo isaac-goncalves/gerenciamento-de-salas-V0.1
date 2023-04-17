@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {useWindowSize} from 'react-use';
+import { useWindowSize } from 'react-use';
 
 import Confetti from 'react-confetti';
 
@@ -69,6 +69,7 @@ const RegisterScreen: React.FC = () => {
     const { width, height } = useWindowSize()
 
     const [role, setRole] = useState("aluno");
+
 
     const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRole(event.target.value);
@@ -154,8 +155,8 @@ const RegisterScreen: React.FC = () => {
                 email: email,
                 password: password,
                 role: role,
-                semestre: semestre,
-                disciplina: disciplina
+                semester: semestre,
+                discipline: disciplina
             }
 
             console.log(params);
@@ -175,13 +176,21 @@ const RegisterScreen: React.FC = () => {
                     toast.error(data.error);
                     return;
                 }
+                console.log("data received!")
                 console.log(data);
 
-                localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(data.userData));
+                const obj = {
+                    userData: data.userData,
+                    token: data.token
+                }
+                console.log(JSON.stringify(obj));
+
+
+                localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(obj));
                 toast.success("Registro realizado com sucesso!");
                 setConfetti(true);
                 setTimeout(() => {
-                    window.location.href = "/dashboard";
+                    // window.location.href = "/dashboard";
                 }, 6000);
 
             }
@@ -197,13 +206,14 @@ const RegisterScreen: React.FC = () => {
         console.log("submit");
     }
 
-    return (
+    return (<>
+        <ToastContainer />
         <Container>
             {
                 confetti &&
                 <Confetti
-                width={width}
-                height={height}
+                    width={width}
+                    height={height}
                 />
             }
             <ToastContainer />
@@ -236,6 +246,7 @@ const RegisterScreen: React.FC = () => {
                                 id="aluno"
                                 name="role"
                                 value="aluno"
+                                checked={role === 'aluno'}
                                 onChange={handleRoleChange}
                             />
                             <label>Aluno</label>
@@ -244,6 +255,7 @@ const RegisterScreen: React.FC = () => {
                                 id="professor"
                                 name="role"
                                 value="professor"
+                                checked={role === 'professor'}
                                 onChange={handleRoleChange}
                             />
                             <label>Professor</label>
@@ -252,6 +264,7 @@ const RegisterScreen: React.FC = () => {
                                 id="professor"
                                 name="role"
                                 value="professor"
+                                checked={role === 'coordenador'}
                                 onChange={handleRoleChange}
                             />
                             <label>Coordenador</label>
@@ -320,6 +333,7 @@ const RegisterScreen: React.FC = () => {
                 </LoginContainer>
             </ContentContainer>
         </Container>
+    </>
     )
 }
 

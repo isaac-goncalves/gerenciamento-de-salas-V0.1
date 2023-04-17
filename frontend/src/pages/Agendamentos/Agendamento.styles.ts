@@ -1,8 +1,21 @@
 import styled from 'styled-components'
 
+import DatePicker from 'react-datepicker';
+
 import { Colors } from '../../colors'
 
+export const StyledDatePicker = styled(DatePicker)`
+  width: 6rem;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  
+
+`;
+
 export const Container = styled.div`
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,6 +36,7 @@ export const Container = styled.div`
 `
 
 export const Header = styled.div`
+  z-index: 3;
   width: 100%;
   height: 100%;
   display: flex;
@@ -62,11 +76,13 @@ export const DatePickWrapper = styled.div`
   flex-direction: row;
   align-items: center;
 
+  width: 85%;
+
   gap: 1rem;
   background-color: ${Colors.white};
   border-radius: 12px;
-  width: 95%;
-  padding: 1rem;
+  
+  padding: 0 1rem ;
   margin-bottom: 1rem;
 
 `
@@ -90,7 +106,7 @@ display : flex;
 export const CalendarWrapper = styled.div`
 display: flex;
   width: 15rem;
- 
+  align-items: center;
   gap : 1rem;
 `
 
@@ -102,6 +118,7 @@ export const DateIcon = styled.img`
 `
 
 export const ClassesContainer = styled.div`
+ z-index: 3;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -116,6 +133,7 @@ export const ClassesContainer = styled.div`
 `
 
 export const Laboratorios = styled.div`
+  z-index: 3;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -275,15 +293,6 @@ export const Laboratorio = styled.div`
   padding: 0.4rem 0; // #TODO
   gap: 0.3rem;
 
-  animation: appear 1.5s;
-    @keyframes appear {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
 
   :hover {
     background-color: ${Colors.hoverCard};

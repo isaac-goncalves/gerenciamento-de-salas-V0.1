@@ -292,3 +292,6 @@ Ao apertar o Botão Finalizar o agendamento uma modal contendo os dados do agend
 Os seguintes dados serao mostrados: Nome do Professor, Laboratorio, Dia da Semana, Horario de Inicio e Horario de Termino
 
 O professor ira confirmar o agendamento e o sistema ira mostrar a mensagem "Agendamento Realizado com Sucesso"
+
+ALTER SEQUENCE professores_id_seq RESTART WITH 16;
+

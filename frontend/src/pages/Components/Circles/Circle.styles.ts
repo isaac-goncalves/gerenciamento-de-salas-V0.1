@@ -17,6 +17,9 @@ export const CircleStyled = styled.div`
   animation-timing-function: linear;
   animation-direction: alternate;
 
+  //wait 3  seconds before starting appearing
+  
+
   @keyframes move-giant-circle {
     0% {
       transform: translate(0, 0);

@@ -4,6 +4,8 @@ import { Navigate } from 'react-router-dom'
 
 import DatePicker from "react-datepicker";
 
+import { ToastContainer, toast } from 'react-toastify';
+
 import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -41,7 +43,8 @@ import {
   CoursesWrapper,
   DatepickContainer,
   Laboratorio,
-  DatepickArrowsContainer
+  DatepickArrowsContainer,
+  StyledDatePicker
 }
   from './Agendamento.styles'
 
@@ -52,6 +55,9 @@ import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
 import Modal from '../Components/Modal';
+import set from 'date-fns/set';
+import PacmanLoader from 'react-spinners/PacmanLoader';
+import { Colors } from '../../colors';
 
 interface LaboratorioData {
   id: number;
@@ -323,33 +329,45 @@ type GroupedData = {
 }
 
 function groupByWeekday(data: ScheduleItem[]): GroupedData {
-  const groupedData: GroupedData = {};
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
+  const totalItemsPerDay = 6;
+
+  // Initialize groupedData with each day of the week and an empty array
+  const groupedData: GroupedData = {
+    segunda: [],
+    terca: [],
+    quarta: [],
+    quinta: [],
+    sexta: [],
+  };
 
   for (const item of data) {
     const dayIndex = parseInt(item.dia_da_semana) - 1;
     const day = daysOfWeek[dayIndex];
 
-    if (!groupedData[day]) {
-      groupedData[day] = [];
-    }
-
     groupedData[day].push(item);
   }
 
   for (const day in groupedData) {
-    if (groupedData[day].length >= 3) {
-      groupedData[day].splice(2, 0, {
+    const currentDayLength = groupedData[day].length;
+
+    // Add "Nenhuma Aula" for remaining slots, except after the interval
+    for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
+      groupedData[day].push({
         semestre: "1",
-        disciplina: "Intervalo",
+        disciplina: "Nenhuma Aula",
       });
     }
+
+    // Add interval as the third item
+    groupedData[day].splice(2, 0, {
+      semestre: "1",
+      disciplina: "Intervalo",
+    });
   }
 
   return groupedData;
 }
-
-
 
 function printGradeValue(gradeValue: any) {
 
@@ -383,6 +401,8 @@ const Agendamentos: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
+
+  const [firstRender, setFirstRender] = useState(true)
 
   // const [monday, friday] = getWeekDays(startDate, endDate);
 
@@ -436,32 +456,58 @@ const Agendamentos: React.FC = () => {
     setSelectedDate(date)
 
     setWeekdayGradeIds(gradeIds)
+
     setSelectedWeekday(weekDay)
+    
     setSelectingLaboratory(true)
   }
 
-  const handleButtonClick = () => {
+  const handleConfirmClick = () => {
+    if(selectedIds.length === 0) {
+      toast.error('Selecione pelo menos um horário para agendar')
+      return
+    }
+    if(selectedLaboratory === -1) {
+      toast.error('Selecione um laboratório para agendar')
+      return
+    }
+
     console.log("Button clicked");
     setModalVisible(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCancelClick = () => {
+    console.log("Cancel clicked");
+    setSelectingLaboratory(false)
+    setModalVisible(false);
+  };
+
+  const handleCloseModal = (resetParams: boolean) => {
+    if (resetParams) {
+      setSelectedIds([])
+      setSelectedLaboratory(-1)
+    }
     setModalVisible(false);
   };
 
   useEffect(() => {
 
+    console.log("First render: " + firstRender)
+
     async function fetchData() {
-      fetch('http://localhost:3333/grade', {
+      console.log("Fetching data")
+      fetch('http://localhost:3333/grade/agendamentos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          professor_id: 8,
           semestre: "1", //add localStorage later
         })
       }).then((response) => response.json()).then((data) => {
         console.log(data)
+        
         const transformedData = groupByWeekday(data)
         console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
         printGradeValue(transformedData)
@@ -477,16 +523,6 @@ const Agendamentos: React.FC = () => {
     fetchData();
 
   }, [])
-
-  // useEffect(() => {
-  //   setEndDate(addDays(startDate, 5));
-  // }, [startDate]);
-
-  useEffect(() => {
-    console.log("SelectedIds: " + selectedIds)
-    console.log("SelectedLaboratory: " + selectedLaboratory)
-  }, [selectedIds, selectedLaboratory])
-
 
   const handleSelection = (id: number, labId: number) => {
     // console.log(id)
@@ -572,10 +608,31 @@ const Agendamentos: React.FC = () => {
     setSelectingLaboratory(false)
   }
 
+  const renderLoading = () => {
+    return (
+      <WeekContainer>
+        {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
+          <WeekdayContainer key={day}>
+            <SchedulesContainer >
+              <h2>{day}</h2>
+              {Array(6)
+                .fill(0)
+                .map((_, index) => (
+                  <Schedule>
+                   <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
+                  </Schedule>
+                ))}
+            </SchedulesContainer>
+          </WeekdayContainer>
+        ))}
+      </WeekContainer>
+    )
+  };
 
   return (
     <Container>
-      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
+      <ToastContainer />
+      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate}  />
       <Header>
         <CoursesWrapper>
           <CourseName>
@@ -607,14 +664,19 @@ const Agendamentos: React.FC = () => {
             <DateIcon src={arrowDown} />
             <CalendarWrapper>
               Semana do dia
-              <DatePicker selected={startDate} onChange={handleStartDateChange} />
+              <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
               ao dia
-              <DatePicker selected={endDate} onChange={handleEndDateChange} />
+              <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
             </CalendarWrapper>
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>
           <Semester>
-            {selectingLaboratory && <button onClick={handleButtonClick}>Confirmar Agendamento</button>}
+            {selectingLaboratory && 
+            <>
+            <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
+            <button onClick={handleCancelClick}>Cancelar</button>
+            </>
+            }
             <p>
               5º
             </p>
@@ -756,7 +818,7 @@ const Agendamentos: React.FC = () => {
                   </WeekContainer>
 
                 ) : (
-                  <p>Loading...</p>
+                  renderLoading()
                 )
             }
           </Laboratorios>

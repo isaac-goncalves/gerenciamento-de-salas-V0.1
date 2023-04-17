@@ -23,26 +23,29 @@ export const Container = styled.div`
     }
   `;
 
+
+
 export const Header = styled.div`
   width: 100%;
-  height: 100%;
+  height: 10rem;
   display: flex;
   flex-direction: column;
+  
   align-items: center;
   justify-content: center;
   z-index: 3;
 
-  div{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center; 
-    width: 95%;
-    height: 100%;
-    padding: 0 1rem;
-  }
-
 `;
+
+export const CoursesWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  height: 100%;
+  padding: 1rem 1rem;
+`
 
 export const ClassesContainer = styled.div`
  z-index: 3;
@@ -51,7 +54,7 @@ export const ClassesContainer = styled.div`
   justify-content: center;
   margin-bottom: 2rem;
   background-color: ${Colors.white};
-  /* background-color: blue  ; */// alternate color
+  /* background-color: blue  ;// alternate color */
   padding: 2rem;
   border-radius: 12px;
   width: 95%;
@@ -98,13 +101,17 @@ export const Semester = styled.h2`
 
 export const DatePicker = styled.div`
 display: flex;
-flex-direction: row;
-gap: 1rem;
-background-color: ${Colors.white};
-border-radius: 12px;
-width: 100%;
-padding: 1rem;
-margin-bottom: 1rem;
+  flex-direction: row;
+  align-items: center;
+height: 100%;
+  width: 85%;
+
+  gap: 1rem;
+  background-color: ${Colors.white};
+  border-radius: 12px;
+  
+  padding: 0 1rem ;
+  margin-bottom: 1rem;
 
   div{
     display: flex;  
@@ -122,14 +129,36 @@ export const DateIcon = styled.img`
      object-fit: cover;
     `
 
+export const ClockWrapper = styled.div`
+display: flex;
+flex-direction: column;
+
+ 
+`;
+
+export const ClockPaddingUp = styled.div`
+display: flex;
+height: 100%;
+
+  
+
+ 
+`;
+export const ClockPaddingDown = styled.div`
+height: 100%;
+height: 100%;
+ 
+`;
+
 export const ClockContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 6rem;
+  justify-content: space-around;
+  height: 100%;
+  margin-top: 3rem;
   /* background-color: red; */
-  width: 5rem;
+  width: 3rem;
 
   p {
     font-size: 1.125rem;

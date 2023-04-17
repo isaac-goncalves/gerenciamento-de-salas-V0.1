@@ -15,29 +15,39 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 export class UserController {
-  async create(request: Request, response: Response) {
-    const { name, surname, email, password, role, semester , discipline } = request.body;
-  
+  async create (request: Request, response: Response) {
+    const { name, surname, email, password, role, semester, discipline } =
+      request.body
+
+    console.log(name, surname, email, password, role, semester, discipline)
+
     if (!email || !password) {
-      return response.status(400).json({ error: 'Email or password is missing' });
+      return response
+        .status(400)
+        .json({ error: 'Email or password is missing' })
     }
-  
+
     try {
-      const userExists = await usuariosRepository.findOneBy({ email });
-  
+      const userExists = await usuariosRepository.findOneBy({ email })
+
       if (userExists) {
-        console.log('user already exists');
-        return response.status(400).json({ error: 'User already exists' });
+        console.log('user already exists')
+        return response.status(400).json({ error: 'User already exists' })
       }
-  
-      const newUser = usuariosRepository.create({ email, password });
-      const savedUser = await usuariosRepository.save(newUser);
-  
-      console.log(savedUser);
-  
+
+      const encriptedPassword = await bcrypt.hash(password, 8)
+
+      const newUser = usuariosRepository.create({
+        email,
+        password: encriptedPassword
+      })
+
+      const savedUser = await usuariosRepository.save(newUser) //essa parte me preocupa
+      console.log(savedUser)
+
       if (role === 'aluno') {
-        console.log('aluno selected');
-  
+        console.log('aluno selected')
+
         const newAluno = await alunosRepository.create({
           name,
           surname,
@@ -45,42 +55,60 @@ export class UserController {
           semestre: semester,
           user_id: savedUser.id,
           created_at: new Date(),
-          updated_at: new Date(),
-        });
-  
-        await alunosRepository.save(newAluno);
-  
-        console.log(newAluno);
-  
+          updated_at: new Date()
+        })
+
+        await alunosRepository.save(newAluno)
+
+        console.log(newAluno)
+
+        const token = jwt.sign(
+          { id: savedUser.id },
+          process.env.JWT_PASS ?? '',
+          {
+            expiresIn: '8h'
+          }
+        )
+
         return response.status(201).json({
           message: 'Aluno created',
           userData: newAluno,
-        });
+          token: token
+        })
       } else if (role === 'professor') {
-        console.log('professor selected');
-  
+        console.log('professor selected')
+
         const obj = {
           name,
           surname,
           email,
-          discipline,
+          disciplina: discipline,
           user_id: savedUser.id,
           created_at: new Date(),
-          updated_at: new Date(),
-        };
-  
-        const newProfessor = await professoresRepository.create(obj);
-        const savedProfessor = await professoresRepository.save(newProfessor);
-  
-        console.log(savedProfessor);
-  
+          updated_at: new Date()
+        }
+
+        const newProfessor = await professoresRepository.create(obj)
+        const savedProfessor = await professoresRepository.save(newProfessor)
+
+        console.log(savedProfessor)
+
+        const token = jwt.sign(
+          { id: savedUser.id },
+          process.env.JWT_PASS ?? '',
+          {
+            expiresIn: '8h'
+          }
+        )
+
         return response.status(201).json({
           message: 'Professor created',
           userData: savedProfessor,
-        });
+          token: token
+        })
       } else if (role === 'coordenador') {
-        console.log('coordenador selected');
-  
+        console.log('coordenador selected')
+
         return response.status(201).json({
           message: 'Coordenador created',
           userData: {
@@ -89,16 +117,16 @@ export class UserController {
             email,
             password,
             role,
-            discipline,
-          },
-        });
+            discipline
+          }
+        })
       } else {
-        return response.status(400).json({ error: 'Role is missing' });
+        return response.status(400).json({ error: 'Role is missing' })
       }
     } catch (error) {
-      console.log(error);
-  
-      return response.status(500).json({ message: 'Internal server error' });
+      console.log(error)
+
+      return response.status(500).json({ message: 'Internal server error' })
     }
   }
   async verify (request: Request, response: Response) {
@@ -147,10 +175,10 @@ export class UserController {
       //   return response.status(400).json({ error: 'E-mail ou senha inválidos' })
       // }
 
-      if(password !== userExists.password){
+      if (password !== userExists.password) {
         return response.status(400).json({ error: 'E-mail ou senha inválidos' })
       }
-    
+
       const token = jwt.sign(
         { id: userExists.id },
         process.env.JWT_PASS ?? '',
