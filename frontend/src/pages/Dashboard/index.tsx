@@ -6,10 +6,9 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import { Colors } from '../../colors';
 
-import * as GradeData from '../../../types/GradeData';
+import { toast, ToastContainer } from 'react-toastify';
 
-import BsFillCalendarDateFill from 'react-icons/bs';
-// import { GrSchedule } from 'react-icons/gr';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper, ClockPadding, ClockWrapper, ClockPaddingUp, ClockPaddingDown } from './Dashboard.styles'
 
@@ -17,6 +16,7 @@ import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
+
 
 interface ScheduleItem {
   id: number;
@@ -69,28 +69,15 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
 
 function printGradeValue(gradeValue: any) {
 
-  console.log("Grade Value: " + JSON.stringify(gradeValue, null, 2))
+  // console.log("Grade Value: " + JSON.stringify(gradeValue, null, 2))
 
 }
 
-// function groupByDay(data) {
-//   const daysOfWeek = ["00001", "00002", "00003", "00004", "00005", "00006", "00007"];
-//   const groupedData = {};
-
-//   daysOfWeek.forEach(day => {
-//     const filteredData = data.filter(item => item.dia_da_semana === day);
-//     const intervalo = { "intervalo": "intervalo" };
-//     if (filteredData.length > 0) {
-//       filteredData.splice(2, 0, intervalo);
-//       groupedData[day] = filteredData;
-//     }
-//   });
-
-//   return groupedData;
-// }
 
 const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
+
+  const [selectedValue, setSelectedValue] = useState(1) 
 
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -98,7 +85,61 @@ const Dashboard: React.FC = () => {
   const [currentDay, setCurrentDay] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value)
+  }
 
+  useEffect(() => {
+    console.log("Verificando usuário")
+    
+    function verifyUser() {
+
+      const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+
+      const userDataJson = JSON.parse(localUserData || '{}');
+
+      const token = userDataJson.token;
+      const userData = userDataJson.userData;
+
+      console.log("token" + token)
+      console.log("userData" + userData)
+
+      
+      if (token == null || userData == null) {
+        toast.error('Você precisa estar logado para acessar essa página!');
+        localStorage.removeItem('gerenciamento-de-salas@v1.1');
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000)
+      }
+      else {
+        fetch('http://localhost:3333/verify', {
+          method: 'POST',
+          headers: {
+            "Authorization": "Bearer " + token,
+          },
+        }).then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+
+            if (data.error) {
+              console.log("Error exists:", data.error);
+              localStorage.removeItem('gerenciamento-de-salas@v1.1');
+              toast.error('Você precisa estar logado para acessar essa página!');
+              setTimeout(() => {
+                //  window.location.href = "/";
+              }, 2000)
+            }
+            else {
+              setSelectedValue(userData.semestre)
+            }
+          }
+          )
+      }
+    }
+    verifyUser()
+
+  }, []);
 
   useEffect(() => {
     const updateCurrentDayAndTime = () => {
@@ -120,38 +161,38 @@ const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    async function fetchData() {
-      fetch('http://localhost:3333/grade/dashboard', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          semestre: "3", //add localStorage later
-        })
-      }).then((response) => response.json()).then((data) => {
-        console.log(data)
-        const transformedData = groupByWeekday(data)
-        console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-        printGradeValue(transformedData)
-        setTimeout(() => {
-          setLoading(true) // teste de loading
-        }, 2000)
-        // setLoading(true)
-        // console.log(transformedData.segunda[0].agendamentos.professor)
-        return setgrade(transformedData)
-      }
-      )
-    }
-
+    setLoading(false)
     fetchData();
+  }, [selectedValue])
 
-  }, [])
+  async function fetchData() {
+    fetch('http://localhost:3333/grade/dashboard', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        semestre: selectedValue || 1, //add localStorage later
+      })
+    }).then((response) => response.json()).then((data) => {
+      // console.log(data)
+      const transformedData = groupByWeekday(data)
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      printGradeValue(transformedData)
+      setTimeout(() => {
+        setLoading(true) // teste de loading
+      }, 2000)
+      // setLoading(true)
+      // console.log(transformedData.segunda[0].agendamentos.professor)
+      return setgrade(transformedData)
+    }
+    )
+  }
 
   const isWithinClassTime = (startTime: any, endTime: any) => {
 
-    console.log("Start Time: " + startTime)
-    console.log("End Time: " + endTime)
+    // console.log("Start Time: " + startTime)
+    // console.log("End Time: " + endTime)
 
     const now = new Date();
     const currentHour = now.getHours();
@@ -185,8 +226,8 @@ const Dashboard: React.FC = () => {
           const isCurrentTime = false
           // isWithinClassTime(item.horario_inicio, item.horario_fim);
 
-          console.log(isCurrentTime)
-          console.log(currentTime)
+          // console.log(isCurrentTime)
+          // console.log(currentTime)
 
           return (
             <Schedule isCurrentTime={isCurrentTime}
@@ -207,10 +248,11 @@ const Dashboard: React.FC = () => {
   const renderLoading = () => {
     return (
       <WeekContainer>
+        <ToastContainer/>
         {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
           <WeekdayContainer key={day}>
             <SchedulesContainer isCurrentDay={false}>
-            <h2>{day}</h2>
+              <h2>{day}</h2>
               {Array(6)
                 .fill(0)
                 .map((_, index) => (
@@ -246,9 +288,26 @@ const Dashboard: React.FC = () => {
             <DateIcon src={arrowDown} />
           </div>
           <Semester>
-            <p>
-              5º
-            </p>
+            <select value={selectedValue} onChange={handleChange}>
+              <option value="1">
+                1º
+              </option>
+              <option value="2">
+                2º
+              </option>
+              <option value="3">
+                3º
+              </option>
+              <option value="4">
+                4º
+              </option>
+              <option value="5">
+                5º
+              </option>
+              <option value="6">
+                6º
+              </option>
+            </select>
             <span>
               Semestre
             </span>
@@ -256,18 +315,14 @@ const Dashboard: React.FC = () => {
         </DatePicker>
       </Header>
       <ClassesContainer>
-        <ClockWrapper>
-          
-          <ClockContainer>
-            <p>18:45</p>
-            <p>19:35</p>
-            <p>20:25</p>
-            <p>20:35</p>
-            <p>21:25</p>
-            <p>22:15</p>
-          </ClockContainer>
-         
-        </ClockWrapper>
+        <ClockContainer>
+          <p>18:45</p>
+          <p>19:35</p>
+          <p>20:25</p>
+          <p>20:35</p>
+          <p>21:25</p>
+          <p>22:15</p>
+        </ClockContainer>
         {
           loading
             &&

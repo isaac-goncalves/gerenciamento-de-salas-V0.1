@@ -24,8 +24,8 @@ interface InputProps {
 }
 
 const LoginScreen: React.FC = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("isaac@gmail.com");
+    const [password, setPassword] = useState("password123$");
     const [form, setForm] = useState("login");
     const [role, setRole] = useState("");
 
@@ -36,7 +36,7 @@ const LoginScreen: React.FC = () => {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        const localStorageData = localStorage.getItem("gerenciamento-de-salas@v1.0");
+        const localStorageData = localStorage.getItem("gerenciamento-de-salas@v1.1");
 
         if (localStorageData) {
             const data = JSON.parse(localStorageData);
@@ -45,17 +45,10 @@ const LoginScreen: React.FC = () => {
                 toast.success("Você já está logado!");
                 setTimeout(() => {
                     window.location.href = "/dashboard";
-                }, 6000);
+                }, 2000);
             }
         }
 
-        // if (data.token) {
-        //     console.log("token exists");
-        //     toast.success("Você já está logado!");
-        //     setTimeout(() => {
-        //         window.location.href = "/calendar";
-        //     }, 6000);
-        // }
         console.log("token does not exists");
     }, []);
 
@@ -87,15 +80,24 @@ const LoginScreen: React.FC = () => {
 
                     console.log(data);
 
-                    localStorage.setItem("gerenciamento-de-salas@v1.0", JSON.stringify(data));
+                    setConfetti(true);
+                    
+                    const obj = {
+                        userData: data.userData,
+                        token: data.token
+                    }
+                    console.log(JSON.stringify(obj));
+                    
+                    localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(obj));
+                    
                     setConfetti(true);
                     toast.success("Login realizado com sucesso!");
-
+                    
                     setTimeout(() => {
                         console.log("redirecting")
                         window.location.href = "/dashboard";
                     }
-                        , 6000);
+                        , 2000);
                 }
                 else {
                     toast.error("Erro ao fazer login!");

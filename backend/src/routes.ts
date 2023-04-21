@@ -7,7 +7,7 @@ import { AgendamentoController } from "./controllers/AgendamentoControllers";
 
 const routes = Router();
 
-// routes.post("/verify", new UserController().verify);
+routes.post("/verify", new UserController().verify);
 routes.post("/grade/dashboard", new GradeController().getDashboardData);
 routes.post("/grade/agendamentos", new GradeController().getAgendamentosData);
 

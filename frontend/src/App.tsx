@@ -26,7 +26,7 @@ function App() {
             <>
               <Navbar />
               <Dashboard />
-             {/* <Circles ballCount={4} /> */}
+              <Circles ballCount={4} /> 
             </>
           } />
           <Route path="/agendamentos" element={

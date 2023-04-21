@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import DatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker'
 
 import { Colors } from '../../colors'
 
@@ -9,10 +9,8 @@ export const StyledDatePicker = styled(DatePicker)`
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-
-  
-
-`;
+ 
+`
 
 export const Container = styled.div`
   z-index: 1;
@@ -25,20 +23,20 @@ export const Container = styled.div`
   width: calc(100% - 5rem);
   margin-left: 5rem;
   animation: appear 1s;
-    @keyframes appear {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
+  @keyframes appear {
+    from {
+      opacity: 0;
     }
+    to {
+      opacity: 1;
+    }
+  }
 `
 
 export const Header = styled.div`
   z-index: 3;
   width: 100%;
-  height: 100%;
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,33 +79,28 @@ export const DatePickWrapper = styled.div`
   gap: 1rem;
   background-color: ${Colors.white};
   border-radius: 12px;
-  
-  padding: 0 1rem ;
-  margin-bottom: 1rem;
 
+  padding: 0 1rem;
+  margin-bottom: 1rem;
 `
 export const DatepickContainer = styled.div`
-display: flex;
-gap: 1rem;
-align-items: center;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 
-white-space: nowrap;
-p {
-}
-
-
+  white-space: nowrap;
+  p {
+  }
 `
 export const DatepickArrowsContainer = styled.div`
-
-display : flex;
-
+  display: flex;
 `
 
 export const CalendarWrapper = styled.div`
-display: flex;
+  display: flex;
   width: 15rem;
   align-items: center;
-  gap : 1rem;
+  gap: 1rem;
 `
 
 export const DateIcon = styled.img`
@@ -118,7 +111,7 @@ export const DateIcon = styled.img`
 `
 
 export const ClassesContainer = styled.div`
- z-index: 3;
+  z-index: 3;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -180,10 +173,10 @@ export const ClockContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 6rem;
+  justify-content: space-around;
+  margin-top: 3rem;
   /* background-color: red; */
-  width: 5rem;
+  width: 3rem;
 
   p {
     font-size: 1.125rem;
@@ -251,7 +244,7 @@ export const Schedule = styled.div`
   align-items: center;
   justify-content: center;
   background-color: ${Colors.horariosCard};
-  
+
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;
@@ -273,6 +266,9 @@ export const Schedule = styled.div`
     text-align-last: center;
     font-size: 0.9rem;
   }
+  div {
+    display: flex
+  }
 `
 
 interface IProps {
@@ -284,15 +280,14 @@ export const Laboratorio = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${({ selected }: IProps) => selected ? Colors.hoverCard : Colors.horariosCard};
-  ;
+  background-color: ${({ selected }: IProps) =>
+    selected ? Colors.hoverCard : Colors.horariosCard};
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;
   min-height: 4rem;
   padding: 0.4rem 0; // #TODO
   gap: 0.3rem;
-
 
   :hover {
     background-color: ${Colors.hoverCard};

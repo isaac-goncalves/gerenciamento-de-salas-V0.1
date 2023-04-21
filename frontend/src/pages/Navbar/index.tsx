@@ -23,8 +23,8 @@ const Navbar = () => {
     };
 
     const handleLogout = async () => {
-       await localStorage.removeItem('gerenciamento-de-salas@v1.0');
-        // window.location.href = '/';
+       await localStorage.removeItem('gerenciamento-de-salas@v1.1');
+         window.location.href = '/';
     }
 
     const closeMenu = () => {

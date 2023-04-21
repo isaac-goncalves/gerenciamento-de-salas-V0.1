@@ -320,7 +320,6 @@ interface gradeData {
 }
 
 interface IntervalItem {
-  semestre: string;
   disciplina: string;
 }
 
@@ -354,18 +353,15 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
     // Add "Nenhuma Aula" for remaining slots, except after the interval
     for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
       groupedData[day].push({
-        semestre: "1",
         disciplina: "Nenhuma Aula",
       });
     }
 
     // Add interval as the third item
     groupedData[day].splice(2, 0, {
-      semestre: "1",
       disciplina: "Intervalo",
     });
   }
-
   return groupedData;
 }
 
@@ -458,16 +454,16 @@ const Agendamentos: React.FC = () => {
     setWeekdayGradeIds(gradeIds)
 
     setSelectedWeekday(weekDay)
-    
+
     setSelectingLaboratory(true)
   }
 
   const handleConfirmClick = () => {
-    if(selectedIds.length === 0) {
+    if (selectedIds.length === 0) {
       toast.error('Selecione pelo menos um horário para agendar')
       return
     }
-    if(selectedLaboratory === -1) {
+    if (selectedLaboratory === -1) {
       toast.error('Selecione um laboratório para agendar')
       return
     }
@@ -487,6 +483,7 @@ const Agendamentos: React.FC = () => {
       setSelectedIds([])
       setSelectedLaboratory(-1)
     }
+    setSelectingLaboratory(false)
     setModalVisible(false);
   };
 
@@ -507,7 +504,7 @@ const Agendamentos: React.FC = () => {
         })
       }).then((response) => response.json()).then((data) => {
         console.log(data)
-        
+
         const transformedData = groupByWeekday(data)
         console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
         printGradeValue(transformedData)
@@ -619,7 +616,7 @@ const Agendamentos: React.FC = () => {
                 .fill(0)
                 .map((_, index) => (
                   <Schedule>
-                   <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
+                    <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
                   </Schedule>
                 ))}
             </SchedulesContainer>
@@ -632,7 +629,7 @@ const Agendamentos: React.FC = () => {
   return (
     <Container>
       <ToastContainer />
-      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate}  />
+      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
       <Header>
         <CoursesWrapper>
           <CourseName>
@@ -671,11 +668,11 @@ const Agendamentos: React.FC = () => {
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>
           <Semester>
-            {selectingLaboratory && 
-            <>
-            <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
-            <button onClick={handleCancelClick}>Cancelar</button>
-            </>
+            {selectingLaboratory &&
+              <>
+                <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
+                <button onClick={handleCancelClick}>Cancelar</button>
+              </>
             }
             <p>
               5º
@@ -816,7 +813,6 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                   </WeekContainer>
-
                 ) : (
                   renderLoading()
                 )
@@ -848,7 +844,12 @@ const Agendamentos: React.FC = () => {
                               <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
-                                <p>{item.laboratorio}</p>
+                                <div>
+                                  {
+                                    item.semestre && <p>{item.semestre}° Semestre</p>
+                                  }
+                                  <p>{item.laboratorio}</p>
+                                </div>
                               </Schedule>
                             )
                           })
@@ -864,7 +865,12 @@ const Agendamentos: React.FC = () => {
                               <Schedule onClick={() => handleWeekdaySelection("Terça-feira", grade.terca, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
-                                <p>{item.laboratorio}</p>
+                                <div>
+                                  {
+                                    item.semestre && <p>{item.semestre}° Semestre</p>
+                                  }
+                                  <p>{item.laboratorio}</p>
+                                </div>
                               </Schedule>
                             )
                           })
@@ -880,7 +886,12 @@ const Agendamentos: React.FC = () => {
                               <Schedule onClick={() => handleWeekdaySelection("Quarta-feira", grade.quarta, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
-                                <p>{item.laboratorio}</p>
+                                <div>
+                                  {
+                                    item.semestre && <p>{item.semestre}° Semestre</p>
+                                  }
+                                  <p>{item.laboratorio}</p>
+                                </div>
                               </Schedule>
                             )
                           })
@@ -896,7 +907,12 @@ const Agendamentos: React.FC = () => {
                               <Schedule onClick={() => handleWeekdaySelection("Quinta-feira", grade.quinta, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
-                                <p>{item.laboratorio}</p>
+                                <div>
+                                  {
+                                    item.semestre && <p>{item.semestre}° Semestre</p>
+                                  }
+                                  <p>{item.laboratorio}</p>
+                                </div>
                               </Schedule>
                             )
                           })
@@ -912,7 +928,12 @@ const Agendamentos: React.FC = () => {
                               <Schedule onClick={() => handleWeekdaySelection("Sexta-feira", grade.sexta, startDate)} key={item.id}>
                                 <p>{item.disciplina}</p>
                                 <p>{item.professor}</p>
-                                <p>{item.laboratorio}</p>
+                                <div>
+                                  {
+                                    item.semestre && <p>{item.semestre}° Semestre</p>
+                                  }
+                                  <p>{item.laboratorio}</p>
+                                </div>
                               </Schedule>
                             )
                           })

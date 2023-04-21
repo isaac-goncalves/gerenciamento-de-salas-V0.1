@@ -190,8 +190,8 @@ const RegisterScreen: React.FC = () => {
                 toast.success("Registro realizado com sucesso!");
                 setConfetti(true);
                 setTimeout(() => {
-                    // window.location.href = "/dashboard";
-                }, 6000);
+                     window.location.href = "/dashboard";
+                }, 4000);
 
             }
             else {
