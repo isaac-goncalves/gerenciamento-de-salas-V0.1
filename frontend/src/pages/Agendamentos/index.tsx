@@ -517,7 +517,9 @@ const Agendamentos: React.FC = () => {
       // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       printGradeValue(transformedData)
 
-      setLoading(true) // teste de loading
+      setTimeout(() => {
+        setLoading(true) // teste de loading
+      }, 2000)
 
       // setLoading(true)
       return setgrade(transformedData as any)
@@ -1085,7 +1087,7 @@ const Agendamentos: React.FC = () => {
                     </WeekdayContainer>
                   </WeekContainer>
                 ) : (
-                  <p>Loading...</p>
+                  renderLoading()
                 )
             }
 
