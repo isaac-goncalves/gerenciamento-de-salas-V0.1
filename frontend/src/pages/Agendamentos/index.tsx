@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 
 import { Navigate } from 'react-router-dom'
 
@@ -9,6 +9,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
 
 import "react-datepicker/dist/react-datepicker.css";
+
+import { mockdata } from './mockdata'
 
 type Lab = {
   name: string;
@@ -58,6 +60,7 @@ import Modal from '../Components/Modal';
 import set from 'date-fns/set';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 import { Colors } from '../../colors';
+import { MdToken } from 'react-icons/md';
 
 interface LaboratorioData {
   id: number;
@@ -72,224 +75,229 @@ interface LaboratorioData {
   updated_at: string;
 }
 
-const mockdata: any = {
-  "laboratorio1": [
-    {
-      "id": 1,
-      "laboratorio": "Disponivel",
-      "id_laboratorio": "1",
-    },
-    {
-      "id": 2,
-      "semestre": "1",
-      "created_at": "2023-03-23T01:24:00.965Z",
-      "updated_at": "2023-03-23T01:24:00.965Z",
-      "professor": "Cilmara",
-      "disciplina": "Algoritmos e Lógica de Programação",
-      "laboratorio": "Indisponivel",
-      "ScheduleData": {
-        "id": 2,
-        "horario_inicio": "19:45",
-        "horario_fim": "20:35",
-        "dia_da_semana": "00001",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-      }
-    },
-    {
-      "id": 3,
-      "horario_inicio": "20:35",
-      "horario_fim": "21:25",
-      "dia_da_semana": "00002",
-      "semestre": "1",
-      "created_at": "2023-03-23T01:24:00.965Z",
-      "updated_at": "2023-03-23T01:24:00.965Z",
-      "professor": "Michel",
-      "disciplina": "Algoritmos e Lógica de Programação",
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 4,
-      "horario_inicio": "21:25",
-      "horario_fim": "22:15",
-      "dia_da_semana": "00002",
-      "semestre": "1",
-      "created_at": "2023-03-23T01:24:00.965Z",
-      "updated_at": "2023-03-23T01:24:00.965Z",
-      "professor": "Manuela",
-      "disciplina": "Algoritmos e Lógica de Programação",
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 5,
-      "horario_inicio": "22:15",
-      "horario_fim": "23:05",
-      "dia_da_semana": "00002",
-      "semestre": "1",
-      "created_at": "2023-03-23T01:24:00.965Z",
-      "updated_at": "2023-03-23T01:24:00.965Z",
-      "professor": "Manuela",
-      "disciplina": "Algoritmos e Lógica de Programação",
-      "laboratorio": "Disponivel"
-    }
-  ],
-  "laboratorio2": [
-    {
-      "id": 6,
-      "horario_inicio": "18:45",
-      "horario_fim": "19:35",
-      "dia_da_semana": "00003",
-      "semestre": "1",
-      "created_at": "2023-03-23T01:24:00.965Z",
-      "updated_at": "2023-03-23T01:24:00.965Z",
-      // "professor": "Divani",
-      // "disciplina": "Arquitetura e Organização de Computadores",
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 7,
-      "horario_inicio": "19:35",
-      "horario_fim": "20:25",
-      "dia_da_semana": "00003",
-      "semestre": "1",
-      "created_at": "2023-03-23T01:24:00.965Z",
-      "updated_at": "2023-03-23T01:24:00.965Z",
-      // "professor": "Cilmara",
-      // "disciplina": "Arquitetura e Organização de Computadores",
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 8,
-      "horario_inicio": "20:35",
-      "horario_fim": "21:25",
-      "dia_da_semana": "00003",
-      "semestre": "1",
-      "created_at": "2023-03-23T01:24:00.965Z",
-      "updated_at": "2023-03-23T01:24:00.965Z",
-      "professor": "Michel",
-      "disciplina": "Arquitetura e Organização de Computadores",
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 9,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 10,
-      "laboratorio": "Disponivel"
-    },
-  ],
-  "laboratorio3": [
-    {
-      "id": 11,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 12,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 13,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 14,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 15,
-      "laboratorio": "Disponivel"
-    },
-  ],
-  "laboratorio4": [
-    {
-      "id": 16,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 17,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 18,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 19,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 20,
-      "laboratorio": "Disponivel"
-    },
-  ],
-  "laboratorio5": [
-    {
-      "id": 21,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 22,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 23,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 24,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 25,
-      "laboratorio": "Disponivel"
-    },
-  ],
-  "laboratorio6": [
-    {
-      "id": 26,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 27,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 28,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 29,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 30,
-      "laboratorio": "Disponivel"
-    },
-  ],
-  "salamaker": [
-    {
-      "id": 31,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 32,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 33,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 34,
-      "laboratorio": "Disponivel"
-    },
-    {
-      "id": 35,
-      "laboratorio": "Disponivel"
-    },
-  ],
+interface Professor {
+  id: number;
+  name: string;
 }
+
+// const mockdata: any = {
+//   "laboratorio1": [
+//     {
+//       "id": 1,
+//       "laboratorio": "Disponivel",
+//       "id_laboratorio": "1",
+//     },
+//     {
+//       "id": 2,
+//       "semestre": "1",
+//       "created_at": "2023-03-23T01:24:00.965Z",
+//       "updated_at": "2023-03-23T01:24:00.965Z",
+//       "professor": "Cilmara",
+//       "disciplina": "Algoritmos e Lógica de Programação",
+//       "laboratorio": "Indisponivel",
+//       "ScheduleData": {
+//         "id": 2,
+//         "horario_inicio": "19:45",
+//         "horario_fim": "20:35",
+//         "dia_da_semana": "00001",
+//         "semestre": "1",
+//         "created_at": "2023-03-23T01:24:00.965Z",
+//       }
+//     },
+//     {
+//       "id": 3,
+//       "horario_inicio": "20:35",
+//       "horario_fim": "21:25",
+//       "dia_da_semana": "00002",
+//       "semestre": "1",
+//       "created_at": "2023-03-23T01:24:00.965Z",
+//       "updated_at": "2023-03-23T01:24:00.965Z",
+//       "professor": "Michel",
+//       "disciplina": "Algoritmos e Lógica de Programação",
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 4,
+//       "horario_inicio": "21:25",
+//       "horario_fim": "22:15",
+//       "dia_da_semana": "00002",
+//       "semestre": "1",
+//       "created_at": "2023-03-23T01:24:00.965Z",
+//       "updated_at": "2023-03-23T01:24:00.965Z",
+//       "professor": "Manuela",
+//       "disciplina": "Algoritmos e Lógica de Programação",
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 5,
+//       "horario_inicio": "22:15",
+//       "horario_fim": "23:05",
+//       "dia_da_semana": "00002",
+//       "semestre": "1",
+//       "created_at": "2023-03-23T01:24:00.965Z",
+//       "updated_at": "2023-03-23T01:24:00.965Z",
+//       "professor": "Manuela",
+//       "disciplina": "Algoritmos e Lógica de Programação",
+//       "laboratorio": "Disponivel"
+//     }
+//   ],
+//   "laboratorio2": [
+//     {
+//       "id": 6,
+//       "horario_inicio": "18:45",
+//       "horario_fim": "19:35",
+//       "dia_da_semana": "00003",
+//       "semestre": "1",
+//       "created_at": "2023-03-23T01:24:00.965Z",
+//       "updated_at": "2023-03-23T01:24:00.965Z",
+//       // "professor": "Divani",
+//       // "disciplina": "Arquitetura e Organização de Computadores",
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 7,
+//       "horario_inicio": "19:35",
+//       "horario_fim": "20:25",
+//       "dia_da_semana": "00003",
+//       "semestre": "1",
+//       "created_at": "2023-03-23T01:24:00.965Z",
+//       "updated_at": "2023-03-23T01:24:00.965Z",
+//       // "professor": "Cilmara",
+//       // "disciplina": "Arquitetura e Organização de Computadores",
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 8,
+//       "horario_inicio": "20:35",
+//       "horario_fim": "21:25",
+//       "dia_da_semana": "00003",
+//       "semestre": "1",
+//       "created_at": "2023-03-23T01:24:00.965Z",
+//       "updated_at": "2023-03-23T01:24:00.965Z",
+//       "professor": "Michel",
+//       "disciplina": "Arquitetura e Organização de Computadores",
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 9,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 10,
+//       "laboratorio": "Disponivel"
+//     },
+//   ],
+//   "laboratorio3": [
+//     {
+//       "id": 11,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 12,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 13,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 14,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 15,
+//       "laboratorio": "Disponivel"
+//     },
+//   ],
+//   "laboratorio4": [
+//     {
+//       "id": 16,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 17,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 18,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 19,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 20,
+//       "laboratorio": "Disponivel"
+//     },
+//   ],
+//   "laboratorio5": [
+//     {
+//       "id": 21,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 22,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 23,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 24,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 25,
+//       "laboratorio": "Disponivel"
+//     },
+//   ],
+//   "laboratorio6": [
+//     {
+//       "id": 26,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 27,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 28,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 29,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 30,
+//       "laboratorio": "Disponivel"
+//     },
+//   ],
+//   "salamaker": [
+//     {
+//       "id": 31,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 32,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 33,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 34,
+//       "laboratorio": "Disponivel"
+//     },
+//     {
+//       "id": 35,
+//       "laboratorio": "Disponivel"
+//     },
+//   ],
+// }
 
 interface ScheduleItem {
   id: number;
@@ -397,11 +405,16 @@ const Agendamentos: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectedLaboratory, setSelectedLaboratory] = useState(-1);
 
-  const [userData, setUserData] = useState<ProfessoreProps>(
+  const [userRole, setUserRole] = useState('');
+
+  const [userData, setUserData] = useState(
     {
-      id: 0,
-      name: 'Selecione um professor',
-    },
+      userData: {
+        id: 0,
+        name: "Selecione um professor",
+      },
+      token: ""
+    }
   );
 
   const [professores, setProfessores] = useState<ProfessoreProps[]>([
@@ -411,10 +424,10 @@ const Agendamentos: React.FC = () => {
     },
   ]);
 
-  const [selectedProfessor, setSelectedProfessor] = useState(
+  const [selectedProfessor, setSelectedProfessor] = useState<Professor>(
     {
-      id: userData.id,
-      name: userData.name,
+      id: 0,
+      name: "Selecione um professor",
     },
   );
 
@@ -424,94 +437,92 @@ const Agendamentos: React.FC = () => {
 
   const [firstRender, setFirstRender] = useState(true)
 
-  useEffect(() => {
-    console.log("geting all professors")
+  useLayoutEffect(() => {
+    console.log('Starting to render stuff...');
 
-    const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+    if (userData.token === '' || userData.userData.id === 0) {
+      console.log('userData is null');
 
-    const userDataJson = JSON.parse(localUserData || '{}');
+      const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+      const userDataJson = JSON.parse(localUserData || '{}');
+      const { userData: storedUserData, token } = userDataJson;
 
-    const token = userDataJson.token;
-    const userData = userDataJson.userData;
+      console.log('userData' + storedUserData);
+      console.log('token' + token);
 
-    setUserData(userData)
-
-    console.log("token" + token)
-    console.log("userData" + userData)
-
-    if (token == null || userData == null) {
-      toast.error('Você precisa estar logado para acessar essa página!');
-      localStorage.removeItem('gerenciamento-de-salas@v1.1');
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 2000)
-    }
-    else {
-      fetchData(token);
-    }
-
-    setloggedUserGrade(userData)
-
-    console.log("userData.name: " + userData.name)
-    console.log(selectedProfessor)
-
-  }, [selectedProfessor])
-
-  function setUserSearchlikeloggeduser() {
-    //search at the professor list and search by name and if found setSelectedProfessor as the user 
-
-    const foundProfessor = professores.find(professor => professor.name === userData.name)
-
-    if (foundProfessor) {
-      setSelectedProfessor(foundProfessor)
-    }
-
-  }
-
-  useEffect(() => {
-
-    console.log("First render: " + firstRender)
-
-    async function fetchData() {
-      console.log("Fetching data")
-      fetch('http://localhost:3333/grade/agendamentos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          professor_id: selectedProfessor.id,
-          semestre: "1", //add localStorage later
-        })
-      }).then((response) => response.json()).then((data) => {
-        // console.log(data)
-
-        const transformedData = groupByWeekday(data)
-        // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-        printGradeValue(transformedData)
-
-        setLoading(true) // teste de loading
-
-        // setLoading(true)
-        return setgrade(transformedData as any)
+      if (token == null || localUserData == null) {
+        toast.error('Você precisa estar logado para acessar essa página!');
+        localStorage.removeItem('gerenciamento-de-salas@v1.1');
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
+      } else {
+        console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+        setUserData(userDataJson);
+        setUserRole(userDataJson.userData.role);
       }
-      )
     }
+  }, [userData]);
 
-    fetchData();
+  useEffect(() => {
+    if (userData.token !== '' && userData.userData.id !== 0) {
+      fetchGrades();
+      fetchProfessors(userData.token);
+      if (userRole === 'professor' && userData.userData.id == 0) {
+        setProfessorAsSelected(userData.userData.name, userData.userData.id);
+      }
+      console.log(selectedProfessor);
+    }
+  }, [userData, selectedProfessor]);
 
-  }, [selectedProfessor])
+  const setProfessorAsSelected = (userName: string, userId: number) => {
+    const matchingProfessor = professores.find(
+      (professor) => professor.id === userId && professor.name === userName
+    );
 
-  async function fetchData(token: string) {
+    if (matchingProfessor) {
+      // Replace "setSelectedProfessor" with the function you use to set the selected professor in your state
+      setSelectedProfessor(matchingProfessor);
+    }
+  };
+
+  async function fetchProfessors(token: string) {
+    console.log("Fetching fetchProfessors...")
     await fetch('http://localhost:3333/professors', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
       }
     }).then((response) => response.json()).then((data) => {
-      console.log(data)
+      // console.log(data)
       return setProfessores(data)
     });
+  }
+
+  async function fetchGrades() {
+    console.log("Fetching fetchGrades...")
+    fetch('http://localhost:3333/grade/agendamentos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        professor_id: selectedProfessor.id,
+        semestre: "1", //add localStorage later
+      })
+    }).then((response) => response.json()).then((data) => {
+      // console.log(data)
+
+      const transformedData = groupByWeekday(data)
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      printGradeValue(transformedData)
+
+      setLoading(true) // teste de loading
+
+      // setLoading(true)
+      return setgrade(transformedData as any)
+    }
+    )
   }
 
   // const [monday, friday] = getWeekDays(startDate, endDate);
@@ -729,11 +740,12 @@ const Agendamentos: React.FC = () => {
     )
   };
   //#todo
-  const handleSelectChange = (event) => {
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     console.log(event.target.value)
 
     const professorObject = {
-      id: event.target.value,
+      id: parseInt(event.target.value),
       name: "test"
     }
     setSelectedProfessor(
@@ -782,11 +794,17 @@ const Agendamentos: React.FC = () => {
               <p>Professor</p>
               <select value={selectedProfessor.name} onChange={handleSelectChange}>
                 {
-                  // professores.map((professor) => {
-                  //   return (
-                  //     <option value={professor.id}>{professor.name}</option>
-                  //   )
-                  // })
+                  professores && professores.length > 0 ? (
+                    professores.map((professor) => {
+                      return (
+                        <option key={professor.id} value={professor.id}>
+                          {professor.name}
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option value="">No professors available</option>
+                  )
                 }
               </select>
             </CalendarWrapper>
