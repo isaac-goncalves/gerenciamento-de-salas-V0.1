@@ -289,8 +289,6 @@ const mockdata: any = {
       "laboratorio": "Disponivel"
     },
   ],
-
-
 }
 
 interface ScheduleItem {
@@ -367,7 +365,7 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
 
 function printGradeValue(gradeValue: any) {
 
-  console.log("Grade Value: " + JSON.stringify(gradeValue, null, 2))
+  // console.log("Grade Value: " + JSON.stringify(gradeValue, null, 2))
 
 }
 
@@ -378,6 +376,11 @@ interface GradeProps {
   quarta: any;
   quinta: any;
   sexta: any;
+}
+
+interface ProfessoreProps {
+  id: number;
+  name: string;
 }
 
 const Agendamentos: React.FC = () => {
@@ -394,11 +397,122 @@ const Agendamentos: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [selectedLaboratory, setSelectedLaboratory] = useState(-1);
 
+  const [userData, setUserData] = useState<ProfessoreProps>(
+    {
+      id: 0,
+      name: 'Selecione um professor',
+    },
+  );
+
+  const [professores, setProfessores] = useState<ProfessoreProps[]>([
+    {
+      id: 0,
+      name: "Selecione um professor",
+    },
+  ]);
+
+  const [selectedProfessor, setSelectedProfessor] = useState(
+    {
+      id: userData.id,
+      name: userData.name,
+    },
+  );
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
 
   const [firstRender, setFirstRender] = useState(true)
+
+  useEffect(() => {
+    console.log("geting all professors")
+
+    const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+
+    const userDataJson = JSON.parse(localUserData || '{}');
+
+    const token = userDataJson.token;
+    const userData = userDataJson.userData;
+
+    setUserData(userData)
+
+    console.log("token" + token)
+    console.log("userData" + userData)
+
+    if (token == null || userData == null) {
+      toast.error('Você precisa estar logado para acessar essa página!');
+      localStorage.removeItem('gerenciamento-de-salas@v1.1');
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000)
+    }
+    else {
+      fetchData(token);
+    }
+
+    setloggedUserGrade(userData)
+
+    console.log("userData.name: " + userData.name)
+    console.log(selectedProfessor)
+
+  }, [selectedProfessor])
+
+  function setUserSearchlikeloggeduser() {
+    //search at the professor list and search by name and if found setSelectedProfessor as the user 
+
+    const foundProfessor = professores.find(professor => professor.name === userData.name)
+
+    if (foundProfessor) {
+      setSelectedProfessor(foundProfessor)
+    }
+
+  }
+
+  useEffect(() => {
+
+    console.log("First render: " + firstRender)
+
+    async function fetchData() {
+      console.log("Fetching data")
+      fetch('http://localhost:3333/grade/agendamentos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          professor_id: selectedProfessor.id,
+          semestre: "1", //add localStorage later
+        })
+      }).then((response) => response.json()).then((data) => {
+        // console.log(data)
+
+        const transformedData = groupByWeekday(data)
+        // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+        printGradeValue(transformedData)
+
+        setLoading(true) // teste de loading
+
+        // setLoading(true)
+        return setgrade(transformedData as any)
+      }
+      )
+    }
+
+    fetchData();
+
+  }, [selectedProfessor])
+
+  async function fetchData(token: string) {
+    await fetch('http://localhost:3333/professors', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'bearer ' + token,
+      }
+    }).then((response) => response.json()).then((data) => {
+      console.log(data)
+      return setProfessores(data)
+    });
+  }
 
   // const [monday, friday] = getWeekDays(startDate, endDate);
 
@@ -413,6 +527,11 @@ const Agendamentos: React.FC = () => {
   //   return [monday, friday];
   // }
 
+  const options = [
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ];
 
   const mapWeekdayToNumber = (weekday: string) => {
     switch (weekday) {
@@ -487,39 +606,23 @@ const Agendamentos: React.FC = () => {
     setModalVisible(false);
   };
 
-  useEffect(() => {
+  function setloggedUserGrade(userData: any) {
+    //check if userData.name is inside professors array and set selected professor acordingly
 
-    console.log("First render: " + firstRender)
+    console.log("userData.name: " + userData.name)
 
-    async function fetchData() {
-      console.log("Fetching data")
-      fetch('http://localhost:3333/grade/agendamentos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          professor_id: 8,
-          semestre: "1", //add localStorage later
-        })
-      }).then((response) => response.json()).then((data) => {
-        console.log(data)
+    const professorNameExists = professores.find(professor => professor.name === userData.name)
 
-        const transformedData = groupByWeekday(data)
-        console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-        printGradeValue(transformedData)
-
-        setLoading(true) // teste de loading
-
-        // setLoading(true)
-        return setgrade(transformedData as any)
-      }
-      )
+    if (professorNameExists) {
+      console.log("Professor Name Exists")
+      setSelectedProfessor(professorNameExists)
+    }
+    else {
+      console.log("Professor Name does not exist")
     }
 
-    fetchData();
+  }
 
-  }, [])
 
   const handleSelection = (id: number, labId: number) => {
     // console.log(id)
@@ -625,6 +728,18 @@ const Agendamentos: React.FC = () => {
       </WeekContainer>
     )
   };
+  //#todo
+  const handleSelectChange = (event) => {
+    console.log(event.target.value)
+
+    const professorObject = {
+      id: event.target.value,
+      name: "test"
+    }
+    setSelectedProfessor(
+      professorObject
+    )
+  }
 
   return (
     <Container>
@@ -664,6 +779,16 @@ const Agendamentos: React.FC = () => {
               <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
               ao dia
               <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
+              <p>Professor</p>
+              <select value={selectedProfessor.name} onChange={handleSelectChange}>
+                {
+                  // professores.map((professor) => {
+                  //   return (
+                  //     <option value={professor.id}>{professor.name}</option>
+                  //   )
+                  // })
+                }
+              </select>
             </CalendarWrapper>
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>

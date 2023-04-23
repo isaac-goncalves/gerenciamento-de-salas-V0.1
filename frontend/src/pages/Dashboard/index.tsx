@@ -89,6 +89,8 @@ const Dashboard: React.FC = () => {
     setSelectedValue(event.target.value)
   }
 
+ 
+
   useEffect(() => {
     console.log("Verificando usuário")
     
@@ -104,6 +106,7 @@ const Dashboard: React.FC = () => {
       console.log("token" + token)
       console.log("userData" + userData)
 
+      // setloggedUserGrade(userData)
       
       if (token == null || userData == null) {
         toast.error('Você precisa estar logado para acessar essa página!');

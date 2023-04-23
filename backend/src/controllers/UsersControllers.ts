@@ -44,7 +44,8 @@ export class UserController {
 
       const newUser = usuariosRepository.create({
         email,
-        password: encriptedPassword
+        password: encriptedPassword,
+        role: role
       })
 
       const savedUser = await usuariosRepository.save(newUser) //essa parte me preocupa
@@ -182,6 +183,58 @@ export class UserController {
   }
 }
 
+async verifyVoid(request: Request, response: Response, next: any) {
+  console.log('verifyVOIDED')
+
+  const authHeader = request.headers.authorization
+
+if (!authHeader) {
+  return response
+    .status(400)
+    .json({ error: 'Authorization header is missing' })
+}
+
+const [, token] = authHeader.split(' ')
+
+if (!token) {
+  return response
+    .status(400)
+    .json({ error: 'Token is missing' })
+}
+
+try {
+  const decoded = jwt.verify(token, process.env.JWT_PASS ?? '') as DecodedPayload
+
+  console.log(decoded.id)
+
+  // uncomment the following lines once you have a working user repository
+   const userExists = await usuariosRepository.findOneBy({ id: decoded.id })
+
+   if (!userExists) {
+     return response.status(400).json({ error: 'User does not exist' })
+   }
+   else {
+    console.log("user exists")
+    //go to next function in the route
+    next()
+   }
+
+} catch (error: any) {
+
+  console.log("error" + error)
+
+  if(error == "TokenExpiredError: jwt expired"){
+    return response.status(400).json({ error: 'Token expired' })
+  }
+
+  if(error == "JsonWebTokenError: invalid signature"){
+    return response.status(400).json({ error: 'Invalid token' })
+  }
+
+  return response.status(500).json({ error: 'Internal server error' })
+}
+}
+
   async login (request: Request, response: Response) {
     const { email, password } = request.body
 
@@ -193,35 +246,49 @@ export class UserController {
         .json({ error: 'email or password is missing' })
     }
     try {
+
       const userExists = await usuariosRepository.findOneBy({ email })
-
-      console.log(userExists)
-
+      
       if (!userExists) {
         return response.status(400).json({ error: 'E-mail ou senha inválidos' })
       }
-
+      
       const passwordMatch = await bcrypt.compare(password, userExists.password)
-
+      
       if (!passwordMatch) {
         return response.status(400).json({ error: 'E-mail ou senha inválidos' })
       }
-
+      
       const token = jwt.sign(
         { id: userExists.id },
         process.env.JWT_PASS ?? '',
         {
           expiresIn: '8h'
         }
-      )
+        )
+        
+        console.log(userExists.email)
 
-      const { password: _, ...userLogin } = userExists
+        let userData = {} as any
 
-      return response.status(201).json({
-        userData: userLogin,
-        token: token
-      })
-    } catch (error) {
+          if (userExists.role === 'aluno') {
+            const aluno = await alunosRepository.findOneBy({ user_id: userExists.id })
+            console.log(aluno)
+            userData = aluno
+          } else if (userExists.role === 'professor') {
+      
+            const professor = await professoresRepository.findOneBy({ user_id: userExists.id })
+            console.log(professor)
+            userData = professor
+        }
+
+        userData.role = userExists.role
+
+        return response.status(201).json({
+          userData: userData,
+          token: token
+        })
+      } catch (error) {
       console.log(error)
       return response.status(500).json({ message: 'internal server error' })
     }

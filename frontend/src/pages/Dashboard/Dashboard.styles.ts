@@ -90,11 +90,11 @@ export const Semester = styled.h2`
   select {
     margin-right: 0.5rem;
     color: ${Colors.mainpurple};
-    border: 1px solid ${Colors.textcolor};
+    border: 1px solid ${Colors.lightgrayborder};
     border-radius: 4px;
   }
   select:focus {
-    outline: none;
+    border-color: #2980b9;
   }
 `
 

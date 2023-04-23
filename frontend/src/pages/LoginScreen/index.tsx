@@ -25,7 +25,7 @@ interface InputProps {
 
 const LoginScreen: React.FC = () => {
     const [email, setEmail] = useState("isaac@gmail.com");
-    const [password, setPassword] = useState("password123$");
+    const [password, setPassword] = useState("Password123");
     const [form, setForm] = useState("login");
     const [role, setRole] = useState("");
 

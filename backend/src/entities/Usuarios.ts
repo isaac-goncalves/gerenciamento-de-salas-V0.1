@@ -12,6 +12,9 @@ export class Usuarios  {
     @Column()
     password: string;
 
+    @Column()
+    role: string;
+
     @CreateDateColumn()
     created_at: Date;
 
