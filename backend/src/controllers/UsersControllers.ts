@@ -11,7 +11,7 @@ import { professoresRepository } from '../repositories/professoresRepositories'
 // import { employeesRepository } from "../repositories/employeesRepository";
 
 interface DecodedPayload {
-  id: number;
+  id: number
   // add other properties from the payload here
 }
 
@@ -135,105 +135,103 @@ export class UserController {
       return response.status(500).json({ message: 'Internal server error' })
     }
   }
-  async verify(request: Request, response: Response) {
+  async verify (request: Request, response: Response) {
     console.log('verify')
 
     const authHeader = request.headers.authorization
 
-  if (!authHeader) {
-    return response
-      .status(400)
-      .json({ error: 'Authorization header is missing' })
-  }
-
-  const [, token] = authHeader.split(' ')
-
-  if (!token) {
-    return response
-      .status(400)
-      .json({ error: 'Token is missing' })
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_PASS ?? '') as DecodedPayload
-
-    console.log(decoded.id)
-
-    // uncomment the following lines once you have a working user repository
-     const userExists = await usuariosRepository.findOneBy({ id: decoded.id })
-
-     if (!userExists) {
-       return response.status(400).json({ error: 'User does not exist' })
-     }
-
-    return response.status(200).json({ message: 'User verified' })
-  } catch (error: any) {
-
-    console.log("error" + error)
-  
-    if(error == "TokenExpiredError: jwt expired"){
-      return response.status(400).json({ error: 'Token expired' })
+    if (!authHeader) {
+      return response
+        .status(400)
+        .json({ error: 'Authorization header is missing' })
     }
 
-    if(error == "JsonWebTokenError: invalid signature"){
-      return response.status(400).json({ error: 'Invalid token' })
+    const [, token] = authHeader.split(' ')
+
+    if (!token) {
+      return response.status(400).json({ error: 'Token is missing' })
     }
 
-    return response.status(500).json({ error: 'Internal server error' })
-  }
-}
+    try {
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_PASS ?? ''
+      ) as DecodedPayload
 
-async verifyVoid(request: Request, response: Response, next: any) {
-  console.log('verifyVOIDED')
+      console.log(decoded.id)
 
-  const authHeader = request.headers.authorization
+      // uncomment the following lines once you have a working user repository
+      const userExists = await usuariosRepository.findOneBy({ id: decoded.id })
 
-if (!authHeader) {
-  return response
-    .status(400)
-    .json({ error: 'Authorization header is missing' })
-}
+      if (!userExists) {
+        return response.status(400).json({ error: 'User does not exist' })
+      }
 
-const [, token] = authHeader.split(' ')
+      return response.status(200).json({ message: 'User verified' })
+    } catch (error: any) {
+      console.log('error' + error)
 
-if (!token) {
-  return response
-    .status(400)
-    .json({ error: 'Token is missing' })
-}
+      if (error == 'TokenExpiredError: jwt expired') {
+        return response.status(400).json({ error: 'Token expired' })
+      }
 
-try {
-  const decoded = jwt.verify(token, process.env.JWT_PASS ?? '') as DecodedPayload
+      if (error == 'JsonWebTokenError: invalid signature') {
+        return response.status(400).json({ error: 'Invalid token' })
+      }
 
-  console.log(decoded.id)
-
-  // uncomment the following lines once you have a working user repository
-   const userExists = await usuariosRepository.findOneBy({ id: decoded.id })
-
-   if (!userExists) {
-     return response.status(400).json({ error: 'User does not exist' })
-   }
-   else {
-    console.log("user exists")
-    //go to next function in the route
-    next()
-   }
-
-} catch (error: any) {
-
-  console.log("error" + error)
-
-  if(error == "TokenExpiredError: jwt expired"){
-    return response.status(400).json({ error: 'Token expired' })
+      return response.status(500).json({ error: 'Internal server error' })
+    }
   }
 
-  if(error == "JsonWebTokenError: invalid signature"){
-    return response.status(400).json({ error: 'Invalid token' })
-  }
+  async verifyVoid (request: Request, response: Response, next: any) {
+    console.log('verifyVOIDED')
 
-  return response.status(500).json({ error: 'Internal server error' })
-}
-}
+    const authHeader = request.headers.authorization
+
+    if (!authHeader) {
+      return response
+        .status(400)
+        .json({ error: 'Authorization header is missing' })
+    }
+
+    const [, token] = authHeader.split(' ')
+
+    if (!token) {
+      return response.status(400).json({ error: 'Token is missing' })
+    }
+
+    try {
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_PASS ?? ''
+      ) as DecodedPayload
+
+      console.log(decoded.id)
+
+      // uncomment the following lines once you have a working user repository
+      const userExists = await usuariosRepository.findOneBy({ id: decoded.id })
+
+      if (!userExists) {
+        return response.status(400).json({ error: 'User does not exist' })
+      } else {
+        console.log('user exists')
+        //go to next function in the route
+        next()
+      }
+    } catch (error: any) {
+      console.log('error' + error)
+
+      if (error == 'TokenExpiredError: jwt expired') {
+        return response.status(400).json({ error: 'Token expired' })
+      }
+
+      if (error == 'JsonWebTokenError: invalid signature') {
+        return response.status(400).json({ error: 'Invalid token' })
+      }
+
+      return response.status(500).json({ error: 'Internal server error' })
+    }
+  }
 
   async login (request: Request, response: Response) {
     const { email, password } = request.body
@@ -246,50 +244,93 @@ try {
         .json({ error: 'email or password is missing' })
     }
     try {
-
       const userExists = await usuariosRepository.findOneBy({ email })
-      
+
       if (!userExists) {
         return response.status(400).json({ error: 'E-mail ou senha inválidos' })
       }
-      
+
       const passwordMatch = await bcrypt.compare(password, userExists.password)
-      
+
       if (!passwordMatch) {
         return response.status(400).json({ error: 'E-mail ou senha inválidos' })
       }
-      
+
       const token = jwt.sign(
         { id: userExists.id },
         process.env.JWT_PASS ?? '',
         {
           expiresIn: '8h'
         }
-        )
-        
-        console.log(userExists.email)
+      )
 
-        let userData = {} as any
+      console.log(userExists.email)
 
-          if (userExists.role === 'aluno') {
-            const aluno = await alunosRepository.findOneBy({ user_id: userExists.id })
-            console.log(aluno)
-            userData = aluno
-          } else if (userExists.role === 'professor') {
-      
-            const professor = await professoresRepository.findOneBy({ user_id: userExists.id })
-            console.log(professor)
-            userData = professor
-        }
+      let userData = {} as any
 
-        userData.role = userExists.role
-
-        return response.status(201).json({
-          userData: userData,
-          token: token
+      if (userExists.role === 'aluno') {
+        const aluno = await alunosRepository.findOneBy({
+          user_id: userExists.id
         })
-      } catch (error) {
+        console.log(aluno)
+        userData = aluno
+      } else if (userExists.role === 'professor') {
+        const professor = await professoresRepository.findOneBy({
+          user_id: userExists.id
+        })
+        console.log(professor)
+        userData = professor
+      }
+
+      userData.role = userExists.role
+
+      return response.status(201).json({
+        userData: userData,
+        token: token
+      })
+    } catch (error) {
       console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
+    }
+  }
+  async get (request: Request, response: Response) {
+    console.log('get usuários')
+
+    try {
+      const usuarios = await usuariosRepository.find()
+
+
+      console.log(JSON.stringify(usuarios, null, 2))
+
+      return response.status(200).json(usuarios)
+    } catch (error) {
+      return response.status(500).json({ message: 'internal server error' })
+    }
+  }
+  async getAlunos (request: Request, response: Response) {
+    console.log('get Alunos')
+
+    try {
+      const usuarios = await alunosRepository.find()
+
+
+      console.log(JSON.stringify(usuarios, null, 2))
+
+      return response.status(200).json(usuarios)
+    } catch (error) {
+      return response.status(500).json({ message: 'internal server error' })
+    }
+  }
+  async getProfessores (request: Request, response: Response) {
+    console.log('get Professores')
+
+    try {
+      const usuarios = await professoresRepository.find()
+
+      console.log(JSON.stringify(usuarios, null, 2))
+
+      return response.status(200).json(usuarios)
+    } catch (error) {
       return response.status(500).json({ message: 'internal server error' })
     }
   }

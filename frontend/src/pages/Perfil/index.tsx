@@ -3,31 +3,62 @@ import React, { useEffect, useState } from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+import PacmanLoader from 'react-spinners/PacmanLoader';
+
 import {
     Container, Header, Separator,
     SearchBar, TableSelector, TableContainer, Wrapper, CounterWrapper
 } from './Perfil.styles';
 
+import { toast } from 'react-toastify';
+
 function Perfil() {
 
+    const apiUrl = 'http://localhost:3333';
     const [userData, setUserData] = React.useState<UserData[]>([])
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
+    const [alunosData, setAlunosData] = React.useState<AlunosData[]>([])
+    const [professoresData, setProfessoresData] = React.useState<ProfessoresData[]>([])
 
-    const [selectedCategory, setSelectedCategory] = useState('Usuários');
-    const [selectedTable, setSelectedTable] = useState('alunos');
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [Error, setError] = React.useState(true);
+
+    const [selectedTable, setSelectedTable] = useState('agendamentos');
+    const [selectedCategory, setSelectedCategory] = useState('Alunos');
 
     useEffect(() => {
-        fetch('http://localhost:3333/users')
-            .then(response => response.json())
-            .then(data => setUserData(data))
-    }, [])
+        async function fetchData() {
+            try {
+                const [
+                    appointmentDataResponse,
+                    userDataResponse,
+                    alunosDataResponse,
+                    professoresDataResponse
+                ] = await Promise.all([
+                    fetch(`${apiUrl}/agendamento`).then(res => res.json()),
+                    fetch(`${apiUrl}/usuarios`).then(res => res.json()),
+                    fetch(`${apiUrl}/alunos`).then(res => res.json()),
+                    fetch(`${apiUrl}/professores`).then(res => res.json())
+                ]);
 
-    useEffect(() => {
-        fetch('http://localhost:3333/agendamento')
-            .then(response => response.json())
-            .then(data => setAppointmentData(data))
-    }, [])
+                setUserData(userDataResponse);
+                setAppointmentData(appointmentDataResponse);
+                setAlunosData(alunosDataResponse);
+                setProfessoresData(professoresDataResponse);
 
+                setTimeout(() => {
+                    setIsLoading(true);
+                }, 2000);
+
+            } catch (error) {
+                console.error(error);
+                toast.error('Erro ao carregar dados da tabela. Tente novamente mais tarde.')
+                setError(true);
+            }
+        }
+
+        fetchData();
+    }, []);
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value);
@@ -36,55 +67,6 @@ function Perfil() {
     const handleTableChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedTable(event.target.value);
     }
-
-
-    interface UserData {
-        id: number;
-        name: string;
-        email: string
-        semester: string;
-        course: string;
-    }
-
-    const UsersTable = ({ data }: any) => {
-        return (
-            <TableContainer>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Semestre</th>
-                        <th>Curso</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {data.map((user: UserData) => (
-                        <tr key={user.id}>
-
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.semester}</td>
-
-                            <td>{user.course}</td>
-
-                        </tr>
-                    ))}
-                </tbody>
-            </TableContainer>
-        )
-    }
-
-    // "id": 362,
-    // "date": "2023-04-01",
-    // "horario_inicio": "22:15",
-    // "horario_fim": "23:05",
-    // "id_professor": "1234",
-    // "id_grade": "5",
-    // "id_laboratorio": "9012",
-    // "created_at": "2023-04-02T02:21:57.071Z",
-    // "updated_at": "2023-04-02T02:21:57.071Z"
 
     interface AppointmentData {
         id: number;
@@ -137,11 +119,138 @@ function Perfil() {
         )
     }
 
+    // "id":1,"email":"isaac@gmail.com","password":"$2b$08$ehGz3Y/Tz24MkwvKuj9tz.Nry5TfJgbB22CHf85xeNPXYAPt5/16e","role":"professor","created_at":"2023-04-26T22:29:28.728Z","updated_at":"2023-04-26T22:29:28.728Z"}
+
+    interface UserData {
+        id: number
+        name: string
+        email: string
+        role: string
+        created_at: string
+        updated_at: string
+    }
+
+    const UsersTable = ({ data }: any) => {
+        return (
+            <TableContainer>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Tipo</th>
+                        <th>Criado em</th>
+                        <th>Atualizado em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.map((user: UserData) => (
+                        <tr key={user.id}>
+                            <td>{user.id}</td>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>{user.role}</td>
+                            <td>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</td>
+                            <td>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </TableContainer>
+        )
+    }
+
+    interface AlunosData {
+        id: number
+        name: string
+        surname: string
+        email: string
+        user_id: number
+        semester: number
+        created_at: string
+    }
+
+    const AlunosTable = ({ data }: any) => {
+        return (
+            <TableContainer>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Sobrenome</th>
+                        <th>Email</th>
+                        <th>Semestre</th>
+                        <th>Criado em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.map((aluno: AlunosData) => (
+                        <tr key={aluno.id}>
+                            <td>{aluno.id}</td>
+                            <td>{aluno.name}</td>
+                            <td>{aluno.surname}</td>
+                            <td>{aluno.email}</td>
+                            <td>{aluno.semester}</td>
+                            <td>{aluno.created_at}</td>
+                            <td>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </TableContainer>
+        )
+    }
+
+    interface ProfessoresData {
+        id: number
+        name: string
+        surname: string
+        email: string
+        user_id: number
+        disciplina: string
+        created_at: string
+    }
+
+    const ProfessoresTable = ({ data }: any) => {
+        return (
+            <TableContainer>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Sobrenome</th>
+                        <th>Email</th>
+                        <th>Disciplina</th>
+                        <th>Criado em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.map((professor: ProfessoresData) => (
+                        <tr key={professor.id}>
+                            <td>{professor.id}</td>
+                            <td>{professor.name}</td>
+                            <td>{professor.surname}</td>
+                            <td>{professor.email}</td>
+                            <td>{professor.disciplina}</td>
+                            <td>{formatDistanceToNow(new Date(professor.created_at), { locale: ptBR })} atrás</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </TableContainer>
+        )
+    }
+    // 
+
     const renderTable = () => {
-        if (selectedCategory === 'Usuários') {
-            return <UsersTable data={userData} />
-        } else if (selectedCategory === 'Agendamentos') {
+        if (selectedTable === 'agendamentos') {
             return <AppointmentTable data={appointmentData} />
+        }
+        else if (selectedTable === 'usuarios') {
+            return <UsersTable data={userData} />
+        }
+        else if (selectedTable === 'alunos') {
+            return <AlunosTable data={alunosData} />
+        }
+        else if (selectedTable === 'professores') {
+            return <ProfessoresTable data={professoresData} />
         }
     }
 
@@ -150,39 +259,63 @@ function Perfil() {
             <Wrapper>
                 <Header>
                     <CounterWrapper>
-                        <h1>176</h1>
+                        {
+                            isLoading ?
+                                (<h1>{alunosData.length}</h1>)
+                                :
+                                (<PacmanLoader />)
+                        }
                         <p>Alunos</p>
                     </CounterWrapper>
                     <Separator></Separator>
                     <CounterWrapper>
-                        <h1>16</h1>
+                        {
+                            isLoading ?
+                                (<h1>{professoresData.length}</h1>)
+                                :
+                                (<PacmanLoader />)
+                        }
                         <p>Professores</p>
                     </CounterWrapper>
                     <Separator></Separator>
                     <CounterWrapper>
-                        <h1>5 </h1>
+                        {
+                            isLoading ?
+                                (<h1>{professoresData.length}</h1>)
+                                :
+                                (<PacmanLoader />)
+                        }
                         <p>Coordenadores</p>
                     </CounterWrapper>
                 </Header>
-
                 <SearchBar>
                     <input type="text" placeholder="Pesquisar" />
                     <button type="submit">Convidar</button>
                 </SearchBar>
-
                 <TableSelector>
-                    <select value={selectedCategory} onChange={handleCategoryChange}>
-                        <option value="Agendamentos">Agendamentos</option>
-                        <option value="Usuários">Usuários</option>
-                    </select>
-                    <select name="table" id="table" value={selectedTable} onChange={handleTableChange}>
+                    <select value={selectedTable} onChange={handleTableChange}>
+                        <option value="agendamentos">Agendamentos</option>
+                        <option value="usuarios">Usuários</option>
                         <option value="alunos">Alunos</option>
                         <option value="professores">Professores</option>
-                        <option value="administradores">Administradores</option>
                     </select>
+                    {
+                        selectedTable == "usuarios" &&
+                        <select name="table" id="table" value={selectedCategory} onChange={handleCategoryChange}>
+                            <option value="alunos">Alunos</option>
+                            <option value="professores">Professores</option>
+                            <option value="administradores">Administradores</option>
+                        </select>
+                    }
                 </TableSelector>
                 <TableContainer>
-                    {renderTable()}
+                    {
+                        isLoading ?
+                            renderTable()
+                            :
+                            (<PacmanLoader />)
+                    }
+
                 </TableContainer>
             </Wrapper>
         </Container>

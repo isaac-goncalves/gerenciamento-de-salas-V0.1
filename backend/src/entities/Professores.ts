@@ -34,7 +34,7 @@ export class Professores {
   @Column({
     nullable: true
   })
-  disciplina: string
+  disciplina: number
 
   @Column({
     nullable: true

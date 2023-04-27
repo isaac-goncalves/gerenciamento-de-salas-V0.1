@@ -21,6 +21,10 @@ routes.get('/agendamento', new AgendamentoController().get)
 
 routes.post('/login', new UserController().login)
 routes.post('/register', new UserController().create)
+
+routes.get('/usuarios', new UserController().get)
+routes.get('/professores', new UserController().getProfessores)
+routes.get('/alunos', new UserController().getAlunos)
 // routes.post("/transaction", new TransactionsController().create);
 
 export default routes
