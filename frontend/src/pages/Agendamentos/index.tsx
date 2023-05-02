@@ -46,7 +46,8 @@ import {
   DatepickContainer,
   Laboratorio,
   DatepickArrowsContainer,
-  StyledDatePicker
+  StyledDatePicker,
+  ProfessorSelect
 }
   from './Agendamento.styles'
 
@@ -762,7 +763,7 @@ const Agendamentos: React.FC = () => {
       <Header>
         <CoursesWrapper>
           <CourseName>
-            <p>Agendamento de Laboratório</p>
+            Agendamento de Laboratório
           </CourseName>
           <CourseSemester>
             1º Semestre de 2023
@@ -794,7 +795,7 @@ const Agendamentos: React.FC = () => {
               ao dia
               <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
               <p>Professor</p>
-              <select value={selectedProfessor.name} onChange={handleSelectChange}>
+              <ProfessorSelect value={selectedProfessor.name} onChange={handleSelectChange}>
                 {
                   professores && professores.length > 0 ? (
                     professores.map((professor) => {
@@ -808,7 +809,7 @@ const Agendamentos: React.FC = () => {
                     <option value="">No professors available</option>
                   )
                 }
-              </select>
+              </ProfessorSelect>
             </CalendarWrapper>
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>

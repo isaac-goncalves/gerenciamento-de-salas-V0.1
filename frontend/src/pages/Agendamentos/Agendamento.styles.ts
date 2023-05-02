@@ -5,11 +5,18 @@ import DatePicker from 'react-datepicker'
 import { Colors } from '../../colors'
 
 export const StyledDatePicker = styled(DatePicker)`
+  z-index: 99;
   width: 6rem;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
  
+`
+export const ProfessorSelect = styled.select`
+z-index: 99;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 `
 
 export const Container = styled.div`
@@ -36,21 +43,12 @@ export const Container = styled.div`
 export const Header = styled.div`
   z-index: 3;
   width: 100%;
-  
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  /* div{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center; 
-    width: 95%;
-    height: 100%;
-    padding: 0 1rem;
-  } */
 `
 
 export const CoursesWrapper = styled.div`
@@ -60,7 +58,7 @@ export const CoursesWrapper = styled.div`
   align-items: center;
   width: 95%;
   height: 100%;
-  padding: 0 1rem;
+  padding: 1rem 1rem;
 `
 
 export const CourseName = styled.h1`

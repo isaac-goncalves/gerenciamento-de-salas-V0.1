@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
+const apiUrl = 'http://localhost:3333';
+
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -7,18 +10,25 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, TableContainer, Wrapper, CounterWrapper
+    SearchBar, TableSelector, TableContainer, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper
 } from './Perfil.styles';
 
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+
+import ModalEdit from '../Components/ModalEdit';
+import ModalDelete from '../Components/ModalDelete'
+
 
 function Perfil() {
 
-    const apiUrl = 'http://localhost:3333';
+
     const [userData, setUserData] = React.useState<UserData[]>([])
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
     const [alunosData, setAlunosData] = React.useState<AlunosData[]>([])
     const [professoresData, setProfessoresData] = React.useState<ProfessoresData[]>([])
+
+    const [editingModal, setEditingModal] = React.useState(false)
+    const [deleteModal, setDeleteModal] = React.useState(false)
 
     const [isLoading, setIsLoading] = React.useState(false);
     const [Error, setError] = React.useState(true);
@@ -59,6 +69,41 @@ function Perfil() {
 
         fetchData();
     }, []);
+
+    const handleCloseModalEdit = (resetParams: boolean) => {
+        setEditingModal(false);
+      };
+
+      const handleCloseModalDelete = (resetParams: boolean) => {
+        setDeleteModal(false);
+      };
+
+    const handleEditItem = (id: number) => {
+        console.log(id)
+        setEditingModal(true)
+        // fetch(apiUrl + "/agendamentos/deletar" + id )
+        //   .then(() => {
+        //     //trigger toast sucess and refresh table data 
+        //        toast.success("Agendamento excluido com sucesso")                 
+        //   })
+        //   .catch((error) => {
+        //     toast.error("Houve um erro ao deletar o item, tente novamente mais tarde")
+        //     console.error(error);
+        //   });
+    };
+
+    const handleDeleteItem = (id: number) => {
+        fetch(apiUrl + "/agendamentos/deletar" + id)
+            .then(() => {
+                //trigger toast sucess and refresh table data 
+                toast.success("Agendamento excluido com sucesso")
+            })
+            .catch((error) => {
+                toast.error("Houve um erro ao deletar o item, tente novamente mais tarde")
+                console.error(error);
+            });
+    };
+
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value);
@@ -108,10 +153,18 @@ function Perfil() {
                             <td>{appointment.id_laboratorio}</td>
                             <td>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</td>
                             <td>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</td>
-                            <td>
-                                <button type="button">Editar</button>
-                                <button type="button">Excluir</button>
-                            </td>
+                            <ButtonsWrapper>
+                                <EditButton type="button" onClick={() => setEditingModal(true)}><RiPencilLine />
+                                    <p>
+                                        Editar
+                                    </p>
+                                </EditButton>
+                                <DeleteButton type="button" onClick={() => setDeleteModal(true)}><RiDeleteBinLine />
+                                    <p>
+                                        Excluir
+                                    </p>
+                                </DeleteButton>
+                            </ButtonsWrapper>
                         </tr>
                     ))}
                 </tbody>
@@ -256,6 +309,9 @@ function Perfil() {
 
     return (
         <Container>
+            <ToastContainer />
+            <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit}/>
+            <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} />
             <Wrapper>
                 <Header>
                     <CounterWrapper>

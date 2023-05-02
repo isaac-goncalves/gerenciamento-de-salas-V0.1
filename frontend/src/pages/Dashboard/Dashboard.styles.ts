@@ -25,13 +25,12 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   width: 100%;
-  height: 10rem;
   display: flex;
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
   z-index: 3;
+  margin-bottom: 1rem
 `
 
 export const CoursesWrapper = styled.div`
@@ -42,6 +41,7 @@ export const CoursesWrapper = styled.div`
   width: 95%;
   height: 100%;
   padding: 1rem 1rem;
+  
 `
 
 export const ClassesContainer = styled.div`

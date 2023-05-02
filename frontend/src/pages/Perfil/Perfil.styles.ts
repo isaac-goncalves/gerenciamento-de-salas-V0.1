@@ -89,6 +89,62 @@ export const SearchBar = styled.div`
   }
 `
 
+export const ButtonsWrapper = styled.div`
+display: flex;
+gap: 00.5rem;
+`
+
+export const EditButton = styled.button`
+  background-color: #008cba;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  height: 2.0rem;
+  padding: 0 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: ${Colors.lightgrayborder};
+  margin-left: 0.5rem;
+  p {
+    font-size: 0.8rem;
+  }
+
+  &:hover {
+    background-color: #006f8f;
+  }
+`
+export const DeleteButton = styled.button`
+  background-color: #008cba;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  height: 2rem;
+  padding: 0 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: ${Colors.lightgrayborder};
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  &:hover {
+    background-color: #006f8f;
+  }
+`
+
 export const TableSelector = styled.div`
   display: flex;
   width: 100%;
@@ -157,7 +213,6 @@ export const TableContainer = styled.div`
     position: sticky;
     top: 0;
     z-index: 1; /* to position above tbody when scrolling */
-  
   }
 
   th {
@@ -174,12 +229,11 @@ export const TableContainer = styled.div`
       border-top-left-radius: 8px;
       border-bottom-left-radius: 8px;
     }
-    
+
     &:last-child {
       border-top-right-radius: 8px;
       border-bottom-right-radius: 8px;
     }
-
   }
 
   tbody {
@@ -193,8 +247,8 @@ export const TableContainer = styled.div`
   }
 
   tr td:last-child {
- display: flex;
-}
+    display: flex;
+  }
 
   td {
     width: 25%;

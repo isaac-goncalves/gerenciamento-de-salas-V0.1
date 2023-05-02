@@ -58,8 +58,7 @@ export class AgendamentoController {
       // const newAgendamento = await agendamentos.map(
       //   async (agendamento: any) => {
       //     const id_professor = agendamento.id_professor
-        
-          
+
       //     const id_laboratorio = agendamento.id_laboratorio
 
       //     const queryProfessor = ` SELECT nome_completo FROM professores WHERE id = ${id_professor} `
@@ -98,4 +97,25 @@ export class AgendamentoController {
       return response.status(500).json({ message: 'internal server error' })
     }
   }
+
+  // async delete (request: Request, response: Response) {
+  //   const { id } = request.params
+
+  //   try {
+  //     const agendamento = await agendamentosRepository.findOne(id)
+
+  //     if (!agendamento) {
+  //       return response.status(404).json({ message: 'Agendamento not found' })
+  //     }
+
+  //     await agendamentosRepository.delete(id)
+
+  //     console.log(`Agendamento with id ${id} deleted`)
+
+  //     return response.status(204).send()
+  //   } catch (error) {
+  //     console.error(error)
+  //     return response.status(500).json({ message: 'Internal server error' })
+  //   }
+  // }
 }
