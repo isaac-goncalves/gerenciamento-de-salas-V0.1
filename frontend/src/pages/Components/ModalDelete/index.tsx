@@ -5,12 +5,14 @@ import { ModalOverlay, ModalContent } from './ModalDelete.styles'
 
 interface ModalProps {
   isVisible: boolean
+  agendamentoId: number
   onClose: Function
 }
 
 const ModalDelete = ({
   isVisible,
   onClose,
+  agendamentoId
 }: ModalProps) => {
     if (!isVisible) return null
 
@@ -34,6 +36,8 @@ const ModalDelete = ({
     // console.log(HorariosTransformed)
 
     // console.log('Final grade Ids= ' + gradeIds)
+
+    console.log(agendamentoId)
 
     function onEsc(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -113,6 +117,7 @@ const ModalDelete = ({
         >
           Confirmar agendamento
         </button> */}
+        <button onClick={() => onClose()}>Confirmar</button>
         <button onClick={() => onClose()}>Cancelar</button>
       </ModalContent>
     </ModalOverlay>

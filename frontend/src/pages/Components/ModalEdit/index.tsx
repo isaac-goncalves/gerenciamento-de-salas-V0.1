@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { ModalOverlay, ModalContent } from './ModalEdit.styles'
@@ -6,34 +6,51 @@ import { ModalOverlay, ModalContent } from './ModalEdit.styles'
 interface ModalProps {
   isVisible: boolean
   onClose: Function
+  editedData: any
+}
+
+interface EditedData {
+  id: number;
+  date: string;
+  horario_inicio: string;
+  horario_fim: string;
+  id_professor: string;
+  id_grade: string;
+  id_laboratorio: string;
+  created_at: string;
+  updated_at: string;
 }
 
 const ModalEdit = ({
   isVisible,
   onClose,
+  editedData
+  
 }: ModalProps) => {
-    if (!isVisible) return null
+  
+  
+  if (!isVisible) return null
+  const [formData, setFormData] = useState<EditedData>(editedData);
 
   useEffect(() => {
-    // console.log(selectedIds)
-    // console.log(WeekdayGradeIds)
+    console.log("Formdata")
 
-    // const transformedIds = idsToGroups(selectedIds)
+    console.log(formData)
 
-    // console.log(transformedIds)
+    console.log("editedData")
 
-    // const gradeIdstransformed = mapResultToSelected(
-    //   WeekdayGradeIds,
-    //   transformedIds[0]
-    // )
-
-    // setGradeIds(gradeIdstransformed)
-
-    // const HorariosTransformed = mapValuesToStrings(transformedIds[0])
-
-    // console.log(HorariosTransformed)
-
-    // console.log('Final grade Ids= ' + gradeIds)
+    console.log(editedData)
+  //  const exampleEditedData = {
+  //     "id": 26,
+  //     "date": "2023-04-14T19:17:02.673Z",
+  //     "horario_inicio": "21:25",
+  //     "horario_fim": "22:15",
+  //     "id_professor": "12",
+  //     "id_grade": "24",
+  //     "id_laboratorio": "7",
+  //     "created_at": "2023-04-12T19:17:14.002Z",
+  //     "updated_at": "2023-04-12T19:17:14.002Z"
+  // }
 
     function onEsc(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -46,73 +63,36 @@ const ModalEdit = ({
     return () => {
       window.removeEventListener('keydown', onEsc)
     }
-  }, [])
+  }, [formData])
 
-  //   async function handleEditAgendamento (
-  //     gradeIds: number[],
-  //     selectedLaboratory: number,
-  //     selectedDate: Date | null
-  //   ) {
-  //     console.log(gradeIds)
 
-  // const data = {
-  //   "date": "2023-04-01",
-  //   "horario_inicio": "09:00:00",
-  //   "horario_fim": "12:00:00",
-  //   "id_professor": "1234",
-  //   "id_grade": "5678",
-  //   "id_laboratorio": "9012",
-  //   "grade_ids": "1,2,3,4,5" //addition
-  // }
+  // ... rest of the component
 
-  // const finalData: any = {
-  //   date: selectedDate,
-  //   id_professor: '12',
-  //   ids_grade: gradeIds,
-  //   id_laboratorio: selectedLaboratory
-  // }
-
-  // fetch('http://localhost:3333/agendamento', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-
-  //   body: JSON.stringify(finalData)
-  // })
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log('Success:', data)
-  //     toast.success('Agendamento realizado com sucesso!')
-  //     onClose(true)
-  //   })
-  //   .catch(error => {
-  //     console.error('Error:', error)
-  //   })
-
-  //close modal
-
-  //send to agendamentos screen
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   return (
     <ModalOverlay onClick={() => onClose()}>
       <ModalContent onClick={e => e.stopPropagation()}>
         <h2>Editar Agendamento</h2>
+        <p>{JSON.stringify(formData, null, 2)}</p>
+        <p>Id de agendamento{formData.id}</p>
         <p>Nome do Professor: </p>
-        {/* <p>Laboratorio: {selectedLaboratory}</p>
-        <p>Data: {String(selectedDate)}</p>
-        <p>Dia da Semana: {selectedWeekday}</p> */}
-        {/* <h3>Horarios:</h3>
-        {HorariosTranformed.map(id => {
-          return <p>{id}</p>
-        })} */}
-        {/* <button
-          onClick={() =>
-            handleSubmitAgendamento()
-          }
-        >
-          Confirmar agendamento
-        </button> */}
+        <input type="text" name="id_professor" value={formData.id_professor} onChange={handleChange} />
+        <p>Data de agendamento</p>
+        <input type="text" name="id" value={formData.date} onChange={handleChange} />
+        <p>Horario de Inicio</p>
+        <input type="text" name="horario_inicio" value={formData.horario_inicio} onChange={handleChange} />
+        <p>Horario de Fim</p>
+        <input type="text" name="horario_fim" value={formData.horario_fim} onChange={handleChange} />
+        <p>laboratorio</p>
+        <p> 
+    
+
+        </p>
+        
         <button onClick={() => onClose()}>Cancelar</button>
       </ModalContent>
     </ModalOverlay>

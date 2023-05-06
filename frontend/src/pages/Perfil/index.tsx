@@ -36,6 +36,10 @@ function Perfil() {
     const [selectedTable, setSelectedTable] = useState('agendamentos');
     const [selectedCategory, setSelectedCategory] = useState('Alunos');
 
+    const [agendamentoId, setAgendamentoId] = useState<Number>(2);
+    const [editedData, setEditedData] = useState<any>({});
+
+    
     useEffect(() => {
         async function fetchData() {
             try {
@@ -72,11 +76,11 @@ function Perfil() {
 
     const handleCloseModalEdit = (resetParams: boolean) => {
         setEditingModal(false);
-      };
+    };
 
-      const handleCloseModalDelete = (resetParams: boolean) => {
+    const handleCloseModalDelete = (resetParams: boolean) => {
         setDeleteModal(false);
-      };
+    };
 
     const handleEditItem = (id: number) => {
         console.log(id)
@@ -111,6 +115,17 @@ function Perfil() {
 
     const handleTableChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedTable(event.target.value);
+    }
+
+    const handleEditClick = (editedData: any) => {
+        setEditedData(editedData);
+        // Close the modal
+        setEditingModal(true);
+      };
+
+    const handleDeleteClick = (agendamentoId: number) => {
+         setAgendamentoId(agendamentoId)
+        setDeleteModal(true);
     }
 
     interface AppointmentData {
@@ -154,12 +169,12 @@ function Perfil() {
                             <td>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</td>
                             <td>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</td>
                             <ButtonsWrapper>
-                                <EditButton type="button" onClick={() => setEditingModal(true)}><RiPencilLine />
+                                <EditButton type="button" onClick={() => handleEditClick(appointment)}><RiPencilLine />
                                     <p>
                                         Editar
                                     </p>
                                 </EditButton>
-                                <DeleteButton type="button" onClick={() => setDeleteModal(true)}><RiDeleteBinLine />
+                                <DeleteButton type="button" onClick={() => handleDeleteClick(appointment.id)}><RiDeleteBinLine />
                                     <p>
                                         Excluir
                                     </p>
@@ -307,11 +322,13 @@ function Perfil() {
         }
     }
 
+    const teste = 2
+
     return (
         <Container>
             <ToastContainer />
-            <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit}/>
-            <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} />
+            <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} />
+            <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} agendamentoId={agendamentoId || 0} />
             <Wrapper>
                 <Header>
                     <CounterWrapper>

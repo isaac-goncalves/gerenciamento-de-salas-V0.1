@@ -130,7 +130,7 @@ const Dashboard: React.FC = () => {
               localStorage.removeItem('gerenciamento-de-salas@v1.1');
               toast.error('Você precisa estar logado para acessar essa página!');
               setTimeout(() => {
-                //  window.location.href = "/";
+               window.location.href = "/";
               }, 2000)
             }
             else {
