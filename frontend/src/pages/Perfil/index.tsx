@@ -39,75 +39,51 @@ function Perfil() {
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
 
-    
+
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const [
-                    appointmentDataResponse,
-                    userDataResponse,
-                    alunosDataResponse,
-                    professoresDataResponse
-                ] = await Promise.all([
-                    fetch(`${apiUrl}/agendamento`).then(res => res.json()),
-                    fetch(`${apiUrl}/usuarios`).then(res => res.json()),
-                    fetch(`${apiUrl}/alunos`).then(res => res.json()),
-                    fetch(`${apiUrl}/professores`).then(res => res.json())
-                ]);
-
-                setUserData(userDataResponse);
-                setAppointmentData(appointmentDataResponse);
-                setAlunosData(alunosDataResponse);
-                setProfessoresData(professoresDataResponse);
-
-                setTimeout(() => {
-                    setIsLoading(true);
-                }, 2000);
-
-            } catch (error) {
-                console.error(error);
-                toast.error('Erro ao carregar dados da tabela. Tente novamente mais tarde.')
-                setError(true);
-            }
-        }
-
         fetchData();
     }, []);
 
+    async function fetchData() {
+        setIsLoading(false);
+        try {
+            const [
+                appointmentDataResponse,
+                userDataResponse,
+                alunosDataResponse,
+                professoresDataResponse
+            ] = await Promise.all([
+                fetch(`${apiUrl}/agendamento`).then(res => res.json()),
+                fetch(`${apiUrl}/usuarios`).then(res => res.json()),
+                fetch(`${apiUrl}/alunos`).then(res => res.json()),
+                fetch(`${apiUrl}/professores`).then(res => res.json())
+            ]);
+
+            setUserData(userDataResponse);
+            setAppointmentData(appointmentDataResponse);
+            setAlunosData(alunosDataResponse);
+            setProfessoresData(professoresDataResponse);
+
+            setTimeout(() => {
+                setIsLoading(true);
+            }, 2000);
+
+        } catch (error) {
+            console.error(error);
+            toast.error('Erro ao carregar dados da tabela. Tente novamente mais tarde.')
+            setError(true);
+        }
+    }
+
     const handleCloseModalEdit = (resetParams: boolean) => {
         setEditingModal(false);
+        fetchData();
     };
 
     const handleCloseModalDelete = (resetParams: boolean) => {
         setDeleteModal(false);
+        fetchData();
     };
-
-    const handleEditItem = (id: number) => {
-        console.log(id)
-        setEditingModal(true)
-        // fetch(apiUrl + "/agendamentos/deletar" + id )
-        //   .then(() => {
-        //     //trigger toast sucess and refresh table data 
-        //        toast.success("Agendamento excluido com sucesso")                 
-        //   })
-        //   .catch((error) => {
-        //     toast.error("Houve um erro ao deletar o item, tente novamente mais tarde")
-        //     console.error(error);
-        //   });
-    };
-
-    const handleDeleteItem = (id: number) => {
-        fetch(apiUrl + "/agendamentos/deletar" + id)
-            .then(() => {
-                //trigger toast sucess and refresh table data 
-                toast.success("Agendamento excluido com sucesso")
-            })
-            .catch((error) => {
-                toast.error("Houve um erro ao deletar o item, tente novamente mais tarde")
-                console.error(error);
-            });
-    };
-
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value);
@@ -119,13 +95,13 @@ function Perfil() {
 
     const handleEditClick = (editedData: any) => {
         setEditedData(editedData);
-        // Close the modal
         setEditingModal(true);
-      };
+    };
 
-    const handleDeleteClick = (agendamentoId: number) => {
-         setAgendamentoId(agendamentoId)
+    const handleDeleteClick = (editedData: any) => {
+        setEditedData(editedData);
         setDeleteModal(true);
+
     }
 
     interface AppointmentData {
@@ -174,7 +150,7 @@ function Perfil() {
                                         Editar
                                     </p>
                                 </EditButton>
-                                <DeleteButton type="button" onClick={() => handleDeleteClick(appointment.id)}><RiDeleteBinLine />
+                                <DeleteButton type="button" onClick={() => handleDeleteClick(appointment)}><RiDeleteBinLine />
                                     <p>
                                         Excluir
                                     </p>
@@ -328,7 +304,7 @@ function Perfil() {
         <Container>
             <ToastContainer />
             <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} />
-            <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} agendamentoId={agendamentoId || 0} />
+            <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />
             <Wrapper>
                 <Header>
                     <CounterWrapper>

@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { agendamentosRepository } from '../repositories/agendamentoRepository'
 import { gradeRepositories } from '../repositories/gradeRepositories'
+import { FindOneOptions } from 'typeorm'
+import { Agendamento } from '../entities/Agendamento'
 
 export class AgendamentoController {
   async create (request: Request, response: Response) {
@@ -53,6 +55,10 @@ export class AgendamentoController {
     try {
       const agendamentos = await agendamentosRepository.find()
 
+      agendamentos.sort((a, b) => {
+        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+      });
+
       console.log(JSON.stringify(agendamentos, null, 2))
 
       // const newAgendamento = await agendamentos.map(
@@ -98,24 +104,82 @@ export class AgendamentoController {
     }
   }
 
-  // async delete (request: Request, response: Response) {
-  //   const { id } = request.params
+  async delete (request: Request, response: Response) {
+    const id = Number(request.params.id)
 
-  //   try {
-  //     const agendamento = await agendamentosRepository.findOne(id)
+    try {
+      const options: FindOneOptions<Agendamento> = {
+        where: { id: id }
+      }
 
-  //     if (!agendamento) {
-  //       return response.status(404).json({ message: 'Agendamento not found' })
-  //     }
+      const agendamento = await agendamentosRepository.findOne(options)
 
-  //     await agendamentosRepository.delete(id)
+      if (!agendamento) {
+        return response.status(404).json({ message: 'Agendamento not found' })
+      }
 
-  //     console.log(`Agendamento with id ${id} deleted`)
+      await agendamentosRepository.delete(id)
 
-  //     return response.status(204).send()
-  //   } catch (error) {
-  //     console.error(error)
-  //     return response.status(500).json({ message: 'Internal server error' })
-  //   }
-  // }
+      console.log(`Agendamento with id ${id} deleted`)
+
+      return response.status(204).send()
+    } catch (error) {
+      console.error(error)
+      return response.status(500).json({ message: 'Internal server error' })
+    }
+  }
+
+  async update (request: Request, response: Response) {
+    const id = Number(request.params.id)
+    const {
+      date,
+      horario_inicio,
+      horario_fim,
+      id_professor,
+      id_grade,
+      id_laboratorio
+    } = request.body
+
+       console.log(
+      id,
+      date,
+      horario_inicio,
+      horario_fim,
+      id_professor,
+      id_grade,
+      id_laboratorio
+    )
+
+    try {
+      const options: FindOneOptions<Agendamento> = {
+        where: { id: id }
+        // other options here, such as relations or order
+      }
+
+      const agendamento = await agendamentosRepository.findOne(options)
+
+      if (!agendamento) {
+        return response.status(404).json({ message: 'Agendamento not found' })
+      }
+
+      agendamentosRepository.merge(agendamento, {
+        date,
+        horario_inicio,
+        horario_fim,
+        id_professor,
+        id_grade,
+        id_laboratorio,
+        updated_at: new Date()
+      })
+
+      const results = await agendamentosRepository.save(agendamento)
+
+      console.log(`Agendamento with id ${id} updated`)
+
+      return response.status(200).json(results)
+    } catch (error) {
+      console.error(error)
+      return response.status(500).json({ message: 'Internal server error' })
+    }
+  }
 }

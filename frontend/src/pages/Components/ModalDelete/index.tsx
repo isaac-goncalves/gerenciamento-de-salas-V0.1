@@ -1,43 +1,37 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { ModalOverlay, ModalContent } from './ModalDelete.styles'
 
 interface ModalProps {
   isVisible: boolean
-  agendamentoId: number
   onClose: Function
+  deleteData: any
+}
+
+interface deleteData {
+  id: number;
+  date: string;
+  horario_inicio: string;
+  horario_fim: string;
+  id_professor: string;
+  id_grade: string;
+  id_laboratorio: string;
+  created_at: string;
+  updated_at: string;
 }
 
 const ModalDelete = ({
   isVisible,
   onClose,
-  agendamentoId
+  deleteData
 }: ModalProps) => {
-    if (!isVisible) return null
+  if (!isVisible) return null
 
   useEffect(() => {
-    // console.log(selectedIds)
-    // console.log(WeekdayGradeIds)
 
-    // const transformedIds = idsToGroups(selectedIds)
-
-    // console.log(transformedIds)
-
-    // const gradeIdstransformed = mapResultToSelected(
-    //   WeekdayGradeIds,
-    //   transformedIds[0]
-    // )
-
-    // setGradeIds(gradeIdstransformed)
-
-    // const HorariosTransformed = mapValuesToStrings(transformedIds[0])
-
-    // console.log(HorariosTransformed)
-
-    // console.log('Final grade Ids= ' + gradeIds)
-
-    console.log(agendamentoId)
+    console.log("DeleteData")
+    console.log(deleteData)
 
     function onEsc(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -52,72 +46,41 @@ const ModalDelete = ({
     }
   }, [])
 
-  //   async function handleEditAgendamento (
-  //     gradeIds: number[],
-  //     selectedLaboratory: number,
-  //     selectedDate: Date | null
-  //   ) {
-  //     console.log(gradeIds)
+  async function handleDelete() {
+    try {
+      const response = await fetch(`http://localhost:3333/agendamento/${deleteData.id}`, {
+        method: 'DELETE',
+      });
 
-  // const data = {
-  //   "date": "2023-04-01",
-  //   "horario_inicio": "09:00:00",
-  //   "horario_fim": "12:00:00",
-  //   "id_professor": "1234",
-  //   "id_grade": "5678",
-  //   "id_laboratorio": "9012",
-  //   "grade_ids": "1,2,3,4,5" //addition
-  // }
-
-  // const finalData: any = {
-  //   date: selectedDate,
-  //   id_professor: '12',
-  //   ids_grade: gradeIds,
-  //   id_laboratorio: selectedLaboratory
-  // }
-
-  // fetch('http://localhost:3333/agendamento', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-
-  //   body: JSON.stringify(finalData)
-  // })
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log('Success:', data)
-  //     toast.success('Agendamento realizado com sucesso!')
-  //     onClose(true)
-  //   })
-  //   .catch(error => {
-  //     console.error('Error:', error)
-  //   })
-
-  //close modal
-
-  //send to agendamentos screen
+      if (response.ok) {
+        toast.success('Agendamento deletado com sucesso!');
+        onClose();
+      } else {
+        toast.error('Erro ao deletar agendamento, tente novamente.');
+      }
+    } catch (error) {
+      toast.error('Erro ao deletar agendamento, tente novamente.');
+    }
+  }
 
   return (
-   <ModalOverlay onClick={() => onClose()}>
+    <ModalOverlay onClick={() => onClose()}>
       <ModalContent onClick={e => e.stopPropagation()}>
         <h2>Deletar agendamento</h2>
+        <p>ID:{deleteData.id}</p>
         <p>Nome do Professor: </p>
-        {/* <p>Laboratorio: {selectedLaboratory}</p>
-        <p>Data: {String(selectedDate)}</p>
-        <p>Dia da Semana: {selectedWeekday}</p> */}
-        {/* <h3>Horarios:</h3>
-        {HorariosTranformed.map(id => {
-          return <p>{id}</p>
-        })} */}
-        {/* <button
-          onClick={() =>
-            handleSubmitAgendamento()
-          }
-        >
-          Confirmar agendamento
-        </button> */}
-        <button onClick={() => onClose()}>Confirmar</button>
+        <p>{deleteData.id_professor}</p>
+        <p>Data de agendamento</p>
+        <p>{deleteData.date}</p>
+        <p>Horario de Inicio</p>
+        <p>{deleteData.horario_inicio}</p>
+        <p>Horario de Fim</p>
+        <p>{deleteData.horario_fim}</p>
+        <p>laboratorio</p>
+        <p>{deleteData.id_laboratorio}</p>
+        <p>Grade</p>
+        <p>{deleteData.id_grade}</p>
+        <button onClick={() => handleDelete()}>Deletar</button>
         <button onClick={() => onClose()}>Cancelar</button>
       </ModalContent>
     </ModalOverlay>

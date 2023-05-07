@@ -18,6 +18,8 @@ routes.post('/grade/agendamentos', new GradeController().getAgendamentosData)
 
 routes.post('/agendamento', new AgendamentoController().create)
 routes.get('/agendamento', new AgendamentoController().get)
+routes.put('/agendamento/:id', new AgendamentoController().update);
+routes.delete('/agendamento/:id', new AgendamentoController().delete);
 
 routes.post('/login', new UserController().login)
 routes.post('/register', new UserController().create)
