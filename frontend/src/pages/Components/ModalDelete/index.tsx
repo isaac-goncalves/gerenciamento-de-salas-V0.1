@@ -54,7 +54,7 @@ const ModalDelete = ({
 
       if (response.ok) {
         toast.success('Agendamento deletado com sucesso!');
-        onClose();
+        onClose(true);
       } else {
         toast.error('Erro ao deletar agendamento, tente novamente.');
       }

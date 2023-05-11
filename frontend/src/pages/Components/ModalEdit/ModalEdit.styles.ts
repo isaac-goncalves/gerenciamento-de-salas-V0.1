@@ -32,3 +32,10 @@ export const ModalContent = styled.div`
   padding: 2rem;
   border-radius: 8px;
 `;
+
+export const ProfessorSelect = styled.select`
+z-index: 99;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`

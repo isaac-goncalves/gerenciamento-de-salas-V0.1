@@ -77,12 +77,12 @@ function Perfil() {
 
     const handleCloseModalEdit = (resetParams: boolean) => {
         setEditingModal(false);
-        fetchData();
+        if(resetParams)fetchData();
     };
 
     const handleCloseModalDelete = (resetParams: boolean) => {
         setDeleteModal(false);
-        fetchData();
+        if(resetParams)fetchData();
     };
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
