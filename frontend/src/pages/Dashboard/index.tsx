@@ -10,7 +10,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper, ClockPadding, ClockWrapper, ClockPaddingUp, ClockPaddingDown } from './Dashboard.styles'
+import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper } from './Dashboard.styles'
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
@@ -85,7 +85,7 @@ const Dashboard: React.FC = () => {
   const [currentDay, setCurrentDay] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setSelectedValue(event.target.value)
   }
 
