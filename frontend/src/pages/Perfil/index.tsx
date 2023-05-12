@@ -136,7 +136,7 @@ function Perfil() {
 
                     {data.map((appointment: AppointmentData) => (
                         <tr key={appointment.id}>
-                            <td>{appointment.id_professor}</td>
+                            <td>{appointment.nome_professor}</td>
                             <td>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</td>
                             <td>{appointment.horario_inicio}</td>
                             <td>{appointment.horario_fim}</td>

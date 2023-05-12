@@ -15,6 +15,8 @@ export class AgendamentoController {
 
     console.log(date, id_professor, ids_grade, id_laboratorio)
 
+    if(ids_grade.length === 0) return response.status(400).json({ message: 'missing data' })
+
     ids_grade.forEach(async (id_grade: any) => {
       const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `
 
@@ -59,7 +61,25 @@ export class AgendamentoController {
         return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
       });
 
-      console.log(JSON.stringify(agendamentos, null, 2))
+      //grab professor_id find his name 
+
+      const agendamentoWithProfessorName = await Promise.all(
+        agendamentos.map(async (agendamento: any) => {
+          const id_professor = agendamento.id_professor
+
+          const queryProfessor = ` SELECT name FROM professores WHERE id = ${id_professor} `
+          const nomeProfessor = await gradeRepositories.query(queryProfessor)
+          console.log(nomeProfessor)
+
+          agendamento.nome_professor = nomeProfessor[0]?.name || '';
+        
+
+          return agendamento
+        })
+      )
+
+
+      console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
 
       // const newAgendamento = await agendamentos.map(
       //   async (agendamento: any) => {

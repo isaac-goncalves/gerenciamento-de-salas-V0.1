@@ -432,9 +432,13 @@ const Agendamentos: React.FC = () => {
     },
   );
 
+  const [selectedMethod, setSelectedMethod] = useState("professor");
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
+
+  const [selectedSemestreValue, setSelectedSemestreValue] = useState(1) 
 
   const [firstRender, setFirstRender] = useState(true)
 
@@ -467,14 +471,20 @@ const Agendamentos: React.FC = () => {
 
   useEffect(() => {
     if (userData.token !== '' && userData.userData.id !== 0) {
-      fetchGrades();
+      if (selectedMethod == "professor")   
+      fetchProfessorData();
+      else {
+        fetchSemestreData();
+      }
+      
       fetchProfessors(userData.token);
+      
       if (userRole === 'professor' && userData.userData.id == 0) {
         setProfessorAsSelected(userData.userData.name, userData.userData.id);
       }
       console.log(selectedProfessor);
     }
-  }, [userData, selectedProfessor]);
+  }, [userData, selectedProfessor, selectedMethod, selectedSemestreValue]);
 
   const setProfessorAsSelected = (userName: string, userId: number) => {
     const matchingProfessor = professores.find(
@@ -500,7 +510,31 @@ const Agendamentos: React.FC = () => {
     });
   }
 
-  async function fetchGrades() {
+  async function fetchSemestreData() {
+    fetch('http://localhost:3333/grade/dashboard', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        semestre: selectedSemestreValue || 1, //add localStorage later
+      })
+    }).then((response) => response.json()).then((data) => {
+      // console.log(data)
+      const transformedData = groupByWeekday(data)
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      printGradeValue(transformedData)
+      setTimeout(() => {
+        setLoading(true) // teste de loading
+      }, 2000)
+      // setLoading(true)
+      // console.log(transformedData.segunda[0].agendamentos.professor)
+      return setgrade(transformedData as any)
+    }
+    )
+  }
+  
+  async function fetchProfessorData() {
     console.log("Fetching fetchGrades...")
     fetch('http://localhost:3333/grade/agendamentos', {
       method: 'POST',
@@ -722,6 +756,10 @@ const Agendamentos: React.FC = () => {
     setSelectingLaboratory(false)
   }
 
+  const handleSemestreChange = (event: any) => {
+    setSelectedSemestreValue(event.target.value)
+  }
+
   const renderLoading = () => {
     return (
       <WeekContainer>
@@ -754,6 +792,13 @@ const Agendamentos: React.FC = () => {
     setSelectedProfessor(
       professorObject
     )
+  }
+
+  const handleMethodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(event.target.value)
+
+    setSelectedMethod(event.target.value)
+
   }
 
   return (
@@ -794,8 +839,17 @@ const Agendamentos: React.FC = () => {
               <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
               ao dia
               <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
-              <p>Professor</p>
-              <ProfessorSelect value={selectedProfessor.name} onChange={handleSelectChange}>
+              <ProfessorSelect value={selectedMethod} onChange={handleMethodChange}>
+                <option value="professor">
+                  Professor
+                </option>
+                <option value="semestre">
+                  Semestre
+                </option>
+              </ProfessorSelect>
+          {
+            selectedMethod === "professor" ?
+              <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectChange}>
                 {
                   professores && professores.length > 0 ? (
                     professores.map((professor) => {
@@ -810,6 +864,28 @@ const Agendamentos: React.FC = () => {
                   )
                 }
               </ProfessorSelect>
+              :
+              <ProfessorSelect value={selectedProfessor.name} onChange={handleSemestreChange}>
+                <option value="1">
+                  1º
+                </option>
+                <option value="2">
+                  2º
+                </option>
+                <option value="3">
+                  3º
+                </option>
+                <option value="4">
+                  4º
+                </option>
+                <option value="5">
+                  5º
+                </option>
+                <option value="6">
+                  6º
+                </option>
+              </ProfessorSelect>
+}
             </CalendarWrapper>
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>
@@ -820,12 +896,7 @@ const Agendamentos: React.FC = () => {
                 <button onClick={handleCancelClick}>Cancelar</button>
               </>
             }
-            <p>
-              5º
-            </p>
-            <span>
-              Semestre
-            </span>
+            
           </Semester>
         </DatePickWrapper>
       </Header>

@@ -157,9 +157,10 @@ const Modal = ({
       ids_grade: gradeIds,
       id_laboratorio: selectedLaboratory,
     }
-  
+    
+    console.log(finalData)
       
-  
+    
     fetch('http://localhost:3333/agendamento', {
       method: 'POST',
       headers: {

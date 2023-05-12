@@ -8,7 +8,7 @@ import { Colors } from '../../colors';
 import { CgProfile } from 'react-icons/cg'
 import { GrLogout } from 'react-icons/gr'
 import { BsCalendarDate } from 'react-icons/bs'
-import { MdSchedule, MdPerson, MdExitToApp } from 'react-icons/md';
+import { MdSchedule, MdPerson, MdExitToApp, MdOutlineDarkMode } from 'react-icons/md';
 
 import avatar from '../../../public/images/avatar.png';
 
@@ -83,13 +83,27 @@ const Navbar = () => {
                     onClick={() => handleLogout()}
                     >
                         <RowWrapper>
+                            <MdOutlineDarkMode style={{ 
+                                color: Colors.mainpurple,
+                                fontSize: '1.2rem',
+                            }}
+                            />
+                            {
+                                menuOpen && <p>Darkmode</p>
+                            }
+                        </RowWrapper>
+                    </MenuLink>
+                    <MenuLink to="/"
+                    onClick={() => handleLogout()}
+                    >
+                        <RowWrapper>
                             <GrLogout style={{ 
                                 color: Colors.mainpurple,
                                 fontSize: '1.2rem',
                             }}
                             />
                             {
-                                menuOpen && <p>LOGOUT</p>
+                                menuOpen && <p>Logout</p>
                             }
                         </RowWrapper>
                     </MenuLink>

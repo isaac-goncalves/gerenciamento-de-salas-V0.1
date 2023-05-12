@@ -3,6 +3,10 @@ import { toast } from 'react-toastify'
 
 import { ModalOverlay, ModalContent, ProfessorSelect } from './ModalEdit.styles'
 
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 interface ModalProps {
   isVisible: boolean
   onClose: Function
@@ -11,7 +15,7 @@ interface ModalProps {
 
 interface EditedData {
   id: number;
-  date: string;
+  date: any;
   horario_inicio: string;
   horario_fim: string;
   id_professor: string;
@@ -42,12 +46,16 @@ const ModalEdit = ({
   if (!isVisible) return null
   const [formData, setFormData] = useState<EditedData>(editedData);
 
+  const [selectedProfessorId, setSelectedProfessorId] = useState("");
+
   const [professores, setProfessores] = useState<ProfessoreProps[]>([
     {
       id: 0,
       name: "Selecione um professor",
     },
   ]);
+
+  const [startDate, setStartDate] = useState<Date>();
 
   const [selectedProfessor, setSelectedProfessor] = useState<Professor>(
     {
@@ -76,18 +84,23 @@ const ModalEdit = ({
       toast.error('Erro ao editar agendamento, tente novamente.')
     }
   }
-
+  
   useEffect(() => {
 
-    // fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzNTg3MTg2LCJleHAiOjE2ODM2MTU5ODZ9.SNKcOC2Vnvz52VPy0cPwe6UJFzfxpIH_ltR1wXEFV_Y"); //add token verification after 
+    fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4"); //add token verification after login
 
-    console.log("Formdata")
-
-    console.log(formData)
+    setFormData(editedData);
 
     console.log("editedData")
 
     console.log(editedData)
+
+    console.log("Formdata")
+
+    console.log(formData)
+    
+    setStartDate(new Date(formData.date))
+
     //  const exampleEditedData = {
     //     "id": 26,
     //     "date": "2023-04-14T19:17:02.673Z",
@@ -100,7 +113,7 @@ const ModalEdit = ({
     //     "updated_at": "2023-04-12T19:17:14.002Z"
     // }
 
-    const initialSelectedProfessor = professores.find((professor) => professor.id.toString() === formData.id_professor);
+    const initialSelectedProfessor = professores.find((professor) => professor.id.toString() === editedData.id_professor);
     if (initialSelectedProfessor) {
       setSelectedProfessor(initialSelectedProfessor);
     }
@@ -116,7 +129,7 @@ const ModalEdit = ({
     return () => {
       window.removeEventListener('keydown', onEsc)
     }
-  }, [formData, professores])
+  }, [editedData])
 
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")
@@ -140,16 +153,16 @@ const ModalEdit = ({
 
   const handleSelectProfessorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     console.log(event.target.value)
-
+  
     const selectedId = parseInt(event.target.value);
     const selected = professores.find((professor) => professor.id === selectedId);
-
+  
     console.log(selected)
-
+  
     if (selected) {
       setSelectedProfessor(selected);
-      // Update formData with the new id_professor
-      setFormData({ ...formData, id_professor: selected.id.toString() });
+      // Update the selectedProfessorId state instead of formData
+      setSelectedProfessorId(selected.id.toString());
     }
   }
 
@@ -162,25 +175,31 @@ const ModalEdit = ({
         <p>Nome do Professor: </p>
 
         <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessorChange}>
-                {
-                  professores && professores.length > 0 ? (
-                    professores.map((professor) => {
-                      return (
-                        <option key={professor.id} value={professor.id}>
-                          {professor.name}
-                        </option>
-                      );
-                    })
-                  ) : (
-                    <option value="">No professors available</option>
-                  )
-                }
-              </ProfessorSelect>
+          {
+            professores && professores.length > 0 ? (
+              professores.map((professor) => {
+                return (
+                  <option key={professor.id} value={professor.id}>
+                    {professor.name}
+                  </option>
+                );
+              })
+            ) : (
+              <option value="">No professors available</option>
+            )
+          }
+        </ProfessorSelect>
 
         <input type="text" name="id_professor" value={formData.id_professor} onChange={handleChange} />
         <p>Data de agendamento</p>
-        <input type="text" name="id" value={formData.date} onChange={handleChange} />
+        <input type="text" name="id" value={startDate || ""} />
+        
+        <DatePicker selected={startDate} onChange={(date) => {
+          setStartDate(date || new Date())
+          setFormData( {...formData, date: date || new Date() } )
+        }} />
         <p>Horario de Inicio</p>
+        
         <input type="text" name="horario_inicio" value={formData.horario_inicio} onChange={handleChange} />
         <p>Horario de Fim</p>
         <input type="text" name="horario_fim" value={formData.horario_fim} onChange={handleChange} />
