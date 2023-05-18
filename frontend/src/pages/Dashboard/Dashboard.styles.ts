@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import DatePicker from 'react-datepicker'
+
 import { Colors } from '../../colors'
 
 export const Container = styled.div`
@@ -30,7 +32,7 @@ export const Header = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 3;
-  margin-bottom: 1rem
+
 `
 
 export const CoursesWrapper = styled.div`
@@ -41,7 +43,6 @@ export const CoursesWrapper = styled.div`
   width: 95%;
   height: 100%;
   padding: 1rem 1rem;
-  
 `
 
 export const ClassesContainer = styled.div`
@@ -72,7 +73,7 @@ export const CourseName = styled.h1`
 `
 
 export const Semester = styled.h2`
-  font-size: 1.1rem;
+  
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -83,7 +84,7 @@ export const Semester = styled.h2`
   select,
   option,
   span {
-    font-size: 2rem;
+    font-size: 1.0rem;
     font-weight: 400;
   }
 
@@ -98,30 +99,48 @@ export const Semester = styled.h2`
   }
 `
 
-export const DatePicker = styled.div`
+export const DatePickWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 100%;
   width: 85%;
-
-  
   gap: 1rem;
   background-color: ${Colors.white};
   border-radius: 12px;
 
-  padding: 0.2rem 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: 1rem;
+`
 
-  div {
-    display: flex;
-    gap: 1rem;
-    width: 30rem;
-    p {
-      white-space: nowrap;
-    }
+export const DatepickContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background-color: ;
+  white-space: nowrap;
+  p {
   }
 `
+
+export const DatepickArrowsContainer = styled.div`
+  display: flex;
+`
+
+export const CalendarWrapper = styled.div`
+  display: flex;
+  width: 15rem;
+  align-items: center;
+  gap: 1rem;
+`
+export const StyledDatePicker = styled(DatePicker)`
+  z-index: 99;
+  width: 6rem;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+ 
+`
+
 export const DateIcon = styled.img`
   height: 1.5rem;
   width: 1.5rem;
@@ -182,11 +201,11 @@ export const WeekdayContainer = styled.div`
 
   :hover {
     transform: scale(1.03);
-    transition: 0.8s;
+    transition: 0.1s;
 
     background-color: ${Colors.lightgrayInput};
     p {
-      color: ${Colors.white};
+      /* color: ${Colors.white}; */
     }
   }
 
@@ -237,15 +256,48 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     transition: 0.5s;
 
     p {
-      color: ${Colors.white};
+      /* color: ${Colors.white}; */
     }
   }
 
+
+  
   p {
-    padding: 0 0.5rem;
-    color: ${Colors.textcolor};
     text-align: center;
     text-align-last: center;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 `
+
+export const Disciplina = styled.p`
+font-weight: 500;
+color: ${Colors.textcolor};
+`
+export const Professor = styled.p`
+font-style: italic;
+color: ${Colors.textcolor};
+
+`
+interface StyledComponentProps {
+  agendamento: boolean;
+}
+
+export const SalaWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+`;
+
+export const Sala = styled.p<StyledComponentProps>`
+  color: ${props => props.agendamento ? Colors.textColorDisabled : Colors.lighterGreen};
+  font-weight: 600;
+  font-weight: ${props => props.agendamento ? "500" : "600"};
+  text-decoration: ${props => props.agendamento ? "line-through" : "none"};
+  padding:0;
+`;
+
+export const SalaAgendada = styled.p`
+  color: ${Colors.lighterGreen};
+  font-weight: 600;
+  padding:0;
+`;

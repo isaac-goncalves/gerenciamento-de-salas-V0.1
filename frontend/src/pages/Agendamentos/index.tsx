@@ -4,6 +4,10 @@ import { Navigate } from 'react-router-dom'
 
 import DatePicker from "react-datepicker";
 
+import { useWindowSize } from 'react-use';
+
+import Confetti from 'react-confetti';
+
 import { ToastContainer, toast } from 'react-toastify';
 
 import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
@@ -393,6 +397,10 @@ interface ProfessoreProps {
 }
 
 const Agendamentos: React.FC = () => {
+  const [confetti, setConfetti] = useState(false);
+
+  const { width, height } = useWindowSize()
+
   const [grade, setgrade] = useState<GradeProps>();
 
   const [loading, setLoading] = useState(false);
@@ -438,7 +446,7 @@ const Agendamentos: React.FC = () => {
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
 
-  const [selectedSemestreValue, setSelectedSemestreValue] = useState(1) 
+  const [selectedSemestreValue, setSelectedSemestreValue] = useState(1)
 
   const [firstRender, setFirstRender] = useState(true)
 
@@ -471,14 +479,14 @@ const Agendamentos: React.FC = () => {
 
   useEffect(() => {
     if (userData.token !== '' && userData.userData.id !== 0) {
-      if (selectedMethod == "professor")   
-      fetchProfessorData();
+      if (selectedMethod == "professor")
+        fetchProfessorData();
       else {
         fetchSemestreData();
       }
-      
+
       fetchProfessors(userData.token);
-      
+
       if (userRole === 'professor' && userData.userData.id == 0) {
         setProfessorAsSelected(userData.userData.name, userData.userData.id);
       }
@@ -533,7 +541,7 @@ const Agendamentos: React.FC = () => {
     }
     )
   }
-  
+
   async function fetchProfessorData() {
     console.log("Fetching fetchGrades...")
     fetch('http://localhost:3333/grade/agendamentos', {
@@ -649,6 +657,7 @@ const Agendamentos: React.FC = () => {
     if (resetParams) {
       setSelectedIds([])
       setSelectedLaboratory(-1)
+      setConfetti(true);
     }
     setSelectingLaboratory(false)
     setModalVisible(false);
@@ -804,6 +813,13 @@ const Agendamentos: React.FC = () => {
   return (
     <Container>
       <ToastContainer />
+      {
+        confetti &&
+        <Confetti
+          width={width}
+          height={height}
+        />
+      }
       <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
       <Header>
         <CoursesWrapper>
@@ -816,21 +832,15 @@ const Agendamentos: React.FC = () => {
         </CoursesWrapper>
         <DatePickWrapper>
           <DatepickContainer>
-            <DatepickArrowsContainer onClick={() => handleSelectToday()}
-            >
-              <DateIcon src={dateIcon}
-              />
+            <DatepickArrowsContainer onClick={() => handleSelectToday()}>
+              <DateIcon src={dateIcon} />
               <p>Pular para hoje</p>
             </DatepickArrowsContainer>
-            <DatepickArrowsContainer
-              onClick={() => handleArrowLeft()}>
+            <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
               <DateIcon src={arrowLeft} />
             </DatepickArrowsContainer>
-            <DatepickArrowsContainer
-              onClick={() => handleArrowRight()}
-            >
-              <DateIcon src={arrowRight}
-              />
+            <DatepickArrowsContainer onClick={() => handleArrowRight()}>
+              <DateIcon src={arrowRight} />
             </DatepickArrowsContainer>
             <p>Março 2023</p>
             <DateIcon src={arrowDown} />
@@ -839,65 +849,69 @@ const Agendamentos: React.FC = () => {
               <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
               ao dia
               <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
-              <ProfessorSelect value={selectedMethod} onChange={handleMethodChange}>
-                <option value="professor">
-                  Professor
-                </option>
-                <option value="semestre">
-                  Semestre
-                </option>
-              </ProfessorSelect>
-          {
-            selectedMethod === "professor" ?
-              <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectChange}>
-                {
-                  professores && professores.length > 0 ? (
-                    professores.map((professor) => {
-                      return (
-                        <option key={professor.id} value={professor.id}>
-                          {professor.name}
-                        </option>
-                      );
-                    })
-                  ) : (
-                    <option value="">No professors available</option>
-                  )
-                }
-              </ProfessorSelect>
-              :
-              <ProfessorSelect value={selectedProfessor.name} onChange={handleSemestreChange}>
-                <option value="1">
-                  1º
-                </option>
-                <option value="2">
-                  2º
-                </option>
-                <option value="3">
-                  3º
-                </option>
-                <option value="4">
-                  4º
-                </option>
-                <option value="5">
-                  5º
-                </option>
-                <option value="6">
-                  6º
-                </option>
-              </ProfessorSelect>
-}
+
+              {
+                selectingLaboratory == true ?
+                  <>
+                    <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
+                    <button onClick={handleCancelClick}>Cancelar</button>
+                  </>
+                  :
+                  <>
+                    <ProfessorSelect value={selectedMethod} onChange={handleMethodChange}>
+                      <option value="professor">
+                        Professor
+                      </option>
+                      <option value="semestre">
+                        Semestre
+                      </option>
+                    </ProfessorSelect>
+                    {
+                      selectedMethod === "professor" ?
+                        <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectChange}>
+                          {
+                            professores && professores.length > 0 ? (
+                              professores.map((professor) => {
+                                return (
+                                  <option key={professor.id} value={professor.id}>
+                                    {professor.name}
+                                  </option>
+                                );
+                              })
+                            ) : (
+                              <option value="">No professors available</option>
+                            )
+                          }
+                        </ProfessorSelect>
+                        :
+                        <ProfessorSelect value={selectedProfessor.name} onChange={handleSemestreChange}>
+                          <option value="1">
+                            1º
+                          </option>
+                          <option value="2">
+                            2º
+                          </option>
+                          <option value="3">
+                            3º
+                          </option>
+                          <option value="4">
+                            4º
+                          </option>
+                          <option value="5">
+                            5º
+                          </option>
+                          <option value="6">
+                            6º
+                          </option>
+                        </ProfessorSelect>
+                    }
+                  </>
+
+              }
             </CalendarWrapper>
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>
-          <Semester>
-            {selectingLaboratory &&
-              <>
-                <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
-                <button onClick={handleCancelClick}>Cancelar</button>
-              </>
-            }
-            
-          </Semester>
+
         </DatePickWrapper>
       </Header>
       {

@@ -4,14 +4,6 @@ import DatePicker from 'react-datepicker'
 
 import { Colors } from '../../colors'
 
-export const StyledDatePicker = styled(DatePicker)`
-  z-index: 99;
-  width: 6rem;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
- 
-`
 export const ProfessorSelect = styled.select`
 z-index: 99;
   padding: 8px;
@@ -56,6 +48,7 @@ export const CoursesWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  
   width: 95%;
   height: 100%;
   padding: 1rem 1rem;
@@ -71,21 +64,21 @@ export const DatePickWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
+background: red;
   width: 85%;
 
   gap: 1rem;
   background-color: ${Colors.white};
   border-radius: 12px;
 
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: 1rem;
 `
 export const DatepickContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-
+  background-color:;
   white-space: nowrap;
   p {
   }
@@ -99,6 +92,15 @@ export const CalendarWrapper = styled.div`
   width: 15rem;
   align-items: center;
   gap: 1rem;
+`
+
+export const StyledDatePicker = styled(DatePicker)`
+  z-index: 99;
+  width: 6rem;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+ 
 `
 
 export const DateIcon = styled.img`
@@ -144,27 +146,15 @@ export const CourseSemester = styled.p`
   color: ${Colors.textcolor};
 `
 
-export const Semester = styled.h2`
+export const Semester = styled.div`
   font-size: 1.1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
+  height: 100%;
   width: 100%;
-
-  p,
-  span {
-    font-size: 2rem;
-    font-weight: 400;
-  }
-
-  p {
-    margin-right: 0.5rem;
-    color: ${Colors.mainpurple};
-  }
-  span {
-  }
 `
 
 export const ClockContainer = styled.div`

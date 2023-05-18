@@ -8,14 +8,17 @@ import { Colors } from '../../colors';
 
 import { toast, ToastContainer } from 'react-toastify';
 
+import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
+
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper } from './Dashboard.styles'
+import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker } from './Dashboard.styles'
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
+import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRight } from 'react-icons/md';
 
 
 interface ScheduleItem {
@@ -77,7 +80,7 @@ function printGradeValue(gradeValue: any) {
 const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
 
-  const [selectedValue, setSelectedValue] = useState(1) 
+  const [selectedValue, setSelectedValue] = useState(1)
 
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -85,15 +88,58 @@ const Dashboard: React.FC = () => {
   const [currentDay, setCurrentDay] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
+  const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
+  const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
+
   const handleChange = (event: any) => {
     setSelectedValue(event.target.value)
   }
 
- 
+  const handleSelectToday = () => {
+    const today = new Date()
+    const monday = startOfWeek(today, { weekStartsOn: 1 });
+    const friday = endOfWeek(today, { weekStartsOn: 6 });
+    setStartDate(monday);
+    setEndDate(friday);
+    }
+
+  const handleArrowLeft = () => {
+    const startDateTransformed = new Date(startDate as any)
+    const endDateTransformed = new Date(endDate as any)
+    const monday = subWeeks(startDateTransformed, 1)
+    const friday = subWeeks(endDateTransformed, 1)
+    setStartDate(monday);
+
+    setEndDate(friday);
+  }
+
+  const handleArrowRight = () => {
+    const startDateTransformed = new Date(startDate as any)
+    const endDateTransformed = new Date(endDate as any)
+    const monday = addWeeks(startDateTransformed, 1)
+    const friday = addWeeks(endDateTransformed, 1)
+    setStartDate(monday);
+
+    setEndDate(friday);
+  }
+
+  const handleStartDateChange = (date: Date) => {
+    const monday = startOfWeek(date, { weekStartsOn: 1 });
+    const friday = endOfWeek(date, { weekStartsOn: 6 });
+    setStartDate(monday);
+    setEndDate(friday);
+  };
+
+  const handleEndDateChange = (date: Date) => {
+    const monday = startOfWeek(date, { weekStartsOn: 1 });
+    const friday = endOfWeek(date, { weekStartsOn: 6 });
+    setStartDate(monday);
+    setEndDate(friday);
+  };
 
   useEffect(() => {
     console.log("Verificando usuário")
-    
+
     function verifyUser() {
 
       const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
@@ -107,7 +153,7 @@ const Dashboard: React.FC = () => {
       console.log("userData" + userData)
 
       // setloggedUserGrade(userData)
-      
+
       if (token == null || userData == null) {
         toast.error('Você precisa estar logado para acessar essa página!');
         localStorage.removeItem('gerenciamento-de-salas@v1.1');
@@ -130,7 +176,7 @@ const Dashboard: React.FC = () => {
               localStorage.removeItem('gerenciamento-de-salas@v1.1');
               toast.error('Você precisa estar logado para acessar essa página!');
               setTimeout(() => {
-               window.location.href = "/";
+                window.location.href = "/";
               }, 2000)
             }
             else {
@@ -184,7 +230,7 @@ const Dashboard: React.FC = () => {
       printGradeValue(transformedData)
       setTimeout(() => {
         setLoading(true) // teste de loading
-      }, 2000)
+      }, 1)
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
       return setgrade(transformedData)
@@ -235,12 +281,17 @@ const Dashboard: React.FC = () => {
           return (
             <Schedule isCurrentTime={isCurrentTime}
               className={isCurrentTime ? '' : 'hoverEffect'}>
-              <p>{disciplina}</p>
-              <p>{professor}</p>
-              <p>
-                {laboratorio}
-                {agendamento && ` - ${agendamento.laboratorio}`}
-              </p>
+              <Disciplina>{disciplina}</Disciplina>
+              <Professor>{professor}</Professor>
+              <SalaWrapper>
+                <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                {agendamento && agendamento.laboratorio && (
+                  <>
+                    <MdKeyboardDoubleArrowRight />
+                    <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                  </>
+                )}
+              </SalaWrapper>
             </Schedule>
           );
         })}
@@ -251,7 +302,7 @@ const Dashboard: React.FC = () => {
   const renderLoading = () => {
     return (
       <WeekContainer>
-        <ToastContainer/>
+        <ToastContainer />
         {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
           <WeekdayContainer key={day}>
             <SchedulesContainer isCurrentDay={false}>
@@ -281,15 +332,119 @@ const Dashboard: React.FC = () => {
             1º Semestre de 2023
           </CourseSemester>
         </CoursesWrapper>
-        <DatePicker>
-          <div>
+        <DatePickWrapper>
+        <DatepickContainer>
+            <DatepickArrowsContainer onClick={() => handleSelectToday()}>
+              <DateIcon src={dateIcon} />
+              <p>Pular para hoje</p>
+            </DatepickArrowsContainer>
+            <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
+              <DateIcon src={arrowLeft} />
+            </DatepickArrowsContainer>
+            <DatepickArrowsContainer onClick={() => handleArrowRight()}>
+              <DateIcon src={arrowRight} />
+            </DatepickArrowsContainer>
+            <p>Março 2023</p>
+            <DateIcon src={arrowDown} />
+            <CalendarWrapper>
+              Semana do dia
+              <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
+              ao dia
+              <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
+              <Semester>
+            <select value={selectedValue} onChange={handleChange}>
+              <option value="1">
+                1º
+              </option>
+              <option value="2">
+                2º
+              </option>
+              <option value="3">
+                3º
+              </option>
+              <option value="4">
+                4º
+              </option>
+              <option value="5">
+                5º
+              </option>
+              <option value="6">
+                6º
+              </option>
+            </select>
+            <span>
+              Semestre
+            </span>
+          </Semester> 
+              {/* {
+                selectingLaboratory == true ?
+                  <>
+                    <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
+                    <button onClick={handleCancelClick}>Cancelar</button>
+                  </>
+                  :
+                  <>
+                    <ProfessorSelect value={selectedMethod} onChange={handleMethodChange}>
+                      <option value="professor">
+                        Professor
+                      </option>
+                      <option value="semestre">
+                        Semestre
+                      </option>
+                    </ProfessorSelect>
+                    {
+                      selectedMethod === "professor" ?
+                        <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectChange}>
+                          {
+                            professores && professores.length > 0 ? (
+                              professores.map((professor) => {
+                                return (
+                                  <option key={professor.id} value={professor.id}>
+                                    {professor.name}
+                                  </option>
+                                );
+                              })
+                            ) : (
+                              <option value="">No professors available</option>
+                            )
+                          }
+                        </ProfessorSelect>
+                        :
+                        <ProfessorSelect value={selectedProfessor.name} onChange={handleSemestreChange}>
+                          <option value="1">
+                            1º
+                          </option>
+                          <option value="2">
+                            2º
+                          </option>
+                          <option value="3">
+                            3º
+                          </option>
+                          <option value="4">
+                            4º
+                          </option>
+                          <option value="5">
+                            5º
+                          </option>
+                          <option value="6">
+                            6º
+                          </option>
+                        </ProfessorSelect>
+                    }
+                  </>
+
+              } */}
+            </CalendarWrapper>
+            {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
+          </DatepickContainer>
+          {/* <DatepickContainer>
             <DateIcon src={dateIcon} />
             <p>Pular para hoje</p>
             <DateIcon src={arrowLeft} />
             <DateIcon src={arrowRight} />
             <p>Março 2023</p>
             <DateIcon src={arrowDown} />
-          </div>
+          </DatepickContainer>
           <Semester>
             <select value={selectedValue} onChange={handleChange}>
               <option value="1">
@@ -314,8 +469,8 @@ const Dashboard: React.FC = () => {
             <span>
               Semestre
             </span>
-          </Semester>
-        </DatePicker>
+          </Semester> */}
+        </DatePickWrapper>
       </Header>
       <ClassesContainer>
         <ClockContainer>

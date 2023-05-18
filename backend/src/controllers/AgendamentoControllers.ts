@@ -123,6 +123,46 @@ export class AgendamentoController {
       return response.status(500).json({ message: 'internal server error' })
     }
   }
+  async getLaboratoriosSchedule (request: Request, response: Response) {
+    
+    console.log('get agendamento')
+
+     try {
+
+      const {date} = request.body
+
+      console.log(date)
+    //   const agendamentos = await agendamentosRepository.find()
+
+    //   agendamentos.sort((a, b) => {
+    //     return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+    //   });
+
+    //   //grab professor_id find his name 
+
+    //   const agendamentoWithProfessorName = await Promise.all(
+    //     agendamentos.map(async (agendamento: any) => {
+    //       const id_professor = agendamento.id_professor
+
+    //       const queryProfessor = ` SELECT name FROM professores WHERE id = ${id_professor} `
+    //       const nomeProfessor = await gradeRepositories.query(queryProfessor)
+    //       console.log(nomeProfessor)
+
+    //       agendamento.nome_professor = nomeProfessor[0]?.name || '';
+        
+
+    //       return agendamento
+    //     })
+    //   )
+
+
+    //   console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
+       return response.status(200).json(date)
+     } catch (error) {
+      console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
+    }
+  }
 
   async delete (request: Request, response: Response) {
     const id = Number(request.params.id)

@@ -21,6 +21,8 @@ routes.get('/agendamento', new AgendamentoController().get)
 routes.put('/agendamento/:id', new AgendamentoController().update);
 routes.delete('/agendamento/:id', new AgendamentoController().delete);
 
+routes.post('/laboratoriosschedule', new AgendamentoController().getLaboratoriosSchedule)
+
 routes.post('/login', new UserController().login)
 routes.post('/register', new UserController().create)
 
