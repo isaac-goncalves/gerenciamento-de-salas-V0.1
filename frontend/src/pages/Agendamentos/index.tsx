@@ -51,7 +51,8 @@ import {
   Laboratorio,
   DatepickArrowsContainer,
   StyledDatePicker,
-  ProfessorSelect
+  ProfessorSelect,
+  WeekDay
 }
   from './Agendamento.styles'
 
@@ -774,6 +775,7 @@ const Agendamentos: React.FC = () => {
       <WeekContainer>
         {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
           <WeekdayContainer key={day}>
+             <WeekDay><PacmanLoader color={Colors.lightgrayInput} size={10} loading /></WeekDay>
             <SchedulesContainer >
               <h2>{day}</h2>
               {Array(6)
@@ -809,6 +811,25 @@ const Agendamentos: React.FC = () => {
     setSelectedMethod(event.target.value)
 
   }
+
+  const getDayBasedOnWeekday = (dayName: string, startDate: any) => {
+    const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const dayIndex = days.indexOf(dayName);
+    
+    if(dayIndex === -1) {
+        throw new Error('Invalid day name');
+    }
+    
+    const currentDay = startDate.getDay();
+    const daysUntilNext = (dayIndex - currentDay + 7) % 7;
+    
+    const nextDay = new Date(startDate.getTime());
+    nextDay.setDate(startDate.getDate() + daysUntilNext);
+
+    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+    return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
+};
 
   return (
     <Container>
@@ -1067,8 +1088,9 @@ const Agendamentos: React.FC = () => {
                 (
                   <WeekContainer>
                     <WeekdayContainer>
-                      <h2>Segunda</h2>
+                      <WeekDay>{getDayBasedOnWeekday("Segunda", startDate) }</WeekDay>
                       <SchedulesContainer>
+                      <h2>Segunda</h2>
                         {
                           grade.segunda.map((item: gradeData) => {
                             return (
@@ -1088,8 +1110,9 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>Terça</h2>
+                    <WeekDay>{getDayBasedOnWeekday("Terça", startDate) }</WeekDay>
                       <SchedulesContainer>
+                      <h2>Terça</h2>
                         {
                           grade.terca.map((item: gradeData) => {
                             return (
@@ -1109,8 +1132,9 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>Quarta</h2>
+                    <WeekDay>{getDayBasedOnWeekday("Quarta", startDate) }</WeekDay>
                       <SchedulesContainer>
+                      <h2>Quarta</h2>
                         {
                           grade.quarta.map((item: gradeData) => {
                             return (
@@ -1130,8 +1154,9 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>Quinta</h2>
+                    <WeekDay>{getDayBasedOnWeekday("Quinta", startDate) }</WeekDay>
                       <SchedulesContainer>
+                      <h2>Quinta</h2>
                         {
                           grade.quinta.map((item: gradeData) => {
                             return (
@@ -1151,8 +1176,9 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>Sexta</h2>
+                    <WeekDay>{getDayBasedOnWeekday("Sexta", startDate) }</WeekDay>
                       <SchedulesContainer>
+                      <h2>Sexta</h2>
                         {
                           grade.sexta.map((item: gradeData) => {
                             return (

@@ -10,7 +10,7 @@ export const Colors = {
   lightgrayInput: '#D9D9D9',
   lightgrayborder: '#8E8E8E',
   lightGreen: "rgb(139,195,74)",
-  lighterGreen: "#6C8762",
+  lighterGreen: "#6358DC",
   backgroud: "#8E8E8E",
   horariosCard: "rgba(99, 88, 220, 0.31)",
   hoverCard: "rgba(99, 88, 220, 0.62)"

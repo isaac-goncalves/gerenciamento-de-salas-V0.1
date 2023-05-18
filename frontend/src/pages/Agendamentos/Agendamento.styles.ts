@@ -118,7 +118,7 @@ export const ClassesContainer = styled.div`
   margin-bottom: 2rem;
   background-color: ${Colors.white};
   /* background-color: blue  ; */ // alternate color
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 12px;
   width: 95%;
   height: 100%;
@@ -180,6 +180,12 @@ export const WeekContainer = styled.div`
   gap: 1rem;
   height: 100%;
   width: 100%;
+`
+export const WeekDay = styled.p`
+font-size: 1rem;
+padding: 0.5rem 0;
+color: ${Colors.mainpurple};
+transition: color 0.3s ease-in-out; /* Add the transition property */
 `
 
 export const WeekdayContainer = styled.div`

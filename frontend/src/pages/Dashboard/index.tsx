@@ -4,6 +4,8 @@ import { Navigate } from 'react-router-dom'
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import { Colors } from '../../colors';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -12,7 +14,7 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker } from './Dashboard.styles'
+import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay } from './Dashboard.styles'
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
@@ -81,6 +83,7 @@ const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
 
   const [selectedValue, setSelectedValue] = useState(1)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -230,7 +233,7 @@ const Dashboard: React.FC = () => {
       printGradeValue(transformedData)
       setTimeout(() => {
         setLoading(true) // teste de loading
-      }, 1)
+      }, 2000)
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
       return setgrade(transformedData)
@@ -259,8 +262,28 @@ const Dashboard: React.FC = () => {
     return now >= start && now <= end;
   };
 
+  const getDayBasedOnWeekday = (dayName: string, startDate: any) => {
+    const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const dayIndex = days.indexOf(dayName);
+    
+    if(dayIndex === -1) {
+        throw new Error('Invalid day name');
+    }
+    
+    const currentDay = startDate.getDay();
+    const daysUntilNext = (dayIndex - currentDay + 7) % 7;
+    
+    const nextDay = new Date(startDate.getTime());
+    nextDay.setDate(startDate.getDate() + daysUntilNext);
+
+    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+    return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
+};
+
   const renderWeekday = (dayName: string, dayData: any) => (
     <WeekdayContainer>
+      <WeekDay>{getDayBasedOnWeekday(dayName, startDate) }</WeekDay>
       <SchedulesContainer isCurrentDay={currentDay === dayName}>
         <h2>{dayName}</h2>
         {dayData.map((item: any) => {
@@ -305,6 +328,7 @@ const Dashboard: React.FC = () => {
         <ToastContainer />
         {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
           <WeekdayContainer key={day}>
+            <WeekDay><PacmanLoader color={Colors.lightgrayInput} size={10} loading /></WeekDay>
             <SchedulesContainer isCurrentDay={false}>
               <h2>{day}</h2>
               {Array(6)
