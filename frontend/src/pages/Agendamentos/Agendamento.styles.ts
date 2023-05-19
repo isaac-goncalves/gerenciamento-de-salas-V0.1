@@ -122,7 +122,7 @@ export const ClassesContainer = styled.div`
   border-radius: 12px;
   width: 95%;
   height: 100%;
-  gap: 2rem;
+  gap: 0.5rem;
 `
 
 export const Laboratorios = styled.div`

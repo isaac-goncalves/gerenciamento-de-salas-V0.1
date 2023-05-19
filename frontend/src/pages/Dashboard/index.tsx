@@ -104,7 +104,7 @@ const Dashboard: React.FC = () => {
     const friday = endOfWeek(today, { weekStartsOn: 6 });
     setStartDate(monday);
     setEndDate(friday);
-    }
+  }
 
   const handleArrowLeft = () => {
     const startDateTransformed = new Date(startDate as any)
@@ -265,25 +265,25 @@ const Dashboard: React.FC = () => {
   const getDayBasedOnWeekday = (dayName: string, startDate: any) => {
     const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const dayIndex = days.indexOf(dayName);
-    
-    if(dayIndex === -1) {
-        throw new Error('Invalid day name');
+
+    if (dayIndex === -1) {
+      throw new Error('Invalid day name');
     }
-    
+
     const currentDay = startDate.getDay();
     const daysUntilNext = (dayIndex - currentDay + 7) % 7;
-    
+
     const nextDay = new Date(startDate.getTime());
     nextDay.setDate(startDate.getDate() + daysUntilNext);
 
     const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
     return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
-};
+  };
 
   const renderWeekday = (dayName: string, dayData: any) => (
     <WeekdayContainer>
-      <WeekDay>{getDayBasedOnWeekday(dayName, startDate) }</WeekDay>
+      <WeekDay>{getDayBasedOnWeekday(dayName, startDate)}</WeekDay>
       <SchedulesContainer isCurrentDay={currentDay === dayName}>
         <h2>{dayName}</h2>
         {dayData.map((item: any) => {
@@ -352,12 +352,15 @@ const Dashboard: React.FC = () => {
           <CourseName>
             <p>Dashboard</p>
           </CourseName>
+          <CourseName>
+            Analise e desenvolvimento de sistemas
+          </CourseName>
           <CourseSemester>
             1º Semestre de 2023
           </CourseSemester>
         </CoursesWrapper>
         <DatePickWrapper>
-        <DatepickContainer>
+          <DatepickContainer>
             <DatepickArrowsContainer onClick={() => handleSelectToday()}>
               <DateIcon src={dateIcon} />
               <p>Pular para hoje</p>
@@ -376,30 +379,30 @@ const Dashboard: React.FC = () => {
               ao dia
               <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
               <Semester>
-            <select value={selectedValue} onChange={handleChange}>
-              <option value="1">
-                1º
-              </option>
-              <option value="2">
-                2º
-              </option>
-              <option value="3">
-                3º
-              </option>
-              <option value="4">
-                4º
-              </option>
-              <option value="5">
-                5º
-              </option>
-              <option value="6">
-                6º
-              </option>
-            </select>
-            <span>
-              Semestre
-            </span>
-          </Semester> 
+                <select value={selectedValue} onChange={handleChange}>
+                  <option value="1">
+                    1º
+                  </option>
+                  <option value="2">
+                    2º
+                  </option>
+                  <option value="3">
+                    3º
+                  </option>
+                  <option value="4">
+                    4º
+                  </option>
+                  <option value="5">
+                    5º
+                  </option>
+                  <option value="6">
+                    6º
+                  </option>
+                </select>
+                <span>
+                  Semestre
+                </span>
+              </Semester>
               {/* {
                 selectingLaboratory == true ?
                   <>
