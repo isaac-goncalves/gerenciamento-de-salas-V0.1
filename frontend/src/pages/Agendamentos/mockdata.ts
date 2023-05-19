@@ -2,61 +2,59 @@ export const mockdata: any = {
     "laboratorio1": [
       {
         "id": 1,
-        "laboratorio": "Disponivel",
-        "id_laboratorio": "1",
+        "disponivel": true,
       },
       {
         "id": 2,
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Cilmara",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Indisponivel",
-        "ScheduleData": {
-          "id": 2,
-          "horario_inicio": "19:45",
-          "horario_fim": "20:35",
-          "dia_da_semana": "00001",
-          "semestre": "1",
-          "created_at": "2023-03-23T01:24:00.965Z",
+        "disponivel": false,
+        "agendamento": {
+          "id": 66, 
+          "date": "2023-05-15T22:51:23.093Z", 
+          "horario_inicio": "18:45", 
+          "horario_fim": "19:35", 
+          "id_professor": "12", 
+          "id_grade": "1", 
+          "id_laboratorio": "3", 
+          "created_at": "2023-05-17T22:51:41.042Z", 
+          "updated_at": "2023-05-17T22:51:41.042Z", 
+          "nome_professor": "Michel" 
         }
       },
       {
         "id": 3,
-        "horario_inicio": "20:35",
-        "horario_fim": "21:25",
-        "dia_da_semana": "00002",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Michel",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
+        "disponivel": false,
+        "agendamento": {
+          "id": 67, 
+          "date": "2023-05-15T22:51:23.093Z", 
+          "horario_inicio": "18:45", 
+          "horario_fim": "19:35", 
+          "id_professor": "12", 
+          "id_grade": "1", 
+          "id_laboratorio": "3", 
+          "created_at": "2023-05-17T22:51:41.042Z", 
+          "updated_at": "2023-05-17T22:51:41.042Z", 
+          "nome_professor": "Michel" 
+        }
       },
       {
         "id": 4,
-        "horario_inicio": "21:25",
-        "horario_fim": "22:15",
-        "dia_da_semana": "00002",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
+        "disponivel": false,
+        "agendamento": {
+          "id": 68, 
+          "date": "2023-05-15T22:51:23.093Z", 
+          "horario_inicio": "18:45", 
+          "horario_fim": "19:35", 
+          "id_professor": "12", 
+          "id_grade": "1", 
+          "id_laboratorio": "3", 
+          "created_at": "2023-05-17T22:51:41.042Z", 
+          "updated_at": "2023-05-17T22:51:41.042Z", 
+          "nome_professor": "Michel" 
+        }
       },
       {
         "id": 5,
-        "horario_inicio": "22:15",
-        "horario_fim": "23:05",
-        "dia_da_semana": "00002",
-        "semestre": "1",
-        "created_at": "2023-03-23T01:24:00.965Z",
-        "updated_at": "2023-03-23T01:24:00.965Z",
-        "professor": "Manuela",
-        "disciplina": "Algoritmos e Lógica de Programação",
-        "laboratorio": "Disponivel"
+        "disponivel": true,
       }
     ],
     "laboratorio2": [

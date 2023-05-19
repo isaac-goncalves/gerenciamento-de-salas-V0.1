@@ -3,6 +3,7 @@ import { agendamentosRepository } from '../repositories/agendamentoRepository'
 import { gradeRepositories } from '../repositories/gradeRepositories'
 import { FindOneOptions } from 'typeorm'
 import { Agendamento } from '../entities/Agendamento'
+import { isSameDay } from 'date-fns'
 
 export class AgendamentoController {
   async create (request: Request, response: Response) {
@@ -15,7 +16,8 @@ export class AgendamentoController {
 
     console.log(date, id_professor, ids_grade, id_laboratorio)
 
-    if(ids_grade.length === 0) return response.status(400).json({ message: 'missing data' })
+    if (ids_grade.length === 0)
+      return response.status(400).json({ message: 'missing data' })
 
     ids_grade.forEach(async (id_grade: any) => {
       const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `
@@ -58,10 +60,12 @@ export class AgendamentoController {
       const agendamentos = await agendamentosRepository.find()
 
       agendamentos.sort((a, b) => {
-        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-      });
+        return (
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+        )
+      })
 
-      //grab professor_id find his name 
+      //grab professor_id find his name
 
       const agendamentoWithProfessorName = await Promise.all(
         agendamentos.map(async (agendamento: any) => {
@@ -71,13 +75,11 @@ export class AgendamentoController {
           const nomeProfessor = await gradeRepositories.query(queryProfessor)
           console.log(nomeProfessor)
 
-          agendamento.nome_professor = nomeProfessor[0]?.name || '';
-        
+          agendamento.nome_professor = nomeProfessor[0]?.name || ''
 
           return agendamento
         })
       )
-
 
       console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
 
@@ -124,43 +126,50 @@ export class AgendamentoController {
     }
   }
   async getLaboratoriosSchedule (request: Request, response: Response) {
-    
     console.log('get agendamento')
 
-     try {
-
-      const {date} = request.body
-
+    try {
+      const { date } = request.body
       console.log(date)
-    //   const agendamentos = await agendamentosRepository.find()
 
-    //   agendamentos.sort((a, b) => {
-    //     return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-    //   });
+      const isoDate = new Date(date)
+      isoDate.setHours(0, 0, 0, 0)
 
-    //   //grab professor_id find his name 
+      const allAgendamentos = await agendamentosRepository.find()
 
-    //   const agendamentoWithProfessorName = await Promise.all(
-    //     agendamentos.map(async (agendamento: any) => {
-    //       const id_professor = agendamento.id_professor
+      const agendamentos = allAgendamentos.filter(a => isSameDay(new Date(a.date), isoDate));
 
-    //       const queryProfessor = ` SELECT name FROM professores WHERE id = ${id_professor} `
-    //       const nomeProfessor = await gradeRepositories.query(queryProfessor)
-    //       console.log(nomeProfessor)
+      console.log(agendamentos)
 
-    //       agendamento.nome_professor = nomeProfessor[0]?.name || '';
-        
+      let scheduleData: any = {}
 
-    //       return agendamento
-    //     })
-    //   )
+      // Create schedule for each laboratory
+      for (let lab = 1; lab <= 7; lab++) {
+        let labSchedule = []
 
+        for (let i = 1; i <= 5; i++) {
+          let agendamento = agendamentos.find(
+            a =>
+              new Date(a.date).getDay() == lab &&
+              getTimeSlot(a.horario_inicio) == i
+          )
 
-    //   console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
-       return response.status(200).json(date)
-     } catch (error) {
-      console.log(error)
-      return response.status(500).json({ message: 'internal server error' })
+          let slotData = {
+            id: i,
+            disponivel: agendamento ? false : true,
+            agendamento: agendamento ? agendamento : undefined
+          }
+
+          labSchedule.push(slotData)
+        }
+
+        scheduleData[`laboratorio${lab}`] = labSchedule;
+      }
+
+      return response.status(200).json(scheduleData)
+    } catch (error) {
+      console.error(error)
+      return response.status(500).json({ message: 'Internal server error' })
     }
   }
 
@@ -200,7 +209,7 @@ export class AgendamentoController {
       id_laboratorio
     } = request.body
 
-       console.log(
+    console.log(
       id,
       date,
       horario_inicio,
@@ -241,5 +250,22 @@ export class AgendamentoController {
       console.error(error)
       return response.status(500).json({ message: 'Internal server error' })
     }
+  }
+}
+function getTimeSlot (horario_inicio: string): number {
+  switch (horario_inicio) {
+    case '18:45':
+      return 1
+    case '19:35':
+      return 2
+    case '20:25':
+      return 3
+    case '20:35':
+      return 4
+    case '21:25':
+      return 5
+    default:
+      // you might want to throw an error here if the given time does not match any slot
+      return -1
   }
 }
