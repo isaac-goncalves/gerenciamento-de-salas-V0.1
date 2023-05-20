@@ -12,6 +12,9 @@ import { Professores } from './Professores'
 
 @Entity()
 export class Agendamento {
+  static id_professor(id_professor: any) {
+    throw new Error('Method not implemented.')
+  }
   @PrimaryGeneratedColumn()
   id: number
 

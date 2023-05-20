@@ -1,9 +1,12 @@
 import { Request, Response } from 'express'
 import { agendamentosRepository } from '../repositories/agendamentoRepository'
 import { gradeRepositories } from '../repositories/gradeRepositories'
+import { professoresRepository } from '../repositories/professoresRepositories'
 import { FindOneOptions } from 'typeorm'
 import { Agendamento } from '../entities/Agendamento'
 import { isSameDay } from 'date-fns'
+
+import { Professores } from '../entities/Professores'
 
 export class AgendamentoController {
   async create (request: Request, response: Response) {
@@ -154,6 +157,16 @@ export class AgendamentoController {
               getTimeSlot(a.horario_inicio) == i
           )
 
+            console.log(JSON.stringify(agendamento, null, 2))
+    
+
+          // if (agendamento) {
+          //   const professor = await Professores.findOne(agendamento.id_professor);
+          //     console.log(professor)
+
+          //   agendamento.professor = professor ? professor.name : null;
+          // }
+
           let slotData = {
             id: i,
             disponivel: agendamento ? false : true,
@@ -167,7 +180,6 @@ export class AgendamentoController {
       }
 
       return response.status(200).json(scheduleData)
-
 
     } catch (error) {
       console.error(error)

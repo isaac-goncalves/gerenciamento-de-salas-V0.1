@@ -199,6 +199,7 @@ function printGradeValue(gradeValue: any) {
 
 const Agendamentos: React.FC = () => {
 
+  
   const [userRole, setUserRole] = useState(''); // User role state
 
   const [userData, setUserData] = useState(
@@ -322,7 +323,11 @@ const Agendamentos: React.FC = () => {
 
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")
-    await fetch('http://localhost:3333/professors', {
+
+    
+    // console.log(process.env.REACT_APP_API_KEY)
+
+    await fetch(`https://b6d6-187-75-58-35.sa.ngrok.io/professors`, {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -330,7 +335,9 @@ const Agendamentos: React.FC = () => {
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
       return setProfessores(data)
-    });
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 
   async function fetchSemestreData() {

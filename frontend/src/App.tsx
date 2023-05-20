@@ -14,9 +14,10 @@ import Perfil from './pages/Perfil'
 import Register from './pages/Register'
 import { Circles } from './pages/Components/Circles'
 
+
 function App() {
   const [count, setCount] = useState(0)
-
+  
   return (
     <>
       <Router>
