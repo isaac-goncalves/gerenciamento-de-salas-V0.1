@@ -265,6 +265,11 @@ export const Schedule = styled.div`
   }
 `
 
+export const Disciplina = styled.p`
+font-weight: 500;
+color: ${Colors.textcolor};
+`
+
 interface IProps {
   selected: boolean
 }

@@ -4,14 +4,18 @@ import {
   Column,
   OneToOne,
   JoinColumn,
-  CreateDateColumn
+  CreateDateColumn,
+  OneToMany
 } from 'typeorm'
+import { Agendamento } from './Agendamento'
 
 @Entity()
 export class Professores {
-  
   @PrimaryGeneratedColumn()
   id: number
+
+  @OneToMany(() => Agendamento, agendamento => agendamento.professor)
+  agendamentos: Agendamento[]
 
   @Column()
   name: string

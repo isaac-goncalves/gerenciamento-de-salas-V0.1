@@ -1,31 +1,45 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn } from "typeorm"
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+  CreateDateColumn,
+  ManyToOne
+} from 'typeorm'
+
+import { Professores } from './Professores'
 
 @Entity()
 export class Agendamento {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @Column()
-    date: string;
+  @Column()
+  date: string
 
-    @Column()
-    horario_inicio: string;
+  @Column()
+  horario_inicio: string
 
-    @Column()
-    horario_fim: string;
+  @Column()
+  horario_fim: string
 
-    @Column()
-    id_professor: string;
+  @Column()
+  id_professor: number
 
-    @Column()
-    id_grade: string;
-    
-    @Column()
-    id_laboratorio: string;
+  @Column()
+  id_grade: string
 
-    @CreateDateColumn()
-    created_at: Date;
+  @Column()
+  id_laboratorio: string
 
-    @Column()
-    updated_at: Date;
+  @CreateDateColumn()
+  created_at: Date
+
+  @Column()
+  updated_at: Date
+
+  @ManyToOne(() => Professores, professor => professor.agendamentos)
+  @JoinColumn({ name: 'id_professor' }) // the name of the column in your DB
+  professor: Professores
 }
