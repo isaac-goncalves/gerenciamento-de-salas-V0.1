@@ -52,7 +52,13 @@ import {
   DatepickArrowsContainer,
   StyledDatePicker,
   ProfessorSelect,
-  WeekDay
+  WeekDay,
+  NenhumaAulaText,
+  DisciplinaText,
+  Professor,
+  Disciplina,
+  Semestre,
+  LaboratorioText
 }
   from './Agendamento.styles'
 
@@ -199,7 +205,6 @@ function printGradeValue(gradeValue: any) {
 
 const Agendamentos: React.FC = () => {
 
-  
   const [userRole, setUserRole] = useState(''); // User role state
 
   const [userData, setUserData] = useState(
@@ -221,7 +226,7 @@ const Agendamentos: React.FC = () => {
 
   const [loading, setLoading] = useState(false); // Loading state
 
-  const [selectingLaboratory, setSelectingLaboratory] = useState(false)
+  const [selectingLaboratory, setSelectingLaboratory] = useState(false) // Selecting laboratory state
 
   //---------------------------------------------------- fetch stuff
   const [grade, setgrade] = useState<GradeProps>();  // Grade state
@@ -236,29 +241,27 @@ const Agendamentos: React.FC = () => {
   const [laboratoryData, setLaboratoryData] = useState<any>([]); // Laboratorios state
 
   //----------------------------------------------------
-  const [WeekdayGradeIds, setWeekdayGradeIds] = useState<number[]>([])
+  const [WeekdayGradeIds, setWeekdayGradeIds] = useState<number[]>([]) // Weekday grade ids state
 
-  const [selectedWeekday, setSelectedWeekday] = useState<string>('');
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [selectedLaboratory, setSelectedLaboratory] = useState(-1);
+  const [selectedWeekday, setSelectedWeekday] = useState<string>(''); // Selected weekday state
+  const [selectedIds, setSelectedIds] = useState<number[]>([]); // Selected ids state
+  const [selectedLaboratory, setSelectedLaboratory] = useState(-1); // Selected laboratory state
 
 
-  const [selectedProfessor, setSelectedProfessor] = useState<Professor>(
+  const [selectedProfessor, setSelectedProfessor] = useState<Professor>( // Selected professor state
     {
       id: 0,
       name: "Selecione um professor",
     },
   );
 
-  const [selectedMethod, setSelectedMethod] = useState("professor");
+  const [selectedMethod, setSelectedMethod] = useState("professor"); // Selected method state
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
 
   const [selectedSemestreValue, setSelectedSemestreValue] = useState(1)
-
-  const [firstRender, setFirstRender] = useState(true)
 
   useLayoutEffect(() => {
     console.log('Starting to render stuff...');
@@ -321,13 +324,15 @@ const Agendamentos: React.FC = () => {
     }
   };
 
+  //---------------------------------------------------- FETCH FUNCTIONS ----------------------------------------------------
+
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")
 
-    
+
     // console.log(process.env.REACT_APP_API_KEY)
 
-    await fetch(`https://b6d6-187-75-58-35.sa.ngrok.io/professors`, {
+    await fetch(`http://localhost:3333/professors`, {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -392,8 +397,6 @@ const Agendamentos: React.FC = () => {
     )
   }
 
-
-
   async function fetchLaboratoryData() {
     console.log("Fetching fetchLaboratoryData...")
     fetch('http://localhost:3333/laboratoriosschedule', {
@@ -417,6 +420,8 @@ const Agendamentos: React.FC = () => {
     }
     )
   }
+
+  //---------------------------------------------------- GROUP BY FUNCTIONS ----------------------------------------------------
 
   // const [monday, friday] = getWeekDays(startDate, endDate);
 
@@ -528,11 +533,10 @@ const Agendamentos: React.FC = () => {
 
   }
 
-
   const handleSelection = (id: number, labId: number) => {
     // console.log(id)
     // console.log(selectedIds)
-    // console.log("LaboratoryID= "+labId)
+   console.log("LaboratoryID= "+labId)
 
     if (labId !== selectedLaboratory) {
       // console.log("Different Laboratory")
@@ -800,13 +804,12 @@ const Agendamentos: React.FC = () => {
                 (
                   <WeekContainer>
                     <WeekdayContainer>
-                      <h2>LAB 1</h2>
                       <SchedulesContainer>
+                        <h2>LAB 1</h2>
                         {
                           laboratoryData.laboratorio1.map((item: any) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 1)}>
-
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 21)}>
                                 {/* "id": 1,
                                     "disponivel": false,
                                     "agendamento": {
@@ -820,9 +823,9 @@ const Agendamentos: React.FC = () => {
                                         "created_at": "2023-05-11T23:38:31.113Z",
                                         "updated_at": "2023-05-11T23:38:31.113Z"
                                  } */}
-                                <p>{item.disponivel ? "Disponivel" : "Indisponivel"}</p>
+                                <p>{item.disponivel ? "Disponível" : "Indisponível"}</p>
                                 <p>{item.agendamento && item.agendamento.id}</p>
-                                <p>{item.agendamento && item.agendamento.id_professor}</p>
+                                <p>{item.agendamento && item.agendamento.professor_name}</p>
 
                                 {/* {
                                   item.agendamento &&  item.agendamento.id && (
@@ -838,12 +841,12 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>LAB 2</h2>
                       <SchedulesContainer>
+                        <h2>LAB 2</h2>
                         {
                           laboratoryData.laboratorio2.map((item: any) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 2)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 22)}>
                                 <p>{item.disponivel ? "Disponivel" : "Indisponivel"}</p>
                                 <p>{item.agendamento && item.agendamento.id}</p>
                               </Laboratorio>
@@ -853,12 +856,12 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>LAB 3</h2>
                       <SchedulesContainer>
+                        <h2>LAB 3</h2>
                         {
                           laboratoryData.laboratorio3.map((item: any) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 3)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 23)}>
                                 <p>{item.disponivel ? "Disponivel" : "Indisponivel"}</p>
                                 <p>{item.agendamento && item.agendamento.id}</p>
                               </Laboratorio>
@@ -868,12 +871,12 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>LAB 4</h2>
                       <SchedulesContainer>
+                        <h2>LAB 4</h2>
                         {
                           laboratoryData.laboratorio4.map((item: any) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 4)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 24)}>
                                 <p>{item.disponivel ? "Disponivel" : "Indisponivel"}</p>
                                 <p>{item.agendamento && item.agendamento.id}</p>
                               </Laboratorio>
@@ -883,12 +886,12 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>LAB 5</h2>
                       <SchedulesContainer>
+                        <h2>LAB 5</h2>
                         {
                           laboratoryData.laboratorio5.map((item: any) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 5)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 25)}>
                                 <p>{item.disponivel ? "Disponivel" : "Indisponivel"}</p>
                                 <p>{item.agendamento && item.agendamento.id}</p>
                               </Laboratorio>
@@ -898,12 +901,12 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>LAB 6</h2>
                       <SchedulesContainer>
+                        <h2>LAB 6</h2>
                         {
                           laboratoryData.laboratorio6.map((item: any) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 6)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 26)}>
                                 <p>{item.disponivel ? "Disponivel" : "Indisponivel"}</p>
                                 <p>{item.agendamento && item.agendamento.id}</p>
                               </Laboratorio>
@@ -913,12 +916,12 @@ const Agendamentos: React.FC = () => {
                       </SchedulesContainer>
                     </WeekdayContainer>
                     <WeekdayContainer>
-                      <h2>Sala Maker</h2>
                       <SchedulesContainer>
+                        <h2>Sala Maker</h2>
                         {
                           laboratoryData.laboratorio7.map((item: any) => {
                             return (
-                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 7)}>
+                              <Laboratorio key={item.id} selected={selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, 27)}>
                                 <p>{item.disponivel ? "Disponivel" : "Indisponivel"}</p>
                                 <p>{item.agendamento && item.agendamento.id}</p>
                               </Laboratorio>
@@ -955,20 +958,26 @@ const Agendamentos: React.FC = () => {
                       <SchedulesContainer>
                         <h2>Segunda</h2>
                         {
-                          grade.segunda.map((item: gradeData) => {
-                            return (
-                              <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
-                                <p>{item.disciplina}</p>
-                                <p>{item.professor}</p>
+                          grade.segunda.map((item: gradeData) => (
+                            item.disciplina === "Nenhuma Aula" ?
+                              <Schedule>
+                                <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                                <Professor>{item.professor}</Professor>
                                 <div>
-                                  {
-                                    item.semestre && <p>{item.semestre}° Semestre</p>
-                                  }
-                                  <p>{item.laboratorio}</p>
+                                  {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                  <Semestre>{item.laboratorio}</Semestre>
                                 </div>
                               </Schedule>
-                            )
-                          })
+                              :
+                              <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                <DisciplinaText>{item.disciplina}</DisciplinaText>
+                                <Professor>{item.professor}</Professor>
+                                <div>
+                                  {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                  <LaboratorioText>{item.laboratorio}</LaboratorioText>
+                                </div>
+                              </Schedule>
+                          ))
                         }
                       </SchedulesContainer>
                     </WeekdayContainer>
@@ -979,16 +988,24 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.terca.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Terça-feira", grade.terca, startDate)} key={item.id}>
-                                <p>{item.disciplina}</p>
-                                <p>{item.professor}</p>
-                                <div>
-                                  {
-                                    item.semestre && <p>{item.semestre}° Semestre</p>
-                                  }
-                                  <p>{item.laboratorio}</p>
-                                </div>
-                              </Schedule>
+                              item.disciplina === "Nenhuma Aula" ?
+                              <Schedule>
+                              <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                              <Professor>{item.professor}</Professor>
+                              <div>
+                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                <Semestre>{item.laboratorio}</Semestre>
+                              </div>
+                            </Schedule>
+                            :
+                            <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                              <DisciplinaText>{item.disciplina}</DisciplinaText>
+                              <Professor>{item.professor}</Professor>
+                              <div>
+                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                <LaboratorioText>{item.laboratorio}</LaboratorioText>
+                              </div>
+                            </Schedule>
                             )
                           })
                         }
@@ -1001,16 +1018,24 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.quarta.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Quarta-feira", grade.quarta, startDate)} key={item.id}>
-                                <p>{item.disciplina}</p>
-                                <p>{item.professor}</p>
-                                <div>
-                                  {
-                                    item.semestre && <p>{item.semestre}° Semestre</p>
-                                  }
-                                  <p>{item.laboratorio}</p>
-                                </div>
-                              </Schedule>
+                              item.disciplina === "Nenhuma Aula" ?
+                              <Schedule>
+                              <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                              <Professor>{item.professor}</Professor>
+                              <div>
+                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                <Semestre>{item.laboratorio}</Semestre>
+                              </div>
+                            </Schedule>
+                            :
+                            <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                              <DisciplinaText>{item.disciplina}</DisciplinaText>
+                              <Professor>{item.professor}</Professor>
+                              <div>
+                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                <LaboratorioText>{item.laboratorio}</LaboratorioText>
+                              </div>
+                            </Schedule>
                             )
                           })
                         }
@@ -1023,14 +1048,22 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.quinta.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Quinta-feira", grade.quinta, startDate)} key={item.id}>
-                                <p>{item.disciplina}</p>
-                                <p>{item.professor}</p>
+                              item.disciplina === "Nenhuma Aula" ?
+                              <Schedule>
+                                <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                                <Professor>{item.professor}</Professor>
                                 <div>
-                                  {
-                                    item.semestre && <p>{item.semestre}° Semestre</p>
-                                  }
-                                  <p>{item.laboratorio}</p>
+                                  {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                  <Semestre>{item.laboratorio}</Semestre>
+                                </div>
+                              </Schedule>
+                              :
+                              <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                <DisciplinaText>{item.disciplina}</DisciplinaText>
+                                <Professor>{item.professor}</Professor>
+                                <div>
+                                  {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                  <LaboratorioText>{item.laboratorio}</LaboratorioText>
                                 </div>
                               </Schedule>
                             )
@@ -1045,16 +1078,24 @@ const Agendamentos: React.FC = () => {
                         {
                           grade.sexta.map((item: gradeData) => {
                             return (
-                              <Schedule onClick={() => handleWeekdaySelection("Sexta-feira", grade.sexta, startDate)} key={item.id}>
-                                <p>{item.disciplina}</p>
-                                <p>{item.professor}</p>
-                                <div>
-                                  {
-                                    item.semestre && <p>{item.semestre}° Semestre</p>
-                                  }
-                                  <p>{item.laboratorio}</p>
-                                </div>
-                              </Schedule>
+                              item.disciplina === "Nenhuma Aula" ?
+                              <Schedule>
+                              <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                              <Professor>{item.professor}</Professor>
+                              <div>
+                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                <Semestre>{item.laboratorio}</Semestre>
+                              </div>
+                            </Schedule>
+                            :
+                            <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                              <DisciplinaText>{item.disciplina}</DisciplinaText>
+                              <Professor>{item.professor}</Professor>
+                              <div>
+                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                <LaboratorioText>{item.laboratorio}</LaboratorioText>
+                              </div>
+                            </Schedule>
                             )
                           })
                         }
@@ -1062,11 +1103,11 @@ const Agendamentos: React.FC = () => {
                     </WeekdayContainer>
                   </WeekContainer>
                 ) : (
-                  renderLoading()
-                )
+      renderLoading()
+      )
             }
 
-          </ClassesContainer>
+    </ClassesContainer>
       }
     </Container >
   )

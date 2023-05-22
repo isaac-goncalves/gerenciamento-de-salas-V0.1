@@ -212,7 +212,7 @@ export const WeekdayContainer = styled.div`
 
     background-color: ${Colors.lightgrayInput};
     p {
-      color: ${Colors.white};
+      /* color: ${Colors.white}; */
     }
   }
 
@@ -247,7 +247,7 @@ export const Schedule = styled.div`
   gap: 0.3rem;
 
   :hover {
-    /* background-color: ${Colors.hoverCard}; */
+    background-color: ${Colors.hoverCard};
     transition: 0.5s;
     /* p {
       color: ${Colors.white};
@@ -255,7 +255,7 @@ export const Schedule = styled.div`
   }
   p {
     padding: 0 0.5rem;
-    color: ${Colors.textcolor};
+   
     text-align: center;
     text-align-last: center;
     font-size: 0.9rem;
@@ -265,7 +265,38 @@ export const Schedule = styled.div`
   }
 `
 
+export const Professor = styled.p`
+font-style: italic;
+color: ${Colors.textcolor};
+
+`
+
+export const Semestre = styled.p`
+font-style: italic;
+color: ${Colors.mainpurple};
+`
+
+export const NenhumaAulaText = styled.p`
+
+color : ${Colors.lightgray};
+
+`
+
+export const LaboratorioText = styled.p`
+
+color: ${Colors.lighterGreen};
+  font-weight: 600;
+  padding:0;
+
+`
+
 export const Disciplina = styled.p`
+
+color : ${Colors.textcolor};
+
+`
+
+export const DisciplinaText = styled.p`
 font-weight: 500;
 color: ${Colors.textcolor};
 `

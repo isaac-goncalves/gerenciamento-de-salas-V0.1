@@ -132,7 +132,7 @@ export class GradeController {
           grade.id ASC
       `;
       const gradeWithProfessor = await gradeRepositories.query(query);
-      console.log(gradeWithProfessor);
+      // console.log(gradeWithProfessor);
       
       //coint the items in the array
       const count = gradeWithProfessor.length;

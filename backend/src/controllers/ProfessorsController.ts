@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { professoresRepository } from '../repositories/professoresRepositories'
 
 export class ProfessorsController {
+  
   async get (request: Request, response: Response) {
     console.log('get professores')
 

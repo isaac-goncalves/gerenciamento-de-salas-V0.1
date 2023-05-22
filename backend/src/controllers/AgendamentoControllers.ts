@@ -6,8 +6,6 @@ import { FindOneOptions } from 'typeorm'
 import { Agendamento } from '../entities/Agendamento'
 import { isSameDay } from 'date-fns'
 
-import { Professores } from '../entities/Professores'
-
 export class AgendamentoController {
   async create (request: Request, response: Response) {
     console.log('create agendamento')
@@ -128,11 +126,12 @@ export class AgendamentoController {
       return response.status(500).json({ message: 'internal server error' })
     }
   }
-  async getLaboratoriosSchedule (request: Request, response: Response) {
-    console.log('get agendamento')
 
+  async getLaboratoriosSchedule (request: Request, response: Response) {
+    
     try {
       const { date } = request.body
+      console.log('get Schedules ' + date + '------------------------')
       console.log(date)
 
       const isoDate = new Date(date)
@@ -143,37 +142,70 @@ export class AgendamentoController {
       const agendamentos = allAgendamentos.filter(a => isSameDay(new Date(a.date), isoDate));
 
       console.log(agendamentos)
+    
+      //#TODO - get all professors names DONE
+    
+       //----------------------------------------------------
+      const allProfessors = await professoresRepository.find()
+       
+      const newProfessores = await allProfessors.map((professor: any) => {
+        const id = professor.id
+        const name = professor.name
+        const obj = { 
+            id: id, 
+            name: name 
+        }
+        return obj
+      })
+      
+      console.log(newProfessores)
 
+      //atualizando os agendamentos com os nomes dos professores
+
+      const updatedAgendamentos = agendamentos.map(agendamento => {
+        // Find the professor with the same id as the current Agendamento's id_professor
+        const professor = allProfessors.find(prof => prof.id === agendamento.id_professor);
+        
+        // Return a new object with all of the original Agendamento properties and the professor_name
+        return {
+          ...agendamento,
+          professor_name: professor ? professor.name : null
+        };
+      });
+      
+      console.log(updatedAgendamentos);
+
+
+ //----------------------------------------------------      
+      //#TODO - gmake ids go from 1 to ++ - DOING
+
+
+
+//----------------------------------------------------
       let scheduleData: any = {}
+
+      let slotIdCounter = 1;
 
       // Create schedule for each laboratory
       for (let lab = 1; lab <= 7; lab++) {
         let labSchedule = []
 
         for (let i = 1; i <= 5; i++) {
-          let agendamento = agendamentos.find(
+          let agendamento = updatedAgendamentos.find(
             a =>
               new Date(a.date).getDay() == lab &&
               getTimeSlot(a.horario_inicio) == i
           )
 
-            console.log(JSON.stringify(agendamento, null, 2))
-    
-
-          // if (agendamento) {
-          //   const professor = await Professores.findOne(agendamento.id_professor);
-          //     console.log(professor)
-
-          //   agendamento.professor = professor ? professor.name : null;
-          // }
 
           let slotData = {
-            id: i,
+            id: slotIdCounter,
             disponivel: agendamento ? false : true,
             agendamento: agendamento ? agendamento : undefined
           }
 
           labSchedule.push(slotData)
+          slotIdCounter++;
         }
 
         scheduleData[`laboratorio${lab}`] = labSchedule;
