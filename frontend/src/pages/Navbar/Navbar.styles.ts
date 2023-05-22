@@ -49,6 +49,7 @@ export const AvatarWrapper = styled.div`
 `
 export const Avatar = styled.img`
   border-radius: 50%;
+  border 2px solid ${Colors.mainpurple};
   height: 3rem;
   width: 3rem;
   margin-right: 0.75rem;

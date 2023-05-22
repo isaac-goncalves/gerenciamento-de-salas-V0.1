@@ -64,7 +64,7 @@ export const DatePickWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-background: red;
+  background: red;
   width: 85%;
 
   gap: 1rem;
@@ -252,6 +252,7 @@ export const Schedule = styled.div`
     /* p {
       color: ${Colors.white};
     } */
+
   }
   p {
     padding: 0 0.5rem;
@@ -263,6 +264,11 @@ export const Schedule = styled.div`
   div {
     display: flex
   }
+  //aweasome css for when i stop hovering
+
+  
+
+
 `
 
 export const Professor = styled.p`

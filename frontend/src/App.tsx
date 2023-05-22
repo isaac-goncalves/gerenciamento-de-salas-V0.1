@@ -34,7 +34,7 @@ function App() {
             <>
               <Navbar />
               <Agendamentos />
-             {/* <Circles ballCount={4} /> */}
+             <Circles ballCount={4} />
             </>
           } />
 
@@ -44,6 +44,7 @@ function App() {
             <>
               <Navbar />
               <Perfil />
+              <Circles ballCount={4} />
             </>
           } />
         </Routes>

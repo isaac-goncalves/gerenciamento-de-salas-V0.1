@@ -26,7 +26,8 @@ export const Wrapper = styled.div`
   width: 90%;
   height: 90%;
   background-color: ${Colors.white};
-  border-radius: 8px;
+   z-index: 10;
+  border-radius: 4px;
   padding: 2rem 8rem;
   display: flex;
   flex-direction: column;
@@ -68,7 +69,7 @@ export const SearchBar = styled.div`
     height: 2.5rem;
     border: none;
     background-color: ${Colors.lightgray};
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
     color: ${Colors.textcolor};
@@ -80,7 +81,7 @@ export const SearchBar = styled.div`
     border: none;
     background-color: ${Colors.mainpurple};
     color: ${Colors.white};
-    border-radius: 8px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -154,7 +155,7 @@ export const TableSelector = styled.div`
     height: 2.5rem;
     border: none;
     background-color: ${Colors.lightgray};
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
     color: ${Colors.textcolor};
@@ -166,7 +167,7 @@ export const TableSelector = styled.div`
     height: 2.5rem;
     border: none;
     background-color: ${Colors.lightgray};
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
     color: ${Colors.textcolor};
@@ -190,19 +191,19 @@ export const TableContainer = styled.div`
 
   ::-webkit-scrollbar-track {
     background-color: #f5f5f5;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
     background-color: #ccc;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   table {
     width: 100%;
     height: 100%;
     border-collapse: collapse;
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
   }
 
@@ -226,13 +227,13 @@ export const TableContainer = styled.div`
     white-space: nowrap;
 
     &:first-child {
-      border-top-left-radius: 8px;
-      border-bottom-left-radius: 8px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
     }
 
     &:last-child {
-      border-top-right-radius: 8px;
-      border-bottom-right-radius: 8px;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
     }
   }
 

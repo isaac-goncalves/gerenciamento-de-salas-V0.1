@@ -721,8 +721,11 @@ const Agendamentos: React.FC = () => {
               <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
               ao dia
               <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
-
-              {
+           
+            </CalendarWrapper>
+            {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
+          </DatepickContainer>
+          {
                 selectingLaboratory == true ?
                   <>
                     <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
@@ -780,10 +783,6 @@ const Agendamentos: React.FC = () => {
                   </>
 
               }
-            </CalendarWrapper>
-            {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
-          </DatepickContainer>
-
         </DatePickWrapper>
       </Header>
       {
