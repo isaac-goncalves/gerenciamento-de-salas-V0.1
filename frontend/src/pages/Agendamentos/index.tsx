@@ -58,7 +58,8 @@ import {
   Professor,
   Disciplina,
   Semestre,
-  LaboratorioText
+  LaboratorioText,
+  SelectingLaboratoryWrapper
 }
   from './Agendamento.styles'
 
@@ -254,8 +255,8 @@ const Agendamentos: React.FC = () => {
       name: "Selecione um professor",
     },
   );
+  const [selectedMethod, setSelectedMethod] = useState("semestre"); // Selected method state
 
-  const [selectedMethod, setSelectedMethod] = useState("professor"); // Selected method state
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
@@ -339,7 +340,9 @@ const Agendamentos: React.FC = () => {
       }
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
-      return setProfessores(data)
+
+      setProfessores(data);
+
     }).catch((error) => {
       console.log(error)
     })
@@ -536,7 +539,7 @@ const Agendamentos: React.FC = () => {
   const handleSelection = (id: number, labId: number) => {
     // console.log(id)
     // console.log(selectedIds)
-   console.log("LaboratoryID= "+labId)
+    console.log("LaboratoryID= " + labId)
 
     if (labId !== selectedLaboratory) {
       // console.log("Different Laboratory")
@@ -721,68 +724,69 @@ const Agendamentos: React.FC = () => {
               <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
               ao dia
               <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
-           
             </CalendarWrapper>
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>
-          {
-                selectingLaboratory == true ?
-                  <>
-                    <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
-                    <button onClick={handleCancelClick}>Cancelar</button>
-                  </>
-                  :
-                  <>
-                    <ProfessorSelect value={selectedMethod} onChange={handleMethodChange}>
-                      <option value="professor">
-                        Professor
-                      </option>
-                      <option value="semestre">
-                        Semestre
-                      </option>
-                    </ProfessorSelect>
-                    {
-                      selectedMethod === "professor" ?
-                        <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectChange}>
-                          {
-                            professores && professores.length > 0 ? (
-                              professores.map((professor) => {
-                                return (
-                                  <option key={professor.id} value={professor.id}>
-                                    {professor.name}
-                                  </option>
-                                );
-                              })
-                            ) : (
-                              <option value="">No professors available</option>
-                            )
-                          }
-                        </ProfessorSelect>
-                        :
-                        <ProfessorSelect value={selectedProfessor.name} onChange={handleSemestreChange}>
-                          <option value="1">
-                            1º
-                          </option>
-                          <option value="2">
-                            2º
-                          </option>
-                          <option value="3">
-                            3º
-                          </option>
-                          <option value="4">
-                            4º
-                          </option>
-                          <option value="5">
-                            5º
-                          </option>
-                          <option value="6">
-                            6º
-                          </option>
-                        </ProfessorSelect>
-                    }
-                  </>
+          <SelectingLaboratoryWrapper>
+            {
+              selectingLaboratory == true ?
+                <>
+                  <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
+                  <button onClick={handleCancelClick}>Cancelar</button>
+                </>
+                :
+                <>
+                  <ProfessorSelect value={selectedMethod} onChange={handleMethodChange}>
+                    <option value="professor">
+                      Professor
+                    </option>
+                    <option value="semestre">
+                      Semestre
+                    </option>
+                  </ProfessorSelect>
+                  {
+                    selectedMethod === "professor" ?
+                      <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectChange}>
+                        {
+                          professores && professores.length > 0 ? (
+                            professores.map((professor) => {
+                              return (
+                                <option key={professor.id} value={professor.id}>
+                                  {professor.name}
+                                </option>
+                              );
+                            })
+                          ) : (
+                            <option value="">No professors available</option>
+                          )
+                        }
+                      </ProfessorSelect>
+                      :
+                      <ProfessorSelect defaultValue={selectedSemestreValue} onChange={handleSemestreChange}>
+                        <option value="1">
+                          1º
+                        </option>
+                        <option value="2">
+                          2º
+                        </option>
+                        <option value="3">
+                          3º
+                        </option>
+                        <option value="4">
+                          4º
+                        </option>
+                        <option value="5">
+                          5º
+                        </option>
+                        <option value="6">
+                          6º
+                        </option>
+                      </ProfessorSelect>
+                  }
+                </>
 
-              }
+            }
+          </SelectingLaboratoryWrapper>
         </DatePickWrapper>
       </Header>
       {
@@ -988,23 +992,23 @@ const Agendamentos: React.FC = () => {
                           grade.terca.map((item: gradeData) => {
                             return (
                               item.disciplina === "Nenhuma Aula" ?
-                              <Schedule>
-                              <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
-                              <Professor>{item.professor}</Professor>
-                              <div>
-                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
-                                <Semestre>{item.laboratorio}</Semestre>
-                              </div>
-                            </Schedule>
-                            :
-                            <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
-                              <DisciplinaText>{item.disciplina}</DisciplinaText>
-                              <Professor>{item.professor}</Professor>
-                              <div>
-                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
-                                <LaboratorioText>{item.laboratorio}</LaboratorioText>
-                              </div>
-                            </Schedule>
+                                <Schedule>
+                                  <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                                  <Professor>{item.professor}</Professor>
+                                  <div>
+                                    {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                    <Semestre>{item.laboratorio}</Semestre>
+                                  </div>
+                                </Schedule>
+                                :
+                                <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                  <DisciplinaText>{item.disciplina}</DisciplinaText>
+                                  <Professor>{item.professor}</Professor>
+                                  <div>
+                                    {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                    <LaboratorioText>{item.laboratorio}</LaboratorioText>
+                                  </div>
+                                </Schedule>
                             )
                           })
                         }
@@ -1018,23 +1022,23 @@ const Agendamentos: React.FC = () => {
                           grade.quarta.map((item: gradeData) => {
                             return (
                               item.disciplina === "Nenhuma Aula" ?
-                              <Schedule>
-                              <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
-                              <Professor>{item.professor}</Professor>
-                              <div>
-                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
-                                <Semestre>{item.laboratorio}</Semestre>
-                              </div>
-                            </Schedule>
-                            :
-                            <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
-                              <DisciplinaText>{item.disciplina}</DisciplinaText>
-                              <Professor>{item.professor}</Professor>
-                              <div>
-                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
-                                <LaboratorioText>{item.laboratorio}</LaboratorioText>
-                              </div>
-                            </Schedule>
+                                <Schedule>
+                                  <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                                  <Professor>{item.professor}</Professor>
+                                  <div>
+                                    {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                    <Semestre>{item.laboratorio}</Semestre>
+                                  </div>
+                                </Schedule>
+                                :
+                                <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                  <DisciplinaText>{item.disciplina}</DisciplinaText>
+                                  <Professor>{item.professor}</Professor>
+                                  <div>
+                                    {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                    <LaboratorioText>{item.laboratorio}</LaboratorioText>
+                                  </div>
+                                </Schedule>
                             )
                           })
                         }
@@ -1048,23 +1052,23 @@ const Agendamentos: React.FC = () => {
                           grade.quinta.map((item: gradeData) => {
                             return (
                               item.disciplina === "Nenhuma Aula" ?
-                              <Schedule>
-                                <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
-                                <Professor>{item.professor}</Professor>
-                                <div>
-                                  {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
-                                  <Semestre>{item.laboratorio}</Semestre>
-                                </div>
-                              </Schedule>
-                              :
-                              <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
-                                <DisciplinaText>{item.disciplina}</DisciplinaText>
-                                <Professor>{item.professor}</Professor>
-                                <div>
-                                  {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
-                                  <LaboratorioText>{item.laboratorio}</LaboratorioText>
-                                </div>
-                              </Schedule>
+                                <Schedule>
+                                  <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                                  <Professor>{item.professor}</Professor>
+                                  <div>
+                                    {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                    <Semestre>{item.laboratorio}</Semestre>
+                                  </div>
+                                </Schedule>
+                                :
+                                <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                  <DisciplinaText>{item.disciplina}</DisciplinaText>
+                                  <Professor>{item.professor}</Professor>
+                                  <div>
+                                    {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                    <LaboratorioText>{item.laboratorio}</LaboratorioText>
+                                  </div>
+                                </Schedule>
                             )
                           })
                         }
@@ -1078,23 +1082,23 @@ const Agendamentos: React.FC = () => {
                           grade.sexta.map((item: gradeData) => {
                             return (
                               item.disciplina === "Nenhuma Aula" ?
-                              <Schedule>
-                              <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
-                              <Professor>{item.professor}</Professor>
-                              <div>
-                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
-                                <Semestre>{item.laboratorio}</Semestre>
-                              </div>
-                            </Schedule>
-                            :
-                            <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
-                              <DisciplinaText>{item.disciplina}</DisciplinaText>
-                              <Professor>{item.professor}</Professor>
-                              <div>
-                                {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
-                                <LaboratorioText>{item.laboratorio}</LaboratorioText>
-                              </div>
-                            </Schedule>
+                                <Schedule>
+                                  <NenhumaAulaText>{item.disciplina}</NenhumaAulaText>
+                                  <Professor>{item.professor}</Professor>
+                                  <div>
+                                    {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                    <Semestre>{item.laboratorio}</Semestre>
+                                  </div>
+                                </Schedule>
+                                :
+                                <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                  <DisciplinaText>{item.disciplina}</DisciplinaText>
+                                  <Professor>{item.professor}</Professor>
+                                  <div>
+                                    {item.semestre && <Semestre>{item.semestre}° Semestre</Semestre>}
+                                    <LaboratorioText>{item.laboratorio}</LaboratorioText>
+                                  </div>
+                                </Schedule>
                             )
                           })
                         }
@@ -1102,11 +1106,11 @@ const Agendamentos: React.FC = () => {
                     </WeekdayContainer>
                   </WeekContainer>
                 ) : (
-      renderLoading()
-      )
+                  renderLoading()
+                )
             }
 
-    </ClassesContainer>
+          </ClassesContainer>
       }
     </Container >
   )

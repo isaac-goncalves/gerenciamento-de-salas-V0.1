@@ -162,7 +162,8 @@ export const ClockContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  margin-top: 3rem;
+  margin-top: 5.5rem;
+  margin-bottom: 1rem;
   /* background-color: red; */
   width: 3rem;
 
@@ -239,7 +240,7 @@ export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
   justify-content: center;
   width: 95%;
   //background-color: ${({ isCurrentDay }) =>
-    isCurrentDay ? 'lightblue' : Colors.lightgrayInput};
+  isCurrentDay ? 'lightblue' : Colors.lightgrayInput};
   background-color: ${Colors.lightgrayInput};
   border-radius: 8px;
   height: 100%;
@@ -257,7 +258,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   height: 100%;
   min-height: 4rem;
   padding: 0.4rem 0;
-  gap: 0.3rem;
+  gap: 0.1rem;
 
   &.hoverEffect:hover {
     background-color: ${Colors.hoverCard};

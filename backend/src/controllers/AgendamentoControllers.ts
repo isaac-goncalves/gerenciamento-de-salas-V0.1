@@ -55,7 +55,7 @@ export class AgendamentoController {
   }
 
   async get (request: Request, response: Response) {
-    console.log('get agendamento')
+    console.log('GET agendamento')
 
     try {
       const agendamentos = await agendamentosRepository.find()
@@ -173,7 +173,7 @@ export class AgendamentoController {
         };
       });
       
-      console.log(updatedAgendamentos);
+      // console.log(updatedAgendamentos);
 
 
  //----------------------------------------------------      
@@ -255,15 +255,15 @@ export class AgendamentoController {
       id_laboratorio
     } = request.body
 
-    console.log(
-      id,
-      date,
-      horario_inicio,
-      horario_fim,
-      id_professor,
-      id_grade,
-      id_laboratorio
-    )
+    // console.log(
+    //   id,
+    //   date,
+    //   horario_inicio,
+    //   horario_fim,
+    //   id_professor,
+    //   id_grade,
+    //   id_laboratorio
+    // )
 
     try {
       const options: FindOneOptions<Agendamento> = {

@@ -82,7 +82,8 @@ function printGradeValue(gradeValue: any) {
 const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
 
-  const [selectedValue, setSelectedValue] = useState(1)
+  const [selectedSemesterValue, setSelectedSemesterValue] = useState(1)
+  
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const [date, setDate] = useState(new Date());
@@ -95,7 +96,7 @@ const Dashboard: React.FC = () => {
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
 
   const handleChange = (event: any) => {
-    setSelectedValue(event.target.value)
+    setSelectedSemesterValue(event.target.value)
   }
 
   const handleSelectToday = () => {
@@ -183,7 +184,7 @@ const Dashboard: React.FC = () => {
               }, 2000)
             }
             else {
-              setSelectedValue(userData.semestre)
+              setSelectedSemesterValue(userData.semestre)
             }
           }
           )
@@ -215,7 +216,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     setLoading(false)
     fetchData();
-  }, [selectedValue])
+  }, [selectedSemesterValue])
 
   async function fetchData() {
     fetch('http://localhost:3333/grade/dashboard', {
@@ -224,7 +225,7 @@ const Dashboard: React.FC = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        semestre: selectedValue || 1, //add localStorage later
+        semestre: selectedSemesterValue || 1, //add localStorage later
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -381,7 +382,7 @@ const Dashboard: React.FC = () => {
             </CalendarWrapper>
           </DatepickContainer>
           <Semester>
-                <select value={selectedValue} onChange={handleChange}>
+                <select value={selectedSemesterValue} onChange={handleChange}>
                   <option value="1">
                     1º
                   </option>

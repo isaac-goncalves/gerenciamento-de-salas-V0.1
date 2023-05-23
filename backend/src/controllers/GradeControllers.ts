@@ -23,7 +23,7 @@ export class GradeController {
   async getDashboardData (request: Request, response: Response) {
     console.log('get grade')
     const { semestre } = request.body
-    console.log(request.body)
+     console.log(request.body)
 
     try {
       //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
@@ -91,7 +91,7 @@ export class GradeController {
         })
       )
 
-      console.log(gradeWithAgendamento)
+      // console.log(gradeWithAgendamento)
 
       return response.status(200).json(gradeWithProfessor)
     } catch (error) {
@@ -136,7 +136,7 @@ export class GradeController {
       
       //coint the items in the array
       const count = gradeWithProfessor.length;
-      console.log(count);
+      // console.log(count);
 
       // For each grade, retrieve associated agendamentos
       const gradeWithAgendamento = await Promise.all(

@@ -237,6 +237,7 @@ export class UserController {
     const { email, password } = request.body
 
     console.log(email, password)
+    console.log("----------------------------")
 
     if (!email || !password) {
       return response
@@ -265,6 +266,7 @@ export class UserController {
       )
 
       console.log(userExists.email)
+      console.log(userExists.role)
 
       let userData = {} as any
 
@@ -272,14 +274,20 @@ export class UserController {
         const aluno = await alunosRepository.findOneBy({
           user_id: userExists.id
         })
+        console.log("aluno=")
         console.log(aluno)
         userData = aluno
       } else if (userExists.role === 'professor') {
         const professor = await professoresRepository.findOneBy({
           user_id: userExists.id
         })
+        console.log("professor=")
         console.log(professor)
         userData = professor
+      }
+      else {
+        console.log('role nao encontrado')
+          return response.status(400).json({ error: 'Role nao encontrado' })
       }
 
       userData.role = userExists.role

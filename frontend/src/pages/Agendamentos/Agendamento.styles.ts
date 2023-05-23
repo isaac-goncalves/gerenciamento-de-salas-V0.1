@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker'
 import { Colors } from '../../colors'
 
 export const ProfessorSelect = styled.select`
-z-index: 99;
+  z-index: 99;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -40,7 +40,6 @@ export const Header = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 `
 
 export const CoursesWrapper = styled.div`
@@ -48,7 +47,7 @@ export const CoursesWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  
+
   width: 95%;
   height: 100%;
   padding: 1rem 1rem;
@@ -64,10 +63,11 @@ export const DatePickWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background: red;
+  justify-content: space-between;
   width: 85%;
 
   gap: 1rem;
+  /* background-color: red; */
   background-color: ${Colors.white};
   border-radius: 12px;
 
@@ -78,11 +78,17 @@ export const DatepickContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-  background-color:;
+  background-color: ;
   white-space: nowrap;
   p {
   }
 `
+
+export const SelectingLaboratoryWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`
+
 export const DatepickArrowsContainer = styled.div`
   display: flex;
 `
@@ -100,7 +106,6 @@ export const StyledDatePicker = styled(DatePicker)`
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
- 
 `
 
 export const DateIcon = styled.img`
@@ -162,7 +167,8 @@ export const ClockContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  margin-top: 3rem;
+  margin-top: 5.5rem;
+  margin-bottom: 1rem;
   /* background-color: red; */
   width: 3rem;
 
@@ -171,6 +177,7 @@ export const ClockContainer = styled.div`
     font-weight: 400;
     margin-bottom: 0.5rem;
     color: ${Colors.textcolor};
+    text-align: center;
   }
 `
 
@@ -182,10 +189,10 @@ export const WeekContainer = styled.div`
   width: 100%;
 `
 export const WeekDay = styled.p`
-font-size: 1rem;
-padding: 0.5rem 0;
-color: ${Colors.mainpurple};
-transition: color 0.3s ease-in-out; /* Add the transition property */
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  color: ${Colors.mainpurple};
+  transition: color 0.3s ease-in-out; /* Add the transition property */
 `
 
 export const WeekdayContainer = styled.div`
@@ -244,7 +251,7 @@ export const Schedule = styled.div`
   height: 100%;
   min-height: 4rem;
   padding: 0.4rem 0; // #TODO
-  gap: 0.3rem;
+  gap: 0.1rem;
 
   :hover {
     background-color: ${Colors.hoverCard};
@@ -252,59 +259,47 @@ export const Schedule = styled.div`
     /* p {
       color: ${Colors.white};
     } */
-
   }
   p {
     padding: 0 0.5rem;
-   
+
     text-align: center;
     text-align-last: center;
     font-size: 0.9rem;
   }
   div {
-    display: flex
+    display: flex;
   }
   //aweasome css for when i stop hovering
-
-  
-
-
 `
 
 export const Professor = styled.p`
-font-style: italic;
-color: ${Colors.textcolor};
-
+  font-style: italic;
+  color: ${Colors.textcolor};
 `
 
 export const Semestre = styled.p`
-font-style: italic;
-color: ${Colors.mainpurple};
+  font-style: italic;
+  color: ${Colors.mainpurple};
 `
 
 export const NenhumaAulaText = styled.p`
-
-color : ${Colors.lightgray};
-
+  color: ${Colors.textColorDisabled};
 `
 
 export const LaboratorioText = styled.p`
-
-color: ${Colors.lighterGreen};
+  color: ${Colors.lighterGreen};
   font-weight: 600;
-  padding:0;
-
+  padding: 0;
 `
 
 export const Disciplina = styled.p`
-
-color : ${Colors.textcolor};
-
+  color: ${Colors.textcolor};
 `
 
 export const DisciplinaText = styled.p`
-font-weight: 500;
-color: ${Colors.textcolor};
+  font-weight: 500;
+  color: ${Colors.textcolor};
 `
 
 interface IProps {
