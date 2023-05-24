@@ -30,7 +30,7 @@ dfProfessores.columns = ['nome_completo','id', 'id_perfil_usuario']
 
 #dfDiasSemana.columns = ['dia_da_semana','id']
                 
-
+#teste
 # df.columns = ['horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at']
 
 
