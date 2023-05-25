@@ -32,7 +32,6 @@ export const Header = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 3;
-
 `
 
 export const CoursesWrapper = styled.div`
@@ -72,7 +71,7 @@ export const CourseName = styled.h1`
   color: ${Colors.mainpurple};
 `
 
-export const Semester = styled.h2`
+export const FilterWrapper = styled.h2`
   
   display: flex;
   flex-direction: row;
@@ -88,7 +87,7 @@ export const Semester = styled.h2`
     font-weight: 400;
   }
 
-  select {
+  /* select {
     margin-right: 0.5rem;
     color: ${Colors.mainpurple};
     border: 1px solid ${Colors.lightgrayborder};
@@ -96,6 +95,27 @@ export const Semester = styled.h2`
   }
   select:focus {
     border-color: #2980b9;
+  } */
+`
+export const StyledSelect = styled.select`
+  font-size: 1.0rem;
+  background-color: ${Colors.white};
+  color: ${Colors.textcolor};
+  z-index: 99;
+  padding: 8px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: ${Colors.mainpurple};
+  }
+
+  &:focus {
+    border-color: ${Colors.mainpurple};
+   
   }
 `
 
