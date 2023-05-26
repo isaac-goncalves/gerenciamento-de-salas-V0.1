@@ -59,8 +59,7 @@ import {
   Disciplina,
   Semestre,
   LaboratorioText,
-  SelectingLaboratoryWrapper,
-  ButtonConfimarAgendamento
+  SelectingLaboratoryWrapper
 }
   from './Agendamento.styles'
 
@@ -696,7 +695,7 @@ const Agendamentos: React.FC = () => {
           height={height}
         />
       }
-      <Modal isVisible={modalVisible} onClose={handleCloseModal}  WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
+      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
       <Header>
         <CoursesWrapper>
           <CourseName>
@@ -732,8 +731,8 @@ const Agendamentos: React.FC = () => {
             {
               selectingLaboratory == true ?
                 <>
-                  <ButtonConfimarAgendamento onClick={handleConfirmClick}>Confirmar Agendamento</ButtonConfimarAgendamento>
-                  <ButtonConfimarAgendamento onClick={handleCancelClick}>Cancelar</ButtonConfimarAgendamento>
+                  <button onClick={handleConfirmClick}>Confirmar Agendamento</button>
+                  <button onClick={handleCancelClick}>Cancelar</button>
                 </>
                 :
                 <>
