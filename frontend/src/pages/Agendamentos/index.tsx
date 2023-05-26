@@ -16,6 +16,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { mockdata } from './mockdata'
 
+import { FiFilter } from 'react-icons/fi'
+
 type Lab = {
   name: string;
   ids: number[];
@@ -60,7 +62,8 @@ import {
   Semestre,
   LaboratorioText,
   SelectingLaboratoryWrapper,
-  ButtonConfimarAgendamento
+  ButtonConfimarAgendamento,
+  StyledSelect
 }
   from './Agendamento.styles'
 
@@ -263,7 +266,7 @@ const Agendamentos: React.FC = () => {
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
 
-  const [selectedSemestreValue, setSelectedSemestreValue] = useState(1)
+  const [selectedSemesterValue, setSelectedSemesterValue] = useState(1)
 
   useLayoutEffect(() => {
     console.log('Starting to render stuff...');
@@ -313,7 +316,7 @@ const Agendamentos: React.FC = () => {
       }
       console.log(selectedProfessor);
     }
-  }, [userData, selectedProfessor, selectedMethod, selectedSemestreValue, selectedLaboratory, selectedDate]);
+  }, [userData, selectedProfessor, selectedMethod, selectedSemesterValue, selectedLaboratory, selectedDate]);
 
   const setProfessorAsSelected = (userName: string, userId: number) => {
     const matchingProfessor = professores.find(
@@ -330,7 +333,6 @@ const Agendamentos: React.FC = () => {
 
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")
-
 
     // console.log(process.env.REACT_APP_API_KEY)
 
@@ -356,7 +358,7 @@ const Agendamentos: React.FC = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        semestre: selectedSemestreValue || 1, //add localStorage later
+        semestre: selectedSemesterValue || 1, //add localStorage later
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -382,7 +384,6 @@ const Agendamentos: React.FC = () => {
       },
       body: JSON.stringify({
         professor_id: selectedProfessor.id,
-        semestre: "1", //add localStorage later
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -622,7 +623,7 @@ const Agendamentos: React.FC = () => {
   }
 
   const handleSemestreChange = (event: any) => {
-    setSelectedSemestreValue(event.target.value)
+    setSelectedSemesterValue(event.target.value)
   }
 
   const renderLoading = () => {
@@ -648,7 +649,7 @@ const Agendamentos: React.FC = () => {
   };
   //#todo
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelectProfessor = (event: React.ChangeEvent<HTMLSelectElement>) => {
     console.log(event.target.value)
 
     const professorObject = {
@@ -696,7 +697,7 @@ const Agendamentos: React.FC = () => {
           height={height}
         />
       }
-      <Modal isVisible={modalVisible} onClose={handleCloseModal}  WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
+      <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
       <Header>
         <CoursesWrapper>
           <CourseName>
@@ -729,6 +730,9 @@ const Agendamentos: React.FC = () => {
             {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
           </DatepickContainer>
           <SelectingLaboratoryWrapper>
+            <FiFilter
+              size={20}
+            />
             {
               selectingLaboratory == true ?
                 <>
@@ -737,17 +741,17 @@ const Agendamentos: React.FC = () => {
                 </>
                 :
                 <>
-                  <ProfessorSelect value={selectedMethod} onChange={handleMethodChange}>
+                  <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
                     <option value="professor">
                       Professor
                     </option>
                     <option value="semestre">
                       Semestre
                     </option>
-                  </ProfessorSelect>
+                  </StyledSelect>
                   {
                     selectedMethod === "professor" ?
-                      <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectChange}>
+                      <StyledSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessor}>
                         {
                           professores && professores.length > 0 ? (
                             professores.map((professor) => {
@@ -761,9 +765,9 @@ const Agendamentos: React.FC = () => {
                             <option value="">No professors available</option>
                           )
                         }
-                      </ProfessorSelect>
+                      </StyledSelect>
                       :
-                      <ProfessorSelect defaultValue={selectedSemestreValue} onChange={handleSemestreChange}>
+                      <StyledSelect defaultValue={selectedSemesterValue} onChange={handleSemestreChange}>
                         <option value="1">
                           1º
                         </option>
@@ -782,10 +786,9 @@ const Agendamentos: React.FC = () => {
                         <option value="6">
                           6º
                         </option>
-                      </ProfessorSelect>
+                      </StyledSelect>
                   }
                 </>
-
             }
           </SelectingLaboratoryWrapper>
         </DatePickWrapper>

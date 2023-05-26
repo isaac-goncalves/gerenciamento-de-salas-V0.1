@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 import { Navigate } from 'react-router-dom'
 
@@ -14,14 +14,14 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, Semester, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay } from './Dashboard.styles'
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, ProfessorSelect, FilterWrapper, StyledSelect } from './Dashboard.styles'
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRight } from 'react-icons/md';
-
+import { FiFilter } from 'react-icons/fi';
 
 interface ScheduleItem {
   id: number;
@@ -36,39 +36,87 @@ interface ScheduleItem {
   updated_at: string;
 }
 
+interface ProfessoreProps {
+  id: number;
+  name: string;
+}
+
 interface IntervalItem {
   semestre: string;
   disciplina: string;
+}
+
+interface Professor {
+  id: number;
+  name: string;
 }
 
 type GroupedData = {
   [key: string]: Array<ScheduleItem | IntervalItem>;
 }
 
+// function groupByWeekday(data: ScheduleItem[]): GroupedData {
+//   const groupedData: GroupedData = {};
+//   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
+
+//   for (const item of data) {
+//     const dayIndex = parseInt(item.dia_da_semana) - 1;
+//     const day = daysOfWeek[dayIndex];
+
+//     if (!groupedData[day]) {
+//       groupedData[day] = [];
+//     }
+
+//     groupedData[day].push(item);
+//   }
+
+//   for (const day in groupedData) {
+//     if (groupedData[day].length >= 3) {
+//       groupedData[day].splice(2, 0, {
+//         semestre: "1",
+//         disciplina: "Intervalo",
+//       });
+//     }
+//   }
+
+//   return groupedData;
+// }
+
 function groupByWeekday(data: ScheduleItem[]): GroupedData {
-  const groupedData: GroupedData = {};
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
+  const totalItemsPerDay = 6;
+
+  // Initialize groupedData with each day of the week and an empty array
+  const groupedData: GroupedData = {
+    segunda: [],
+    terca: [],
+    quarta: [],
+    quinta: [],
+    sexta: [],
+  };
 
   for (const item of data) {
     const dayIndex = parseInt(item.dia_da_semana) - 1;
     const day = daysOfWeek[dayIndex];
 
-    if (!groupedData[day]) {
-      groupedData[day] = [];
-    }
-
     groupedData[day].push(item);
   }
 
   for (const day in groupedData) {
-    if (groupedData[day].length >= 3) {
-      groupedData[day].splice(2, 0, {
-        semestre: "1",
-        disciplina: "Intervalo",
+    const currentDayLength = groupedData[day].length;
+
+    // Add "Nenhuma Aula" for remaining slots, except after the interval
+    for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
+      groupedData[day].push({
+        disciplina: "Nenhuma Aula",
       });
     }
-  }
 
+    // Add interval as the third item
+    groupedData[day].splice(2, 0, {
+      disciplina: "Intervalo",
+    });
+  }
   return groupedData;
 }
 
@@ -78,13 +126,38 @@ function printGradeValue(gradeValue: any) {
 
 }
 
-
 const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
 
+  const [professores, setProfessores] = useState<ProfessoreProps[]>([ // Professores state
+    {
+      id: 0,
+      name: "Selecione um professor",
+    },
+  ]);
+
+  const [userData, setUserData] = useState( //userSessionData
+    {
+      userData: {
+        id: 0,
+        name: "Selecione um professor",
+      },
+      token: ""
+    }
+  );
+
   const [selectedSemesterValue, setSelectedSemesterValue] = useState(1)
-  
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+
+  const [selectedMethod, setSelectedMethod] = useState("semestre");
+
+  const [selectedProfessor, setSelectedProfessor] = useState<Professor>( // Selected professor state
+    {
+      id: 0,
+      name: "Selecione um professor",
+    },
+  );
 
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -95,7 +168,7 @@ const Dashboard: React.FC = () => {
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
 
-  const handleChange = (event: any) => {
+  const handleSemestreChange = (event: any) => {
     setSelectedSemesterValue(event.target.value)
   }
 
@@ -141,58 +214,56 @@ const Dashboard: React.FC = () => {
     setEndDate(friday);
   };
 
-  useEffect(() => {
-    console.log("Verificando usuário")
+  useLayoutEffect(() => {
+    console.log('Starting to render stuff...');
 
-    function verifyUser() {
+    if (userData.token === '' || userData.userData.id === 0) {
+      console.log('userData is null');
 
       const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
-
       const userDataJson = JSON.parse(localUserData || '{}');
+      const { userData: storedUserData, token } = userDataJson;
 
-      const token = userDataJson.token;
-      const userData = userDataJson.userData;
+      console.log('userData' + storedUserData);
+      console.log('token' + token);
 
-      console.log("token" + token)
-      console.log("userData" + userData)
-
-      // setloggedUserGrade(userData)
-
-      if (token == null || userData == null) {
+      if (token == null || localUserData == null) {
         toast.error('Você precisa estar logado para acessar essa página!');
         localStorage.removeItem('gerenciamento-de-salas@v1.1');
         setTimeout(() => {
-          window.location.href = "/";
-        }, 2000)
-      }
-      else {
-        fetch('http://localhost:3333/verify', {
-          method: 'POST',
-          headers: {
-            "Authorization": "Bearer " + token,
-          },
-        }).then((response) => response.json())
-          .then((data) => {
-            console.log(data)
-
-            if (data.error) {
-              console.log("Error exists:", data.error);
-              localStorage.removeItem('gerenciamento-de-salas@v1.1');
-              toast.error('Você precisa estar logado para acessar essa página!');
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 2000)
-            }
-            else {
-              setSelectedSemesterValue(userData.semestre)
-            }
-          }
-          )
+          window.location.href = '/';
+        }, 2000);
+      } else {
+        console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+        setUserData(userDataJson);
       }
     }
-    verifyUser()
+  }, [userData]);
 
-  }, []);
+  useEffect(() => {
+
+    console.log('Starting to render stuff...');
+
+    if (userData.token !== '' && userData.userData.id !== 0) {
+
+      console.log("Usuário logado!")
+
+      console.log(selectedMethod)
+      if (selectedMethod == "professor") {
+         fetchProfessorData();
+      }
+      else {
+        fetchSemestreData();
+      }
+
+      fetchProfessors(userData.token);
+
+    }
+    else {
+      console.log("Usuário nao esta logado!")
+    }
+
+  }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate]);
 
   useEffect(() => {
     const updateCurrentDayAndTime = () => {
@@ -213,10 +284,81 @@ const Dashboard: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setLoading(false)
-    fetchData();
-  }, [selectedSemesterValue])
+
+  async function fetchProfessors(token: string) {
+    console.log("Fetching fetchProfessors...")
+    // console.log(process.env.REACT_APP_API_KEY)
+    await fetch(`http://localhost:3333/professors`, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'bearer ' + token,
+      }
+    }).then((response) => response.json()).then((data) => {
+      // console.log(data)
+
+      setProfessores(data);
+
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  async function fetchSemestreData() {
+    fetch('http://localhost:3333/grade/dashboard', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        semestre: selectedSemesterValue || 1, //add localStorage later
+      })
+    }).then((response) => response.json()).then((data) => {
+      // console.log(data)
+      const transformedData = groupByWeekday(data)
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      printGradeValue(transformedData)
+      setTimeout(() => {
+        setLoading(true) // teste de loading
+      }, 2000)
+      // setLoading(true)
+      // console.log(transformedData.segunda[0].agendamentos.professor)
+      return setgrade(transformedData as any)
+    }
+    )
+  }
+
+  async function fetchProfessorData() {
+    console.log("Fetching fetchGrades...")
+    fetch('http://localhost:3333/grade/agendamentos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        professor_id: selectedProfessor.id,
+      })
+    }).then((response) => response.json()).then((data) => {
+      // console.log(data)
+
+      const transformedData = groupByWeekday(data)
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      printGradeValue(transformedData)
+
+      setTimeout(() => {
+        setLoading(true) // teste de loading
+      }, 2000)
+      console.log(transformedData)
+      // setLoading(true)
+       return setgrade(transformedData as any)
+    }
+    )
+  }
+
+  // useEffect(() => {
+  //   setLoading(false)
+  //   fetchProfessors(userData.token);
+  //   fetchData();
+  // }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate])
 
   async function fetchData() {
     fetch('http://localhost:3333/grade/dashboard', {
@@ -346,6 +488,27 @@ const Dashboard: React.FC = () => {
     )
   };
 
+  const handleSelectProfessor = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(event.target.value)
+
+    const professorObject = {
+      id: parseInt(event.target.value),
+      name: "test"
+    }
+    setSelectedProfessor(
+      professorObject
+    )
+  }
+
+  const handleSemesterChange = (event: any) => {
+    setSelectedSemesterValue(event.target.value)
+  }
+
+  const handleMethodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(event.target.value)
+    setSelectedMethod(event.target.value)
+  }
+
   return (
     <Container>
       <Header>
@@ -381,8 +544,37 @@ const Dashboard: React.FC = () => {
               <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
             </CalendarWrapper>
           </DatepickContainer>
-          <Semester>
-                <select value={selectedSemesterValue} onChange={handleChange}>
+          <FilterWrapper>
+            <FiFilter
+              size={20}
+            />
+            <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
+              <option value="professor">
+                Professor
+              </option>
+              <option value="semestre">
+                Semestre
+              </option>
+            </StyledSelect>
+            {
+              selectedMethod === "professor" ?
+                <StyledSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessor}>
+                  {
+                    professores && professores.length > 0 ? (
+                      professores.map((professor) => {
+                        return (
+                          <option key={professor.id} value={professor.id}>
+                            {professor.name}
+                          </option>
+                        );
+                      })
+                    ) : (
+                      <option value="">No professors available</option>
+                    )
+                  }
+                </StyledSelect>
+                :
+                <StyledSelect defaultValue={selectedSemesterValue} onChange={handleSemesterChange}>
                   <option value="1">
                     1º
                   </option>
@@ -401,11 +593,9 @@ const Dashboard: React.FC = () => {
                   <option value="6">
                     6º
                   </option>
-                </select>
-                <span>
-                  Semestre
-                </span>
-              </Semester>
+                </StyledSelect>
+            }
+          </FilterWrapper>
         </DatePickWrapper>
       </Header>
       <ClassesContainer>

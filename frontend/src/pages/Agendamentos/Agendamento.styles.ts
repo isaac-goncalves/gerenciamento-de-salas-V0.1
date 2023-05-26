@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker'
 
 import { Colors } from '../../colors'
 
-export const ProfessorSelect = styled.select`
+export const StyledSelect = styled.select`
   font-size: 1.0rem;
   background-color: ${Colors.white};
   color: ${Colors.textcolor};
@@ -12,7 +12,7 @@ export const ProfessorSelect = styled.select`
   padding: 8px 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  appearance: none;
+  
   outline: none;
   transition: border-color 0.3s ease;
 
@@ -101,6 +101,7 @@ export const DatepickContainer = styled.div`
 
 export const SelectingLaboratoryWrapper = styled.div`
   display: flex;
+  align-items: center;
   gap: 1rem;
 `
 
