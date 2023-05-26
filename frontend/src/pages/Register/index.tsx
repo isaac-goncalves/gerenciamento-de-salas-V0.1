@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
-import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect } from "./Register.styles"
+import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper } from "./Register.styles"
 
 const semestresOptions = [
     { value: '1', label: '1º SEMESTRE ADS - 2023' },
@@ -190,7 +190,7 @@ const RegisterScreen: React.FC = () => {
                 toast.success("Registro realizado com sucesso!");
                 setConfetti(true);
                 setTimeout(() => {
-                     window.location.href = "/dashboard";
+                    window.location.href = "/dashboard";
                 }, 4000);
 
             }
@@ -225,22 +225,26 @@ const RegisterScreen: React.FC = () => {
                     <Form onSubmit={handleSubmit}>
                         <h1>Preencha o Formulário para se Registrar!</h1>
                         <NameWrapper>
-                            <label>Nome</label>
-                            <Input
-                                type="text"
-                                placeholder=""
-                                value={name}
-                                onChange={(event: any) => setName(event.target.value)}
-                            />
-                            <label>Sobrenome</label>
-                            <Input
-                                type="text"
-                                placeholder=""
-                                value={surname}
-                                onChange={(event: any) => setSurname(event.target.value)}
-                            />
+                            <div>
+                                <label>Nome</label>
+                                <Input
+                                    type="text"
+                                    placeholder=""
+                                    value={name}
+                                    onChange={(event: any) => setName(event.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label>Sobrenome</label>
+                                <Input
+                                    type="text"
+                                    placeholder=""
+                                    value={surname}
+                                    onChange={(event: any) => setSurname(event.target.value)}
+                                />
+                            </div>
                         </NameWrapper>
-                        <div>
+                        <RadioWrapper>
                             <input
                                 type="radio"
                                 id="aluno"
@@ -249,7 +253,7 @@ const RegisterScreen: React.FC = () => {
                                 checked={role === 'aluno'}
                                 onChange={handleRoleChange}
                             />
-                            <label>Aluno</label>
+                            <p>Aluno</p>
                             <input
                                 type="radio"
                                 id="professor"
@@ -268,8 +272,7 @@ const RegisterScreen: React.FC = () => {
                                 onChange={handleRoleChange}
                             />
                             <label>Coordenador</label>
-
-                        </div>
+                        </RadioWrapper>
                         <>
                             {role === "aluno" &&
                                 <InputWrapper>
