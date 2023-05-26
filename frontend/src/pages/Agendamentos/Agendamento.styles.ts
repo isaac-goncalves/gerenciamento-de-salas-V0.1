@@ -5,10 +5,25 @@ import DatePicker from 'react-datepicker'
 import { Colors } from '../../colors'
 
 export const ProfessorSelect = styled.select`
+  font-size: 1.0rem;
+  background-color: ${Colors.white};
+  color: ${Colors.textcolor};
   z-index: 99;
-  padding: 8px;
+  padding: 8px 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  appearance: none;
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: ${Colors.mainpurple};
+  }
+
+  &:focus {
+    border-color: ${Colors.mainpurple};
+   
+  }
 `
 
 export const Container = styled.div`
@@ -88,6 +103,26 @@ export const SelectingLaboratoryWrapper = styled.div`
   display: flex;
   gap: 1rem;
 `
+
+export const ButtonConfimarAgendamento = styled.button`
+font-size: 1.0rem;
+background-color: ${Colors.mainpurple};
+  color: #ffffff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #663399;
+  
+  }
+
+`
+
 
 export const DatepickArrowsContainer = styled.div`
   display: flex;
@@ -312,7 +347,7 @@ export const Laboratorio = styled.div`
   align-items: center;
   justify-content: center;
   background-color: ${({ selected }: IProps) =>
-    selected ? Colors.hoverCard : Colors.horariosCard};
+    selected ? Colors.mainpurple : Colors.horariosCard};
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;
