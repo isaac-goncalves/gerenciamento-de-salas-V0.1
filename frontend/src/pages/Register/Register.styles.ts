@@ -43,7 +43,7 @@ export const LoginContainer = styled.div`
   background-color: #fff;
   border-radius: 8px;
   border-radius: 1rem;
-  height: 90%; 
+  height: 90%;
   width: 90%;
 `
 
@@ -54,37 +54,25 @@ export const Title = styled.h1`
 
 export const InputWrapper = styled.div`
   display: flex;
-  width: 80%;
   gap: 1rem;
   flex-direction: column;
 `
 
 export const NameWrapper = styled.div`
   display: flex;
-  width: 80%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-`
-
-export const RadioWrapper = styled.div`
-  display: flex;
-  width: 80%;
+  width: 100%;
   flex-direction: row;
   gap: 1rem;
-  justify-content: center;
-  align-items: center;
 `
 
 export const Input = styled.input`
-  width: 100%;
-  height: 2rem;
- 
+  width: 80%;
+  height: 15px;
+  margin-bottom: 20px;
   padding: 10px;
   font-size: 1rem;
 
-  border-radius: 9999999px;
+  border-radius: 15px;
   border: 1px solid ${Colors.mainpurple};
   :focus {
     outline: none; /* or border: none; */
@@ -112,24 +100,12 @@ export const Button = styled.button`
 
 export const Form = styled.form`
   display: flex;
-  gap: 0.5rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  h1{
-    font-size: 2rem;
-    padding: 2rem;
-  }
-
 `
 
-export const PasswordContainer = styled.div`
-display: flex;
-width: 80%;
-flex-direction: row;
-gap: 1rem;
-`
+export const PasswordContainer = styled.div``
 
 export const AddressWrapper = styled.div`
   display: flex;
@@ -145,5 +121,5 @@ export const StyledSelect = styled.select`
   border: 1px solid #ccc;
   font-size: 1rem;
   margin-bottom: 1rem;
-  width: 100%;
+  width: 90%;
 `
