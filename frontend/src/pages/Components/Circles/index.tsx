@@ -1,5 +1,4 @@
-// Circle.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { Colors } from '../../../colors';
@@ -65,7 +64,7 @@ const useBouncingBalls = (count: number) => {
   }, [count, windowSize.width, windowSize.height]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const animateBalls = () => {
       setBalls((prevBalls) =>
         prevBalls.map((ball) => ({
           ...ball,
@@ -77,10 +76,21 @@ const useBouncingBalls = (count: number) => {
             ball.y + ball.dy < 0 || ball.y + ball.dy > windowSize.height - 400 ? -ball.dy : ball.dy,
         }))
       );
-    }, 16);
 
-    return () => clearInterval(interval);
-  }, [windowSize.width, windowSize.height]);
+      requestAnimationFrame(animateBalls);
+    };
+
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener('resize', handleResize);
+    requestAnimationFrame(animateBalls);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return balls;
 };
@@ -92,13 +102,16 @@ interface CirclesProps {
 export const Circles: React.FC<CirclesProps> = ({ ballCount }) => {
   const balls = useBouncingBalls(ballCount);
 
+  const CircleComponent = useMemo(
+    () =>
+      React.memo<CircleProps>(({ x, y }) => <Circle x={x} y={y} />),
+    []
+  );
+
   return (
     <Container>
       {balls.map((ball, index) => (
-        <>
-          <Circle key={index} x={ball.x} y={ball.y} />
-         
-        </>
+        <CircleComponent key={index} x={ball.x} y={ball.y} />
       ))}
     </Container>
   );
