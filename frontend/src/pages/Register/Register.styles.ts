@@ -166,13 +166,41 @@ export const ContactWrapper = styled.div`
 `
 
 export const StyledSelect = styled.select`
-  padding: 0.5rem;
+    padding: 0.5rem;
+    padding-left: 1rem;
   border-radius: 9999999px;
   border: 1px solid #ccc;
   font-size: 1rem;
   margin-bottom: 1rem;
   width: 100%;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  color: #333;
+  appearance: none;
+  transition: all 0.3s ease-in-out;
 
+  &:hover {
+    border-color: #999;
+  }
 
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
+    border-color: #007bff;
+  }
 
-`
+  &::placeholder {
+    color: #999;
+  }
+
+  /* Dropdown styles */
+  option {
+    /* Add any additional styles for options here */
+  }
+
+  /* Dropdown container styles */
+  select {
+    max-height: 200px; /* Set the desired max height */
+    overflow-y: auto; /* Add scrollbar when options exceed max height */
+  }
+`;

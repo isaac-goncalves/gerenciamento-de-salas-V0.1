@@ -10,7 +10,6 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
 import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye } from "./Register.styles"
@@ -227,6 +226,7 @@ const RegisterScreen: React.FC = () => {
                 <Confetti
                     width={width}
                     height={height}
+                   
                 />
             }
             <ToastContainer />
@@ -304,7 +304,7 @@ const RegisterScreen: React.FC = () => {
                             }
                             {role === "professor" &&
                                 <InputWrapper>
-                                    <label>Disciplina:</label>
+                                    <label>Disciplina</label>
                                     <StyledSelect value={semestre} onChange={handleChange}>
                                         <option disabled value="">
                                             Selecione a disciplina
@@ -319,7 +319,7 @@ const RegisterScreen: React.FC = () => {
                             }
                         </>
                         <InputWrapper>
-                            <label>Email:</label>
+                            <label>Email</label>
                             <Input
                                 type="text"
                                 placeholder=""
@@ -330,7 +330,7 @@ const RegisterScreen: React.FC = () => {
 
                         <PasswordContainer>
                             <InputWrapper>
-                                <label>Password:</label>
+                                <label>Password</label>
                                 <InputVisibleEye>
                                     <Input
                                         type={showPassword ? 'text' : 'password'}
@@ -344,7 +344,7 @@ const RegisterScreen: React.FC = () => {
                                 </InputVisibleEye>
                             </InputWrapper>
                             <InputWrapper>
-                                <label>Confirmar senha:</label>
+                                <label>Confirmar senha</label>
                                 <InputVisibleEye>
                                     <Input
                                         type={showConfirmPassword ? 'text' : 'password'}
