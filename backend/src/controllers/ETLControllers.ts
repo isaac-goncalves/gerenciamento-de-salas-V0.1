@@ -1,72 +1,89 @@
-import { Request, Response } from 'express';
-import multer, { FileFilterCallback } from 'multer';
-import { spawn } from 'child_process';
-import path from 'path';
+import { Request, Response } from 'express'
+import multer, { FileFilterCallback } from 'multer'
+
+import { spawn } from 'child_process'
+
+import path from 'path'
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve('uploads')); // Set the destination folder for uploaded files
+    cb(null, path.resolve('uploads')) // Set the destination folder for uploaded files
   },
   filename: (req, file, cb) => {
-    const timestamp = Date.now();
-    cb(null, `${timestamp}_${file.originalname}`); // Use the original file name
-  },
-});
+    const timestamp = Date.now()
+    cb(null, `${timestamp}_${file.originalname}`) // Use the original file name
+  }
+})
 
-const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback
+) => {
   // Validate the file type if needed
   // For example, only allow .xlsx files
-  if (file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-    return cb(new Error('Invalid file type. Only .xlsx files are allowed.'));
+  if (
+    file.mimetype !==
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  ) {
+    return cb(new Error('Invalid file type. Only .xlsx files are allowed.'))
   }
-  cb(null, true);
-};
+  cb(null, true)
+}
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage, fileFilter })
 
 export class ETLControllers {
-
-  async upload(req: Request, res: Response) {
-
+  async upload (req: Request, res: Response) {
     console.log('upload')
 
     try {
-      await upload.single('file')(req, res, (error: any) => {
-         if (error) {
-           return res.status(400).json({ error: error.message });
-         }
-
+      await upload.single('file')(req, res, (error) => {
+        if (error) {
+          return res.status(400).json({ error: error.message });
+        }
+  
         if (!req.file) {
           return res.status(400).json({ error: 'No file uploaded' });
         }
+  
+        const uploadedFile = req.file;
+        const filePath = path.join(__dirname, '../../', 'python_scripts', 'script.py');
 
-        // // Access the uploaded file using req.file
-        // const uploadedFile = req.file;
-        // const filePath = path.join('uploads', uploadedFile.filename);
-
-        // // Perform any necessary operations on the file
-        // // Example: Execute a child process using the file path
-        // const childProcess = spawn('your_command', [filePath]);
-
-        // childProcess.on('error', (err) => {
-        //   console.error('Child process error:', err);
-        //   return res.status(500).json({ error: 'Failed to process the file' });
-        // });
-
-        // childProcess.on('exit', (code) => {
-        //   if (code === 0) {
-        //     // File processed successfully
-        //     return res.json({ message: 'File uploaded and processed successfully' });
-        //   } else {
-        //     console.error('Child process exited with code:', code);
-        //     return res.status(500).json({ error: 'Failed to process the file' });
-        //   }
-        // });
-        return res.json({ message: 'File uploaded and processed successfully' });
+        console.log(uploadedFile.path)
+        
+        const childProcess = spawn('python', [filePath, uploadedFile.path]);
+  
+        let stdoutData = '';
+        let stderrData = '';
+  
+        childProcess.stdout.on('data', (data) => {
+          stdoutData += data.toString();
+        });
+  
+        childProcess.stderr.on('data', (data) => {
+          stderrData += data.toString();
+        });
+  
+        childProcess.on('error', (err) => {
+          console.error('Child process error:', err);
+          return res.status(500).json({ error: 'Failed to process the file' });
+        });
+  
+        childProcess.on('exit', (code) => {
+          if (code === 0) {
+            // File processed successfully
+            return res.json({ message: 'File uploaded and processed successfully', stdout: stdoutData, stderr: stderrData });
+          } else {
+            console.error('Child process exited with code:', code);
+            console.error('Child process stderr:', stderrData);
+            return res.status(500).json({ error: 'Failed to process the file', stdout: stdoutData, stderr: stderrData });
+          }
+        });
       });
     } catch (error) {
-      console.error('An error occurred:', error);
-      return res.status(500).json({ error: 'Failed to upload the file' });
+      console.error('An error occurred:', error)
+      return res.status(500).json({ error: 'Failed to upload the file' })
     }
   }
 
@@ -86,8 +103,6 @@ export class ETLControllers {
     // Envie o arquivo como resposta
     response.sendFile(filePath)
   }
-
- 
 
   //   async create (request: Request, response: Response) {
   //     console.log('create agendamento')
