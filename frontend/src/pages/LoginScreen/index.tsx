@@ -7,6 +7,8 @@ import Confetti from 'react-confetti';
 
 import { ToastContainer, toast } from 'react-toastify';
 
+import Colors from "../../colors";
+
 import 'react-toastify/dist/ReactToastify.css';
 
 import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword } from "./Login.styles"
@@ -97,7 +99,7 @@ const LoginScreen: React.FC = () => {
                         console.log("redirecting")
                         window.location.href = "/dashboard";
                     }
-                        , 2000);
+                        , 4000);
                 }
                 else {
                     toast.error("Erro ao fazer login!");
@@ -119,6 +121,7 @@ const LoginScreen: React.FC = () => {
                 <Confetti
                     width={width}
                     height={height}
+                    colors={["#A29EC7", "#6358DC", "#6c38e7"]}
                 />
             }
             <LoginContainer>

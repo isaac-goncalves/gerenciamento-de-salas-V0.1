@@ -57,7 +57,45 @@ export const InputWrapper = styled.div`
   width: 80%;
   gap: 1rem;
   flex-direction: column;
+
 `
+
+export const InputVisibleEye = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  height: 2rem;
+  padding: 10px;
+  padding-left: 20px;
+  font-size: 1rem;
+  border-radius: 9999999px;
+  border: 1px solid ${Colors.mainpurple};
+  position: relative; /* Add position relative */
+  transition: border-color 0.3s ease; /* Add transition for border-color */
+  :focus {
+    outline: none;
+  }
+`;
+
+export const EyeIcon = styled.span`
+  /* Add your eye icon styles here */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  transition: color 0.3s ease; /* Add transition for color */
+  margin-right: 8px; /* Add margin-right to create space between icon and input */
+`;
 
 export const NameWrapper = styled.div`
   display: flex;
@@ -77,19 +115,7 @@ export const RadioWrapper = styled.div`
   align-items: center;
 `
 
-export const Input = styled.input`
-  width: 100%;
-  height: 2rem;
- 
-  padding: 10px;
-  font-size: 1rem;
 
-  border-radius: 9999999px;
-  border: 1px solid ${Colors.mainpurple};
-  :focus {
-    outline: none; /* or border: none; */
-  }
-`
 
 export const ButtonsWrapper = styled.div`
   display: flex;
@@ -140,10 +166,41 @@ export const ContactWrapper = styled.div`
 `
 
 export const StyledSelect = styled.select`
-  padding: 0.5rem;
-  border-radius: 4px;
+    padding: 0.5rem;
+    padding-left: 1rem;
+  border-radius: 9999999px;
   border: 1px solid #ccc;
   font-size: 1rem;
   margin-bottom: 1rem;
   width: 100%;
-`
+  cursor: pointer;
+  background-color: #f2f2f2;
+  color: #333;
+  appearance: none;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border-color: #999;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
+    border-color: #007bff;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+
+  /* Dropdown styles */
+  option {
+    /* Add any additional styles for options here */
+  }
+
+  /* Dropdown container styles */
+  select {
+    max-height: 200px; /* Set the desired max height */
+    overflow-y: auto; /* Add scrollbar when options exceed max height */
+  }
+`;

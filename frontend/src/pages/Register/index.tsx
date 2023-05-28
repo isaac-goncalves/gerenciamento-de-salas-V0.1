@@ -6,12 +6,13 @@ import Confetti from 'react-confetti';
 
 import { ToastContainer, toast } from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.css';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
+import 'react-toastify/dist/ReactToastify.css';
 
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
-import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper } from "./Register.styles"
+import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye } from "./Register.styles"
 
 const semestresOptions = [
     { value: '1', label: '1º SEMESTRE ADS - 2023' },
@@ -64,11 +65,22 @@ const RegisterScreen: React.FC = () => {
     const [semestre, setSemestre] = useState("");
     const [disciplina, setDisciplina] = useState("");
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const [confetti, setConfetti] = useState(false);
 
     const { width, height } = useWindowSize()
 
     const [role, setRole] = useState("aluno");
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleShowConfirmPassword = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
 
 
     const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -214,6 +226,7 @@ const RegisterScreen: React.FC = () => {
                 <Confetti
                     width={width}
                     height={height}
+                   
                 />
             }
             <ToastContainer />
@@ -278,6 +291,9 @@ const RegisterScreen: React.FC = () => {
                                 <InputWrapper>
                                     <label>Semestre:</label>
                                     <StyledSelect value={semestre} onChange={handleChange}>
+                                        <option disabled value="">
+                                            Selecione o semestre
+                                        </option>
                                         {semestresOptions.map((option) => (
                                             <option key={option.value} value={option.value}>
                                                 {option.label}
@@ -288,8 +304,11 @@ const RegisterScreen: React.FC = () => {
                             }
                             {role === "professor" &&
                                 <InputWrapper>
-                                    <label>Disciplina:</label>
+                                    <label>Disciplina</label>
                                     <StyledSelect value={semestre} onChange={handleChange}>
+                                        <option disabled value="">
+                                            Selecione a disciplina
+                                        </option>
                                         {disciplinaOptions.map((option) => (
                                             <option key={option.value} value={option.value}>
                                                 {option.label}
@@ -300,7 +319,7 @@ const RegisterScreen: React.FC = () => {
                             }
                         </>
                         <InputWrapper>
-                            <label>Email:</label>
+                            <label>Email</label>
                             <Input
                                 type="text"
                                 placeholder=""
@@ -311,22 +330,32 @@ const RegisterScreen: React.FC = () => {
 
                         <PasswordContainer>
                             <InputWrapper>
-                                <label>Password:</label>
-                                <Input
-                                    type="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(event: any) => setPassword(event.target.value)}
-                                />
+                                <label>Password</label>
+                                <InputVisibleEye>
+                                    <Input
+                                        type={showPassword ? 'text' : 'password'}
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={(event) => setPassword(event.target.value)}
+                                    />
+                                    <EyeIcon onClick={toggleShowPassword}>
+                                        {showPassword ? <FiEyeOff /> : <FiEye />}
+                                    </EyeIcon>
+                                </InputVisibleEye>
                             </InputWrapper>
                             <InputWrapper>
-                                <label>Confirmar senha:</label>
-                                <Input
-                                    type="password"
-                                    placeholder="Password"
-                                    value={confirmPassword}
-                                    onChange={(event: any) => setConfirmPassword(event.target.value)}
-                                />
+                                <label>Confirmar senha</label>
+                                <InputVisibleEye>
+                                    <Input
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        placeholder="Password"
+                                        value={confirmPassword}
+                                        onChange={(event) => setConfirmPassword(event.target.value)}
+                                    />
+                                    <EyeIcon onClick={toggleShowConfirmPassword}>
+                                        {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                                    </EyeIcon>
+                                </InputVisibleEye>
                             </InputWrapper>
                         </PasswordContainer>
                         <ButtonsWrapper>
