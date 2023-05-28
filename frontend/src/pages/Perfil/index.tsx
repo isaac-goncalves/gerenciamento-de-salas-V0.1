@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
 const apiUrl = 'http://localhost:3333';
 
+const templateFileName = 'TEMPLATE_BASE_DADOS1.2.xlsx';
+const templateFileUrl = 'http://localhost:3333/template/download/';
+
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -17,6 +20,8 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import ModalEdit from '../Components/ModalEdit';
 import ModalDelete from '../Components/ModalDelete'
+import FileUploadButton from '../Components/FileUploadButton/inde';
+import FileDownloadButton from '../Components/FileDownloadButton/inde';
 
 
 function Perfil() {
@@ -239,6 +244,7 @@ function Perfil() {
                         </tr>
                     ))}
                 </tbody>
+                    
             </TableContainer>
         )
     }
@@ -340,6 +346,8 @@ function Perfil() {
                 <SearchBar>
                     <input type="text" placeholder="Pesquisar" />
                     <button type="submit">Convidar</button>
+                    <FileDownloadButton fileName={templateFileName} fileUrl={templateFileUrl} />
+                    <FileUploadButton/>
                 </SearchBar>
                 <TableSelector>
                     <select value={selectedTable} onChange={handleTableChange}>

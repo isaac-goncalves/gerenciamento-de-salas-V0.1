@@ -97,6 +97,8 @@ export const FilterWrapper = styled.h2`
     border-color: #2980b9;
   } */
 `
+
+
 export const StyledSelect = styled.select`
   font-size: 1.0rem;
   background-color: ${Colors.white};

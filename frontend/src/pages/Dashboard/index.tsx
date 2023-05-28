@@ -82,11 +82,10 @@ type GroupedData = {
 //   return groupedData;
 // }
 
-function groupByWeekday(data: ScheduleItem[]): GroupedData {
+function groupByWeekday(data: ScheduleItem[]): any {
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
   const totalItemsPerDay = 6;
 
-  // Initialize groupedData with each day of the week and an empty array
   const groupedData: GroupedData = {
     segunda: [],
     terca: [],
@@ -103,20 +102,51 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
   }
 
   for (const day in groupedData) {
-    const currentDayLength = groupedData[day].length;
+    const currentDayClasses = groupedData[day];
+
+    // Sort classes based on the start time and end time
+    const sortedClasses = currentDayClasses.sort((a, b) => {
+      const startTimeA = new Date(`2000-01-01 ${a.horario_inicio}`);
+      const startTimeB = new Date(`2000-01-01 ${b.horario_inicio}`);
+      const endTimeA = new Date(`2000-01-01 ${a.horario_fim}`);
+      const endTimeB = new Date(`2000-01-01 ${b.horario_fim}`);
+
+      // Sort by start time first
+      if (startTimeA.getTime() !== startTimeB.getTime()) {
+        return startTimeA.getTime() - startTimeB.getTime();
+      }
+
+      // If start time is the same, sort by end time
+      return endTimeA.getTime() - endTimeB.getTime();
+    });
 
     // Add "Nenhuma Aula" for remaining slots, except after the interval
-    for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
-      groupedData[day].push({
+    for (let i = sortedClasses.length; i < totalItemsPerDay - 1; i++) {
+      sortedClasses.push({
         disciplina: "Nenhuma Aula",
       });
     }
 
-    // Add interval as the third item
-    groupedData[day].splice(2, 0, {
-      disciplina: "Intervalo",
+    sortedClasses.sort((a, b) => {
+      if (a.disciplina === "Intervalo") return -1;
+      if (b.disciplina === "Intervalo") return 1;
+      return 0;
     });
+
+    // Ensure the third item is "Intervalo"
+    const intervalIndex = sortedClasses.findIndex(item => item.disciplina === "Intervalo");
+    if (intervalIndex !== 2) {
+      if (intervalIndex !== -1) {
+        const intervalClass = sortedClasses.splice(intervalIndex, 1)[0];
+        sortedClasses.splice(2, 0, intervalClass);
+      } else {
+        sortedClasses.splice(2, 0, {
+          disciplina: "Intervalo",
+        });
+      }
+    }
   }
+
   return groupedData;
 }
 
@@ -348,6 +378,7 @@ const Dashboard: React.FC = () => {
         setLoading(true) // teste de loading
       }, 2000)
       console.log(transformedData)
+      console.log("transformedData" + JSON.stringify(transformedData, null, 2))
       // setLoading(true)
        return setgrade(transformedData as any)
     }

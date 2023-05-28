@@ -16,6 +16,7 @@ export const Colors = {
   hoverCard: "#A29EC7"
 };
 
+export const HOSTIP = "192.168.0.53"
 
 // export const lightTheme = {
 //   circleColor: 'rgba(220, 213, 242, 0.41);',

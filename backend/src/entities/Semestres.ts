@@ -1,17 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn } from "typeorm"
 
 @Entity()
-export class Laboratorios  {
+export class Semestres  {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
     descricao: string;
-
-    @Column()
-    andar: number;
-
-    @Column()
-    capacidade: number;
 
 }
