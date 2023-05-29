@@ -26,8 +26,9 @@ export const ModalOverlay = styled.div`
 `
 
 export const BackgroundImage = styled.img`
-  width: 100%;
-  height: 70%;
+   width: 100%;
+  height: auto;
+  max-height: 100vh;
   object-fit: cover;
   filter: brightness(90%);
   mix-blend-mode: normal;
@@ -37,10 +38,9 @@ export const BackgroundImage = styled.img`
 
 export const ModalContent = styled.div`
   background: white;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 8px;
   display: flex;
- 
   width: 70%;
   height: 80%;
 `
@@ -59,7 +59,7 @@ export const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0.8rem;
+  padding: 0 0.8rem;
 `
 
 export const StyledTitle = styled.h1`
@@ -146,7 +146,7 @@ background-color: ${Colors.mainpurple};
   border: none;
   padding: 4px 10px;
   border-radius: 4px;
-
+  padding: 0.5rem 1rem;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.3s ease;

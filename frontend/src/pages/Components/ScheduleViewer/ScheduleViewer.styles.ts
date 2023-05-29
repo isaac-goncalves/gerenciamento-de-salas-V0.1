@@ -62,7 +62,7 @@ export const ScheduleCell = styled.div`
 
   :hover {
     background-color: ${Colors.hoverCard};
-    transition: 0.5s;
+    transition: 0.1s;
     p {
       color: ${Colors.white};
     }
