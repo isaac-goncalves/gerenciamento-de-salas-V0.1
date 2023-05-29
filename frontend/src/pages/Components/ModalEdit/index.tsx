@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { ModalOverlay, ModalContent, Select, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper } from './ModalEdit.styles'
+import { ModalOverlay, ModalContent, Select, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle } from './ModalEdit.styles'
 
 import background from '../../../../public/images/background.jpg';
+
+import { format, parseISO } from 'date-fns';
 
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import ScheduleViewer from '../ScheduleViewer';
 
 interface ModalProps {
   isVisible: boolean
@@ -168,16 +171,22 @@ const ModalEdit = ({
     }
   }
 
+  const GetDayOfWeek = (date: any) => {
+    const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+
+    const dayOfWeek = daysOfWeek[date.getDay()];
+
+    return dayOfWeek;
+  }
+
   return (
     <ModalOverlay onClick={() => onClose()}>
       <ModalContent onClick={e => e.stopPropagation()}>
         <ImageWrapper>
-
           <BackgroundImage src={background} />
-
         </ImageWrapper>
         <FormWrapper>
-          <h2>Editar Agendamento</h2>
+          <StyledTitle>Editar Agendamento</StyledTitle>
           {/* <p>{JSON.stringify(formData, null, 2)}</p> */}
           {/* <p>ID: {formData.id}</p> */}
           <ProfessorWrapper>
@@ -207,17 +216,18 @@ const ModalEdit = ({
               }} />
             </DateTimeDiv>
             <DateTimeDiv>
-              <DetailsText>Dia da Semana</DetailsText>
-              <p>Segunda Feira</p>
+              <DetailsText>Dia da Semana:</DetailsText>
+              {/* <p>{GetDayOfWeek(startDate)}</p> */}
+              <p>Segunda-Feira</p>
             </DateTimeDiv>
           </DateTimeWrapper>
           <SideBysideContainer>
             <DetailsWrapper>
-              <DetailsText>Semestre</DetailsText>
+              <DetailsText>Semestre:</DetailsText>
               <Select>
 
               </Select>
-              <DetailsText>laboratorio</DetailsText>
+              <DetailsText>Laboratório:</DetailsText>
               <Select>
 
               </Select>
@@ -226,7 +236,7 @@ const ModalEdit = ({
               <DetailsText>Editado em: <span>Segundo Andar</span></DetailsText>
             </DetailsWrapper>
             <ClockTimeWrapper>
-              <h1>teste</h1>
+              <ScheduleViewer />
             </ClockTimeWrapper>
           </SideBysideContainer>
           <ButtonsWrapper>

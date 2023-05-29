@@ -71,7 +71,7 @@ function Perfil() {
 
             setTimeout(() => {
                 setIsLoading(true);
-            }, 2000);
+            }, 0);
 
         } catch (error) {
             console.error(error);

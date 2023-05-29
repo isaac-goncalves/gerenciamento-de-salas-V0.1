@@ -42,7 +42,7 @@ export const ModalContent = styled.div`
   display: flex;
  
   width: 70%;
-  height: 70%;
+  height: 80%;
 `
 
 export const ImageWrapper = styled.div`
@@ -59,13 +59,19 @@ export const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem;
+  padding: 0.8rem;
+`
+
+export const StyledTitle = styled.h1`
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: ${Colors.mainpurple};
 `
 
 export const ProfessorWrapper = styled.div`
- background-color: ${Colors.EditModalWrapperBackgroudColor};
+ background-color: ${Colors.lightgrayInput};
   border-radius: 8px;
-
+  padding: 0.8rem;
 `
 
 export const Select = styled.select`
@@ -78,8 +84,9 @@ export const Select = styled.select`
 
 export const DateTimeWrapper = styled.div`
   display: flex;
+  padding: 0.8rem;
   gap: 1rem;
-  background-color: ${Colors.EditModalWrapperBackgroudColor};
+  background-color: ${Colors.lightgrayInput};
   border-radius: 8px;
 `
 
@@ -93,16 +100,19 @@ export const DetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
-  background-color: ${Colors.EditModalWrapperBackgroudColor};
+  gap: 1rem;
+  padding: 0.8rem;
+  background-color: ${Colors.lightgrayInput};
   border-radius: 8px;
   justify-content: center;
 `
 export const DetailsText = styled.p`
 font-weight: 500;
-font-size: 1.25rem;
+font-size: 1.0 rem;
 color: ${Colors.mainpurple};
 
 span{
+ 
   font-weight: 400;
   color: ${Colors.textcolor};
   font-size: 1.0rem;
@@ -119,13 +129,13 @@ gap: 1rem;
 export const SideBysideContainer = styled.div`
 display: flex;
 width: 100%;
-background-color: ${Colors.EditModalWrapperBackgroudColor};
+gap: 1rem;
 border-radius: 8px;
 `
 
 export const ButtonsWrapper = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   width: 100%;
   justify-content: flex-end;
 `
@@ -134,7 +144,7 @@ font-size: 1.0rem;
 background-color: ${Colors.mainpurple};
   color: #ffffff;
   border: none;
-  padding: 8px 20px;
+  padding: 4px 10px;
   border-radius: 4px;
 
   text-transform: uppercase;
