@@ -5,6 +5,7 @@ import { professoresRepository } from '../repositories/professoresRepositories'
 import { FindOneOptions } from 'typeorm'
 import { Agendamento } from '../entities/Agendamento'
 import { isSameDay } from 'date-fns'
+const { v4: uuidv4 } = require('uuid');
 
 export class AgendamentoController {
   async create (request: Request, response: Response) {
@@ -19,6 +20,18 @@ export class AgendamentoController {
 
     if (ids_grade.length === 0)
       return response.status(400).json({ message: 'missing data' })
+
+    //create  unique identifier for agendamento and store on uuid_agendamento
+
+    function generateID() {
+      const randomNumber = Math.floor(Math.random() * 100000); // Generate a random number between 0 and 99999
+      const paddedNumber = randomNumber.toString().padStart(5, '0'); // Pad the number with leading zeros if necessary
+      const id = `#${paddedNumber}`; // Concatenate the "#" symbol with the padded number
+      return id;
+    }
+    
+    // Usage example
+    const uniqueId = generateID();
 
     ids_grade.forEach(async (id_grade: any) => {
       const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `
@@ -36,6 +49,7 @@ export class AgendamentoController {
           horario_inicio,
           horario_fim,
           id_professor,
+          uuid_agendamento: uniqueId,
           id_grade,
           id_laboratorio,
           created_at: new Date(),
@@ -44,7 +58,7 @@ export class AgendamentoController {
 
         await agendamentosRepository.save(newAgendamento)
 
-        console.log(`agendamento created with id ${newAgendamento.id}`)
+        console.log(`agendamento created with id ${newAgendamento.id} and uuid ${uniqueId}`)
       } catch (error) {
         console.log(error)
         return response.status(500).json({ message: 'internal server error' })
