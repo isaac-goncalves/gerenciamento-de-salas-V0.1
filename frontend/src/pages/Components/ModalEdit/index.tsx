@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { ModalOverlay, ModalContent, ProfessorSelect } from './ModalEdit.styles'
+import { ModalOverlay, ModalContent, Select, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper } from './ModalEdit.styles'
+
+import background from '../../../../public/images/background.jpg';
 
 import DatePicker from "react-datepicker";
 
@@ -84,7 +86,7 @@ const ModalEdit = ({
       toast.error('Erro ao editar agendamento, tente novamente.')
     }
   }
-  
+
   useEffect(() => {
 
     fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4"); //add token verification after login
@@ -98,7 +100,7 @@ const ModalEdit = ({
     console.log("Formdata")
 
     console.log(formData)
-    
+
     setStartDate(new Date(formData.date))
 
     //  const exampleEditedData = {
@@ -153,12 +155,12 @@ const ModalEdit = ({
 
   const handleSelectProfessorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     console.log(event.target.value)
-  
+
     const selectedId = parseInt(event.target.value);
     const selected = professores.find((professor) => professor.id === selectedId);
-  
+
     console.log(selected)
-  
+
     if (selected) {
       setSelectedProfessor(selected);
       // Update the selectedProfessorId state instead of formData
@@ -169,47 +171,69 @@ const ModalEdit = ({
   return (
     <ModalOverlay onClick={() => onClose()}>
       <ModalContent onClick={e => e.stopPropagation()}>
-        <h2>Editar Agendamento</h2>
-        <p>{JSON.stringify(formData, null, 2)}</p>
-        <p>ID: {formData.id}</p>
-        <p>Nome do Professor: </p>
+        <ImageWrapper>
 
-        <ProfessorSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessorChange}>
-          {
-            professores && professores.length > 0 ? (
-              professores.map((professor) => {
-                return (
-                  <option key={professor.id} value={professor.id}>
-                    {professor.name}
-                  </option>
-                );
-              })
-            ) : (
-              <option value="">No professors available</option>
-            )
-          }
-        </ProfessorSelect>
+          <BackgroundImage src={background} />
 
-        <input type="text" name="id_professor" value={formData.id_professor} onChange={handleChange} />
-        <p>Data de agendamento</p>
-        <input type="text" name="id" value={startDate || ""} />
-        
-        <DatePicker selected={startDate} onChange={(date) => {
-          setStartDate(date || new Date())
-          setFormData( {...formData, date: date || new Date() } )
-        }} />
-        <p>Horario de Inicio</p>
-        
-        <input type="text" name="horario_inicio" value={formData.horario_inicio} onChange={handleChange} />
-        <p>Horario de Fim</p>
-        <input type="text" name="horario_fim" value={formData.horario_fim} onChange={handleChange} />
-        <p>laboratorio</p>
-        <input type="text" name="id_laboratorio" value={formData.id_laboratorio} onChange={handleChange} />
-        <p>Grade</p>
-        <input type="text" name="id_grade" value={formData.id_grade} onChange={handleChange} />
-        <p>updated_at</p>
-        <button onClick={() => handleEdit()}>Editar</button>
-        <button onClick={() => onClose()}>Cancelar</button>
+        </ImageWrapper>
+        <FormWrapper>
+          <h2>Editar Agendamento</h2>
+          {/* <p>{JSON.stringify(formData, null, 2)}</p> */}
+          {/* <p>ID: {formData.id}</p> */}
+          <ProfessorWrapper>
+            <DetailsText>Professor: </DetailsText>
+            <Select defaultValue={selectedProfessor.name} onChange={handleSelectProfessorChange}>
+              {
+                professores && professores.length > 0 ? (
+                  professores.map((professor) => {
+                    return (
+                      <option key={professor.id} value={professor.id}>
+                        {professor.name}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option value="">No professors available</option>
+                )
+              }
+            </Select>
+          </ProfessorWrapper>
+          <DateTimeWrapper>
+            <DateTimeDiv>
+              <DetailsText>Data de agendamento</DetailsText>
+              <DatePicker selected={startDate} onChange={(date) => {
+                setStartDate(date || new Date())
+                setFormData({ ...formData, date: date || new Date() })
+              }} />
+            </DateTimeDiv>
+            <DateTimeDiv>
+              <DetailsText>Dia da Semana</DetailsText>
+              <p>Segunda Feira</p>
+            </DateTimeDiv>
+          </DateTimeWrapper>
+          <SideBysideContainer>
+            <DetailsWrapper>
+              <DetailsText>Semestre</DetailsText>
+              <Select>
+
+              </Select>
+              <DetailsText>laboratorio</DetailsText>
+              <Select>
+
+              </Select>
+              <DetailsText>Andar: <span>Segundo Andar</span></DetailsText>
+              <DetailsText>Criado em: <span>Segundo Andar</span></DetailsText>
+              <DetailsText>Editado em: <span>Segundo Andar</span></DetailsText>
+            </DetailsWrapper>
+            <ClockTimeWrapper>
+              <h1>teste</h1>
+            </ClockTimeWrapper>
+          </SideBysideContainer>
+          <ButtonsWrapper>
+            <StyledButton onClick={() => handleEdit()}>Editar</StyledButton>
+            <StyledButton onClick={() => onClose()}>Cancelar</StyledButton>
+          </ButtonsWrapper>
+        </FormWrapper>
       </ModalContent>
     </ModalOverlay>
   )

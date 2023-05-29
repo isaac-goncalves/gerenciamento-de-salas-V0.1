@@ -1,7 +1,6 @@
+import styled from 'styled-components'
 
-import styled from 'styled-components';
-
-import { Colors } from '../../../colors';
+import { Colors } from '../../../colors'
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -16,26 +15,135 @@ export const ModalOverlay = styled.div`
   align-items: center;
 
   animation: appear 0.8s;
-    @keyframes appear {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
+  @keyframes appear {
+    from {
+      opacity: 0;
     }
+    to {
+      opacity: 1;
+    }
+  }
+`
 
-`;
+export const BackgroundImage = styled.img`
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+  filter: brightness(90%);
+  mix-blend-mode: normal;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 8px;
+`
 
 export const ModalContent = styled.div`
   background: white;
   padding: 2rem;
   border-radius: 8px;
-`;
+  display: flex;
+ 
+  width: 70%;
+  height: 70%;
+`
 
-export const ProfessorSelect = styled.select`
-z-index: 99;
+export const ImageWrapper = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+export const FormWrapper = styled.div`
+  width: 50%;
+  height: 100%;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+`
+
+export const ProfessorWrapper = styled.div`
+ background-color: ${Colors.EditModalWrapperBackgroudColor};
+  border-radius: 8px;
+
+`
+
+export const Select = styled.select`
+  z-index: 99;
   padding: 8px;
+  width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
+`
+
+export const DateTimeWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  background-color: ${Colors.EditModalWrapperBackgroudColor};
+  border-radius: 8px;
+`
+
+export const DateTimeDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+
+export const DetailsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  background-color: ${Colors.EditModalWrapperBackgroudColor};
+  border-radius: 8px;
+  justify-content: center;
+`
+export const DetailsText = styled.p`
+font-weight: 500;
+font-size: 1.25rem;
+color: ${Colors.mainpurple};
+
+span{
+  font-weight: 400;
+  color: ${Colors.textcolor};
+  font-size: 1.0rem;
+}
+
+`
+export const ClockTimeWrapper = styled.div`
+display: flex;
+flex-direction: column;
+width: 50%;
+gap: 1rem;
+`
+
+export const SideBysideContainer = styled.div`
+display: flex;
+width: 100%;
+background-color: ${Colors.EditModalWrapperBackgroudColor};
+border-radius: 8px;
+`
+
+export const ButtonsWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: flex-end;
+`
+export const StyledButton = styled.button`
+font-size: 1.0rem;
+background-color: ${Colors.mainpurple};
+  color: #ffffff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #663399;
+  
+  }
+
 `
