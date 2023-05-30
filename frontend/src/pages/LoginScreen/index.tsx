@@ -16,7 +16,7 @@ import fatec from '../../../public/images/fatec.svg';
 import teamsLogo from '../../../public/images/teamsIcon.svg';
 import mailIcon from '../../../public/images/emaiIcon.svg';
 import passwordIcon from '../../../public/images/passwordIcon.svg';
-import eyePassword from '../../../public/images/eyePassword.svg';
+import eyePassword from '../../../public/images/eyepassword.svg';
 import { Link, Navigate } from "react-router-dom";
 
 interface InputProps {
