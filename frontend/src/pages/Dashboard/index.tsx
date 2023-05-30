@@ -18,6 +18,7 @@ import { Container, Header, CourseName, ClassesContainer, ClockContainer, Weekda
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
+
 import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRight } from 'react-icons/md';
