@@ -13,9 +13,9 @@ export class ProfessorsController {
 
     //verify token
 
-    if (!token) return response.status(401).json({ message: 'missing token' })
+    // if (!token) return response.status(401).json({ message: 'missing token' })
 
-    const [, tokenValue] = token.split(' ')
+    // const [, tokenValue] = token.split(' ')
 
     try {
       const professores = await professoresRepository.find()

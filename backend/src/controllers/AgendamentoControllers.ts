@@ -5,7 +5,7 @@ import { professoresRepository } from '../repositories/professoresRepositories'
 import { FindOneOptions } from 'typeorm'
 import { Agendamento } from '../entities/Agendamento'
 import { isSameDay } from 'date-fns'
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid')
 
 export class AgendamentoController {
   async create (request: Request, response: Response) {
@@ -23,15 +23,15 @@ export class AgendamentoController {
 
     //create  unique identifier for agendamento and store on uuid_agendamento
 
-    function generateID() {
-      const randomNumber = Math.floor(Math.random() * 100000); // Generate a random number between 0 and 99999
-      const paddedNumber = randomNumber.toString().padStart(5, '0'); // Pad the number with leading zeros if necessary
-      const id = `#${paddedNumber}`; // Concatenate the "#" symbol with the padded number
-      return id;
+    function generateID () {
+      const randomNumber = Math.floor(Math.random() * 100000) // Generate a random number between 0 and 99999
+      const paddedNumber = randomNumber.toString().padStart(5, '0') // Pad the number with leading zeros if necessary
+      const id = `#${paddedNumber}` // Concatenate the "#" symbol with the padded number
+      return id
     }
-    
+
     // Usage example
-    const uniqueId = generateID();
+    const uniqueId = generateID()
 
     ids_grade.forEach(async (id_grade: any) => {
       const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `
@@ -58,7 +58,9 @@ export class AgendamentoController {
 
         await agendamentosRepository.save(newAgendamento)
 
-        console.log(`agendamento created with id ${newAgendamento.id} and uuid ${uniqueId}`)
+        console.log(
+          `agendamento created with id ${newAgendamento.id} and uuid ${uniqueId}`
+        )
       } catch (error) {
         console.log(error)
         return response.status(500).json({ message: 'internal server error' })
@@ -98,42 +100,6 @@ export class AgendamentoController {
 
       console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
 
-      // const newAgendamento = await agendamentos.map(
-      //   async (agendamento: any) => {
-      //     const id_professor = agendamento.id_professor
-
-      //     const id_laboratorio = agendamento.id_laboratorio
-
-      //     const queryProfessor = ` SELECT nome_completo FROM professores WHERE id = ${id_professor} `
-
-      //     const queryLaboratorio = ` SELECT descricao FROM laboratorios WHERE id = ${id_laboratorio} `
-
-      //     // const queryGrade = ` SELECT nome FROM grade WHERE id = ${id_grade} `
-      //     // const queryDiscipla = ` SELECT nome FROM disciplina WHERE id = ${} `
-      //     // const nomeDisciplina = await gradeRepositories.query(queryGrade)
-
-      //     const nomeProfessor = await gradeRepositories.query(queryProfessor)
-      //     const nomeLaboratorio = await gradeRepositories.query(
-      //       queryLaboratorio
-      //     )
-
-      //     agendamento.nome_professor = nomeProfessor[0].nome
-      //     // agendamento.nome_grade = nomeGrade[0].nome
-      //     agendamento.nome_laboratorio = nomeLaboratorio[0].nome
-
-      //     return [
-      //       ...agendamento,
-      //       agendamento.nome_professor,
-      //       // agendamento.nome_grade,
-      //       agendamento.nome_laboratorio
-      //     ]
-      //   }
-      // )
-      // console.log(newAgendamento)
-
-      // const NomeProfessor = await gradeRepositories.query(` SELECT nome FROM professor WHERE id = ${id_professor} `);
-      // console.log(NomeProfessor)
-
       return response.status(200).json(agendamentos)
     } catch (error) {
       console.log(error)
@@ -142,7 +108,6 @@ export class AgendamentoController {
   }
 
   async getLaboratoriosSchedule (request: Request, response: Response) {
-    
     try {
       const { date } = request.body
       console.log('get Schedules ' + date + '------------------------')
@@ -153,52 +118,53 @@ export class AgendamentoController {
 
       const allAgendamentos = await agendamentosRepository.find()
 
-      const agendamentos = allAgendamentos.filter(a => isSameDay(new Date(a.date), isoDate));
+      const agendamentos = allAgendamentos.filter(a =>
+        isSameDay(new Date(a.date), isoDate)
+      )
 
       console.log(agendamentos)
-    
+
       //#TODO - get all professors names DONE
-    
-       //----------------------------------------------------
+
+      //----------------------------------------------------
       const allProfessors = await professoresRepository.find()
-       
+
       const newProfessores = await allProfessors.map((professor: any) => {
         const id = professor.id
         const name = professor.name
-        const obj = { 
-            id: id, 
-            name: name 
+        const obj = {
+          id: id,
+          name: name
         }
         return obj
       })
-      
+
       console.log(newProfessores)
 
       //atualizando os agendamentos com os nomes dos professores
 
       const updatedAgendamentos = agendamentos.map(agendamento => {
         // Find the professor with the same id as the current Agendamento's id_professor
-        const professor = allProfessors.find(prof => prof.id === agendamento.id_professor);
-        
+        const professor = allProfessors.find(
+          prof => prof.id === agendamento.id_professor
+        )
+
         // Return a new object with all of the original Agendamento properties and the professor_name
         return {
           ...agendamento,
           professor_name: professor ? professor.name : null
-        };
-      });
-      
+        }
+      })
+
       // console.log(updatedAgendamentos);
 
-
- //----------------------------------------------------      
+      //----------------------------------------------------
       //#TODO - gmake ids go from 1 to ++ - DOING
 
-
-
-//----------------------------------------------------
+      //----------------------------------------------------
       let scheduleData: any = {}
 
-      let slotIdCounter = 1;
+      let slotIdCounter = 1
 
       // Create schedule for each laboratory
       for (let lab = 1; lab <= 7; lab++) {
@@ -211,7 +177,6 @@ export class AgendamentoController {
               getTimeSlot(a.horario_inicio) == i
           )
 
-
           let slotData = {
             id: slotIdCounter,
             disponivel: agendamento ? false : true,
@@ -219,14 +184,13 @@ export class AgendamentoController {
           }
 
           labSchedule.push(slotData)
-          slotIdCounter++;
+          slotIdCounter++
         }
 
-        scheduleData[`laboratorio${lab}`] = labSchedule;
+        scheduleData[`laboratorio${lab}`] = labSchedule
       }
 
       return response.status(200).json(scheduleData)
-
     } catch (error) {
       console.error(error)
       return response.status(500).json({ message: 'Internal server error' })
@@ -309,6 +273,54 @@ export class AgendamentoController {
     } catch (error) {
       console.error(error)
       return response.status(500).json({ message: 'Internal server error' })
+    }
+  }
+  async getGrouped (request: Request, response: Response) {
+    console.log('GET agendamento ByID')
+
+    try {
+      const agendamentos = await agendamentosRepository.find()
+
+      agendamentos.sort((a, b) => {
+        return (
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+        )
+      })
+
+      //grab professor_id find his name
+
+      const agendamentoWithProfessorName = await Promise.all(
+        agendamentos.map(async (agendamento: any) => {
+          const id_professor = agendamento.id_professor
+
+          const queryProfessor = ` SELECT name FROM professores WHERE id = ${id_professor} `
+          const nomeProfessor = await gradeRepositories.query(queryProfessor)
+          console.log(nomeProfessor)
+
+          agendamento.nome_professor = nomeProfessor[0]?.name || ''
+
+          return agendamento
+        })
+      )
+
+      console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
+
+      // Group by uuid_agendamento
+      const groupedAgendamentos: Record<string, any[]> = {}
+      agendamentoWithProfessorName.forEach((agendamento: any) => {
+        const uuidAgendamento = agendamento.uuid_agendamento
+        if (!groupedAgendamentos[uuidAgendamento]) {
+          groupedAgendamentos[uuidAgendamento] = []
+        }
+        groupedAgendamentos[uuidAgendamento].push(agendamento)
+      })
+
+      console.log(JSON.stringify(groupedAgendamentos, null, 2))
+
+      return response.status(200).json(agendamentos)
+    } catch (error) {
+      console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
     }
   }
 }

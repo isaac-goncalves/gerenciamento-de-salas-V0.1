@@ -13,7 +13,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, TableContainer, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableHeaderData, TableBody
+    SearchBar, TableSelector, TableContainer, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableHeaderData, TableBody, TableRow, CenteredNumber
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -23,9 +23,7 @@ import ModalDelete from '../Components/ModalDelete'
 import FileUploadButton from '../Components/FileUploadButton/inde';
 import FileDownloadButton from '../Components/FileDownloadButton/inde';
 
-
 function Perfil() {
-
 
     const [userData, setUserData] = React.useState<UserData[]>([])
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
@@ -67,7 +65,10 @@ function Perfil() {
             setUserData(userDataResponse);
             setAppointmentData(appointmentDataResponse);
             setAlunosData(alunosDataResponse);
-            setProfessoresData(professoresDataResponse);
+
+            const ProfessorWithOutFirstElement = professoresDataResponse.slice(1);
+
+            setProfessoresData(ProfessorWithOutFirstElement);
 
             setTimeout(() => {
                 setIsLoading(true);
@@ -82,12 +83,12 @@ function Perfil() {
 
     const handleCloseModalEdit = (resetParams: boolean) => {
         setEditingModal(false);
-        if(resetParams)fetchData();
+        if (resetParams) fetchData();
     };
 
     const handleCloseModalDelete = (resetParams: boolean) => {
         setDeleteModal(false);
-        if(resetParams)fetchData();
+        if (resetParams) fetchData();
     };
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -112,9 +113,11 @@ function Perfil() {
     interface AppointmentData {
         id: number;
         date: Date;
+        nome: string;
         horario_inicio: string;
         horario_fim: string;
         id_professor: string;
+        uuid_agendamento: string;
         id_grade: string;
         id_laboratorio: string;
         created_at: string;
@@ -123,30 +126,31 @@ function Perfil() {
 
     const AppointmentTable = ({ data }: any) => {
         return (
-            <TableContainer>
-                <thead>
-                    <tr>
+            <Table>
+                <TableHeader>
+                    <TableRow>
                         <th>Professor</th>
                         <th>Data</th>
-                        <th>Horário de início</th>
-                        <th>Horário de fim</th>
+                        <th>início</th>
+                        <th>fim</th>
                         <th>Grade</th>
+                        <th>ID agendamento</th>
                         <th>Laboratório</th>
-                        <th>Criado em</th>
-                        <th>Atualizado em</th>
+                        <th>Criado</th>
+                        <th>Atualizado</th>
                         <th>Ações</th>
-                    </tr>
-                </thead>
+                    </TableRow>
+                </TableHeader>
                 <tbody>
-
                     {data.map((appointment: AppointmentData) => (
                         <tr key={appointment.id}>
-                            {/* <td>{appointment.nome}</td> */}
-                            <td>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</td>
-                            <td>{appointment.horario_inicio}</td>
-                            <td>{appointment.horario_fim}</td>
-                            <td>{appointment.id_grade}</td>
-                            <td>{appointment.id_laboratorio}</td>
+                            <td>{appointment.id_professor}</td>
+                            <CenteredNumber>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</CenteredNumber>
+                            <CenteredNumber>{appointment.horario_inicio}</CenteredNumber>
+                            <CenteredNumber>{appointment.horario_fim}</CenteredNumber>
+                            <CenteredNumber>{appointment.uuid_agendamento}</CenteredNumber>
+                            <CenteredNumber>{appointment.id_grade}</CenteredNumber>
+                            <CenteredNumber>{appointment.id_laboratorio}</CenteredNumber>
                             <td>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</td>
                             <td>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</td>
                             <ButtonsWrapper>
@@ -164,7 +168,7 @@ function Perfil() {
                         </tr>
                     ))}
                 </tbody>
-            </TableContainer>
+            </Table>
         )
     }
 
@@ -181,17 +185,17 @@ function Perfil() {
 
     const UsersTable = ({ data }: any) => {
         return (
-            <TableContainer>
-                <thead>
-                    <tr>
+            <Table>
+                <TableHeader>
+                    <TableRow>
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Tipo</th>
-                        <th>Criado em</th>
-                        <th>Atualizado em</th>
-                    </tr>
-                </thead>
+                        <th>Criado</th>
+                        <th>Atualizado</th>
+                    </TableRow>
+                </TableHeader>
                 <tbody>
                     {data.map((user: UserData) => (
                         <tr key={user.id}>
@@ -204,7 +208,7 @@ function Perfil() {
                         </tr>
                     ))}
                 </tbody>
-            </TableContainer>
+            </Table>
         )
     }
 
@@ -215,38 +219,39 @@ function Perfil() {
         email: string
         user_id: number
         semester: number
-        created_at: string
+        created_at: Date
+        updated_at: Date
     }
 
     const AlunosTable = ({ data }: any) => {
         return (
             <Table>
                 <TableHeader>
-                    <tr>
-                        <TableHeaderData>ID</TableHeaderData>
-                        <TableHeaderData>Nome</TableHeaderData>
-                        <TableHeaderData>Sobrenome</TableHeaderData>
-                        <TableHeaderData>Email</TableHeaderData>
-                        <TableHeaderData>Semestre</TableHeaderData>
-                        <TableHeaderData>Criado em</TableHeaderData>
-                    </tr>
-                </TableHeader>  
-                <TableBody>
+                    <TableRow>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Sobrenome</th>
+                        <th>Email</th>
+                        <th>Semestre</th>
+                        <th>Criado</th>
+                        <th>Atualizado</th>
+                    </TableRow>
+                </TableHeader>
+                <tbody>
                     {data.map((aluno: AlunosData) => {
                         return (
                             <tr key={aluno.id}>
-                                <TableData>{aluno.id}</TableData>
-                                <TableData>{aluno.name}</TableData>
-                                <TableData>{aluno.surname}</TableData>
-                                <TableData>{aluno.email}</TableData>
-                                <TableData>{aluno.semester}</TableData>
-                                <TableData>{aluno.created_at}</TableData>
-                                <TableData>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</TableData>
+                                <td>{aluno.id}</td>
+                                <td>{aluno.name}</td>
+                                <td>{aluno.surname}</td>
+                                <td>{aluno.email}</td>
+                                <CenteredNumber>{aluno.semester}1</CenteredNumber>
+                                <td>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</td>
+                                <td>{formatDistanceToNow(new Date(aluno.updated_at), { locale: ptBR })} atrás</td>
                             </tr>
                         );
                     })}
-                </TableBody>
-
+                </tbody>
             </Table>
         );
     }
@@ -263,17 +268,17 @@ function Perfil() {
 
     const ProfessoresTable = ({ data }: any) => {
         return (
-            <TableContainer>
-                <thead>
-                    <tr>
+            <Table>
+                <TableHeader>
+                    <TableRow>
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Sobrenome</th>
                         <th>Email</th>
                         <th>Disciplina</th>
                         <th>Criado em</th>
-                    </tr>
-                </thead>
+                    </TableRow>
+                </TableHeader>
                 <tbody>
                     {data.map((professor: ProfessoresData) => (
                         <tr key={professor.id}>
@@ -286,10 +291,9 @@ function Perfil() {
                         </tr>
                     ))}
                 </tbody>
-            </TableContainer>
+            </Table>
         )
     }
-    // 
 
     const renderTable = () => {
         if (selectedTable === 'agendamentos') {
@@ -305,8 +309,6 @@ function Perfil() {
             return <ProfessoresTable data={professoresData} />
         }
     }
-
-    const teste = 2
 
     return (
         <Container>
@@ -349,7 +351,7 @@ function Perfil() {
                     <input type="text" placeholder="Pesquisar" />
                     <button type="submit">Convidar</button>
                     <FileDownloadButton fileName={templateFileName} fileUrl={templateFileUrl} />
-                    <FileUploadButton/>
+                    <FileUploadButton />
                 </SearchBar>
                 <TableSelector>
                     <select value={selectedTable} onChange={handleTableChange}>
@@ -367,15 +369,12 @@ function Perfil() {
                         </select>
                     }
                 </TableSelector>
-                <TableContainer>
-                    {
-                        isLoading ?
-                            renderTable()
-                            :
-                            (<PacmanLoader />)
-                    }
-
-                </TableContainer>
+                {
+                    isLoading ?
+                        renderTable()
+                        :
+                        (<PacmanLoader />)
+                }
             </Wrapper>
         </Container>
     );

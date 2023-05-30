@@ -15,13 +15,14 @@ const userController = new UserController()
 
 routes.post('/verify', new UserController().verify)
 
-routes.post('/professors', userController.verifyVoid, new ProfessorsController().get)
+routes.post('/professors', new ProfessorsController().get)
 
 routes.post('/grade/dashboard', new GradeController().getDashboardData)
 routes.post('/grade/agendamentos', new GradeController().getAgendamentosData)
 
-routes.post('/agendamento', new AgendamentoController().create)
 routes.get('/agendamento', new AgendamentoController().get)
+routes.get('/agendamento/grouped', new AgendamentoController().getGrouped) // GroupByID
+routes.post('/agendamento', new AgendamentoController().create)
 routes.put('/agendamento/:id', new AgendamentoController().update);
 routes.delete('/agendamento/:id', new AgendamentoController().delete);
 

@@ -26,7 +26,7 @@ export const Wrapper = styled.div`
   width: 90%;
   height: 90%;
   background-color: ${Colors.white};
-   z-index: 10;
+  z-index: 10;
   border-radius: 4px;
   padding: 2rem 8rem;
   display: flex;
@@ -90,38 +90,14 @@ export const SearchBar = styled.div`
   }
 `
 
-export const ButtonsWrapper = styled.div`
-display: flex;
-gap: 00.5rem;
+export const ButtonsWrapper = styled.td`
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
 `
 
 export const EditButton = styled.button`
-  background-color: #008cba;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border: none;
-  border-radius: 4px;
-  color: white;
-  font-size: 16px;
-  height: 2.0rem;
-  padding: 0 0.4rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  background-color: ${Colors.lightgrayborder};
-  margin-left: 0.5rem;
-  p {
-    font-size: 0.8rem;
-  }
-
-  &:hover {
-    background-color: #006f8f;
-  }
-`
-export const DeleteButton = styled.button`
-  background-color: #008cba;
+  background-color: ${Colors.hoverCard};
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -135,7 +111,31 @@ export const DeleteButton = styled.button`
   padding: 0 0.4rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  background-color: ${Colors.lightgrayborder};
+
+  margin-left: 0.5rem;
+  p {
+    font-size: 0.8rem;
+  }
+
+  &:hover {
+    background-color: #006f8f;
+  }
+`
+export const DeleteButton = styled.button`
+  background-color: #f47174;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  height: 2rem;
+  padding: 0 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
   p {
     font-size: 0.8rem;
@@ -273,23 +273,69 @@ export const TableContainer = styled.div``
 // `
 
 export const Table = styled.table`
- 
-`;
+  /* border : 1px solid red; */
+  border-collapse: collapse;
+  background-color: ${Colors.white};
+  z-index: 1;
+  font-size: 0.9em;
+  max-height: 300px; /* Adjust the desired maximum height */
+  overflow-y: auto; /* Adjust the desired maximum height */
 
-export const TableHeaderData = styled.th`
+  th {
+    color: ${Colors.textcolor};
+  }
 
-`;
+  th:last-child {
+    text-align: center;
+  }
 
-export const TableHeader = styled.thead`
- 
-`;
+  th,
+  td {
+    /* border: 1px solid red; */
 
-export const TableBody = styled.td`
- 
-`;
+    padding: 8px 30px;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  overflow: auto;
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+`
+
+export const TableHeaderData = styled.th``
+
+export const TableHeader = styled.thead``
+
+export const TableBody = styled.td``
 
 export const TableData = styled.td`
   padding: 8px;
   text-align: left;
+`
 
-`;
+export const TableRow = styled.tr`
+  padding: 8px;
+  border: 1px solid #dddddd;
+  background-color: ${Colors.horariosCard};
+  text-align: left;
+  font-weight: bold;
+`
+export const CenteredNumber = styled.td`
+  text-align: center;
+`
