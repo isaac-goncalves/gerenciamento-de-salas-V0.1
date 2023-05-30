@@ -12,7 +12,7 @@ import { Colors } from '../../colors';
 // `;
 
 export const Container = styled.div`
-background-color: ${Colors.background} ;
+background-color: ${Colors.backgroud} ;
 height: 100vh;
 width: 100vw;
 overflow: hidden;
