@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { ModalOverlay, ModalContent, Select, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle } from './ModalEdit.styles'
+import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect } from './ModalEdit.styles'
 
 import background from '../../../../public/images/background.jpg';
 
@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import ScheduleViewer from '../ScheduleViewer';
+import { Laboratorio } from '../../Agendamentos/Agendamento.styles';
 
 interface ModalProps {
   isVisible: boolean
@@ -35,6 +36,13 @@ interface ProfessoreProps {
   name: string;
 }
 
+interface LaboratoryProps {
+  id: number;
+  descricao: string;
+  andar: number;
+  capacidade: number;
+}
+
 interface Professor {
   id: number;
   name: string;
@@ -53,8 +61,12 @@ const ModalEdit = ({
 
   const [professores, setProfessores] = useState<ProfessoreProps[]>([]);
 
-  const [startDate, setStartDate] = useState<Date>();
+  const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
 
+  
+  const [startDate, setStartDate] = useState<Date>();
+  
+  const [selectedLaboratory, setSelectedLaboratory] = useState<Number>();
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
 
   async function handleEdit() {
@@ -62,6 +74,7 @@ const ModalEdit = ({
     const updatedFormData = {
       ...formData,
       date: startDate,
+      id_laboratorio: selectedLaboratory,
       id_professor: selectedProfessor,
       nome_professor: professores.find(professor => professor.id === selectedProfessor)?.name
     }
@@ -88,19 +101,21 @@ const ModalEdit = ({
 
   useEffect(() => {
 
+    console.log(editedData)
+
+    setFormData(editedData);
+
     const fetchProfessorData = async () => {
       try {
         await fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
-        
-        setFormData(editedData);
 
         console.log("editedData.id_professor")
         console.log(editedData.id_professor)
 
         if (editedData.id_professor) {
-       
-            setSelectedProfessor(editedData.id_professor);
-         
+
+          setSelectedProfessor(editedData.id_professor);
+
         }
 
         console.log(selectedProfessor)
@@ -110,7 +125,28 @@ const ModalEdit = ({
       }
     };
 
+    const fetchLaboratoryData = async () => {
+      try {
+        await fetchLaboratory("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
+
+        console.log("editedData.laboratory")
+        console.log(editedData.id_laboratorio)
+
+        if (editedData.id_laboratorio) {
+
+          setSelectedLaboratory(editedData.id_laboratorio);
+
+        }
+        console.log("selectedLaboratory")
+         console.log(selectedLaboratory)
+
+      } catch (error) {
+        console.log(error); // Handle the error appropriately
+      }
+    };
+
     fetchProfessorData();
+    fetchLaboratoryData();
 
     console.log("editedData")
 
@@ -137,7 +173,7 @@ const ModalEdit = ({
     //     "updated_at": "2023-04-12T19:17:14.002Z"
     // }
 
-  
+
 
     function onEsc(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -165,8 +201,18 @@ const ModalEdit = ({
     });
   }
 
-
-
+  async function fetchLaboratory(token: string) {
+    console.log("Fetching fetchLaboratory...")
+    await fetch('http://localhost:3333/laboratory', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'bearer ' + token,
+      }
+    }).then((response) => response.json()).then((data) => {
+       console.log(data)
+      return setLaboratory(data.reverse())
+    });
+  }
 
   // ... rest of the component
 
@@ -184,6 +230,19 @@ const ModalEdit = ({
 
     if (selectedId) {
       setSelectedProfessor(selectedId);
+      // Update the selectedProfessorId state instead of formData
+    }
+  }
+
+  const handleLaboratoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(event.target.value)
+
+    const selectedLab = parseInt(event.target.value);
+
+    console.log(selectedLab)
+
+    if (selectedLab) {
+      setSelectedLaboratory(selectedLab);
       // Update the selectedProfessorId state instead of formData
     }
   }
@@ -208,7 +267,7 @@ const ModalEdit = ({
           {/* <p>ID: {formData.id}</p> */}
           <ProfessorWrapper>
             <DetailsText>Professor: </DetailsText>
-            <Select value={selectedProfessor || ''} onChange={handleSelectProfessorChange}>
+            <StyledSelect value={selectedProfessor || ''} onChange={handleSelectProfessorChange}>
               {professores.length > 0 ? (
                 professores.map((professor) => (
                   <option key={professor.id} value={professor.id}>
@@ -218,7 +277,7 @@ const ModalEdit = ({
               ) : (
                 <option value="">No professors available</option>
               )}
-            </Select>
+            </StyledSelect>
           </ProfessorWrapper>
           <DateTimeWrapper>
             <DateTimeDiv>
@@ -237,13 +296,29 @@ const ModalEdit = ({
           <SideBysideContainer>
             <DetailsWrapper>
               <DetailsText>Semestre:</DetailsText>
-              <Select>
-
-              </Select>
+              <StyledSelect value={ selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+                {laboratory.length > 0 ? (
+                  laboratory.map((laboratory) => (
+                    <option key={laboratory.id} value={laboratory.id}>
+                      {laboratory.descricao}
+                    </option>
+                  ))
+                ) : (
+                  <option value="">No professors available</option>
+                )}
+              </StyledSelect>
               <DetailsText>Laboratório:</DetailsText>
-              <Select>
-
-              </Select>
+              <StyledSelect value={ selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+                {laboratory.length > 0 ? (
+                  laboratory.map((laboratory) => (
+                    <option key={laboratory.id} value={laboratory.id}>
+                      {laboratory.descricao}
+                    </option>
+                  ))
+                ) : (
+                  <option value="">No professors available</option>
+                )}
+              </StyledSelect>
               <DetailsText>Andar: <span>Segundo Andar</span></DetailsText>
               <DetailsText>Criado em: <span>Segundo Andar</span></DetailsText>
               <DetailsText>Editado em: <span>Segundo Andar</span></DetailsText>

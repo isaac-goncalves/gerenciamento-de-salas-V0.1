@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 
 import { professoresRepository } from '../repositories/professoresRepositories'
 
+import { laboratoriosRepository } from '../repositories/laboratoriosRepository'
+
 export class ProfessorsController {
   
   async get (request: Request, response: Response) {
@@ -38,6 +40,30 @@ export class ProfessorsController {
       console.log(newProfessores)
 
       return response.status(200).json(newProfessores)
+    } catch (error) {
+      return response.status(500).json({ message: 'internal server error' })
+    }
+  }
+
+  async getLaboratory (request: Request, response: Response) {
+    console.log('get getLaboratory')
+
+    //grab token
+
+    const token = request.headers.authorization
+
+    //verify token
+
+    // if (!token) return response.status(401).json({ message: 'missing token' })
+
+    // const [, tokenValue] = token.split(' ')
+
+    try {
+      const laboratory = await laboratoriosRepository.find()
+
+      console.log(JSON.stringify(laboratory, null, 2))
+     
+      return response.status(200).json(laboratory)
     } catch (error) {
       return response.status(500).json({ message: 'internal server error' })
     }

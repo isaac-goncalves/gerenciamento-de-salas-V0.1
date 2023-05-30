@@ -74,7 +74,7 @@ export const ProfessorWrapper = styled.div`
   padding: 0.8rem;
 `
 
-export const Select = styled.select`
+export const StyledSelect = styled.select`
   z-index: 99;
   padding: 8px;
   width: 100%;

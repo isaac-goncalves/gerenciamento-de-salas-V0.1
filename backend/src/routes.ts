@@ -17,6 +17,8 @@ routes.post('/verify', new UserController().verify)
 
 routes.post('/professors', new ProfessorsController().get)
 
+routes.get('/laboratory', new ProfessorsController().getLaboratory)
+
 routes.post('/grade/dashboard', new GradeController().getDashboardData)
 routes.post('/grade/agendamentos', new GradeController().getAgendamentosData)
 
