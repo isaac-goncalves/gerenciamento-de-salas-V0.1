@@ -37,7 +37,7 @@ import {
   Container,
   Header,
   CourseName,
-  Semester,
+ 
   ClassesContainer,
   ClockContainer,
   WeekdayContainer,
@@ -53,12 +53,11 @@ import {
   Laboratorio,
   DatepickArrowsContainer,
   StyledDatePicker,
-  ProfessorSelect,
   WeekDay,
   NenhumaAulaText,
   DisciplinaText,
   Professor,
-  Disciplina,
+ 
   Semestre,
   LaboratorioText,
   SelectingLaboratoryWrapper,
@@ -67,7 +66,7 @@ import {
 }
   from './Agendamento.styles'
 
-import Calendar from '../Components/Laboratorios/Calendar'
+
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';

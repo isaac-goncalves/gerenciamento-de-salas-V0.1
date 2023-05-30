@@ -7,8 +7,6 @@ import Confetti from 'react-confetti';
 
 import { ToastContainer, toast } from 'react-toastify';
 
-import Colors from "../../colors";
-
 import 'react-toastify/dist/ReactToastify.css';
 
 import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword } from "./Login.styles"

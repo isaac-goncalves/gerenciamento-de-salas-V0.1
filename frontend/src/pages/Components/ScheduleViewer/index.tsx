@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container, WeekdayContainer, Laboratorio, ScheduleCell } from './ScheduleViewer.styles'
+import { Container, WeekdayContainer, ScheduleCell } from './ScheduleViewer.styles'
 
 const array = [
   {
