@@ -16,24 +16,24 @@ connection = psycopg2.connect(
     host='localhost',
     port='5432',
     database='gerenciamento-de-salas',
-    user='postgres',
+    user='carolineamarante',
     password='2406'
 )
 
 # Read the Excel file and specify the sheet name
 dfGrade = pd.read_excel(file_path, sheet_name='Final_table', usecols='B:K', skiprows=1, nrows=1000) #grade
 dfDisciplinas = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='B:C', skiprows=2, nrows=100) #disciplinas
-dfProfessores = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='E:H', skiprows=2, nrows=100) #Professores
-dfLaboratorio = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='J:M', skiprows=2, nrows=100) #Laboratorio
-dfSemestres = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='O:P', skiprows=2, nrows=20) #semestres
-dfDiasSemana = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='R:S', skiprows=2, nrows=6) #dias da semana
+dfProfessores = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='E:I', skiprows=2, nrows=100) #Professores
+dfLaboratorio = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='K:N', skiprows=2, nrows=100) #Laboratorio
+dfSemestres = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='P:Q', skiprows=2, nrows=20) #semestres
+dfDiasSemana = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='S:T', skiprows=2, nrows=6) #dias da semana
 
 
 dfGrade.columns = ['id','horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at']
 
 dfDisciplinas.columns = ['disciplina', 'id']
 
-dfProfessores.columns = ['name','id', 'surname' ,'disciplina']
+dfProfessores.columns = ['name','id', 'surname', 'email' ,'disciplina']
 
 dfLaboratorio.columns = ['descricao', 'andar','id','capacidade']
 
