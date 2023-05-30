@@ -20,10 +20,11 @@ routes.post('/professors', new ProfessorsController().get)
 routes.get('/laboratory', new ProfessorsController().getLaboratory)
 
 routes.post('/grade/dashboard', new GradeController().getDashboardData)
-routes.post('/grade/agendamentos', new GradeController().getAgendamentosData)
 
 routes.get('/agendamento', new AgendamentoController().get)
-routes.get('/agendamento/grouped', new AgendamentoController().getGrouped) // GroupByID
+
+routes.get('/agendamento/grouped', new AgendamentoController().getGroupedById) // GroupByID
+
 routes.post('/agendamento', new AgendamentoController().create)
 routes.put('/agendamento/:id', new AgendamentoController().update);
 routes.delete('/agendamento/:id', new AgendamentoController().delete);

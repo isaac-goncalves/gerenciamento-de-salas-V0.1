@@ -275,52 +275,25 @@ export class AgendamentoController {
       return response.status(500).json({ message: 'Internal server error' })
     }
   }
-  async getGrouped (request: Request, response: Response) {
-    console.log('GET agendamento ByID')
 
+  async getGroupedById (request: Request, response: Response) {
+   console.log("get Grouped");
+    const {  uuid_agendamento } = request.body;
+    console.log(request.body);
+  
     try {
-      const agendamentos = await agendamentosRepository.find()
+      // Retrieve grade data for the specified professor and semester
+      
+      const query = `SELECT * FROM agendamento WHERE uuid_agendamento = '${uuid_agendamento}'`;
 
-      agendamentos.sort((a, b) => {
-        return (
-          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-        )
-      })
+      const gradeGroupedById = await agendamentosRepository.query(query);
 
-      //grab professor_id find his name
+      console.log(gradeGroupedById);
 
-      const agendamentoWithProfessorName = await Promise.all(
-        agendamentos.map(async (agendamento: any) => {
-          const id_professor = agendamento.id_professor
-
-          const queryProfessor = ` SELECT name FROM professores WHERE id = ${id_professor} `
-          const nomeProfessor = await gradeRepositories.query(queryProfessor)
-          console.log(nomeProfessor)
-
-          agendamento.nome_professor = nomeProfessor[0]?.name || ''
-
-          return agendamento
-        })
-      )
-
-      console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
-
-      // Group by uuid_agendamento
-      const groupedAgendamentos: Record<string, any[]> = {}
-      agendamentoWithProfessorName.forEach((agendamento: any) => {
-        const uuidAgendamento = agendamento.uuid_agendamento
-        if (!groupedAgendamentos[uuidAgendamento]) {
-          groupedAgendamentos[uuidAgendamento] = []
-        }
-        groupedAgendamentos[uuidAgendamento].push(agendamento)
-      })
-
-      console.log(JSON.stringify(groupedAgendamentos, null, 2))
-
-      return response.status(200).json(agendamentos)
+      return response.status(200).json(gradeGroupedById);
     } catch (error) {
-      console.log(error)
-      return response.status(500).json({ message: 'internal server error' })
+      console.log(error);
+      return response.status(500).json({ message: "internal server error" });
     }
   }
 }
