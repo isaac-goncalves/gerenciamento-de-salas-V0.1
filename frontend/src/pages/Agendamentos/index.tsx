@@ -68,9 +68,9 @@ import {
 
 
 
-import dateIcon from '../../../public/images/dia_de_hoje.png';
-import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
-import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
+// import dateIcon from '../../../public/images/dia_de_hoje.png';
+// import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
+// import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
 import Modal from '../Components/Modal';
 import set from 'date-fns/set';
@@ -720,14 +720,14 @@ const Agendamentos: React.FC = () => {
         <DatePickWrapper>
           <DatepickContainer>
             <DatepickArrowsContainer onClick={() => handleSelectToday()}>
-              <DateIcon src={dateIcon} />
+              {/* <DateIcon src={dateIcon} /> */}
               <p>Pular para hoje</p>
             </DatepickArrowsContainer>
             <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
-              <DateIcon src={arrowLeft} />
+              {/* <DateIcon src={arrowLeft} /> */}
             </DatepickArrowsContainer>
             <DatepickArrowsContainer onClick={() => handleArrowRight()}>
-              <DateIcon src={arrowRight} />
+              {/* <DateIcon src={arrowRight} /> */}
             </DatepickArrowsContainer>
             <p>{GetCurrentMonthAndYear(startDate)}</p>
             {/* <DateIcon src={arrowDown} /> */}
