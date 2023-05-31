@@ -81,16 +81,23 @@ function transformData(agendamentos: any) {
   const items = [];
 
   for (let i = 0; i < clockTimesArray.length; i++) {
+    console.log("clockTimesArray[i]" + clockTimesArray[i])
   
     const agendamentoExisteNesteHorario = agendamentos.find((agendamento: any) => {
       return agendamento.horario_inicio === clockTimesArray[i]
     })
 
+    const idAgendamento = agendamentoExisteNesteHorario ? agendamentoExisteNesteHorario.id : null
+
+    
+    console.log("agendamento.horario_inicio === clockTimesArray[i]")
+    console.log(agendamentoExisteNesteHorario ? false : true)
+    console.log("===================================================")
 
     const item = {
       id: i,
       selecionado: agendamentoExisteNesteHorario ? false : true,
-      Agendamento: []
+      Agendamento: [agendamentos.find((agendamento: any) => agendamento.id == idAgendamento)]
     }
 
     items.push(item)
@@ -143,12 +150,12 @@ function ScheduleViewer({props}: any) {
         'Content-Type': 'application/json'
       },
       body: bodyParams
-    }).then((response) => response.json()).then((data) => {
+    }).then((response) => response.json()).then(async(data) => {
 
       console.log("ScheduleViewer")
       console.log(data)
 
-      const transformedData = transformData(data)
+      const transformedData = await transformData(data)
 
       console.log("transformedData")
       console.log(transformedData)

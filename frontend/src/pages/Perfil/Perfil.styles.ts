@@ -175,111 +175,14 @@ export const TableSelector = styled.div`
   }
 `
 
-export const TableContainer = styled.div``
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-
-//   overflow: auto;
-
-//   ::-webkit-scrollbar {
-//     width: 12px;
-//     height: 8px;
-//   }
-
-//   ::-webkit-scrollbar-track {
-//     background-color: #f5f5f5;
-//     border-radius: 4px;
-//   }
-
-//   ::-webkit-scrollbar-thumb {
-//     background-color: #ccc;
-//     border-radius: 4px;
-//   }
-
-//   table {
-//     width: 100%;
-//     height: 100%;
-//     border-collapse: collapse;
-//     border-radius: 4px;
-//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
-//   }
-
-//   thead {
-//     width: 100%;
-//     display: flex;
-//     flex-direction: column;
-//     position: sticky;
-//     top: 0;
-//     z-index: 1; /* to position above tbody when scrolling */
-//   }
-
-//   th {
-//     width: 25%;
-//     background-color: ${Colors.hoverCard};
-//     color: ${Colors.white};
-//     font-weight: 500;
-//     padding: 0.5rem 1rem;
-//     text-align: left;
-//     font-size: 0.8rem;
-//     white-space: nowrap;
-
-//     &:first-child {
-//       border-top-left-radius: 4px;
-//       border-bottom-left-radius: 4px;
-//     }
-
-//     &:last-child {
-//       border-top-right-radius: 4px;
-//       border-bottom-right-radius: 4px;
-//     }
-//   }
-
-//   tbody {
-//     width: 100%;
-//     height: 100%;
-//   }
-
-//   tr {
-//     transition: background-color 0.2s;
-//     width: 100%;
-//   }
-
-//   tr td:last-child {
-//     display: flex;
-//   }
-
-//   td {
-//     width: 25%;
-//     padding: 0.5rem 1rem;
-//     border-bottom: 1px solid ${Colors.lightgray};
-//     font-size: 0.8rem;
-//     white-space: nowrap;
-//   }
-
-//   tr:hover {
-//     background-color: ${Colors.lightgray};
-//   }
-
-//   tr:nth-child(even) {
-//     background-color: ${Colors.lightgray};
-//   }
-
-//   tr:nth-child(odd) {
-//     background-color: ${Colors.white};
-//   }
-// `
-
 export const Table = styled.table`
   /* border : 1px solid red; */
   border-collapse: collapse;
+ 
+  width:100%;
   background-color: ${Colors.white};
   z-index: 1;
   font-size: 0.9em;
-  max-height: 300px; /* Adjust the desired maximum height */
-  overflow-y: auto; /* Adjust the desired maximum height */
 
   th {
     color: ${Colors.textcolor};
@@ -293,7 +196,11 @@ export const Table = styled.table`
   td {
     /* border: 1px solid red; */
 
-    padding: 8px 30px;
+    padding: 8px 5px;
+  }
+
+  tbody{
+
   }
 
   tbody tr {
@@ -320,9 +227,18 @@ export const Table = styled.table`
 
 export const TableHeaderData = styled.th``
 
-export const TableHeader = styled.thead``
+export const TableHeader = styled.thead`
+position: sticky; /* Make the table header sticky */
+  top: 0; /* Fix the header at the top of the container */`
 
-export const TableBody = styled.td``
+export const TableBody = styled.tbody`
+
+`
+
+export const TableContainer = styled.tbody`
+  max-height: 100%; /* Adjust the desired maximum height */
+  overflow-y: auto; /* Adjust the desired maximum height */
+`
 
 export const TableData = styled.td`
   padding: 8px;
@@ -332,9 +248,10 @@ export const TableData = styled.td`
 export const TableRow = styled.tr`
   padding: 8px;
   border: 1px solid #dddddd;
-  background-color: ${Colors.horariosCard};
+  background-color: ${Colors.hoverCard};
+  opacity: 0.8;
   text-align: left;
-  font-weight: bold;
+  font-weight: 400;
 `
 export const CenteredNumber = styled.td`
   text-align: center;

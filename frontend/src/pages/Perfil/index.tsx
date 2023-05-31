@@ -13,7 +13,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, TableContainer, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableHeaderData, TableBody, TableRow, CenteredNumber
+    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -126,49 +126,51 @@ function Perfil() {
 
     const AppointmentTable = ({ data }: any) => {
         return (
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <th>Professor</th>
-                        <th>Data</th>
-                        <th>início</th>
-                        <th>fim</th>
-                        <th>Grade</th>
-                        <th>ID agendamento</th>
-                        <th>Laboratório</th>
-                        <th>Criado</th>
-                        <th>Atualizado</th>
-                        <th>Ações</th>
-                    </TableRow>
-                </TableHeader>
-                <tbody>
-                    {data.map((appointment: AppointmentData) => (
-                        <tr key={appointment.id}>
-                            <td>{appointment.id_professor}</td>
-                            <CenteredNumber>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</CenteredNumber>
-                            <CenteredNumber>{appointment.horario_inicio}</CenteredNumber>
-                            <CenteredNumber>{appointment.horario_fim}</CenteredNumber>
-                            <CenteredNumber>{appointment.uuid_agendamento}</CenteredNumber>
-                            <CenteredNumber>{appointment.id_grade}</CenteredNumber>
-                            <CenteredNumber>{appointment.id_laboratorio}</CenteredNumber>
-                            <td>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</td>
-                            <td>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</td>
-                            <ButtonsWrapper>
-                                <EditButton type="button" onClick={() => handleEditClick(appointment)}><RiPencilLine />
-                                    <p>
-                                        Editar
-                                    </p>
-                                </EditButton>
-                                <DeleteButton type="button" onClick={() => handleDeleteClick(appointment)}><RiDeleteBinLine />
-                                    <p>
-                                        Excluir
-                                    </p>
-                                </DeleteButton>
-                            </ButtonsWrapper>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <TableContainer>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <th>Professor</th>
+                            <th>Data</th>
+                            <th>início</th>
+                            <th>fim</th>
+                            <th>ID agendamento</th>
+                            <th>Grade</th>
+                            <th>Laboratório</th>
+                            <th>Criado</th>
+                            <th>Atualizado</th>
+                            <th>Ações</th>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map((appointment: AppointmentData) => (
+                            <tr key={appointment.id}>
+                                <CenteredNumber>{appointment.id_professor}</CenteredNumber>
+                                <CenteredNumber>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</CenteredNumber>
+                                <CenteredNumber>{appointment.horario_inicio}</CenteredNumber>
+                                <CenteredNumber>{appointment.horario_fim}</CenteredNumber>
+                                <CenteredNumber>{appointment.uuid_agendamento}</CenteredNumber>
+                                <CenteredNumber>{appointment.id_grade}</CenteredNumber>
+                                <CenteredNumber>{appointment.id_laboratorio}</CenteredNumber>
+                                <td>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</td>
+                                <td>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</td>
+                                <ButtonsWrapper>
+                                    <EditButton type="button" onClick={() => handleEditClick(appointment)}><RiPencilLine />
+                                        <p>
+                                            Editar
+                                        </p>
+                                    </EditButton>
+                                    <DeleteButton type="button" onClick={() => handleDeleteClick(appointment)}><RiDeleteBinLine />
+                                        <p>
+                                            Excluir
+                                        </p>
+                                    </DeleteButton>
+                                </ButtonsWrapper>
+                            </tr>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         )
     }
 

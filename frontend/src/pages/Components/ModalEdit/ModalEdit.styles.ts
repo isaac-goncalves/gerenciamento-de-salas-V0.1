@@ -53,7 +53,7 @@ export const ImageWrapper = styled.div`
 `
 
 export const FormWrapper = styled.div`
-  width: 50%;
+  width: 100%;
   height: 100%;
   gap: 1rem;
   display: flex;
