@@ -84,6 +84,9 @@ export const MenuLink = styled(Link)`
   &.active {
     color: #000000;
   }
+
+ 
+
 `
 // export const Hamburger = styled(FaBars)`
 //   display: none;
@@ -105,6 +108,9 @@ export const Menu = styled.div`
   width: 100%;
   height: 100%;
   padding-left: 1rem;
+  padding-bottom: 2rem;
+
+
 
   a:nth-of-type(4) {
     margin-top: auto;
@@ -122,6 +128,10 @@ export const RowWrapper = styled.div`
     padding-left: 0.8rem;
     font-size: 1rem;
     color: ${Colors.textcolor};
+  }
+
+ &:hover {
+    color: ${Colors.mainpurple};
   }
 
   svg {

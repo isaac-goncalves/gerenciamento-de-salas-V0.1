@@ -38,7 +38,7 @@ export const BackgroundImage = styled.img`
 
 export const ModalContent = styled.div`
   background: white;
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 8px;
   display: flex;
   width: 70%;
@@ -128,7 +128,7 @@ span{
 
   p{
     font-size: 2rem;
-    color : ${Colors.textco} ;
+    
   }
 
 
