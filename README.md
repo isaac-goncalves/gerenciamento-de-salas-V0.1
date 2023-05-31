@@ -1,4 +1,7 @@
 
+![image](https://github.com/isaac-goncalves/gerenciamento-de-salas-V0.1/assets/82903174/21acb028-94c3-43bd-ac3f-54afe51ded41)
+
+
 docker build -t frontend-sgsa . //constroi a imagem do frontend
 
 docker run -p 4173:3000 frontend-sgsa //roda o container do frontend
