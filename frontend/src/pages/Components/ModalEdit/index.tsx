@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper } from './ModalEdit.styles'
+import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates } from './ModalEdit.styles'
 
 import background from '../../../../public/images/background.jpg';
 
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 import DatePicker from "react-datepicker";
 
@@ -26,6 +27,7 @@ interface EditedData {
   horario_fim: string;
   id_professor: string;
   id_grade: string;
+  uuid_agendamento: string;
   id_laboratorio: string;
   created_at: string;
   updated_at: string;
@@ -68,7 +70,7 @@ const ModalEdit = ({
 
   const [startDate, setStartDate] = useState<Date>();
 
-  const [selectedLaboratory, setSelectedLaboratory] = useState<Number>();
+  const [selectedLaboratory, setSelectedLaboratory] = useState<any>();
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
 
   async function handleEdit() {
@@ -188,7 +190,9 @@ const ModalEdit = ({
     return () => {
       window.removeEventListener('keydown', onEsc)
     }
-  }, [editedData])
+  }, [editedData, selectedLaboratory])
+
+
 
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")
@@ -256,6 +260,25 @@ const ModalEdit = ({
 
     return dayOfWeek;
   }
+
+  function getAndarLaboratorio(id: number) {
+
+    const andar = laboratory.find((lab) => lab.id === id)?.andar;
+
+    const andaresString = ['Primeiro Andar', 'Segundo Andar'];
+
+    const dayOfWeek = andaresString[(andar || 0) + 1] || null;
+
+    return dayOfWeek;
+
+  }
+
+  const formatDate = (date: string) => {
+
+    const formatedDate = new Date(date)
+
+    return format(formatedDate, "PPPP", { locale: ptBR });
+  };
 
   return (
     <ModalOverlay onClick={() => onClose()}>
@@ -327,13 +350,22 @@ const ModalEdit = ({
                   )}
                 </StyledSelect>
               </div>
-              <DetailsText>Andar: <span>Segundo Andar</span></DetailsText>
-              <DetailsText>Criado em: <span>Segundo Andar</span></DetailsText>
-              <DetailsText>Editado em: <span>Segundo Andar</span></DetailsText>
+              <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory)}</StyledText></DetailsText>
+              <DetailsText>Criado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
+              <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
+              <DetailsText>ID de agendamento: <br />
+
+                <div>
+                  <p>
+                    {formData.uuid_agendamento}
+                  </p>
+                </div>
+
+              </DetailsText>
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>
-                <ScheduleViewer props={formData} />
+                <ScheduleViewer props={formData}/>
               </ClockTimeWrapper>
               <ButtonsWrapper>
                 <StyledButton onClick={() => handleEdit()}>Editar</StyledButton>
@@ -343,7 +375,7 @@ const ModalEdit = ({
           </SideBysideContainer>
         </FormWrapper>
       </ModalContent>
-    </ModalOverlay>
+    </ModalOverlay >
   )
 }
 

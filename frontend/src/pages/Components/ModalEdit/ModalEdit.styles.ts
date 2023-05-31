@@ -115,10 +115,35 @@ span{
  
   font-weight: 400;
   color: ${Colors.textcolor};
-  font-size: 1.0rem;
+  /* font-size: 0.8rem; */
 }
 
+  div{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    
+  }
+
+  p{
+    font-size: 2rem;
+    color : ${Colors.textco} ;
+  }
+
+
 `
+
+export const StyledText = styled.span`
+white-space: nowrap;
+font-size: 1.0rem;
+`
+
+export const StyledDates = styled.span`
+white-space: nowrap;
+font-size: 0.8rem;
+`
+
 export const ClockTimeWrapper = styled.div`
 display: flex;
 flex-direction: column;

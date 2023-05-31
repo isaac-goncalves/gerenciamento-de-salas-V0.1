@@ -278,8 +278,8 @@ export class AgendamentoController {
 
   async getGroupedById (request: Request, response: Response) {
    console.log("get Grouped");
-    const {  uuid_agendamento } = request.body;
-    console.log(request.body);
+    const { uuid_agendamento } = request.body;
+    console.log(uuid_agendamento);
   
     try {
       // Retrieve grade data for the specified professor and semester

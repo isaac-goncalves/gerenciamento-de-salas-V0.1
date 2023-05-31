@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Container, WeekdayContainer, ScheduleCell, ClockContainer } from './ScheduleViewer.styles'
 
@@ -32,7 +32,56 @@ const array = [
 
 function ScheduleViewer(props: any) {
 
-  console.log(props)
+  const [form, setForm] = React.useState({} as any)
+  const [schedule, setSchedule] = React.useState(array)
+  const [scheduleData, SetScheduleData] = React.useState([])
+
+  useEffect(() => {
+
+    if (props) {
+      setForm(props)
+    }
+
+    console.log("ScheduleViewer useEffect")
+    setSchedule(props.schedule)
+    fetchByGroupedId("token valido")
+  }, [props.schedule])
+
+  async function fetchByGroupedId(token: string = localStorage.getItem('token') || "") {
+    console.log("Fetching fetchByGroupedId...")
+
+    const obj = {
+      uuid_agendamento: "#86563",
+    }
+
+    const bodyParams = JSON.stringify(obj)
+
+
+    await fetch('http://localhost:3333/agendamento/grouped', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: bodyParams
+    }).then((response) => response.json()).then((data) => {
+
+      console.log("ScheduleViewer================")
+      console.log(data)
+      return SetScheduleData(data)
+
+    }).catch((error) => {
+      console.log(error)
+    }
+    )
+  }
+
+  const test = () => {
+    console.log("ScheduleViewer")
+    console.log(props)
+  }
+
+  test()
 
   return (
     <>
@@ -58,7 +107,7 @@ function ScheduleViewer(props: any) {
         </WeekdayContainer>
       </Container>
       <div>
-        
+
       </div>
     </>
   )
