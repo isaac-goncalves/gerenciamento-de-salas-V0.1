@@ -1,22 +1,44 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 import { Colors } from '../../../colors'
 
 export const Container = styled.div`
-    width: 100%;
-    height: 100%;
-    background-color: #f5f5f5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    animation: appear 1s;
-    `;
+  width: 100%;
+  padding: 0.5rem;
+  height: 100%;
+  background-color: ${Colors.lightwhitebackgroud};
+  display: flex;
+  border-radius: 8px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  animation: appear 1s;
+`
 
+export const ClockContainer = styled.div`
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.5rem;
+  width: 30%;
+  height: 100%;
+
+  padding-top: 3rem;
+  padding-bottom: 0.6rem;
+
+  p {
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: ${Colors.textcolor};
+  }
+`
 
 export const WeekdayContainer = styled.div`
   display: flex;
-  width: 100%;
+  width: 80%;
   height: 100%;
   flex-direction: column;
   align-items: center;
@@ -75,3 +97,5 @@ export const ScheduleCell = styled.div`
     font-size: 0.9rem;
   }
 `
+
+

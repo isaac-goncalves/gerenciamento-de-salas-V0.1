@@ -69,13 +69,13 @@ export const StyledTitle = styled.h1`
 `
 
 export const ProfessorWrapper = styled.div`
- background-color: ${Colors.lightgrayInput};
+ background-color: ${Colors.lightwhitebackgroud};
   border-radius: 8px;
   padding: 0.8rem;
 `
 
 export const StyledSelect = styled.select`
-  z-index: 99;
+  z-index: 0;
   padding: 8px;
   width: 100%;
   border: 1px solid #ccc;
@@ -86,7 +86,7 @@ export const DateTimeWrapper = styled.div`
   display: flex;
   padding: 0.8rem;
   gap: 1rem;
-  background-color: ${Colors.lightgrayInput};
+  background-color: ${Colors.lightwhitebackgroud};
   border-radius: 8px;
 `
 
@@ -99,10 +99,10 @@ export const DateTimeDiv = styled.div`
 export const DetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   gap: 1rem;
   padding: 0.8rem;
-  background-color: ${Colors.lightgrayInput};
+  background-color: ${Colors.lightwhitebackgroud};
   border-radius: 8px;
   justify-content: center;
 `
@@ -122,13 +122,16 @@ span{
 export const ClockTimeWrapper = styled.div`
 display: flex;
 flex-direction: column;
-width: 50%;
-gap: 1rem;
+width: 100%;
+height: 100%;
+
+
 `
 
 export const SideBysideContainer = styled.div`
 display: flex;
 width: 100%;
+height: 100%;
 gap: 1rem;
 border-radius: 8px;
 `
@@ -144,6 +147,8 @@ font-size: 1.0rem;
 background-color: ${Colors.mainpurple};
   color: #ffffff;
   border: none;
+  height: 40px;
+  width: 100%;
   padding: 4px 10px;
   border-radius: 4px;
   padding: 0.5rem 1rem;
@@ -156,4 +161,12 @@ background-color: ${Colors.mainpurple};
   
   }
 
+`
+
+export const ClocktimeAndButoonsWrapper = styled.div`
+display: flex;
+flex-direction: column;
+height: 100%;
+width: 100%;
+gap: 0.5rem;
 `

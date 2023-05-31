@@ -6,6 +6,7 @@ export const Colors = {
   textColorDisabled: '#757575',
   lightgray: '#ECECEC',
   mainpurple: '#6358DC',
+  lightwhitebackgroud: '#f5f5f5;',
   separator: '#BFBFBF',
   lightgrayInput: '#D9D9D9',
   lightgrayborder: '#8E8E8E',
