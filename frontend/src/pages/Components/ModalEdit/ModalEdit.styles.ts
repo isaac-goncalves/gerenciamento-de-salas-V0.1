@@ -104,7 +104,7 @@ export const DetailsWrapper = styled.div`
   padding: 0.8rem;
   background-color: ${Colors.lightwhitebackgroud};
   border-radius: 8px;
-  justify-content: center;
+ 
 `
 export const DetailsText = styled.p`
 font-weight: 500;

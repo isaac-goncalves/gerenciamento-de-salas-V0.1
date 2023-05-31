@@ -268,7 +268,7 @@ const ModalEdit = ({
           {/* <p>{JSON.stringify(formData, null, 2)}</p> */}
           {/* <p>ID: {formData.id}</p> */}
           <ProfessorWrapper>
-            <DetailsText>Professor: </DetailsText>
+            <DetailsText>Professor:</DetailsText>
             <StyledSelect value={selectedProfessor || ''} onChange={handleSelectProfessorChange}>
               {professores.length > 0 ? (
                 professores.map((professor) => (
@@ -297,38 +297,43 @@ const ModalEdit = ({
           </DateTimeWrapper>
           <SideBysideContainer>
             <DetailsWrapper>
-              
-              <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
-                {laboratory.length > 0 ? (
-                  laboratory.map((laboratory) => (
-                    <option key={laboratory.id} value={laboratory.id}>
-                      {laboratory.descricao}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">No professors available</option>
-                )}
-              </StyledSelect>
-              <DetailsText>Semestre:</DetailsText>
-              <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
-                {laboratory.length > 0 ? (
-                  laboratory.map((laboratory) => (
-                    <option key={laboratory.id} value={laboratory.id}>
-                      {laboratory.descricao}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">No professors available</option>
-                )}
-              </StyledSelect>
-              <DetailsText>Laboratório:</DetailsText>
+              <div>
+
+
+                <DetailsText>Semestre:</DetailsText>
+                <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+                  {laboratory.length > 0 ? (
+                    laboratory.map((laboratory) => (
+                      <option key={laboratory.id} value={laboratory.id}>
+                        {laboratory.descricao}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No professors available</option>
+                  )}
+                </StyledSelect>
+              </div>
+              <div>
+                <DetailsText>Laboratório:</DetailsText>
+                <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+                  {laboratory.length > 0 ? (
+                    laboratory.map((laboratory) => (
+                      <option key={laboratory.id} value={laboratory.id}>
+                        {laboratory.descricao}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No professors available</option>
+                  )}
+                </StyledSelect>
+              </div>
               <DetailsText>Andar: <span>Segundo Andar</span></DetailsText>
               <DetailsText>Criado em: <span>Segundo Andar</span></DetailsText>
               <DetailsText>Editado em: <span>Segundo Andar</span></DetailsText>
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>
-                <ScheduleViewer props={formData} /> 
+                <ScheduleViewer props={formData} />
               </ClockTimeWrapper>
               <ButtonsWrapper>
                 <StyledButton onClick={() => handleEdit()}>Editar</StyledButton>
