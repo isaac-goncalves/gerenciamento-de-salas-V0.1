@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect } from './ModalEdit.styles'
+import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper } from './ModalEdit.styles'
 
 import background from '../../../../public/images/background.jpg';
 
@@ -63,9 +63,11 @@ const ModalEdit = ({
 
   const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
 
-  
+
+
+
   const [startDate, setStartDate] = useState<Date>();
-  
+
   const [selectedLaboratory, setSelectedLaboratory] = useState<Number>();
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
 
@@ -138,7 +140,7 @@ const ModalEdit = ({
 
         }
         console.log("selectedLaboratory")
-         console.log(selectedLaboratory)
+        console.log(selectedLaboratory)
 
       } catch (error) {
         console.log(error); // Handle the error appropriately
@@ -209,7 +211,7 @@ const ModalEdit = ({
         'Authorization': 'bearer ' + token,
       }
     }).then((response) => response.json()).then((data) => {
-       console.log(data)
+      console.log(data)
       return setLaboratory(data.reverse())
     });
   }
@@ -295,8 +297,20 @@ const ModalEdit = ({
           </DateTimeWrapper>
           <SideBysideContainer>
             <DetailsWrapper>
+              
+              <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+                {laboratory.length > 0 ? (
+                  laboratory.map((laboratory) => (
+                    <option key={laboratory.id} value={laboratory.id}>
+                      {laboratory.descricao}
+                    </option>
+                  ))
+                ) : (
+                  <option value="">No professors available</option>
+                )}
+              </StyledSelect>
               <DetailsText>Semestre:</DetailsText>
-              <StyledSelect value={ selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+              <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
                 {laboratory.length > 0 ? (
                   laboratory.map((laboratory) => (
                     <option key={laboratory.id} value={laboratory.id}>
@@ -308,29 +322,20 @@ const ModalEdit = ({
                 )}
               </StyledSelect>
               <DetailsText>Laboratório:</DetailsText>
-              <StyledSelect value={ selectedLaboratory || ''} onChange={handleLaboratoryChange}>
-                {laboratory.length > 0 ? (
-                  laboratory.map((laboratory) => (
-                    <option key={laboratory.id} value={laboratory.id}>
-                      {laboratory.descricao}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">No professors available</option>
-                )}
-              </StyledSelect>
               <DetailsText>Andar: <span>Segundo Andar</span></DetailsText>
               <DetailsText>Criado em: <span>Segundo Andar</span></DetailsText>
               <DetailsText>Editado em: <span>Segundo Andar</span></DetailsText>
             </DetailsWrapper>
-            <ClockTimeWrapper>
-              <ScheduleViewer />
-            </ClockTimeWrapper>
+            <ClocktimeAndButoonsWrapper>
+              <ClockTimeWrapper>
+                <ScheduleViewer props={formData} /> 
+              </ClockTimeWrapper>
+              <ButtonsWrapper>
+                <StyledButton onClick={() => handleEdit()}>Editar</StyledButton>
+                <StyledButton onClick={() => onClose()}>Cancelar</StyledButton>
+              </ButtonsWrapper>
+            </ClocktimeAndButoonsWrapper>
           </SideBysideContainer>
-          <ButtonsWrapper>
-            <StyledButton onClick={() => handleEdit()}>Editar</StyledButton>
-            <StyledButton onClick={() => onClose()}>Cancelar</StyledButton>
-          </ButtonsWrapper>
         </FormWrapper>
       </ModalContent>
     </ModalOverlay>
