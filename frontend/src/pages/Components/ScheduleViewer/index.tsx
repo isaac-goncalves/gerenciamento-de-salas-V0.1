@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Container, WeekdayContainer, ScheduleCell, ClockContainer } from './ScheduleViewer.styles'
 
@@ -76,20 +76,19 @@ interface Item {
 // ]
 
 function transformData(agendamentos: any) {
-  
+
   const clockTimesArray = ['18:45:00', '19:35:00', '20:35:00', '21:25:00', '22:15:00'];
   const items = [];
 
   for (let i = 0; i < clockTimesArray.length; i++) {
     console.log("clockTimesArray[i]" + clockTimesArray[i])
-  
+
     const agendamentoExisteNesteHorario = agendamentos.find((agendamento: any) => {
       return agendamento.horario_inicio === clockTimesArray[i]
     })
 
     const idAgendamento = agendamentoExisteNesteHorario ? agendamentoExisteNesteHorario.id : null
 
-    
     console.log("agendamento.horario_inicio === clockTimesArray[i]")
     console.log(agendamentoExisteNesteHorario ? false : true)
     console.log("===================================================")
@@ -107,32 +106,38 @@ function transformData(agendamentos: any) {
 };
 
 interface scheduleDataProps {
-id: number;
-selecionado: boolean;
-Agendamento: any[]; // Specify the type of Agendamento array as needed
-} 
+  id: number;
+  selecionado: boolean;
+  Agendamento: any[]; // Specify the type of Agendamento array as needed
+}
 
-function ScheduleViewer({props}: any) {
+function ScheduleViewer({ props }: any) {
 
-  const [form, setForm] = React.useState({} as any)
-  const [schedule, setSchedule] = React.useState(array)
-  const [scheduleData, SetScheduleData] = React.useState<scheduleDataProps[]>([])
+  const [form, setForm] = useState({} as any)
+  const [schedule, setSchedule] = useState(array)
+  const [scheduleData, SetScheduleData] = useState<scheduleDataProps[]>([])
+
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   useEffect(() => {
 
     console.log("ScheduleViewer useEffect")
+    console.log(setSelectedIds)
 
     console.log("ScheduleViewer props")
 
     console.log(props.uuid_agendamento)
+
 
     fetchByGroupedId("token valido")
     // setSchedule()
     if (props) {
       setForm(props)
     }
-    
-  }, [props])
+
+
+  }, [props, setSelectedIds
+  ])
 
   async function fetchByGroupedId(token: string = localStorage.getItem('token') || "") {
     console.log("Fetching fetchByGroupedId...")
@@ -150,7 +155,7 @@ function ScheduleViewer({props}: any) {
         'Content-Type': 'application/json'
       },
       body: bodyParams
-    }).then((response) => response.json()).then(async(data) => {
+    }).then((response) => response.json()).then(async (data) => {
 
       console.log("ScheduleViewer")
       console.log(data)
@@ -168,6 +173,50 @@ function ScheduleViewer({props}: any) {
     )
   }
 
+  const handleSelection = (id: number, idAgendamento: number) => {
+    console.log("idAgendamento: " + idAgendamento);
+    console.log("ID: " + id);
+
+    const agendamento = scheduleData.filter((item) => item.Agendamento?.[0]?.id === idAgendamento);
+
+    if (agendamento) {
+      console.log(agendamento);
+
+      const NewArray = scheduleData.map((item) => {
+        if (item.Agendamento[0]?.id === idAgendamento) {
+          return {
+            ...item,
+            selecionado: !item.selecionado,
+          };
+        }
+        return item;
+      });
+
+      SetScheduleData(NewArray);
+    }
+    else {
+      console.log("agendamento não encontrado")
+      const NewArray = scheduleData.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            selecionado: !item.selecionado,
+          };
+        }
+        return item;
+      });
+
+      SetScheduleData(NewArray);
+    }
+
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
+    } else {
+      const newSelectedIds = [...selectedIds, id].sort((a, b) => a - b);
+      setSelectedIds(newSelectedIds);
+    }
+  };
+
 
 
   return (
@@ -183,8 +232,8 @@ function ScheduleViewer({props}: any) {
         <WeekdayContainer>
           <h2>LAB 2</h2>
           {
-           scheduleData.map((item) => (
-              <ScheduleCell key={item.id}>
+            scheduleData.map((item) => (
+              <ScheduleCell key={item.id}  ItemHasSchedule={item.Agendamento && item.Agendamento[0] ? true : false} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id,  item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
                 <p>{
                   item.selecionado ? "Disponível" : "Selecionado"
                 }</p>

@@ -69,12 +69,24 @@ export const WeekdayContainer = styled.div`
   //css for when i stop hovering
 `
 
+interface IProps {
+  selected: boolean
+  ItemHasSchedule: boolean
+}
+
+
+
 export const ScheduleCell = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${Colors.horariosCard};
+  /* background-color: ${Colors.horariosCard}; */
+  background-color: ${({ selected, ItemHasSchedule }: IProps) =>{
+    if(ItemHasSchedule) return selected ? Colors.mainpurple : Colors.horariosCard
+    return !selected ? Colors.mainpurple : Colors.horariosCard}
+  }
+  ;
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;
