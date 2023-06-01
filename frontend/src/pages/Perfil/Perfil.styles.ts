@@ -256,3 +256,7 @@ export const TableRow = styled.tr`
 export const CenteredNumber = styled.td`
   text-align: center;
 `
+
+export const NowrapText = styled.td`
+  white-space: nowrap;
+`

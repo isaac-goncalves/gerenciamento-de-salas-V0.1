@@ -96,7 +96,7 @@ function transformData(agendamentos: any) {
     const item = {
       id: i,
       selecionado: agendamentoExisteNesteHorario ? false : true,
-      Agendamento: [agendamentos.find((agendamento: any) => agendamento.id == idAgendamento)]
+      Agendamento: [agendamentos.find((agendamento: any) => agendamento.id == idAgendamento) || {}]
     }
 
     items.push(item)

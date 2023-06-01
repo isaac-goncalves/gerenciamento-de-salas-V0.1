@@ -13,7 +13,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer
+    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -134,7 +134,7 @@ function Perfil() {
                             <th>Data</th>
                             <th>início</th>
                             <th>fim</th>
-                            <th>ID agendamento</th>
+                            <th>ID</th>
                             <th>Grade</th>
                             <th>Laboratório</th>
                             <th>Criado</th>
@@ -152,8 +152,8 @@ function Perfil() {
                                 <CenteredNumber>{appointment.uuid_agendamento}</CenteredNumber>
                                 <CenteredNumber>{appointment.id_grade}</CenteredNumber>
                                 <CenteredNumber>{appointment.id_laboratorio}</CenteredNumber>
-                                <td>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</td>
-                                <td>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</td>
+                                <NowrapText>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</NowrapText>
+                                <NowrapText>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</NowrapText>
                                 <ButtonsWrapper>
                                     <EditButton type="button" onClick={() => handleEditClick(appointment)}><RiPencilLine />
                                         <p>
@@ -205,8 +205,8 @@ function Perfil() {
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>
-                            <td>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</td>
-                            <td>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</td>
+                            <NowrapText>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</NowrapText>
+                            <NowrapText>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</NowrapText>
                         </tr>
                     ))}
                 </tbody>
@@ -248,8 +248,8 @@ function Perfil() {
                                 <td>{aluno.surname}</td>
                                 <td>{aluno.email}</td>
                                 <CenteredNumber>{aluno.semester}1</CenteredNumber>
-                                <td>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</td>
-                                <td>{formatDistanceToNow(new Date(aluno.updated_at), { locale: ptBR })} atrás</td>
+                                <NowrapText>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</NowrapText>
+                                <NowrapText>{formatDistanceToNow(new Date(aluno.updated_at), { locale: ptBR })} atrás</NowrapText>
                             </tr>
                         );
                     })}
