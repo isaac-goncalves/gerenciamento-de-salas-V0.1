@@ -12,7 +12,7 @@ import { Colors } from '../../colors';
 // `;
 
 export const Container = styled.div`
-background-color: ${Colors.backgroud} ;
+background-color: ${Colors.white} ;
 height: 100vh;
 width: 100vw;
 overflow: hidden;
@@ -43,11 +43,19 @@ export const BackgroundImage = styled.img`
 `
 export const FatecImage = styled.img`
   position: absolute;
-  bottom: 14%;
+  bottom: 10%;
   left: 10%;
-  width: 200px;
+  width: 300px;
   object-fit: cover;
   `
+
+export const SGSALogo = styled.img`
+/* position: absolute;
+bottom: 14%;
+left: 10%;
+object-fit: cover; */
+width: 500px;
+`
 
 
 export const ContentWrapper = styled.div`
@@ -117,14 +125,32 @@ export const Button = styled.button`
   font-weight: 500;
   border-radius: 4px;
   cursor: pointer;
+
+  //beaultifull  genious css effect for hover
+ 
+  :hover {
+
+  transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+
 `;
 
 export const TitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+
   margin-top: 2.75rem;
-  max-width: 42.5rem;
+  max-width: 45rem;
   margin: 1rem;
+
+  div{
+    display: flex;
+    justify-content: center;
+  }
+
    `
 
 export const Separator = styled.div`

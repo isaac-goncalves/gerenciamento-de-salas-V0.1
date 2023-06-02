@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
 import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye } from "./Register.styles"
+import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 
 const semestresOptions = [
     { value: '1', label: '1º SEMESTRE ADS - 2023' },
@@ -339,7 +340,7 @@ const RegisterScreen: React.FC = () => {
                                         onChange={(event) => setPassword(event.target.value)}
                                     />
                                     <EyeIcon onClick={toggleShowPassword}>
-                                        {showPassword ? <FiEyeOff /> : <FiEye />}
+                                        {showPassword ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}
                                     </EyeIcon>
                                 </InputVisibleEye>
                             </InputWrapper>
@@ -353,7 +354,7 @@ const RegisterScreen: React.FC = () => {
                                         onChange={(event) => setConfirmPassword(event.target.value)}
                                     />
                                     <EyeIcon onClick={toggleShowConfirmPassword}>
-                                        {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                                        {showConfirmPassword ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}
                                     </EyeIcon>
                                 </InputVisibleEye>
                             </InputWrapper>

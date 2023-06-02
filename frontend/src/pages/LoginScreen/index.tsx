@@ -9,15 +9,18 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo } from "./Login.styles"
 
 import background from '../../../public/images/background.jpg';
 import fatec from '../../../public/images/fatec.svg';
+import sgsa_logo from '../../../public/images/SGSA-logo.svg';
+
 import teamsLogo from '../../../public/images/teamsIcon.svg';
 import mailIcon from '../../../public/images/emaiIcon.svg';
 import passwordIcon from '../../../public/images/passwordIcon.svg';
 import eyePassword from '../../../public/images/eyePassword.svg';
 import { Link, Navigate } from "react-router-dom";
+import { BsEyeSlashFill } from "react-icons/bs";
 
 interface InputProps {
     hasError: boolean;
@@ -81,18 +84,18 @@ const LoginScreen: React.FC = () => {
                     console.log(data);
 
                     setConfetti(true);
-                    
+
                     const obj = {
                         userData: data.userData,
                         token: data.token
                     }
                     console.log(JSON.stringify(obj));
-                    
+
                     localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(obj));
-                    
+
                     setConfetti(true);
                     toast.success("Login realizado com sucesso!");
-                    
+
                     setTimeout(() => {
                         console.log("redirecting")
                         window.location.href = "/dashboard";
@@ -129,11 +132,10 @@ const LoginScreen: React.FC = () => {
                 </SideContainer>
                 <Form onSubmit={handleSubmit}>
                     <TitleWrapper>
-                        <p>Bem vindo ao
-                        </p>
-                        <h1>
-                            Sistema de Gerenciamento de Salas de Aula
-                        </h1>
+                        <p>Bem vindo ao</p>
+                        <div>
+                            <SGSALogo src={sgsa_logo} />
+                        </div>
                     </TitleWrapper>
                     <ContentWrapper>
                         <TeamsWrapper>
@@ -171,7 +173,7 @@ const LoginScreen: React.FC = () => {
                                             value={password}
                                             onChange={(event: any) => setPassword(event.target.value)}
                                         />
-                                        <EyePassword src={eyePassword} />
+                                        <BsEyeSlashFill size={20} />
                                     </span>
                                 </div>
                             </InputWrapper>
