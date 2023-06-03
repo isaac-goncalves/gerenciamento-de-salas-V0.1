@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon } from './Navbar.styles'
 import styled from 'styled-components'
 
@@ -15,6 +15,16 @@ import avatar from '../../../public/images/avatar.png';
 const Navbar = () => {
 
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
+    const [user, setUser] = useState<any>({});
+
+    //cretae useffect the get the user data from local storage and store the data on a state 
+
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem('gerenciamento-de-salas@v1.1') || '{}');
+        setUser(userData.userData);
+    }, []);
+    
+
 
     const toggleMenu = () => {
         setTimeout(() => {
@@ -38,8 +48,8 @@ const Navbar = () => {
                     <Avatar src={avatar} />
                     {menuOpen && <>
                         <UserWrapper>
-                            <UserName>GABRIEL SANTOS</UserName>
-                            <UserInfo >5º ADS</UserInfo>
+                            <UserName>{user.name.toUpperCase()}</UserName>
+                            <UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina}`}</UserInfo>
                         </UserWrapper>
                     </>
                     }

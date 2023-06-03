@@ -19,6 +19,8 @@ import bcrypt from 'bcrypt'
 
 import jwt from 'jsonwebtoken'
 
+import { disciplinasRepository } from '../repositories/disciplinasRepositories'
+
 export class UserController {
   async create (request: Request, response: Response) {
     const { name, surname, email, password, role, semester, discipline } =
@@ -88,6 +90,7 @@ export class UserController {
           name,
           surname,
           email,
+          semestre: semester,
           disciplina: discipline,
           user_id: savedUser.id,
           created_at: new Date(),
@@ -135,6 +138,7 @@ export class UserController {
       return response.status(500).json({ message: 'Internal server error' })
     }
   }
+
   async verify (request: Request, response: Response) {
     console.log('verify')
 
@@ -237,7 +241,7 @@ export class UserController {
     const { email, password } = request.body
 
     console.log(email, password)
-    console.log("----------------------------")
+    console.log('----------------------------')
 
     if (!email || !password) {
       return response
@@ -272,22 +276,43 @@ export class UserController {
 
       if (userExists.role === 'aluno') {
         const aluno = await alunosRepository.findOneBy({
+          //caso o usuario seja um aluno, busca o aluno no banco de dados
           user_id: userExists.id
         })
-        console.log("aluno=")
+        console.log('aluno=')
         console.log(aluno)
         userData = aluno
       } else if (userExists.role === 'professor') {
         const professor = await professoresRepository.findOneBy({
+          //caso o usuario seja um professor, busca o professor no banco de dados
           user_id: userExists.id
         })
-        console.log("professor=")
+        console.log('professor=')
         console.log(professor)
         userData = professor
-      }
-      else {
+
+
+        const {disciplina, ...restUserData} = userData
+
+        const disciplinaObj = await disciplinasRepository.findOneBy({
+          id: disciplina
+        })
+
+        console.log(disciplinaObj)
+
+        const returnObj = {
+          ...restUserData,
+          nomeDisciplina: disciplinaObj?.descricao
+        }
+
+        return response.status(201).json({
+          userData: returnObj,
+          token: token
+        })
+
+      } else {
         console.log('role nao encontrado')
-          return response.status(400).json({ error: 'Role nao encontrado' })
+        return response.status(400).json({ error: 'Role nao encontrado' }) //caso o usuario nao seja nem professor nem aluno, retorna erro
       }
 
       userData.role = userExists.role
@@ -301,13 +326,13 @@ export class UserController {
       return response.status(500).json({ message: 'internal server error' })
     }
   }
+
   async get (request: Request, response: Response) {
     console.log('get usuários')
 
     try {
       const usuarios = await usuariosRepository.find()
 
-
       console.log(JSON.stringify(usuarios, null, 2))
 
       return response.status(200).json(usuarios)
@@ -315,13 +340,13 @@ export class UserController {
       return response.status(500).json({ message: 'internal server error' })
     }
   }
+
   async getAlunos (request: Request, response: Response) {
     console.log('get Alunos')
 
     try {
       const usuarios = await alunosRepository.find()
 
-
       console.log(JSON.stringify(usuarios, null, 2))
 
       return response.status(200).json(usuarios)
@@ -329,6 +354,7 @@ export class UserController {
       return response.status(500).json({ message: 'internal server error' })
     }
   }
+
   async getProfessores (request: Request, response: Response) {
     console.log('get Professores')
 

@@ -108,6 +108,7 @@ function transformData(agendamentos: any) {
 interface scheduleDataProps {
   id: number;
   selecionado: boolean;
+  ItemWasSelected: boolean;
   Agendamento: any[]; // Specify the type of Agendamento array as needed
 }
 
@@ -200,7 +201,7 @@ function ScheduleViewer({ props }: any) {
         if (item.id === id) {
           return {
             ...item,
-            selecionado: !item.selecionado,
+            ItemWasSelected: !item.ItemWasSelected,
           };
         }
         return item;
@@ -233,7 +234,7 @@ function ScheduleViewer({ props }: any) {
           <h2>LAB 2</h2>
           {
             scheduleData.map((item) => (
-              <ScheduleCell key={item.id}  ItemHasSchedule={item.Agendamento && item.Agendamento[0] ? true : false} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id,  item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
+              <ScheduleCell key={item.id}  ItemWasSelected={item.ItemWasSelected && item.ItemWasSelected==true ? item.Agendamento[0].id : undefined} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id,  item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
                 <p>{
                   item.selecionado ? "Disponível" : "Selecionado"
                 }</p>
