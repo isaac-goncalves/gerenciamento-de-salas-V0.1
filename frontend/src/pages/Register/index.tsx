@@ -354,7 +354,7 @@ const RegisterScreen: React.FC = () => {
                                         onChange={(event) => setConfirmPassword(event.target.value)}
                                     />
                                     <EyeIcon onClick={toggleShowConfirmPassword}>
-                                        {showConfirmPassword ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}
+                                        {showConfirmPassword ? <BsEyeSlashFill size={220}/> : <BsEyeFill size={20}/>}
                                     </EyeIcon>
                                 </InputVisibleEye>
                             </InputWrapper>
