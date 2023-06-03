@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo, EyeIcon, InputInternalWrapper, InputColumnWrapper } from "./Login.styles"
 
 import background from '../../../public/images/background.jpg';
 import fatec from '../../../public/images/fatec.svg';
@@ -20,7 +20,7 @@ import mailIcon from '../../../public/images/emaiIcon.svg';
 import passwordIcon from '../../../public/images/passwordIcon.svg';
 import eyePassword from '../../../public/images/eyePassword.svg';
 import { Link, Navigate } from "react-router-dom";
-import { BsEyeSlashFill } from "react-icons/bs";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
 interface InputProps {
     hasError: boolean;
@@ -31,6 +31,8 @@ const LoginScreen: React.FC = () => {
     const [password, setPassword] = useState("Password123$");
     const [form, setForm] = useState("login");
     const [role, setRole] = useState("");
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const { width, height } = useWindowSize()
 
@@ -114,6 +116,11 @@ const LoginScreen: React.FC = () => {
         }
     };
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+
     return (
         <Container>
             <ToastContainer />
@@ -164,18 +171,20 @@ const LoginScreen: React.FC = () => {
                             </InputWrapper>
                             <InputWrapper>
                                 <PasswordIcon src={passwordIcon} />
-                                <div>
+                                <InputColumnWrapper>
                                     <p>Password</p>
-                                    <span>
+                                    <InputInternalWrapper>
                                         <Input
-                                            type="password"
+                                            type={showPassword ? 'text' : 'password'}
                                             placeholder="********"
                                             value={password}
                                             onChange={(event: any) => setPassword(event.target.value)}
                                         />
-                                        <BsEyeSlashFill size={20} />
-                                    </span>
-                                </div>
+                                        <EyeIcon onClick={toggleShowPassword}>
+                                            {showPassword ? <BsEyeSlashFill size={20} /> : <BsEyeFill size={20} />}
+                                        </EyeIcon>
+                                    </InputInternalWrapper>
+                                </InputColumnWrapper>
                             </InputWrapper>
                         </InputsWrapper>
                         <MantenhaMeConectadoWrapper>
