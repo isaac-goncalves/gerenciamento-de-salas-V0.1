@@ -7,13 +7,9 @@
 
 
 docker build -t frontend-sgsa . //constroi a imagem do frontend
-
 docker run -p 4173:3000 frontend-sgsa //roda o container do frontend
 docker run -p 4173:3000 --name frontend-sgsa-v1 frontend-sgsa //roda o container do frontend
-
 docker run -d --rm -p 5173:5173 --name frontend-sgsa-v1 frontend-sgsa
-
-
 
 Promp para arrumar a visão de professores
 
