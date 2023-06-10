@@ -13,7 +13,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, TableContainer, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper
+    SearchBar, TableSelector, TableContainer, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableHeaderData, TableBody
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -71,7 +71,7 @@ function Perfil() {
 
             setTimeout(() => {
                 setIsLoading(true);
-            }, 2000);
+            }, 0);
 
         } catch (error) {
             console.error(error);
@@ -141,7 +141,7 @@ function Perfil() {
 
                     {data.map((appointment: AppointmentData) => (
                         <tr key={appointment.id}>
-                            <td>{appointment.nome_professor}</td>
+                            {/* <td>{appointment.nome}</td> */}
                             <td>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</td>
                             <td>{appointment.horario_inicio}</td>
                             <td>{appointment.horario_fim}</td>
@@ -220,33 +220,35 @@ function Perfil() {
 
     const AlunosTable = ({ data }: any) => {
         return (
-            <TableContainer>
-                <thead>
+            <Table>
+                <TableHeader>
                     <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Sobrenome</th>
-                        <th>Email</th>
-                        <th>Semestre</th>
-                        <th>Criado em</th>
+                        <TableHeaderData>ID</TableHeaderData>
+                        <TableHeaderData>Nome</TableHeaderData>
+                        <TableHeaderData>Sobrenome</TableHeaderData>
+                        <TableHeaderData>Email</TableHeaderData>
+                        <TableHeaderData>Semestre</TableHeaderData>
+                        <TableHeaderData>Criado em</TableHeaderData>
                     </tr>
-                </thead>
-                <tbody>
-                    {data.map((aluno: AlunosData) => (
-                        <tr key={aluno.id}>
-                            <td>{aluno.id}</td>
-                            <td>{aluno.name}</td>
-                            <td>{aluno.surname}</td>
-                            <td>{aluno.email}</td>
-                            <td>{aluno.semester}</td>
-                            <td>{aluno.created_at}</td>
-                            <td>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</td>
-                        </tr>
-                    ))}
-                </tbody>
-                    
-            </TableContainer>
-        )
+                </TableHeader>  
+                <TableBody>
+                    {data.map((aluno: AlunosData) => {
+                        return (
+                            <tr key={aluno.id}>
+                                <TableData>{aluno.id}</TableData>
+                                <TableData>{aluno.name}</TableData>
+                                <TableData>{aluno.surname}</TableData>
+                                <TableData>{aluno.email}</TableData>
+                                <TableData>{aluno.semester}</TableData>
+                                <TableData>{aluno.created_at}</TableData>
+                                <TableData>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</TableData>
+                            </tr>
+                        );
+                    })}
+                </TableBody>
+
+            </Table>
+        );
     }
 
     interface ProfessoresData {

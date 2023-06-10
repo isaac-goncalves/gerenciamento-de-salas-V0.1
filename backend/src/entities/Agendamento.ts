@@ -31,6 +31,9 @@ export class Agendamento {
   id_professor: number
 
   @Column()
+  uuid_agendamento: string
+
+  @Column()
   id_grade: string
 
   @Column()

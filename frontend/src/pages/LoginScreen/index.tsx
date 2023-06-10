@@ -7,8 +7,6 @@ import Confetti from 'react-confetti';
 
 import { ToastContainer, toast } from 'react-toastify';
 
-import Colors from "../../colors";
-
 import 'react-toastify/dist/ReactToastify.css';
 
 import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword } from "./Login.styles"
@@ -18,7 +16,7 @@ import fatec from '../../../public/images/fatec.svg';
 import teamsLogo from '../../../public/images/teamsIcon.svg';
 import mailIcon from '../../../public/images/emaiIcon.svg';
 import passwordIcon from '../../../public/images/passwordIcon.svg';
-import eyePassword from '../../../public/images/eyePassword.svg';
+import eyePassword from '../../../public/images/eyepassword.svg';
 import { Link, Navigate } from "react-router-dom";
 
 interface InputProps {

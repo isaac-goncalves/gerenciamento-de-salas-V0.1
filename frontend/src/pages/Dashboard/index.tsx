@@ -14,11 +14,12 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DatePicker, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, ProfessorSelect, FilterWrapper, StyledSelect } from './Dashboard.styles'
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect } from './Dashboard.styles'
 
-import dateIcon from '../../../public/images/dia_de_hoje.png';
-import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
-import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
+// import dateIcon from '../../../public/images/dia_de_hoje.png';
+// import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
+
+// import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRight } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
@@ -55,100 +56,35 @@ type GroupedData = {
   [key: string]: Array<ScheduleItem | IntervalItem>;
 }
 
-// function groupByWeekday(data: ScheduleItem[]): GroupedData {
-//   const groupedData: GroupedData = {};
-//   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
-
-//   for (const item of data) {
-//     const dayIndex = parseInt(item.dia_da_semana) - 1;
-//     const day = daysOfWeek[dayIndex];
-
-//     if (!groupedData[day]) {
-//       groupedData[day] = [];
-//     }
-
-//     groupedData[day].push(item);
-//   }
-
-//   for (const day in groupedData) {
-//     if (groupedData[day].length >= 3) {
-//       groupedData[day].splice(2, 0, {
-//         semestre: "1",
-//         disciplina: "Intervalo",
-//       });
-//     }
-//   }
-
-//   return groupedData;
-// }
-
-function groupByWeekday(data: ScheduleItem[]): any {
+function groupByWeekday(data: ScheduleItem[]): GroupedData {
+  const groupedData: GroupedData = {};
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
-  const totalItemsPerDay = 6;
-
-  const groupedData: GroupedData = {
-    segunda: [],
-    terca: [],
-    quarta: [],
-    quinta: [],
-    sexta: [],
-  };
 
   for (const item of data) {
     const dayIndex = parseInt(item.dia_da_semana) - 1;
     const day = daysOfWeek[dayIndex];
 
+    if (!groupedData[day]) {
+      groupedData[day] = [];
+    }
+
     groupedData[day].push(item);
   }
 
   for (const day in groupedData) {
-    const currentDayClasses = groupedData[day];
-
-    // Sort classes based on the start time and end time
-    const sortedClasses = currentDayClasses.sort((a, b) => {
-      const startTimeA = new Date(`2000-01-01 ${a.horario_inicio}`);
-      const startTimeB = new Date(`2000-01-01 ${b.horario_inicio}`);
-      const endTimeA = new Date(`2000-01-01 ${a.horario_fim}`);
-      const endTimeB = new Date(`2000-01-01 ${b.horario_fim}`);
-
-      // Sort by start time first
-      if (startTimeA.getTime() !== startTimeB.getTime()) {
-        return startTimeA.getTime() - startTimeB.getTime();
-      }
-
-      // If start time is the same, sort by end time
-      return endTimeA.getTime() - endTimeB.getTime();
-    });
-
-    // Add "Nenhuma Aula" for remaining slots, except after the interval
-    for (let i = sortedClasses.length; i < totalItemsPerDay - 1; i++) {
-      sortedClasses.push({
-        disciplina: "Nenhuma Aula",
+    if (groupedData[day].length >= 3) {
+      groupedData[day].splice(2, 0, {
+        semestre: "1",
+        disciplina: "Intervalo",
       });
-    }
-
-    sortedClasses.sort((a, b) => {
-      if (a.disciplina === "Intervalo") return -1;
-      if (b.disciplina === "Intervalo") return 1;
-      return 0;
-    });
-
-    // Ensure the third item is "Intervalo"
-    const intervalIndex = sortedClasses.findIndex(item => item.disciplina === "Intervalo");
-    if (intervalIndex !== 2) {
-      if (intervalIndex !== -1) {
-        const intervalClass = sortedClasses.splice(intervalIndex, 1)[0];
-        sortedClasses.splice(2, 0, intervalClass);
-      } else {
-        sortedClasses.splice(2, 0, {
-          disciplina: "Intervalo",
-        });
-      }
     }
   }
 
+  console.log("Grouped Data: " + JSON.stringify(groupedData, null, 2))
   return groupedData;
 }
+
+
 
 function printGradeValue(gradeValue: any) {
 
@@ -540,6 +476,17 @@ const Dashboard: React.FC = () => {
     setSelectedMethod(event.target.value)
   }
 
+  const GetCurrentMonthAndYear = (date: any) => {
+    console.log(date)
+    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+    const month = monthNames[date.getMonth()]
+    const year = date.getFullYear()
+
+    return `${month} de ${year}`
+  }
+
   return (
     <Container>
       <Header>
@@ -557,17 +504,17 @@ const Dashboard: React.FC = () => {
         <DatePickWrapper>
           <DatepickContainer>
             <DatepickArrowsContainer onClick={() => handleSelectToday()}>
-              <DateIcon src={dateIcon} />
+              {/* <DateIcon src={dateIcon} /> */}
               <p>Pular para hoje</p>
             </DatepickArrowsContainer>
             <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
-              <DateIcon src={arrowLeft} />
+              {/* <DateIcon src={arrowLeft} /> */}
             </DatepickArrowsContainer>
             <DatepickArrowsContainer onClick={() => handleArrowRight()}>
-              <DateIcon src={arrowRight} />
+              {/* <DateIcon src={arrowRight} /> */}
             </DatepickArrowsContainer>
-            <p>Março 2023</p>
-            <DateIcon src={arrowDown} />
+            <p>{GetCurrentMonthAndYear(startDate)}</p>
+            {/* <DateIcon src={arrowDown} /> */}
             <CalendarWrapper>
               Semana do dia
               <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />

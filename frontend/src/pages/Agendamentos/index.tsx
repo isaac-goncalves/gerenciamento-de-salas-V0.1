@@ -37,7 +37,7 @@ import {
   Container,
   Header,
   CourseName,
-  Semester,
+ 
   ClassesContainer,
   ClockContainer,
   WeekdayContainer,
@@ -53,12 +53,11 @@ import {
   Laboratorio,
   DatepickArrowsContainer,
   StyledDatePicker,
-  ProfessorSelect,
   WeekDay,
   NenhumaAulaText,
   DisciplinaText,
   Professor,
-  Disciplina,
+ 
   Semestre,
   LaboratorioText,
   SelectingLaboratoryWrapper,
@@ -67,11 +66,11 @@ import {
 }
   from './Agendamento.styles'
 
-import Calendar from '../Components/Laboratorios/Calendar'
 
-import dateIcon from '../../../public/images/dia_de_hoje.png';
-import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
-import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
+
+// import dateIcon from '../../../public/images/dia_de_hoje.png';
+// import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
+// import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
 import Modal from '../Components/Modal';
 import set from 'date-fns/set';
@@ -687,6 +686,17 @@ const Agendamentos: React.FC = () => {
     return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
   };
 
+  const GetCurrentMonthAndYear = (date: any) => {
+    console.log(date)
+    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+    const month = monthNames[date.getMonth()]
+    const year = date.getFullYear()
+
+    return `${month} de ${year}`
+  }
+
   return (
     <Container>
       <ToastContainer />
@@ -710,17 +720,17 @@ const Agendamentos: React.FC = () => {
         <DatePickWrapper>
           <DatepickContainer>
             <DatepickArrowsContainer onClick={() => handleSelectToday()}>
-              <DateIcon src={dateIcon} />
+              {/* <DateIcon src={dateIcon} /> */}
               <p>Pular para hoje</p>
             </DatepickArrowsContainer>
             <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
-              <DateIcon src={arrowLeft} />
+              {/* <DateIcon src={arrowLeft} /> */}
             </DatepickArrowsContainer>
             <DatepickArrowsContainer onClick={() => handleArrowRight()}>
-              <DateIcon src={arrowRight} />
+              {/* <DateIcon src={arrowRight} /> */}
             </DatepickArrowsContainer>
-            <p>Março 2023</p>
-            <DateIcon src={arrowDown} />
+            <p>{GetCurrentMonthAndYear(startDate)}</p>
+            {/* <DateIcon src={arrowDown} /> */}
             <CalendarWrapper>
               Semana do dia
               <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
@@ -1005,7 +1015,7 @@ const Agendamentos: React.FC = () => {
                                   </div>
                                 </Schedule>
                                 :
-                                <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                <Schedule onClick={() => handleWeekdaySelection("Terça-feira", grade.terca, startDate)} key={item.id}>
                                   <DisciplinaText>{item.disciplina}</DisciplinaText>
                                   <Professor>{item.professor}</Professor>
                                   <div>
@@ -1035,7 +1045,7 @@ const Agendamentos: React.FC = () => {
                                   </div>
                                 </Schedule>
                                 :
-                                <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                <Schedule onClick={() => handleWeekdaySelection("Quarta-feira", grade.quarta, startDate)} key={item.id}>
                                   <DisciplinaText>{item.disciplina}</DisciplinaText>
                                   <Professor>{item.professor}</Professor>
                                   <div>
@@ -1065,7 +1075,7 @@ const Agendamentos: React.FC = () => {
                                   </div>
                                 </Schedule>
                                 :
-                                <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                <Schedule onClick={() => handleWeekdaySelection("Quinta-feira", grade.quinta, startDate)} key={item.id}>
                                   <DisciplinaText>{item.disciplina}</DisciplinaText>
                                   <Professor>{item.professor}</Professor>
                                   <div>
@@ -1095,7 +1105,7 @@ const Agendamentos: React.FC = () => {
                                   </div>
                                 </Schedule>
                                 :
-                                <Schedule onClick={() => handleWeekdaySelection("Segunda-feira", grade.segunda, startDate)} key={item.id}>
+                                <Schedule onClick={() => handleWeekdaySelection("Sexta-feira", grade.sexta, startDate)} key={item.id}>
                                   <DisciplinaText>{item.disciplina}</DisciplinaText>
                                   <Professor>{item.professor}</Professor>
                                   <div>

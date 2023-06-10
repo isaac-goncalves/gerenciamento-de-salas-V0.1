@@ -12,4 +12,4 @@ route.get('/', (req, res) => {
     res.json({ message: 'hello world with Typescript' });
 });
 app.use(route);
-app.listen(3333, () => );
+app.listen(3333, () => "Server Is Running");
