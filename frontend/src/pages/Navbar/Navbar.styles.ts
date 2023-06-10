@@ -49,7 +49,7 @@ export const AvatarWrapper = styled.div`
 `
 export const Avatar = styled.img`
   border-radius: 50%;
-  border 2px solid ${Colors.mainpurple};
+  border: 2px solid ${Colors.mainpurple};
   height: 3rem;
   width: 3rem;
   margin-right: 0.75rem;
@@ -84,14 +84,11 @@ export const MenuLink = styled(Link)`
   &.active {
     color: #000000;
   }
-
- 
-
 `
 // export const Hamburger = styled(FaBars)`
 //   display: none;
 //   color: #ffffff;
-  
+
 //   @media screen and (max-width: 768px) {
 //     display: block;
 //     font-size: 1.9rem;
@@ -110,11 +107,9 @@ export const Menu = styled.div`
   padding-left: 1rem;
   padding-bottom: 2rem;
 
-
-
-  a:nth-of-type(4) {
+  a:nth-of-type(5) {
     margin-top: auto;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 `
 
@@ -130,7 +125,7 @@ export const RowWrapper = styled.div`
     color: ${Colors.textcolor};
   }
 
- &:hover {
+  &:hover {
     color: ${Colors.mainpurple};
   }
 

@@ -12,13 +12,11 @@ import GlobalStyle from './globalStyles';
 import Navbar from './pages/Navbar'
 import Perfil from './pages/Perfil'
 import Register from './pages/Register'
+
 import { Circles } from './pages/Components/Circles'
+import Templates from './pages/Templates'
 
-
-
-function App() { 
-  const [count, setCount] = useState(0)
-  
+function App() {
   return (
     <>
       <Router>
@@ -35,16 +33,22 @@ function App() {
             <>
               <Navbar />
               <Agendamentos />
-             {/* <Circles ballCount={4} /> */}
+              {/* <Circles ballCount={4} /> */}
             </>
           } />
-
           <Route path="/register" element={<RegisterScreen />} />
           <Route element={<LoginScreen />} />
           <Route path="/perfil" element={
             <>
               <Navbar />
               <Perfil />
+              <Circles ballCount={4} />
+            </>
+          } />
+          <Route path="/templates" element={
+            <>
+              <Navbar />
+              <Templates />
               <Circles ballCount={4} />
             </>
           } />

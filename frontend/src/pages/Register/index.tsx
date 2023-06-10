@@ -281,7 +281,7 @@ const RegisterScreen: React.FC = () => {
                                 type="radio"
                                 id="professor"
                                 name="role"
-                                value="professor"
+                                value="coordenador"
                                 checked={role === 'coordenador'}
                                 onChange={handleRoleChange}
                             />

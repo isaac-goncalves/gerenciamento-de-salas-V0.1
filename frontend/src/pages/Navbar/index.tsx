@@ -7,6 +7,8 @@ import { Colors } from '../../colors';
 
 import { CgProfile } from 'react-icons/cg'
 import { GrLogout } from 'react-icons/gr'
+import { TbFileUpload } from 'react-icons/tb'
+
 import { BsCalendarDate } from 'react-icons/bs'
 import { MdSchedule, MdPerson, MdExitToApp, MdOutlineDarkMode } from 'react-icons/md';
 
@@ -23,7 +25,7 @@ const Navbar = () => {
         const userData = JSON.parse(localStorage.getItem('gerenciamento-de-salas@v1.1') || '{}');
         setUser(userData.userData);
     }, []);
-    
+
 
 
     const toggleMenu = () => {
@@ -33,8 +35,8 @@ const Navbar = () => {
     };
 
     const handleLogout = async () => {
-       await localStorage.removeItem('gerenciamento-de-salas@v1.1');
-         window.location.href = '/';
+        await localStorage.removeItem('gerenciamento-de-salas@v1.1');
+        window.location.href = '/';
     }
 
     const closeMenu = () => {
@@ -58,7 +60,7 @@ const Navbar = () => {
                 <Menu>
                     <MenuLink to="/dashboard" >
                         <RowWrapper >
-                            <MdSchedule style={{ 
+                            <MdSchedule style={{
                                 color: Colors.mainpurple,
                                 fontSize: '1.4rem',
                             }} />
@@ -70,7 +72,7 @@ const Navbar = () => {
                     </MenuLink>
                     <MenuLink to="/agendamentos" >
                         <RowWrapper>
-                            <BsCalendarDate style={{ 
+                            <BsCalendarDate style={{
                                 color: Colors.mainpurple,
                                 fontSize: '1.4rem',
                             }} />
@@ -81,7 +83,7 @@ const Navbar = () => {
                     </MenuLink>
                     <MenuLink to="/perfil" >
                         <RowWrapper>
-                            <CgProfile style={{ 
+                            <CgProfile style={{
                                 color: Colors.mainpurple,
                                 fontSize: '1.4rem',
                             }} />{
@@ -89,11 +91,21 @@ const Navbar = () => {
                             }
                         </RowWrapper>
                     </MenuLink>
+                    <MenuLink to="/templates" >
+                        <RowWrapper>
+                            <TbFileUpload style={{
+                                color: Colors.mainpurple,
+                                fontSize: '1.4rem',
+                            }} />{
+                                menuOpen && <p>TEMPLATES</p>
+                            }
+                        </RowWrapper>
+                    </MenuLink>
                     <MenuLink to="/"
-                    onClick={() => handleLogout()}
+                        onClick={() => handleLogout()}
                     >
                         <RowWrapper>
-                            <MdOutlineDarkMode style={{ 
+                            <MdOutlineDarkMode style={{
                                 color: Colors.mainpurple,
                                 fontSize: '1.2rem',
                             }}
@@ -104,10 +116,10 @@ const Navbar = () => {
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="/"
-                    onClick={() => handleLogout()}
+                        onClick={() => handleLogout()}
                     >
                         <RowWrapper>
-                            <GrLogout style={{ 
+                            <GrLogout style={{
                                 color: Colors.mainpurple,
                                 fontSize: '1.2rem',
                             }}
