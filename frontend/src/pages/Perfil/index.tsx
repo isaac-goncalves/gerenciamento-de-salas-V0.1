@@ -352,8 +352,6 @@ function Perfil() {
                 <SearchBar>
                     <input type="text" placeholder="Pesquisar" />
                     <button type="submit">Convidar</button>
-                    <FileDownloadButton fileName={templateFileName} fileUrl={templateFileUrl} />
-                    <FileUploadButton />
                 </SearchBar>
                 <TableSelector>
                     <select value={selectedTable} onChange={handleTableChange}>

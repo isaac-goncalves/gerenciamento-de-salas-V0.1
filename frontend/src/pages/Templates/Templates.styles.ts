@@ -42,6 +42,11 @@ export const Header = styled.div`
   justify-content: space-between;
 `
 
+export const TemplateImage = styled.img`
+  width: 100%;
+ 
+`
+
 export const CounterWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -61,9 +66,11 @@ export const Separator = styled.div`
   height: 100px;
 `
 
-export const SearchBar = styled.div`
+export const MainContainer = styled.div`
   width: 100%;
   display: flex;
+  width: 100%;
+  justify-content: space-between;
   input {
     width: 80%;
     height: 2.5rem;
@@ -178,8 +185,8 @@ export const TableSelector = styled.div`
 export const Table = styled.table`
   /* border : 1px solid red; */
   border-collapse: collapse;
- 
-  width:100%;
+
+  width: 100%;
   background-color: ${Colors.white};
   z-index: 1;
   font-size: 0.9em;
@@ -199,8 +206,7 @@ export const Table = styled.table`
     padding: 8px 5px;
   }
 
-  tbody{
-
+  tbody {
   }
 
   tbody tr {
@@ -228,12 +234,11 @@ export const Table = styled.table`
 export const TableHeaderData = styled.th``
 
 export const TableHeader = styled.thead`
-position: sticky; /* Make the table header sticky */
-  top: 0; /* Fix the header at the top of the container */`
-
-export const TableBody = styled.tbody`
-
+  position: sticky; /* Make the table header sticky */
+  top: 0; /* Fix the header at the top of the container */
 `
+
+export const TableBody = styled.tbody``
 
 export const TableContainer = styled.tbody`
   max-height: 100%; /* Adjust the desired maximum height */

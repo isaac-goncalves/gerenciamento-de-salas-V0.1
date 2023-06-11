@@ -1,14 +1,26 @@
 import React, { ChangeEvent } from 'react';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
+import { Colors } from '../../../colors';
 
 // FileInput styled component
 const FileInput = styled.input`
-  /* display: none; */
+  display: none;
 `;
 
-// Button styled component
-const Button = styled.button`
-  /* Add your button styles here */
+// Label styled component
+const Label = styled.label`
+    
+  padding: 10px 20px;
+  background-color: ${Colors.mainpurple};
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: ${Colors.horariosCard};
+  }
 `;
 
 // FileUploadButton component
@@ -30,23 +42,26 @@ const FileUploadButton: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         // Handle the response from the backend
+        toast.success('Template enviado e processado com sucesso!');
         console.log(data);
       })
       .catch((error) => {
         // Handle errors
+        toast.error('Foi encontrado um erro ao processar o upload do template. Tente novamente mais tarde.');
         console.error(error);
       });
   };
 
   return (
     <>
-      <Button>
+      <Label htmlFor="fileUpload">
+        Choose File
         <FileInput
+          id="fileUpload"
           type="file"
           onChange={handleFileChange}
         />
-        Choose File
-      </Button>
+      </Label>
     </>
   );
 };

@@ -1,11 +1,12 @@
 import React from 'react';
 
 interface FileDownloadButton {
+  buttonText: string;
   fileName: string;
   fileUrl: string;
 }
 
-const FileDownloadButton: React.FC<FileDownloadButton> = ({ fileName, fileUrl }) => {
+const FileDownloadButton: React.FC<FileDownloadButton> = ({ buttonText, fileName, fileUrl }) => {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = fileUrl;
@@ -15,7 +16,7 @@ const FileDownloadButton: React.FC<FileDownloadButton> = ({ fileName, fileUrl })
 
   return (
     <button onClick={handleDownload}>
-      Download Template
+      {buttonText}
     </button>
   );
 };

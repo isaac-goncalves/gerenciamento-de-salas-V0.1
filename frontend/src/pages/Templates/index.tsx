@@ -9,11 +9,13 @@ const templateFileUrl = 'http://localhost:3333/template/download/';
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+import templateImage from '../../../public/images/template.png';
+
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText
+    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -41,6 +43,8 @@ function Templates() {
 
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
+
+ 
 
 
     useEffect(() => {
@@ -145,11 +149,12 @@ function Templates() {
                     </CounterWrapper>
                 </Header>
                 <h1>Templates</h1>
-                <SearchBar>
-                    <FileDownloadButton fileName={templateFileName} fileUrl={templateFileUrl} />
-                    <FileDownloadButton fileName={templateFileName} fileUrl={templateFileUrl} />
+                <TemplateImage src={templateImage} />
+                <MainContainer>
+                    <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />
+                    <FileDownloadButton buttonText={"Download Template Atualizado"} fileName={templateFileName} fileUrl={templateFileUrl} />
                     <FileUploadButton />
-                </SearchBar>
+                </MainContainer>
                 {
                     // isLoading ?
                     //     renderTable()
