@@ -1,5 +1,23 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
+import { Colors } from '../../../colors';
+
+const Button = styled.button`
+  padding: 10px 20px;
+  background-color: ${Colors.mainpurple};
+  color: white;
+  border : none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: ${Colors.horariosCard};
+  }
+`
+
 interface FileDownloadButton {
   buttonText: string;
   fileName: string;
@@ -15,9 +33,9 @@ const FileDownloadButton: React.FC<FileDownloadButton> = ({ buttonText, fileName
   };
 
   return (
-    <button onClick={handleDownload}>
+    <Button onClick={handleDownload}>
       {buttonText}
-    </button>
+    </Button>
   );
 };
 

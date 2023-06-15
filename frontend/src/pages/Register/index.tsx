@@ -227,7 +227,8 @@ const RegisterScreen: React.FC = () => {
                 <Confetti
                     width={width}
                     height={height}
-                   
+                    colors={["#A29EC7", "#6358DC", "#6c38e7"]}
+
                 />
             }
             <ToastContainer />
@@ -340,7 +341,7 @@ const RegisterScreen: React.FC = () => {
                                         onChange={(event) => setPassword(event.target.value)}
                                     />
                                     <EyeIcon onClick={toggleShowPassword}>
-                                        {showPassword ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}
+                                        {showPassword ? <BsEyeSlashFill size={20} /> : <BsEyeFill size={20} />}
                                     </EyeIcon>
                                 </InputVisibleEye>
                             </InputWrapper>
@@ -354,7 +355,7 @@ const RegisterScreen: React.FC = () => {
                                         onChange={(event) => setConfirmPassword(event.target.value)}
                                     />
                                     <EyeIcon onClick={toggleShowConfirmPassword}>
-                                        {showConfirmPassword ? <BsEyeSlashFill size={220}/> : <BsEyeFill size={20}/>}
+                                        {showConfirmPassword ? <BsEyeSlashFill size={220} /> : <BsEyeFill size={20} />}
                                     </EyeIcon>
                                 </InputVisibleEye>
                             </InputWrapper>

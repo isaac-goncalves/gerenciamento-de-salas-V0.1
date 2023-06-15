@@ -27,7 +27,6 @@ const Navbar = () => {
     }, []);
 
 
-
     const toggleMenu = () => {
         setTimeout(() => {
             setMenuOpen(!menuOpen);
@@ -51,7 +50,7 @@ const Navbar = () => {
                     {menuOpen && <>
                         <UserWrapper>
                             <UserName>{user.name.toUpperCase()}</UserName>
-                            <UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina}`}</UserInfo>
+                            <UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina || "5º ADS"}`}</UserInfo>
                         </UserWrapper>
                     </>
                     }

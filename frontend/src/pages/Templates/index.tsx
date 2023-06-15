@@ -15,7 +15,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage
+    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -44,7 +44,7 @@ function Templates() {
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
 
- 
+
 
 
     useEffect(() => {
@@ -148,7 +148,7 @@ function Templates() {
                         <p>Coordenadores</p>
                     </CounterWrapper>
                 </Header>
-                <h1>Templates</h1>
+                <PageTitle>Templates</PageTitle>
                 <TemplateImage src={templateImage} />
                 <MainContainer>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />

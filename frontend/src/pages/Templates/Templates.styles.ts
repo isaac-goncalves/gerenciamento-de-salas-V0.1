@@ -42,8 +42,15 @@ export const Header = styled.div`
   justify-content: space-between;
 `
 
+export const PageTitle = styled.h1`
+ font-size: 2rem;
+  color: ${Colors.textcolor};
+ 
+`
+
 export const TemplateImage = styled.img`
-  width: 100%;
+  width: 90%;
+  margin: 1rem;
  
 `
 
@@ -82,19 +89,7 @@ export const MainContainer = styled.div`
     color: ${Colors.textcolor};
   }
 
-  button {
-    width: 12rem;
-    height: 2.5rem;
-    border: none;
-    background-color: ${Colors.mainpurple};
-    color: ${Colors.white};
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 1rem;
-    cursor: pointer;
-  }
+ 
 `
 
 export const ButtonsWrapper = styled.td`

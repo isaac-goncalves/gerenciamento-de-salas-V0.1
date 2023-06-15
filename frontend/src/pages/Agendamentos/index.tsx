@@ -37,7 +37,7 @@ import {
   Container,
   Header,
   CourseName,
- 
+
   ClassesContainer,
   ClockContainer,
   WeekdayContainer,
@@ -57,7 +57,7 @@ import {
   NenhumaAulaText,
   DisciplinaText,
   Professor,
- 
+
   Semestre,
   LaboratorioText,
   SelectingLaboratoryWrapper,
@@ -513,6 +513,12 @@ const Agendamentos: React.FC = () => {
       setSelectedIds([])
       setSelectedLaboratory(-1)
       setConfetti(true);
+      setTimeout(() => {
+        setConfetti(false)
+      }
+        , 4000)
+
+
     }
     setSelectingLaboratory(false)
     setModalVisible(false);
@@ -703,6 +709,7 @@ const Agendamentos: React.FC = () => {
         <Confetti
           width={width}
           height={height}
+          colors={["#A29EC7", "#6358DC", "#6c38e7"]}
         />
       }
       <Modal isVisible={modalVisible} onClose={handleCloseModal} WeekdayGradeIds={WeekdayGradeIds} selectedWeekday={selectedWeekday} selectedIds={selectedIds} selectedLaboratory={selectedLaboratory} selectedDate={selectedDate} />
