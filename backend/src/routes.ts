@@ -28,7 +28,9 @@ routes.get('/grade/agendamentos', new AgendamentoController().getGroupedById) //
 routes.post('/grade/agendamentos', new GradeController().getAgendamentosData)
 
 routes.post('/agendamento', new AgendamentoController().create)
+
 routes.put('/agendamento/:id', new AgendamentoController().update);
+
 routes.delete('/agendamento/:id', new AgendamentoController().delete);
 
 routes.post('/laboratoriosschedule', new AgendamentoController().getLaboratoriosSchedule)

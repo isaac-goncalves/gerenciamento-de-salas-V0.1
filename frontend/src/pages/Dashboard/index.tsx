@@ -294,13 +294,14 @@ const Dashboard: React.FC = () => {
 
   async function fetchProfessorData() {
     console.log("Fetching fetchGrades...")
+    console.log(selectedProfessor)
     fetch('http://localhost:3333/grade/agendamentos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        professor_id: selectedProfessor.id,
+        professor_id: selectedProfessor.id || 1,
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -315,7 +316,7 @@ const Dashboard: React.FC = () => {
       console.log(transformedData)
       console.log("transformedData" + JSON.stringify(transformedData, null, 2))
       // setLoading(true)
-       return setgrade(transformedData as any)
+      return setgrade(transformedData as any)
     }
     )
   }
@@ -476,7 +477,7 @@ const Dashboard: React.FC = () => {
   }
 
   const GetCurrentMonthAndYear = (date: any) => {
-    console.log(date)
+    // console.log(date)
     const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
       'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
