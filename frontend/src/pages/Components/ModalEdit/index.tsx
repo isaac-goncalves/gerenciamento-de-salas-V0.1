@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-
 import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates } from './ModalEdit.styles'
-
 import background from '../../../../public/images/background.jpg';
-
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 import ScheduleViewer from '../ScheduleViewer';
 import { Laboratorio } from '../../Agendamentos/Agendamento.styles';
@@ -59,17 +54,11 @@ const ModalEdit = ({
 
 
   if (!isVisible) return null
+  
   const [formData, setFormData] = useState<EditedData>(editedData);
-
   const [professores, setProfessores] = useState<ProfessoreProps[]>([]);
-
   const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
-
-
-
-
   const [startDate, setStartDate] = useState<Date>();
-
   const [selectedLaboratory, setSelectedLaboratory] = useState<any>();
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
 
@@ -191,8 +180,6 @@ const ModalEdit = ({
       window.removeEventListener('keydown', onEsc)
     }
   }, [editedData, selectedLaboratory])
-
-
 
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")

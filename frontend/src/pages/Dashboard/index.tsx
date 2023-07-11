@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect } from './Dashboard.styles'
 
+import ModalEdit from '../Components/ModalEdit';
 import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
@@ -79,7 +80,7 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
     }
   }
 
-  console.log("Grouped Data: " + JSON.stringify(groupedData, null, 2))
+   console.log("Grouped Data: " + JSON.stringify(groupedData, null, 2))
   return groupedData;
 }
 
@@ -93,6 +94,10 @@ function printGradeValue(gradeValue: any) {
 
 const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
+
+  const [editedData, setEditedData] = useState<any>({});
+
+  const [editingModal, setEditingModal] = React.useState(false)
 
   const [professores, setProfessores] = useState<ProfessoreProps[]>([ // Professores state
     {
@@ -136,6 +141,17 @@ const Dashboard: React.FC = () => {
   const handleSemestreChange = (event: any) => {
     setSelectedSemesterValue(event.target.value)
   }
+
+  const handleCloseModalEdit = (resetParams: boolean) => {
+    setEditingModal(false);
+    if (resetParams) fetchData();
+};
+
+const handleEditClick = (editedData: any) => {
+  console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
+  setEditedData(editedData);
+  setEditingModal(true);
+};
 
   const handleSelectToday = () => {
     const today = new Date()
@@ -199,7 +215,7 @@ const Dashboard: React.FC = () => {
           window.location.href = '/';
         }, 2000);
       } else {
-        console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+        // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
       }
     }
@@ -213,7 +229,7 @@ const Dashboard: React.FC = () => {
 
       console.log("Usuário logado!")
 
-      console.log(selectedMethod)
+      // console.log(selectedMethod)
       if (selectedMethod == "professor") {
          fetchProfessorData();
       }
@@ -293,7 +309,7 @@ const Dashboard: React.FC = () => {
   }
 
   async function fetchProfessorData() {
-    console.log("Fetching fetchGrades...")
+    console.log("Fetching fetchProfessorData...")
     console.log(selectedProfessor)
     fetch('http://localhost:3333/grade/agendamentos', {
       method: 'POST',
@@ -304,17 +320,17 @@ const Dashboard: React.FC = () => {
         professor_id: selectedProfessor.id || 1,
       })
     }).then((response) => response.json()).then((data) => {
-      // console.log(data)
+       console.log(data)
 
       const transformedData = groupByWeekday(data)
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+       console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       printGradeValue(transformedData)
 
       setTimeout(() => {
         setLoading(true) // teste de loading
       }, 2000)
-      console.log(transformedData)
-      console.log("transformedData" + JSON.stringify(transformedData, null, 2))
+      // console.log(transformedData)
+      // console.log("transformedData" + JSON.stringify(transformedData, null, 2))
       // setLoading(true)
       return setgrade(transformedData as any)
     }
@@ -412,7 +428,10 @@ const Dashboard: React.FC = () => {
           // console.log(currentTime)
 
           return (
-            <Schedule isCurrentTime={isCurrentTime}
+            <Schedule onClick={() => {
+              console.log("Clicked")
+              console.log(item.agendamentos[0])
+              handleEditClick(item.agendamentos[0])}} isCurrentTime={isCurrentTime}
               className={isCurrentTime ? '' : 'hoverEffect'}>
               <Disciplina>{disciplina}</Disciplina>
               <Professor>{professor}</Professor>
@@ -456,7 +475,7 @@ const Dashboard: React.FC = () => {
   };
 
   const handleSelectProfessor = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
 
     const professorObject = {
       id: parseInt(event.target.value),
@@ -472,7 +491,7 @@ const Dashboard: React.FC = () => {
   }
 
   const handleMethodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
     setSelectedMethod(event.target.value)
   }
 
@@ -488,7 +507,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <Container>
+    <><ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} /><Container>
       <Header>
         <CoursesWrapper>
           <CourseName>
@@ -524,8 +543,7 @@ const Dashboard: React.FC = () => {
           </DatepickContainer>
           <FilterWrapper>
             <FiFilter
-              size={20}
-            />
+              size={20} />
             <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
               <option value="professor">
                 Professor
@@ -534,45 +552,41 @@ const Dashboard: React.FC = () => {
                 Semestre
               </option>
             </StyledSelect>
-            {
-              selectedMethod === "professor" ?
-                <StyledSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessor}>
-                  {
-                    professores && professores.length > 0 ? (
-                      professores.map((professor) => {
-                        return (
-                          <option key={professor.id} value={professor.id}>
-                            {professor.name}
-                          </option>
-                        );
-                      })
-                    ) : (
-                      <option value="">No professors available</option>
-                    )
-                  }
-                </StyledSelect>
-                :
-                <StyledSelect defaultValue={selectedSemesterValue} onChange={handleSemesterChange}>
-                  <option value="1">
-                    1º
-                  </option>
-                  <option value="2">
-                    2º
-                  </option>
-                  <option value="3">
-                    3º
-                  </option>
-                  <option value="4">
-                    4º
-                  </option>
-                  <option value="5">
-                    5º
-                  </option>
-                  <option value="6">
-                    6º
-                  </option>
-                </StyledSelect>
-            }
+            {selectedMethod === "professor" ?
+              <StyledSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessor}>
+                {professores && professores.length > 0 ? (
+                  professores.map((professor) => {
+                    return (
+                      <option key={professor.id} value={professor.id}>
+                        {professor.name}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option value="">No professors available</option>
+                )}
+              </StyledSelect>
+              :
+              <StyledSelect defaultValue={selectedSemesterValue} onChange={handleSemesterChange}>
+                <option value="1">
+                  1º
+                </option>
+                <option value="2">
+                  2º
+                </option>
+                <option value="3">
+                  3º
+                </option>
+                <option value="4">
+                  4º
+                </option>
+                <option value="5">
+                  5º
+                </option>
+                <option value="6">
+                  6º
+                </option>
+              </StyledSelect>}
           </FilterWrapper>
         </DatePickWrapper>
       </Header>
@@ -585,25 +599,23 @@ const Dashboard: React.FC = () => {
           <p>21:25</p>
           <p>22:15</p>
         </ClockContainer>
-        {
-          loading
-            &&
-            grade
-            ?
-            (
-              <WeekContainer>
-                {renderWeekday('Segunda', grade.segunda)}
-                {renderWeekday('Terça', grade.terca)}
-                {renderWeekday('Quarta', grade.quarta)}
-                {renderWeekday('Quinta', grade.quinta)}
-                {renderWeekday('Sexta', grade.sexta)}
-              </WeekContainer>
-            ) : (
-              renderLoading()
-            )
-        }
+        {loading
+          &&
+          grade
+          ?
+          (
+            <WeekContainer>
+              {renderWeekday('Segunda', grade.segunda)}
+              {renderWeekday('Terça', grade.terca)}
+              {renderWeekday('Quarta', grade.quarta)}
+              {renderWeekday('Quinta', grade.quinta)}
+              {renderWeekday('Sexta', grade.sexta)}
+            </WeekContainer>
+          ) : (
+            renderLoading()
+          )}
       </ClassesContainer>
-    </Container>
+    </Container></>
   );
 };
 

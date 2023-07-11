@@ -233,7 +233,7 @@ function ScheduleViewer({ props }: any) {
         <WeekdayContainer>
           <h2>LAB 2</h2>
           {
-            scheduleData.map((item) => (
+            array.map((item) => (
               <ScheduleCell key={item.id}  ItemWasSelected={item.ItemWasSelected && item.ItemWasSelected==true ? item.Agendamento[0].id : undefined} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id,  item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
                 <p>{
                   item.selecionado ? "Disponível" : "Selecionado"

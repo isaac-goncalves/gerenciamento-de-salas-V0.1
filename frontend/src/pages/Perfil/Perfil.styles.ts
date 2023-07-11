@@ -176,16 +176,17 @@ export const TableSelector = styled.div`
 `
 
 export const Table = styled.table`
-  /* border : 1px solid red; */
+  /* border: 1px solid red; */
   border-collapse: collapse;
- 
-  width:100%;
+
+  width: 100%;
   background-color: ${Colors.white};
   z-index: 1;
-  font-size: 0.9em;
+  font-size: 0.8em;
 
   th {
-    color: ${Colors.textcolor};
+    color: ${Colors.white};
+   
   }
 
   th:last-child {
@@ -199,8 +200,7 @@ export const Table = styled.table`
     padding: 8px 5px;
   }
 
-  tbody{
-
+  tbody {
   }
 
   tbody tr {
@@ -228,16 +228,14 @@ export const Table = styled.table`
 export const TableHeaderData = styled.th``
 
 export const TableHeader = styled.thead`
-position: sticky; /* Make the table header sticky */
-  top: 0; /* Fix the header at the top of the container */`
-
-export const TableBody = styled.tbody`
-
+  position: sticky; /* Make the table header sticky */
+  top: 0; /* Fix the header at the top of the container */
 `
 
+export const TableBody = styled.tbody``
+
 export const TableContainer = styled.tbody`
-  max-height: 100%; /* Adjust the desired maximum height */
-  overflow-y: auto; /* Adjust the desired maximum height */
+  overflow-y: scroll;
 `
 
 export const TableData = styled.td`
@@ -249,9 +247,8 @@ export const TableRow = styled.tr`
   padding: 8px;
   border: 1px solid #dddddd;
   background-color: ${Colors.hoverCard};
-  opacity: 0.8;
   text-align: left;
-  font-weight: 400;
+  
 `
 export const CenteredNumber = styled.td`
   text-align: center;

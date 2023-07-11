@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { Colors } from '../../../colors';
 
+import { HiOutlineUpload } from 'react-icons/hi';
+
 // FileInput styled component
 const FileInput = styled.input`
   display: none;
@@ -10,7 +12,10 @@ const FileInput = styled.input`
 
 // Label styled component
 const Label = styled.label`
-    
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   padding: 10px 20px;
   background-color: ${Colors.mainpurple};
   color: white;
@@ -51,11 +56,14 @@ const FileUploadButton: React.FC = () => {
         console.error(error);
       });
   };
-
+//insira um reac icon de arquivo ali depois do escolher arquivo
   return (
     <>
       <Label htmlFor="fileUpload">
-        Choose File
+        Escolher arquivo ...
+          <HiOutlineUpload
+          size={30}
+          />
         <FileInput
           id="fileUpload"
           type="file"
