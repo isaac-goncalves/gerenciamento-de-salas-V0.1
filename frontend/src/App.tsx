@@ -15,6 +15,7 @@ import Register from './pages/Register'
 
 import { Circles } from './pages/Components/Circles'
 import Templates from './pages/Templates'
+import NotificationConfig from './pages/NotificationConfig'
 
 function App() {
   return (
@@ -52,6 +53,13 @@ function App() {
               <Circles ballCount={4} />
             </>
           } />
+          <Route path="/notification" element={
+            <>
+              <Navbar />
+              <NotificationConfig />
+              <Circles ballCount={4} />
+            </>
+          } />
         </Routes>
         {/* <LoginScreen />
       <Calendar /> */}
@@ -60,5 +68,7 @@ function App() {
     </>
   )
 }
+
+
 
 export default App

@@ -56,35 +56,45 @@ type GroupedData = {
   [key: string]: Array<ScheduleItem | IntervalItem>;
 }
 
+
+
 function groupByWeekday(data: ScheduleItem[]): GroupedData {
-  const groupedData: GroupedData = {};
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
+  const totalItemsPerDay = 6;
+
+  // Initialize groupedData with each day of the week and an empty array
+  const groupedData: GroupedData = {
+    segunda: [],
+    terca: [],
+    quarta: [],
+    quinta: [],
+    sexta: [],
+  };
 
   for (const item of data) {
     const dayIndex = parseInt(item.dia_da_semana) - 1;
     const day = daysOfWeek[dayIndex];
 
-    if (!groupedData[day]) {
-      groupedData[day] = [];
-    }
-
     groupedData[day].push(item);
   }
 
   for (const day in groupedData) {
-    if (groupedData[day].length >= 3) {
-      groupedData[day].splice(2, 0, {
-        semestre: "1",
-        disciplina: "Intervalo",
+    const currentDayLength = groupedData[day].length;
+
+    // Add "Nenhuma Aula" for remaining slots, except after the interval
+    for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
+      groupedData[day].push({
+        disciplina: "Nenhuma Aula",
       });
     }
-  }
 
-   console.log("Grouped Data: " + JSON.stringify(groupedData, null, 2))
+    // Add interval as the third item
+    groupedData[day].splice(2, 0, {
+      disciplina: "Intervalo",
+    });
+  }
   return groupedData;
 }
-
-
 
 function printGradeValue(gradeValue: any) {
 

@@ -386,7 +386,7 @@ const Agendamentos: React.FC = () => {
       // console.log(data)
 
       const transformedData = groupByWeekday(data)
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+       console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       printGradeValue(transformedData)
 
       setTimeout(() => {

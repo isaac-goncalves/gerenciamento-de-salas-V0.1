@@ -100,6 +100,16 @@ const Navbar = () => {
                             }
                         </RowWrapper>
                     </MenuLink>
+                    <MenuLink to="/notification" >
+                        <RowWrapper>
+                            <TbFileUpload style={{
+                                color: Colors.mainpurple,
+                                fontSize: '1.4rem',
+                            }} />{
+                                menuOpen && <p>Notificaçoes</p>
+                            }
+                        </RowWrapper>
+                    </MenuLink>
                     <MenuLink to="/"
                         onClick={() => handleLogout()}
                     >
