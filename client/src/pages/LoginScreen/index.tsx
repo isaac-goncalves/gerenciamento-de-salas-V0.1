@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+
+const apiUrl = "http://localhost:3333";
+
 import styled from "styled-components";
 
 import { useWindowSize } from 'react-use';
@@ -66,7 +69,7 @@ const LoginScreen: React.FC = () => {
         } else {
             console.log("login")
             try {
-                const response = await fetch("http://localhost:3333/login", {
+                const response = await fetch(`${apiUrl}:3333/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

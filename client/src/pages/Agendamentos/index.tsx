@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
 
-import { Navigate } from 'react-router-dom'
-
-import DatePicker from "react-datepicker";
+const apiUrl = "http://localhost:3333";
 
 import { useWindowSize } from 'react-use';
 
@@ -13,8 +11,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
 
 import "react-datepicker/dist/react-datepicker.css";
-
-import { mockdata } from './mockdata'
 
 import { FiFilter } from 'react-icons/fi'
 
@@ -333,13 +329,13 @@ const Agendamentos: React.FC = () => {
 
     // console.log(process.env.REACT_APP_API_KEY)
 
-    await fetch(`http://localhost:3333/professors`, {
+    await fetch(`${apiUrl}/professors`, {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
       }
     }).then((response) => response.json()).then((data) => {
-      // console.log(data)
+       console.log(data)
 
       setProfessores(data);
 
@@ -349,7 +345,7 @@ const Agendamentos: React.FC = () => {
   }
 
   async function fetchSemestreData() {
-    fetch('http://localhost:3333/grade/dashboard', {
+    fetch(`${apiUrl}/grade/dashboard`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -374,7 +370,7 @@ const Agendamentos: React.FC = () => {
 
   async function fetchProfessorData() {
     console.log("Fetching fetchGrades...")
-    fetch('http://localhost:3333/grade/agendamentos', {
+    fetch(`${apiUrl}/grade/agendamentos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -401,7 +397,7 @@ const Agendamentos: React.FC = () => {
 
   async function fetchLaboratoryData() {
     console.log("Fetching fetchLaboratoryData...")
-    fetch('http://localhost:3333/laboratoriosschedule', {
+    fetch(`${apiUrl}/laboratoriosschedule`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

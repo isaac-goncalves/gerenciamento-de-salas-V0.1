@@ -4,7 +4,7 @@ import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
 const apiUrl = 'http://localhost:3333';
 
 const templateFileName = 'TEMPLATE_BASE_DADOS V-1.2.xlsx';
-const templateFileUrl = 'http://localhost:3333/template/download/';
+const templateFileUrl = `${apiUrl}/template/download`;
 
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';

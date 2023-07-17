@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+const apiUrl = "http://localhost:3333";
+
 import { useWindowSize } from 'react-use';
 
 import Confetti from 'react-confetti';
@@ -174,7 +176,7 @@ const RegisterScreen: React.FC = () => {
 
             console.log(params);
 
-            const response = await fetch("http://localhost:3333/Register", {
+            const response = await fetch(`${apiUrl}/Register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

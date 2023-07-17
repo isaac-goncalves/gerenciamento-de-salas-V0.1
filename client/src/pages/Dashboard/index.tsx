@@ -1,5 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 
+const apiUrl = "http://localhost:3333";
+
 import { Navigate } from 'react-router-dom'
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
@@ -279,7 +281,7 @@ const handleEditClick = (editedData: any) => {
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")
     // console.log(process.env.REACT_APP_API_KEY)
-    await fetch(`http://localhost:3333/professors`, {
+    await fetch(`${apiUrl}/professors`, {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -295,7 +297,7 @@ const handleEditClick = (editedData: any) => {
   }
 
   async function fetchSemestreData() {
-    fetch('http://localhost:3333/grade/dashboard', {
+    fetch(`${apiUrl}/grade/dashboard`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -321,7 +323,7 @@ const handleEditClick = (editedData: any) => {
   async function fetchProfessorData() {
     console.log("Fetching fetchProfessorData...")
     console.log(selectedProfessor)
-    fetch('http://localhost:3333/grade/agendamentos', {
+    fetch(`${apiUrl}/grade/agendamentos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -354,7 +356,7 @@ const handleEditClick = (editedData: any) => {
   // }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate])
 
   async function fetchData() {
-    fetch('http://localhost:3333/grade/dashboard', {
+    fetch(`${apiUrl}/grade/dashboard`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
