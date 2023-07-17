@@ -2,11 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 const apiUrl = "http://localhost:3333";
 
-import { Navigate } from 'react-router-dom'
-
 import PacmanLoader from 'react-spinners/PacmanLoader';
-
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { Colors } from '../../colors';
 
@@ -59,7 +55,6 @@ type GroupedData = {
 }
 
 
-
 function groupByWeekday(data: ScheduleItem[]): GroupedData {
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
   const totalItemsPerDay = 6;
@@ -87,21 +82,17 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
     for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
       groupedData[day].push({
         disciplina: "Nenhuma Aula",
+        semestre: ''
       });
     }
 
     // Add interval as the third item
     groupedData[day].splice(2, 0, {
       disciplina: "Intervalo",
+      semestre: ''
     });
   }
   return groupedData;
-}
-
-function printGradeValue(gradeValue: any) {
-
-  // console.log("Grade Value: " + JSON.stringify(gradeValue, null, 2))
-
 }
 
 const Dashboard: React.FC = () => {
@@ -157,13 +148,13 @@ const Dashboard: React.FC = () => {
   const handleCloseModalEdit = (resetParams: boolean) => {
     setEditingModal(false);
     if (resetParams) fetchData();
-};
+  };
 
-const handleEditClick = (editedData: any) => {
-  console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
-  setEditedData(editedData);
-  setEditingModal(true);
-};
+  const handleEditClick = (editedData: any) => {
+    console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
+    setEditedData(editedData);
+    setEditingModal(true);
+  };
 
   const handleSelectToday = () => {
     const today = new Date()
@@ -243,7 +234,7 @@ const handleEditClick = (editedData: any) => {
 
       // console.log(selectedMethod)
       if (selectedMethod == "professor") {
-         fetchProfessorData();
+        fetchProfessorData();
       }
       else {
         fetchSemestreData();
@@ -309,7 +300,6 @@ const handleEditClick = (editedData: any) => {
       // console.log(data)
       const transformedData = groupByWeekday(data)
       // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-      printGradeValue(transformedData)
       setTimeout(() => {
         setLoading(true) // teste de loading
       }, 2000)
@@ -332,11 +322,10 @@ const handleEditClick = (editedData: any) => {
         professor_id: selectedProfessor.id || 1,
       })
     }).then((response) => response.json()).then((data) => {
-       console.log(data)
+      console.log(data)
 
       const transformedData = groupByWeekday(data)
-       console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-      printGradeValue(transformedData)
+      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
 
       setTimeout(() => {
         setLoading(true) // teste de loading
@@ -443,7 +432,8 @@ const handleEditClick = (editedData: any) => {
             <Schedule onClick={() => {
               console.log("Clicked")
               console.log(item.agendamentos[0])
-              handleEditClick(item.agendamentos[0])}} isCurrentTime={isCurrentTime}
+              handleEditClick(item.agendamentos[0])
+            }} isCurrentTime={isCurrentTime}
               className={isCurrentTime ? '' : 'hoverEffect'}>
               <Disciplina>{disciplina}</Disciplina>
               <Professor>{professor}</Professor>
