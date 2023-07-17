@@ -67,15 +67,18 @@ export class GradeController {
 
           const queryAgendamento = `
             SELECT
-            agendamento.id as id_agendamento,
+            agendamento.id as id,
             date,
+            uuid_agendamento,
             horario_inicio,
             horario_fim,
             id_professor,
             id_grade,
             id_laboratorio,
             professores.name as professor,
-            laboratorios.descricao as laboratorio
+            laboratorios.descricao as laboratorio,
+            agendamento.updated_at,
+            agendamento.created_at
             FROM
             agendamento
             INNER JOIN
@@ -95,12 +98,14 @@ export class GradeController {
 
       // console.log(gradeWithAgendamento)
 
-      return response.status(200).json(gradeWithProfessor)
+      return response.status(200).json(gradeWithAgendamento)
     } catch (error) {
       console.log(error)
       return response.status(500).json({ message: 'internal server error' })
     }
   }
+
+  
   async getAgendamentosData(request: Request, response: Response) {
     console.log("get grade");
     const { semestre, professor_id } = request.body;
