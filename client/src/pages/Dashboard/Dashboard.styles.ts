@@ -138,7 +138,6 @@ export const DatepickContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-  background-color: ;
   white-space: nowrap;
   p {
   }
@@ -261,8 +260,6 @@ export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
   align-items: center;
   justify-content: center;
   width: 95%;
-  //background-color: ${({ isCurrentDay }) =>
-  isCurrentDay ? 'lightblue' : Colors.lightgrayInput};
   background-color: ${Colors.lightgrayInput};
   border-radius: 8px;
   height: 100%;
