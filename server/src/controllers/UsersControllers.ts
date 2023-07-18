@@ -26,7 +26,7 @@ export class UserController {
     const { name, surname, email, password, role, semester, discipline } =
       request.body
 
-    console.log(name, surname, email, password, role, semester, discipline)
+    // console.log(name, surname, email, password, role, semester, discipline)
 
     if (!email || !password) {
       return response
@@ -38,7 +38,7 @@ export class UserController {
       const userExists = await usuariosRepository.findOneBy({ email })
 
       if (userExists) {
-        console.log('user already exists')
+        // console.log('user already exists')
         return response.status(400).json({ error: 'User already exists' })
       }
 
@@ -51,10 +51,10 @@ export class UserController {
       })
 
       const savedUser = await usuariosRepository.save(newUser) //essa parte me preocupa
-      console.log(savedUser)
+      // console.log(savedUser)
 
       if (role === 'aluno') {
-        console.log('aluno selected')
+        // console.log('aluno selected')
 
         const newAluno = await alunosRepository.create({
           name,
@@ -68,7 +68,7 @@ export class UserController {
 
         await alunosRepository.save(newAluno)
 
-        console.log(newAluno)
+        // console.log(newAluno)
 
         const token = jwt.sign(
           { id: savedUser.id },
@@ -84,7 +84,7 @@ export class UserController {
           token: token
         })
       } else if (role === 'professor') {
-        console.log('professor selected')
+        // console.log('professor selected')
 
         const obj = {
           name,
@@ -100,7 +100,7 @@ export class UserController {
         const newProfessor = await professoresRepository.create(obj)
         const savedProfessor = await professoresRepository.save(newProfessor)
 
-        console.log(savedProfessor)
+        // console.log(savedProfessor)
 
         const token = jwt.sign(
           { id: savedUser.id },
@@ -116,7 +116,7 @@ export class UserController {
           token: token
         })
       } else if (role === 'coordenador') {
-        console.log('coordenador selected')
+        // console.log('coordenador selected')
 
         return response.status(201).json({
           message: 'Coordenador created',
@@ -133,14 +133,14 @@ export class UserController {
         return response.status(400).json({ error: 'Role is missing' })
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
 
       return response.status(500).json({ message: 'Internal server error' })
     }
   }
 
   async verify (request: Request, response: Response) {
-    console.log('verify')
+    // console.log('verify')
 
     const authHeader = request.headers.authorization
 
@@ -162,7 +162,7 @@ export class UserController {
         process.env.JWT_PASS ?? ''
       ) as DecodedPayload
 
-      console.log(decoded.id)
+      // console.log(decoded.id)
 
       // uncomment the following lines once you have a working user repository
       const userExists = await usuariosRepository.findOneBy({ id: decoded.id })
@@ -173,7 +173,7 @@ export class UserController {
 
       return response.status(200).json({ message: 'User verified' })
     } catch (error: any) {
-      console.log('error' + error)
+      // console.log('error' + error)
 
       if (error == 'TokenExpiredError: jwt expired') {
         return response.status(400).json({ error: 'Token expired' })
@@ -188,7 +188,7 @@ export class UserController {
   }
 
   async verifyVoid (request: Request, response: Response, next: any) {
-    console.log('verifyVOIDED')
+    // console.log('verifyVOIDED')
 
     const authHeader = request.headers.authorization
 
@@ -210,7 +210,7 @@ export class UserController {
         process.env.JWT_PASS ?? ''
       ) as DecodedPayload
 
-      console.log(decoded.id)
+      // console.log(decoded.id)
 
       // uncomment the following lines once you have a working user repository
       const userExists = await usuariosRepository.findOneBy({ id: decoded.id })
@@ -218,12 +218,12 @@ export class UserController {
       if (!userExists) {
         return response.status(400).json({ error: 'User does not exist' })
       } else {
-        console.log('user exists')
+        // console.log('user exists')
         //go to next function in the route
         next()
       }
     } catch (error: any) {
-      console.log('error' + error)
+      // console.log('error' + error)
 
       if (error == 'TokenExpiredError: jwt expired') {
         return response.status(400).json({ error: 'Token expired' })
@@ -240,8 +240,8 @@ export class UserController {
   async login (request: Request, response: Response) {
     const { email, password } = request.body
 
-    console.log(email, password)
-    console.log('----------------------------')
+    // console.log(email, password)
+    // console.log('----------------------------')
 
     if (!email || !password) {
       return response
@@ -269,8 +269,8 @@ export class UserController {
         }
       )
 
-      console.log(userExists.email)
-      console.log(userExists.role)
+      // console.log(userExists.email)
+      // console.log(userExists.role)
 
       let userData = {} as any
 
@@ -279,16 +279,16 @@ export class UserController {
           //caso o usuario seja um aluno, busca o aluno no banco de dados
           user_id: userExists.id
         })
-        console.log('aluno=')
-        console.log(aluno)
+        // console.log('aluno=')
+        // console.log(aluno)
         userData = aluno
       } else if (userExists.role === 'professor') {
         const professor = await professoresRepository.findOneBy({
           //caso o usuario seja um professor, busca o professor no banco de dados
           user_id: userExists.id
         })
-        console.log('professor=')
-        console.log(professor)
+        // console.log('professor=')
+        // console.log(professor)
         userData = professor
 
 
@@ -298,7 +298,7 @@ export class UserController {
           id: disciplina
         })
 
-        console.log(disciplinaObj)
+        // console.log(disciplinaObj)
 
         const returnObj = {
           ...restUserData,
@@ -311,7 +311,7 @@ export class UserController {
         })
 
       } else {
-        console.log('role nao encontrado')
+        // console.log('role nao encontrado')
         return response.status(400).json({ error: 'Role nao encontrado' }) //caso o usuario nao seja nem professor nem aluno, retorna erro
       }
 
@@ -322,18 +322,18 @@ export class UserController {
         token: token
       })
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       return response.status(500).json({ message: 'internal server error' })
     }
   }
 
   async get (request: Request, response: Response) {
-    console.log('get usuários')
+    // console.log('get usuários')
 
     try {
       const usuarios = await usuariosRepository.find()
 
-      console.log(JSON.stringify(usuarios, null, 2))
+      // console.log(JSON.stringify(usuarios, null, 2))
 
       return response.status(200).json(usuarios)
     } catch (error) {
@@ -342,12 +342,12 @@ export class UserController {
   }
 
   async getAlunos (request: Request, response: Response) {
-    console.log('get Alunos')
+    // console.log('get Alunos')
 
     try {
       const usuarios = await alunosRepository.find()
 
-      console.log(JSON.stringify(usuarios, null, 2))
+      // console.log(JSON.stringify(usuarios, null, 2))
 
       return response.status(200).json(usuarios)
     } catch (error) {
@@ -356,12 +356,12 @@ export class UserController {
   }
 
   async getProfessores (request: Request, response: Response) {
-    console.log('get Professores')
+    // console.log('get Professores')
 
     try {
       const usuarios = await professoresRepository.find()
 
-      console.log(JSON.stringify(usuarios, null, 2))
+      // console.log(JSON.stringify(usuarios, null, 2))
 
       return response.status(200).json(usuarios)
     } catch (error) {

@@ -150,7 +150,7 @@ const Dashboard: React.FC = () => {
     if (resetParams) fetchData();
   };
 
-  const handleEditClick = (editedData: any) => {
+  const openEditModal = (editedData: any) => {
     console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
     setEditedData(editedData);
     setEditingModal(true);
@@ -226,7 +226,11 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
 
+    console.clear();
+
     console.log('Starting to render stuff...');
+
+    console.log(startDate)
 
     if (userData.token !== '' && userData.userData.id !== 0) {
 
@@ -247,7 +251,7 @@ const Dashboard: React.FC = () => {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate]);
+  }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate, startDate]);
 
   useEffect(() => {
     const updateCurrentDayAndTime = () => {
@@ -294,7 +298,8 @@ const Dashboard: React.FC = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        semestre: selectedSemesterValue || 1, //add localStorage later
+        semestre: selectedSemesterValue || 1, 
+        date: startDate //add localStorage later
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -351,7 +356,8 @@ const Dashboard: React.FC = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        semestre: selectedSemesterValue || 1, //add localStorage later
+        semestre: selectedSemesterValue || 1,
+        date: selectedDate || new Date() //add localStorage later
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -430,8 +436,13 @@ const Dashboard: React.FC = () => {
           return (
             <Schedule onClick={() => {
               console.log("Clicked")
-              console.log(item.agendamentos[0])
-              handleEditClick(item.agendamentos[0])
+              console.log(item.agendamentos.length)
+
+              if (item.agendamentos.length > 0) {
+                openEditModal(item.agendamentos[0])
+              } else {
+                console.log("Não há agendamento!")
+              }
             }} isCurrentTime={isCurrentTime}
               className={isCurrentTime ? '' : 'hoverEffect'}>
               <Disciplina>{disciplina}</Disciplina>

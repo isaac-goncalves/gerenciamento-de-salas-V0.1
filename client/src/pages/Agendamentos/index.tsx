@@ -352,6 +352,7 @@ const Agendamentos: React.FC = () => {
       },
       body: JSON.stringify({
         semestre: selectedSemesterValue || 1, //add localStorage later
+        date: selectedDate || new Date(),
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)

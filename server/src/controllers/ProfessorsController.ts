@@ -7,7 +7,7 @@ import { laboratoriosRepository } from '../repositories/laboratoriosRepository'
 export class ProfessorsController {
   
   async get (request: Request, response: Response) {
-    console.log('get professores')
+    // console.log('get professores')
 
     //grab token
 
@@ -22,13 +22,13 @@ export class ProfessorsController {
     try {
       const professores = await professoresRepository.find()
 
-      console.log(JSON.stringify(professores, null, 2))
+      // console.log(JSON.stringify(professores, null, 2))
 
       const newProfessores = await professores.map((professor: any) => {
         const id = professor.id
         const name = professor.name
 
-        console.log(id, name)
+        // console.log(id, name)
 
         const obj = { 
             id: id, 
@@ -37,7 +37,7 @@ export class ProfessorsController {
         return obj
       })
 
-      console.log(newProfessores)
+      // console.log(newProfessores)
 
       return response.status(200).json(newProfessores)
     } catch (error) {
@@ -46,7 +46,7 @@ export class ProfessorsController {
   }
 
   async getLaboratory (request: Request, response: Response) {
-    console.log('get getLaboratory')
+    // console.log('get getLaboratory')
 
     //grab token
 
@@ -61,7 +61,7 @@ export class ProfessorsController {
     try {
       const laboratory = await laboratoriosRepository.find()
 
-      console.log(JSON.stringify(laboratory, null, 2))
+      // console.log(JSON.stringify(laboratory, null, 2))
      
       return response.status(200).json(laboratory)
     } catch (error) {

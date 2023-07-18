@@ -19,7 +19,7 @@ export class Agendamento {
   id: number
 
   @Column()
-  date: string
+  date: Date
 
   @Column()
   horario_inicio: string

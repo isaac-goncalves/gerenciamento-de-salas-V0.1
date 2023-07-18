@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 
 import { gradeRepositories } from '../repositories/gradeRepositories'
 import { agendamentosRepository } from '../repositories/agendamentoRepository'
+import { addDays, nextFriday, setDay, startOfWeek } from 'date-fns'
 // import { professoresRepository } from "../repositories/professoresRepository";
 // import { laboratoriosRepository } from "../repositories/laboratoriosRepository";
 // import { disciplinasRepository } from "../repositories/disciplinasRepositories";
@@ -20,12 +21,43 @@ import { agendamentosRepository } from '../repositories/agendamentoRepository'
 //     updated_at: Date;
 // }
 
-export class GradeController {
+function getNearestMonday(date: Date) {
+ 
+  date = new Date(date)
 
+  console.log (date.getUTCDay())
+  
+//if is sunday return next monday
+  if (date.getUTCDay() === 0) {
+    const nextMonday = addDays(date, 1)
+    return nextMonday
+  }
+  const nearestMonday = setDay(startOfWeek(date), 1)
+  return nearestMonday
+
+}
+
+function formatDateForSQL(date: Date) {
+  
+    return date.toISOString()
+
+}
+
+export class GradeController {
   async getDashboardData (request: Request, response: Response) {
     console.log('get grade')
+
     const { semestre } = request.body
-     console.log(request.body)
+    const { date } = request.body
+
+    console.log(date)
+
+    const nearestMonday = getNearestMonday(date)
+
+    console.log(nearestMonday)
+
+    const nextFriday = addDays(nearestMonday, 4)
+
 
     try {
       //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
@@ -52,7 +84,7 @@ export class GradeController {
               LEFT JOIN 
                   laboratorios ON grade.id_sala = laboratorios.id 
               WHERE 
-                  grade.semestre = '${semestre}'
+                  grade.semestre = '${semestre}' 
               ORDER BY
                   grade.id ASC
             `
@@ -81,12 +113,14 @@ export class GradeController {
             agendamento.created_at
             FROM
             agendamento
-            INNER JOIN
+            LEFT JOIN
             professores ON CAST(id_professor AS INTEGER) = professores.id
-            INNER JOIN
+            LEFT JOIN
             laboratorios ON CAST(id_laboratorio AS INTEGER) = laboratorios.id
             WHERE
             id_grade = '${id_grade}'
+            AND 
+            date BETWEEN '${formatDateForSQL(nearestMonday)}' AND '${formatDateForSQL(nextFriday)}'
           `
           const agendamentos = await gradeRepositories.query(queryAgendamento)
 
@@ -96,7 +130,7 @@ export class GradeController {
         })
       )
 
-      // console.log(gradeWithAgendamento)
+       console.log(JSON.stringify(gradeWithAgendamento))
 
       return response.status(200).json(gradeWithAgendamento)
     } catch (error) {
@@ -105,12 +139,11 @@ export class GradeController {
     }
   }
 
-  
-  async getAgendamentosData(request: Request, response: Response) {
-    console.log("get grade");
-    const { semestre, professor_id } = request.body;
-    console.log(request.body);
-  
+  async getAgendamentosData (request: Request, response: Response) {
+    console.log('get grade')
+    const { semestre, professor_id } = request.body
+    console.log(request.body)
+
     try {
       // Retrieve grade data for the specified professor and semester
       const query = `
@@ -137,19 +170,19 @@ export class GradeController {
           grade.id_professor = '${professor_id}'
         ORDER BY
           grade.id ASC
-      `;
-      const gradeWithProfessor = await gradeRepositories.query(query);
+      `
+      const gradeWithProfessor = await gradeRepositories.query(query)
       // console.log(gradeWithProfessor);
-      
+
       //coint the items in the array
-      const count = gradeWithProfessor.length;
+      const count = gradeWithProfessor.length
       // console.log(count);
 
       // For each grade, retrieve associated agendamentos
       const gradeWithAgendamento = await Promise.all(
         gradeWithProfessor.map(async (grade: any) => {
-          const id_grade = grade.id;
-  
+          const id_grade = grade.id
+
           const queryAgendamento = `
             SELECT
               agendamento.id as id_agendamento,
@@ -163,27 +196,27 @@ export class GradeController {
               laboratorios.descricao as laboratorio
             FROM
               agendamento
-            INNER JOIN
+            LEFT JOIN
               professores ON CAST(id_professor AS INTEGER) = professores.id
-            INNER JOIN
+            LEFT JOIN
               laboratorios ON CAST(id_laboratorio AS INTEGER) = laboratorios.id
             WHERE
               id_grade = '${id_grade}'
-          `;
-          const agendamentos = await gradeRepositories.query(queryAgendamento);
-  
-          grade.agendamentos = agendamentos || [];
-  
-          return grade;
+          `
+          const agendamentos = await gradeRepositories.query(queryAgendamento)
+
+          grade.agendamentos = agendamentos || []
+
+          return grade
         })
-      );
-  
+      )
+
       // console.log(gradeWithAgendamento);
-  
-      return response.status(200).json(gradeWithAgendamento);
+
+      return response.status(200).json(gradeWithAgendamento)
     } catch (error) {
-      console.log(error);
-      return response.status(500).json({ message: "internal server error" });
+      console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
     }
   }
 }
