@@ -74,7 +74,7 @@ export const Separator = styled.div`
 `
 
 export const MainContainer = styled.div`
-  width: 100%;
+  width: 90%;
   display: flex;
   width: 100%;
   justify-content: space-between;

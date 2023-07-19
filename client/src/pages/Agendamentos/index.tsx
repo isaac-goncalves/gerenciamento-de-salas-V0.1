@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
 
+import { Helmet } from 'react-helmet'
+
 const apiUrl = "http://localhost:3333";
 
 import { useWindowSize } from 'react-use';
@@ -335,7 +337,7 @@ const Agendamentos: React.FC = () => {
         'Authorization': 'bearer ' + token,
       }
     }).then((response) => response.json()).then((data) => {
-       console.log(data)
+      console.log(data)
 
       setProfessores(data);
 
@@ -383,7 +385,7 @@ const Agendamentos: React.FC = () => {
       // console.log(data)
 
       const transformedData = groupByWeekday(data)
-       console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       printGradeValue(transformedData)
 
       setTimeout(() => {
@@ -700,6 +702,9 @@ const Agendamentos: React.FC = () => {
 
   return (
     <Container>
+      <Helmet>
+        <title>SGSA - Agendamento</title>
+      </Helmet>
       <ToastContainer />
       {
         confetti &&

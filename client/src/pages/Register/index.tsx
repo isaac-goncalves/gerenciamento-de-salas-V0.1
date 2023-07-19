@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import { Helmet } from 'react-helmet'
+
 const apiUrl = "http://localhost:3333";
 
 import { useWindowSize } from 'react-use';
@@ -224,6 +226,9 @@ const RegisterScreen: React.FC = () => {
     return (<>
         <ToastContainer />
         <Container>
+            <Helmet>
+                <title>SGSA - Registrar</title>
+            </Helmet>
             {
                 confetti &&
                 <Confetti

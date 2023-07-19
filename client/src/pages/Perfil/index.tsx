@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import { Helmet } from 'react-helmet'
+
 import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
 const apiUrl = 'http://localhost:3333';
-
-const templateFileName = 'TEMPLATE_BASE_DADOS V-1.2.xlsx';
-const templateFileUrl = `${apiUrl}/template/download`;
 
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -314,6 +313,9 @@ function Perfil() {
 
     return (
         <Container>
+            <Helmet>
+                <title>SGSA - Perfil</title>
+            </Helmet>
             <ToastContainer />
             <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} />
             <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />

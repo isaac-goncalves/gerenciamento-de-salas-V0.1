@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { Helmet } from 'react-helmet'
+
 import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
 const apiUrl = 'http://localhost:3333';
 
@@ -15,7 +17,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle
+    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -29,8 +31,8 @@ function Templates() {
 
     const [userData, setUserData] = React.useState<UserData[]>([])
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
-    const [alunosData, setAlunosData] = React.useState<AlunosData[]>([])
-    const [professoresData, setProfessoresData] = React.useState<ProfessoresData[]>([])
+    const [alunosData, setAlunosData] = React.useState<any>([])
+    const [professoresData, setProfessoresData] = React.useState<any>([])
 
     const [editingModal, setEditingModal] = React.useState(false)
     const [deleteModal, setDeleteModal] = React.useState(false)
@@ -115,6 +117,9 @@ function Templates() {
 
     return (
         <Container>
+            <Helmet>
+                <title>SGSA - Templates</title>
+            </Helmet>
             <ToastContainer />
             <Wrapper>
                 <Header>

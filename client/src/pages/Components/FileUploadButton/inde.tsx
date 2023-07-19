@@ -60,9 +60,9 @@ const FileUploadButton: React.FC = () => {
   return (
     <>
       <Label htmlFor="fileUpload">
-        Escolher arquivo ...
+        Escolher arquivo para upload
           <HiOutlineUpload
-          size={30}
+          size={25}
           />
         <FileInput
           id="fileUpload"

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { Helmet } from 'react-helmet'
+
 const apiUrl = "http://localhost:3333";
 
 import styled from "styled-components";
@@ -69,7 +71,7 @@ const LoginScreen: React.FC = () => {
         } else {
             console.log("login")
             try {
-                const response = await fetch(`${apiUrl}:3333/login`, {
+                const response = await fetch(`${apiUrl}/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -126,6 +128,9 @@ const LoginScreen: React.FC = () => {
 
     return (
         <Container>
+            <Helmet>
+                <title>SGSA - login</title>
+            </Helmet>
             <ToastContainer />
             {
                 confetti &&

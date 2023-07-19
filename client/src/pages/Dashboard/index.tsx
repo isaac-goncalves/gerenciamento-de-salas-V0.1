@@ -1,5 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 
+import { Helmet } from 'react-helmet';
+
 const apiUrl = "http://localhost:3333";
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
@@ -298,7 +300,7 @@ const Dashboard: React.FC = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        semestre: selectedSemesterValue || 1, 
+        semestre: selectedSemesterValue || 1,
         date: startDate //add localStorage later
       })
     }).then((response) => response.json()).then((data) => {
@@ -519,115 +521,120 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <><ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} /><Container>
-      <Header>
-        <CoursesWrapper>
-          <CourseName>
-            <p>Dashboard</p>
-          </CourseName>
-          <CourseName>
-            Analise e desenvolvimento de sistemas
-          </CourseName>
-          <CourseSemester>
-            1º Semestre de 2023
-          </CourseSemester>
-        </CoursesWrapper>
-        <DatePickWrapper>
-          <DatepickContainer>
-            <DatepickArrowsContainer onClick={() => handleSelectToday()}>
-              {/* <DateIcon src={dateIcon} /> */}
-              <p>Pular para hoje</p>
-            </DatepickArrowsContainer>
-            <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
-              {/* <DateIcon src={arrowLeft} /> */}
-            </DatepickArrowsContainer>
-            <DatepickArrowsContainer onClick={() => handleArrowRight()}>
-              {/* <DateIcon src={arrowRight} /> */}
-            </DatepickArrowsContainer>
-            <p>{GetCurrentMonthAndYear(startDate)}</p>
-            {/* <DateIcon src={arrowDown} /> */}
-            <CalendarWrapper>
-              Semana do dia
-              <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
-              ao dia
-              <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
-            </CalendarWrapper>
-          </DatepickContainer>
-          <FilterWrapper>
-            <FiFilter
-              size={20} />
-            <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
-              <option value="professor">
-                Professor
-              </option>
-              <option value="semestre">
-                Semestre
-              </option>
-            </StyledSelect>
-            {selectedMethod === "professor" ?
-              <StyledSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessor}>
-                {professores && professores.length > 0 ? (
-                  professores.map((professor) => {
-                    return (
-                      <option key={professor.id} value={professor.id}>
-                        {professor.name}
-                      </option>
-                    );
-                  })
-                ) : (
-                  <option value="">No professors available</option>
-                )}
+    <><ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} />
+      <Container>
+        <Helmet>
+          <title>SGSA - Dashboard</title>
+        </Helmet>
+        <Header>
+          <CoursesWrapper>
+            <CourseName>
+              <p>Dashboard</p>
+            </CourseName>
+            <CourseName>
+              Analise e desenvolvimento de sistemas
+            </CourseName>
+            <CourseSemester>
+              1º Semestre de 2023
+            </CourseSemester>
+          </CoursesWrapper>
+          <DatePickWrapper>
+            <DatepickContainer>
+              <DatepickArrowsContainer onClick={() => handleSelectToday()}>
+                {/* <DateIcon src={dateIcon} /> */}
+                <p>Pular para hoje</p>
+              </DatepickArrowsContainer>
+              <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
+                {/* <DateIcon src={arrowLeft} /> */}
+              </DatepickArrowsContainer>
+              <DatepickArrowsContainer onClick={() => handleArrowRight()}>
+                {/* <DateIcon src={arrowRight} /> */}
+              </DatepickArrowsContainer>
+              <p>{GetCurrentMonthAndYear(startDate)}</p>
+              {/* <DateIcon src={arrowDown} /> */}
+              <CalendarWrapper>
+                Semana do dia
+                <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
+                ao dia
+                <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
+              </CalendarWrapper>
+            </DatepickContainer>
+            <FilterWrapper>
+              <FiFilter
+                size={20} />
+              <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
+                <option value="professor">
+                  Professor
+                </option>
+                <option value="semestre">
+                  Semestre
+                </option>
               </StyledSelect>
-              :
-              <StyledSelect defaultValue={selectedSemesterValue} onChange={handleSemesterChange}>
-                <option value="1">
-                  1º
-                </option>
-                <option value="2">
-                  2º
-                </option>
-                <option value="3">
-                  3º
-                </option>
-                <option value="4">
-                  4º
-                </option>
-                <option value="5">
-                  5º
-                </option>
-                <option value="6">
-                  6º
-                </option>
-              </StyledSelect>}
-          </FilterWrapper>
-        </DatePickWrapper>
-      </Header>
-      <ClassesContainer>
-        <ClockContainer>
-          <p>18:45</p>
-          <p>19:35</p>
-          <p>20:25</p>
-          <p>20:35</p>
-          <p>21:25</p>
-          <p>22:15</p>
-        </ClockContainer>
-        {loading
-          &&
-          grade
-          ?
-          (
-            <WeekContainer>
-              {renderWeekday('Segunda', grade.segunda)}
-              {renderWeekday('Terça', grade.terca)}
-              {renderWeekday('Quarta', grade.quarta)}
-              {renderWeekday('Quinta', grade.quinta)}
-              {renderWeekday('Sexta', grade.sexta)}
-            </WeekContainer>
-          ) : (
-            renderLoading()
-          )}
-      </ClassesContainer>
-    </Container></>
+              {selectedMethod === "professor" ?
+                <StyledSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessor}>
+                  {professores && professores.length > 0 ? (
+                    professores.map((professor) => {
+                      return (
+                        <option key={professor.id} value={professor.id}>
+                          {professor.name}
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option value="">No professors available</option>
+                  )}
+                </StyledSelect>
+                :
+                <StyledSelect defaultValue={selectedSemesterValue} onChange={handleSemesterChange}>
+                  <option value="1">
+                    1º
+                  </option>
+                  <option value="2">
+                    2º
+                  </option>
+                  <option value="3">
+                    3º
+                  </option>
+                  <option value="4">
+                    4º
+                  </option>
+                  <option value="5">
+                    5º
+                  </option>
+                  <option value="6">
+                    6º
+                  </option>
+                </StyledSelect>}
+            </FilterWrapper>
+          </DatePickWrapper>
+        </Header>
+        <ClassesContainer>
+          <ClockContainer>
+            <p>18:45</p>
+            <p>19:35</p>
+            <p>20:25</p>
+            <p>20:35</p>
+            <p>21:25</p>
+            <p>22:15</p>
+          </ClockContainer>
+          {loading
+            &&
+            grade
+            ?
+            (
+              <WeekContainer>
+                {renderWeekday('Segunda', grade.segunda)}
+                {renderWeekday('Terça', grade.terca)}
+                {renderWeekday('Quarta', grade.quarta)}
+                {renderWeekday('Quinta', grade.quinta)}
+                {renderWeekday('Sexta', grade.sexta)}
+              </WeekContainer>
+            ) : (
+              renderLoading()
+            )}
+        </ClassesContainer>
+      </Container>
+    </>
   );
 };
 

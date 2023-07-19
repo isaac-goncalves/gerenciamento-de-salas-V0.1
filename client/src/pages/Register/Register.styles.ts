@@ -19,6 +19,7 @@ export const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99;
   /* background-color: red; */
 `
 
@@ -35,6 +36,7 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 99;
 `
 export const LoginContainer = styled.div`
   display: flex;

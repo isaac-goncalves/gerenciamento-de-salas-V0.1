@@ -71,6 +71,7 @@ export const LoginContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  z-index: 99;
 `
 
 export const Title = styled.h1`
