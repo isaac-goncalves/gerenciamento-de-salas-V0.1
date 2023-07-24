@@ -17,12 +17,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
-import dateIcon from '../../../public/images/dia_de_hoje.png';
-import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
-import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
-import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
+
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRight } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
+
+const dateIcon = 'public/images/dia_de_hoje.png';
+const arrowLeft = 'public/images/pickDateIcons/arrow_left.svg';
+const arrowRight = 'public/images/pickDateIcons/arrow_right.svg';
+const arrowDown = 'public/images/pickDateIcons/arrow_down.svg';
 
 interface ScheduleItem {
   id: number;
@@ -541,17 +543,17 @@ const Dashboard: React.FC = () => {
           <DatePickWrapper>
             <DatepickContainer>
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
-                {/* <DateIcon src={dateIcon} /> */}
+                <DateIcon src={dateIcon} />
                 <p>Pular para hoje</p>
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
-                {/* <DateIcon src={arrowLeft} /> */}
+                <DateIcon src={arrowLeft} />
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>
-                {/* <DateIcon src={arrowRight} /> */}
+                <DateIcon src={arrowRight} />
               </DatepickArrowsContainer>
               <p>{GetCurrentMonthAndYear(startDate)}</p>
-              {/* <DateIcon src={arrowDown} /> */}
+              <DateIcon src={arrowDown} />
               <CalendarWrapper>
                 Semana do dia
                 <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
