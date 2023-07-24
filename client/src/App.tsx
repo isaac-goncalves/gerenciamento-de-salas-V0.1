@@ -19,7 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <Dashboard />
+              <LoginScreen />
               <Circles ballCount={4} />
             </>
           } />
