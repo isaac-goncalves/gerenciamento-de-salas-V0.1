@@ -22,9 +22,9 @@ import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRi
 import { FiFilter } from 'react-icons/fi';
 
 import dateIcon  from '../../../public/images/dia_de_hoje.png';
-import arrowLeft  from '../../../public/images/pickDateIcons/arrow_left.svg';
-import arrowRight  from '../../../public/images/pickDateIcons/arrow_right.svg';
-import arrowDown  from '../../../public/images/pickDateIcons/arrow_down.svg';
+import arrowLeft  from '../../../public/images/pickDateicons/arrow_left.svg';
+import arrowRight  from '../../../public/images/pickDateicons/arrow_right.svg';
+import arrowDown  from '../../../public/images/pickDateicons/arrow_down.svg';
 
 interface ScheduleItem {
   id: number;
