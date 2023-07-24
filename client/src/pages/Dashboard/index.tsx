@@ -21,10 +21,10 @@ import ModalEdit from '../Components/ModalEdit';
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRight } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
 
-import dateIcon from '../../../public/images/dia_de_hoje.png';
-import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
-import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
-import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
+import dateIcon  from '../../../public/images/dia_de_hoje.png';
+import arrowLeft  from '../../../public/images/pickDateIcons/arrow_left.svg';
+import arrowRight  from '../../../public/images/pickDateIcons/arrow_right.svg';
+import arrowDown  from '../../../public/images/pickDateIcons/arrow_down.svg';
 
 interface ScheduleItem {
   id: number;
