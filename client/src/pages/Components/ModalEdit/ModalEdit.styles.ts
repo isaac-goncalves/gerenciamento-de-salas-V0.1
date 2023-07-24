@@ -74,7 +74,12 @@ export const ProfessorWrapper = styled.div`
   padding: 0.8rem;
 `
 
-export const StyledSelect = styled.select`
+
+interface StyledSelectProps {
+  value: any; // Add the value prop with the appropriate type
+}
+
+export const StyledSelect = styled.select<StyledSelectProps>`
   z-index: 0;
   padding: 8px;
   width: 100%;

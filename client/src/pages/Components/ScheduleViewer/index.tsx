@@ -105,19 +105,11 @@ function transformData(agendamentos: any) {
   return items;
 };
 
-interface scheduleDataProps {
-  id: number;
-  selecionado: boolean;
-  ItemWasSelected: boolean;
-  Agendamento: any[]; // Specify the type of Agendamento array as needed
-}
-
 function ScheduleViewer({ props }: any) {
 
   const [form, setForm] = useState({} as any)
   const [schedule, setSchedule] = useState(array)
-  const [scheduleData, SetScheduleData] = useState<scheduleDataProps[]>([])
-
+  const [scheduleData, setScheduleData] = useState<any[]>([])
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   useEffect(() => {
@@ -166,7 +158,7 @@ function ScheduleViewer({ props }: any) {
       console.log("transformedData")
       console.log(transformedData)
 
-      return SetScheduleData(transformedData)
+      return setScheduleData(transformedData)
 
     }).catch((error) => {
       console.log(error)
@@ -193,7 +185,7 @@ function ScheduleViewer({ props }: any) {
         return item;
       });
 
-      SetScheduleData(NewArray);
+      setScheduleData(NewArray);
     }
     else {
       console.log("agendamento não encontrado")
@@ -207,7 +199,7 @@ function ScheduleViewer({ props }: any) {
         return item;
       });
 
-      SetScheduleData(NewArray);
+      setScheduleData(NewArray);
     }
 
     if (selectedIds.includes(id)) {
@@ -233,7 +225,7 @@ function ScheduleViewer({ props }: any) {
         <WeekdayContainer>
           <h2>LAB 2</h2>
           {
-            array.map((item) => (
+            array.map((item: any) => (
               <ScheduleCell key={item.id}  ItemWasSelected={item.ItemWasSelected && item.ItemWasSelected==true ? item.Agendamento[0].id : undefined} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id,  item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
                 <p>{
                   item.selecionado ? "Disponível" : "Selecionado"

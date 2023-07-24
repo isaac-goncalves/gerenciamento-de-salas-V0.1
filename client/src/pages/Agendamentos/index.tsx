@@ -64,11 +64,10 @@ import {
 }
   from './Agendamento.styles'
 
-
-const dateIcon = 'public/images/dia_de_hoje.png';
-const arrowLeft = 'public/images/pickDateIcons/arrow_left.svg';
-const arrowRight = 'public/images/pickDateIcons/arrow_right.svg';
-const arrowDown = 'public/images/pickDateIcons/arrow_down.svg';
+import dateIcon from '../../../public/images/dia_de_hoje.png';
+import arrowLeft from '../../../public/images/pickDateIcons/arrow_left.svg';
+import arrowRight from '../../../public/images/pickDateIcons/arrow_right.svg';
+import arrowDown from '../../../public/images/pickDateIcons/arrow_down.svg';
 
 import Modal from '../Components/Modal';
 import set from 'date-fns/set';

@@ -11,8 +11,8 @@ const NotificationPermissionButton = () => {
       const permission = await Notification.requestPermission();
       if (permission === "granted") {
         console.log("Notification permission granted.");
-        const token = await messaging.getToken(); // Get the registration token
-        console.log("Registration token:", token);
+        // const token = await messaging.getToken(); // Get the registration token
+        // console.log("Registration token:", token);
         // You can send the token to the backend for further use
       }
     } catch (error) {
