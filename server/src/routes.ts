@@ -35,6 +35,8 @@ routes.delete('/agendamento/:id', new AgendamentoController().delete);
 
 routes.post('/laboratoriosschedule', new AgendamentoController().getLaboratoriosSchedule)
 
+routes.post('/agendamento/grouped', new AgendamentoController().getGroupedById) // this one is used on skedule viewer
+
 routes.post('/login', new UserController().login)
 routes.post('/register', new UserController().create)
 

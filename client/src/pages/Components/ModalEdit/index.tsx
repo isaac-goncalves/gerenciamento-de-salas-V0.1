@@ -52,7 +52,6 @@ const ModalEdit = ({
 
 }: ModalProps) => {
 
-
   if (!isVisible) return null
   
   const [formData, setFormData] = useState<EditedData>(editedData);
@@ -94,7 +93,7 @@ const ModalEdit = ({
 
   useEffect(() => {
 
-    console.log(editedData)
+     console.log("ModalEdit useEffect")
 
     setFormData(editedData);
 
@@ -102,8 +101,8 @@ const ModalEdit = ({
       try {
         await fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
 
-        console.log("editedData.id_professor")
-        console.log(editedData.id_professor)
+        // console.log("editedData.id_professor")
+        // console.log(editedData.id_professor)
 
         if (editedData.id_professor) {
 
@@ -111,10 +110,10 @@ const ModalEdit = ({
 
         }
 
-        console.log(selectedProfessor)
+        // console.log(selectedProfessor)
 
       } catch (error) {
-        console.log(error); // Handle the error appropriately
+        // console.log(error); // Handle the error appropriately
       }
     };
 
@@ -122,35 +121,35 @@ const ModalEdit = ({
       try {
         await fetchLaboratory("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
 
-        console.log("editedData.laboratory")
-        console.log(editedData.id_laboratorio)
+        // console.log("editedData.laboratory")
+        // console.log(editedData.id_laboratorio)
 
         if (editedData.id_laboratorio) {
 
           setSelectedLaboratory(editedData.id_laboratorio);
 
         }
-        console.log("selectedLaboratory")
-        console.log(selectedLaboratory)
+        // console.log("selectedLaboratory")
+        // console.log(selectedLaboratory)
 
       } catch (error) {
-        console.log(error); // Handle the error appropriately
+        // console.log(error); // Handle the error appropriately
       }
     };
 
     fetchProfessorData();
     fetchLaboratoryData();
 
-    console.log("editedData")
+    // console.log("editedData")
 
-    console.log(editedData)
+    // console.log(editedData)
 
-    console.log("Formdata")
+    // console.log("Formdata")
 
-    console.log(formData)
+    // console.log(formData)
 
-    console.log("selectedProfessor")
-    console.log(selectedProfessor)
+    // console.log("selectedProfessor")
+    // console.log(selectedProfessor)
 
     setStartDate(new Date(formData.date))
 
@@ -182,7 +181,7 @@ const ModalEdit = ({
   }, [editedData, selectedLaboratory])
 
   async function fetchProfessors(token: string) {
-    console.log("Fetching fetchProfessors...")
+    // console.log("Fetching fetchProfessors...")
     await fetch('http://localhost:3333/professors', {
       method: 'POST',
       headers: {
@@ -195,19 +194,18 @@ const ModalEdit = ({
   }
 
   async function fetchLaboratory(token: string) {
-    console.log("Fetching fetchLaboratory...")
+    // console.log("Fetching fetchLaboratory...")
     await fetch('http://localhost:3333/laboratory', {
       method: 'GET',
       headers: {
         'Authorization': 'bearer ' + token,
       }
     }).then((response) => response.json()).then((data) => {
-      console.log(data)
+      // console.log(data)
       return setLaboratory(data.reverse())
     });
   }
 
-  // ... rest of the component
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -215,11 +213,11 @@ const ModalEdit = ({
   };
 
   const handleSelectProfessorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
 
     const selectedId = parseInt(event.target.value);
 
-    console.log(selectedId)
+    // console.log(selectedId)
 
     if (selectedId) {
       setSelectedProfessor(selectedId);
@@ -228,11 +226,11 @@ const ModalEdit = ({
   }
 
   const handleLaboratoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
 
     const selectedLab = parseInt(event.target.value);
 
-    console.log(selectedLab)
+    // console.log(selectedLab)
 
     if (selectedLab) {
       setSelectedLaboratory(selectedLab);

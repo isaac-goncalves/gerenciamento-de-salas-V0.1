@@ -81,7 +81,7 @@ function transformData(agendamentos: any) {
   const items = [];
 
   for (let i = 0; i < clockTimesArray.length; i++) {
-    console.log("clockTimesArray[i]" + clockTimesArray[i])
+    // console.log("clockTimesArray[i]" + clockTimesArray[i])
 
     const agendamentoExisteNesteHorario = agendamentos.find((agendamento: any) => {
       return agendamento.horario_inicio === clockTimesArray[i]
@@ -89,9 +89,9 @@ function transformData(agendamentos: any) {
 
     const idAgendamento = agendamentoExisteNesteHorario ? agendamentoExisteNesteHorario.id : null
 
-    console.log("agendamento.horario_inicio === clockTimesArray[i]")
-    console.log(agendamentoExisteNesteHorario ? false : true)
-    console.log("===================================================")
+    // console.log("agendamento.horario_inicio === clockTimesArray[i]")
+    // console.log(agendamentoExisteNesteHorario ? false : true)
+    // console.log("===================================================")
 
     const item = {
       id: i,
@@ -115,11 +115,15 @@ function ScheduleViewer({ props }: any) {
   useEffect(() => {
 
     console.log("ScheduleViewer useEffect")
-    console.log(setSelectedIds)
 
-    console.log("ScheduleViewer props")
+    // console.log(setSelectedIds)
+    console.log(form)
 
-    console.log(props.uuid_agendamento)
+
+
+    // console.log("ScheduleViewer props")
+
+    // console.log(props.uuid_agendamento)
 
 
     fetchByGroupedId("token valido")
@@ -129,11 +133,12 @@ function ScheduleViewer({ props }: any) {
     }
 
 
-  }, [props, setSelectedIds
-  ])
+  }, [props, setSelectedIds])
+
 
   async function fetchByGroupedId(token: string = localStorage.getItem('token') || "") {
-    console.log("Fetching fetchByGroupedId...")
+     console.log("Fetching fetchByGroupedId...")
+     console.log( form.uuid_agendamento)
 
     const obj = {
       uuid_agendamento: props.uuid_agendamento,
@@ -150,30 +155,30 @@ function ScheduleViewer({ props }: any) {
       body: bodyParams
     }).then((response) => response.json()).then(async (data) => {
 
-      console.log("ScheduleViewer")
+      console.log("ReturnedData")
       console.log(data)
 
       const transformedData = await transformData(data)
 
-      console.log("transformedData")
-      console.log(transformedData)
+      // console.log("transformedData")
+      // console.log(transformedData)
 
       return setScheduleData(transformedData)
 
     }).catch((error) => {
-      console.log(error)
+       console.log(error)
     }
     )
   }
 
   const handleSelection = (id: number, idAgendamento: number) => {
-    console.log("idAgendamento: " + idAgendamento);
-    console.log("ID: " + id);
+    // console.log("idAgendamento: " + idAgendamento);
+    // console.log("ID: " + id);
 
     const agendamento = scheduleData.filter((item) => item.Agendamento?.[0]?.id === idAgendamento);
 
     if (agendamento) {
-      console.log(agendamento);
+      // console.log(agendamento);
 
       const NewArray = scheduleData.map((item) => {
         if (item.Agendamento[0]?.id === idAgendamento) {
@@ -188,7 +193,7 @@ function ScheduleViewer({ props }: any) {
       setScheduleData(NewArray);
     }
     else {
-      console.log("agendamento não encontrado")
+      // console.log("agendamento não encontrado")
       const NewArray = scheduleData.map((item) => {
         if (item.id === id) {
           return {
@@ -226,7 +231,7 @@ function ScheduleViewer({ props }: any) {
           <h2>LAB 2</h2>
           {
             array.map((item: any) => (
-              <ScheduleCell key={item.id}  ItemWasSelected={item.ItemWasSelected && item.ItemWasSelected==true ? item.Agendamento[0].id : undefined} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id,  item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
+              <ScheduleCell key={item.id} ItemWasSelected={item.ItemWasSelected && item.ItemWasSelected == true ? item.Agendamento[0].id : undefined} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
                 <p>{
                   item.selecionado ? "Disponível" : "Selecionado"
                 }</p>
