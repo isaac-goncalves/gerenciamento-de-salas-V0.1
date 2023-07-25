@@ -87,18 +87,16 @@ function transformData(agendamentos: any) {
 
     console.log(agendamentoExisteNesteHorario)
 
-    const idAgendamento = agendamentoExisteNesteHorario ? agendamentoExisteNesteHorario.id : null
-
     console.log("agendamento.horario_inicio === clockTimesArray[i]")
-    console.log(agendamentoExisteNesteHorario.length > 0 ? true : false)
+    console.log(agendamentoExisteNesteHorario != "" ? true : false)
     console.log("===================================================")
 
     const item = {
       id: i,
-      selecionado: agendamentoExisteNesteHorario.length > 0 ? false : true,
-      agendamento: [agendamentos.find((agendamento: any) => agendamento.id == idAgendamento) || {}]
+      selecionado: agendamentoExisteNesteHorario != "" ? false : true,
+      agendamento: agendamentoExisteNesteHorario || [],
     }
-
+    
     items.push(item)
 
   }
@@ -236,7 +234,7 @@ function ScheduleViewer({ props }: any) {
                   item.selecionado ? "Disponível" : "Selecionado"
                 }</p>
                 {
-                  JSON.stringify(item.agendamento[0].uuid_agendamento)
+                  JSON.stringify(item.agendamento.uuid_agendamento)
                   // item.Agendamento && item.Agendamento[0] ? <p>{item.Agendamento[0].uuid_agendamento}</p> : <p>---</p>
                 }
               </ScheduleCell>
