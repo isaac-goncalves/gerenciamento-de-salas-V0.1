@@ -83,20 +83,20 @@ function transformData(agendamentos: any) {
   for (let i = 0; i < clockTimesArray.length; i++) {
     // console.log("clockTimesArray[i]" + clockTimesArray[i])
 
-    const agendamentoExisteNesteHorario = agendamentos.find((agendamento: any) => {
-      return agendamento.horario_inicio === clockTimesArray[i]
-    })
+    const agendamentoExisteNesteHorario = agendamentos.filter((agendamento: any) => agendamento.horario_inicio === clockTimesArray[i])[0] || []
+
+    console.log(agendamentoExisteNesteHorario)
 
     const idAgendamento = agendamentoExisteNesteHorario ? agendamentoExisteNesteHorario.id : null
 
-    // console.log("agendamento.horario_inicio === clockTimesArray[i]")
-    // console.log(agendamentoExisteNesteHorario ? false : true)
-    // console.log("===================================================")
+    console.log("agendamento.horario_inicio === clockTimesArray[i]")
+    console.log(agendamentoExisteNesteHorario.length > 0 ? true : false)
+    console.log("===================================================")
 
     const item = {
       id: i,
-      selecionado: agendamentoExisteNesteHorario ? false : true,
-      Agendamento: [agendamentos.find((agendamento: any) => agendamento.id == idAgendamento) || {}]
+      selecionado: agendamentoExisteNesteHorario.length > 0 ? false : true,
+      agendamento: [agendamentos.find((agendamento: any) => agendamento.id == idAgendamento) || {}]
     }
 
     items.push(item)
@@ -137,8 +137,8 @@ function ScheduleViewer({ props }: any) {
 
 
   async function fetchByGroupedId(token: string = localStorage.getItem('token') || "") {
-     console.log("Fetching fetchByGroupedId...")
-     console.log( form.uuid_agendamento)
+    console.log("Fetching fetchByGroupedId...")
+    console.log(form.uuid_agendamento)
 
     const obj = {
       uuid_agendamento: props.uuid_agendamento,
@@ -160,13 +160,13 @@ function ScheduleViewer({ props }: any) {
 
       const transformedData = await transformData(data)
 
-      // console.log("transformedData")
-      // console.log(transformedData)
+      console.log("transformedData")
+      console.log(transformedData)
 
       return setScheduleData(transformedData)
 
     }).catch((error) => {
-       console.log(error)
+      console.log(error)
     }
     )
   }
@@ -230,11 +230,15 @@ function ScheduleViewer({ props }: any) {
         <WeekdayContainer>
           <h2>LAB 2</h2>
           {
-            array.map((item: any) => (
+            scheduleData.map((item: any) => (
               <ScheduleCell key={item.id} ItemWasSelected={item.ItemWasSelected && item.ItemWasSelected == true ? item.Agendamento[0].id : undefined} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
                 <p>{
                   item.selecionado ? "Disponível" : "Selecionado"
                 }</p>
+                {
+                  JSON.stringify(item.agendamento[0].uuid_agendamento)
+                  // item.Agendamento && item.Agendamento[0] ? <p>{item.Agendamento[0].uuid_agendamento}</p> : <p>---</p>
+                }
               </ScheduleCell>
             ))
           }
