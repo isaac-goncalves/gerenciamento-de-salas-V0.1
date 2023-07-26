@@ -96,14 +96,14 @@ function transformData(agendamentos: any) {
       selecionado: agendamentoExisteNesteHorario != "" ? false : true,
       agendamento: agendamentoExisteNesteHorario || [],
     }
-    
+
     items.push(item)
 
   }
   return items;
 };
 
-function ScheduleViewer({ props }: any) {
+function ScheduleViewer({ props, selectedLaboratory }: any) {
 
   const [form, setForm] = useState({} as any)
   const [schedule, setSchedule] = useState(array)
@@ -170,16 +170,13 @@ function ScheduleViewer({ props }: any) {
   }
 
   const handleSelection = (id: number, idAgendamento: number) => {
-    // console.log("idAgendamento: " + idAgendamento);
-    // console.log("ID: " + id);
+    console.log("idAgendamento: " + idAgendamento);
+   console.log("ID: " + id);
 
-    const agendamento = scheduleData.filter((item) => item.Agendamento?.[0]?.id === idAgendamento);
-
-    if (agendamento) {
-      // console.log(agendamento);
-
+    // const agendamento = scheduleData.filter((item) => item.agendamento?.id === idAgendamento);
+      
       const NewArray = scheduleData.map((item) => {
-        if (item.Agendamento[0]?.id === idAgendamento) {
+        if (item.agendamento?.id === idAgendamento) {
           return {
             ...item,
             selecionado: !item.selecionado,
@@ -188,22 +185,24 @@ function ScheduleViewer({ props }: any) {
         return item;
       });
 
-      setScheduleData(NewArray);
-    }
-    else {
-      // console.log("agendamento não encontrado")
-      const NewArray = scheduleData.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            ItemWasSelected: !item.ItemWasSelected,
-          };
-        }
-        return item;
-      });
+      console.log(NewArray);
 
       setScheduleData(NewArray);
-    }
+   
+    // else {
+    //   // console.log("agendamento não encontrado")
+    //   const NewArray = scheduleData.map((item) => {
+    //     if (item.id === id) {
+    //       return {
+    //         ...item,
+    //         ItemWasSelected: !item.ItemWasSelected,
+    //       };
+    //     }
+    //     return item;
+    //   });
+
+    //   setScheduleData(NewArray);
+    // }
 
     if (selectedIds.includes(id)) {
       setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
@@ -226,15 +225,30 @@ function ScheduleViewer({ props }: any) {
           <p>22:15</p>
         </ClockContainer>
         <WeekdayContainer>
-          <h2>LAB 2</h2>
+          <h2>LAB {//preencer
+          }</h2>
           {
             scheduleData.map((item: any) => (
-              <ScheduleCell key={item.id} ItemWasSelected={item.ItemWasSelected && item.ItemWasSelected == true ? item.Agendamento[0].id : undefined} selected={!selectedIds.includes(item.id)} onClick={() => handleSelection(item.id, item.Agendamento && item.Agendamento[0] ? item.Agendamento[0].id : undefined)}>
+              <ScheduleCell 
+              key={item.id} 
+
+              // ItemWasSelected={item.ItemWasSelected 
+              // && 
+              // item.ItemWasSelected == true 
+              // ? item.Agendamento.id 
+              // : undefined} 
+
+              // selected={!selectedIds.includes(item.id)} 
+              selected={!item.selecionado} 
+
+              onClick={() => 
+              handleSelection(item.id, item.agendamento && item.agendamento
+              ? item.agendamento.id : undefined)}>
                 <p>{
                   item.selecionado ? "Disponível" : "Selecionado"
                 }</p>
                 {
-                  JSON.stringify(item.agendamento.uuid_agendamento)
+                  item.agendamento.uuid_agendamento
                   // item.Agendamento && item.Agendamento[0] ? <p>{item.Agendamento[0].uuid_agendamento}</p> : <p>---</p>
                 }
               </ScheduleCell>

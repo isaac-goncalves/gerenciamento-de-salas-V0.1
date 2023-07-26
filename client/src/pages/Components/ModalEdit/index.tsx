@@ -350,7 +350,9 @@ const ModalEdit = ({
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>
-                <ScheduleViewer props={formData}/>
+                <ScheduleViewer props={formData} selectedLaboratory = {
+                  selectedLaboratory
+                }/>
               </ClockTimeWrapper>
               <ButtonsWrapper>
                 <StyledButton onClick={() => handleEdit()}>Editar</StyledButton>

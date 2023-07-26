@@ -71,7 +71,7 @@ export const WeekdayContainer = styled.div`
 
 interface IProps {
   selected: boolean
-  ItemWasSelected: boolean
+  // ItemWasSelected: boolean
 }
 
 
@@ -82,9 +82,8 @@ export const ScheduleCell = styled.div`
   align-items: center;
   justify-content: center;
   /* background-color: ${Colors.horariosCard}; */
-  background-color: ${({ selected, ItemWasSelected }: IProps) =>{
-    if(ItemWasSelected) return Colors.mainpurple
-    return !selected ? Colors.mainpurple : Colors.horariosCard}
+  background-color: ${({selected}: IProps) =>{
+    return selected ? Colors.mainpurple : Colors.horariosCard}
   }
   ;
   border-radius: 0px 0px 8px 8px;
