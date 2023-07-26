@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import { Helmet } from 'react-helmet'
 
-const apiUrl = "http://localhost:3333";
+const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
-import styled from "styled-components";
+console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
 
 import { useWindowSize } from 'react-use';
 
