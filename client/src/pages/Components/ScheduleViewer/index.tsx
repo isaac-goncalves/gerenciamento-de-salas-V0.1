@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Container, WeekdayContainer, ScheduleCell, ClockContainer } from './ScheduleViewer.styles'
+import { Container, WeekdayContainer, ScheduleCell, ClockContainer, UIDtext, UidLabel } from './ScheduleViewer.styles'
 
 const array = [
   {
@@ -93,7 +93,7 @@ function transformData(agendamentos: any) {
 
     const item = {
       id: i,
-      selecionado: agendamentoExisteNesteHorario != "" ? false : true,
+      selecionado: agendamentoExisteNesteHorario != "" ? true : false,
       agendamento: agendamentoExisteNesteHorario || [],
     }
 
@@ -171,24 +171,106 @@ function ScheduleViewer({ props, selectedLaboratory }: any) {
 
   const handleSelection = (id: number, idAgendamento: number) => {
     console.log("idAgendamento: " + idAgendamento);
-   console.log("ID: " + id);
+    console.log("ID: " + id);
 
     // const agendamento = scheduleData.filter((item) => item.agendamento?.id === idAgendamento);
-      
-      const NewArray = scheduleData.map((item) => {
-        if (item.agendamento?.id === idAgendamento) {
-          return {
-            ...item,
-            selecionado: !item.selecionado,
-          };
-        }
-        return item;
-      });
 
-      console.log(NewArray);
+    // if edited and uuid exist then it will put the id of the agendamento in the array to delete and 
 
-      setScheduleData(NewArray);
-   
+    // if the selected has no uuid then it will put the id of the agendamento in the array to create
+
+    // if the selected has uuid and edited is true then it will put the id of the agendamento in the array to update
+
+    // if the selected has uuid and edited is false then it will put the id of the agendamento in the array to delete
+
+    //   [
+    //     {
+    //         "id": 0,
+    //         "selecionado": false,
+    //         "agendamento": {
+    //             "id": 18,
+    //             "date": "2023-07-27T23:43:36.760Z",
+    //             "horario_inicio": "18:45:00",
+    //             "horario_fim": "19:35:00",
+    //             "id_professor": 12,
+    //             "uuid_agendamento": "#36817",
+    //             "id_grade": "16",
+    //             "id_laboratorio": "26",
+    //             "created_at": "2023-07-26T23:43:50.090Z",
+    //             "updated_at": "2023-07-26T23:43:50.090Z"
+    //         }
+    //     },
+    //     {
+    //         "id": 1,
+    //         "selecionado": false,
+    //         "agendamento": {
+    //             "id": 20,
+    //             "date": "2023-07-27T23:43:36.760Z",
+    //             "horario_inicio": "19:35:00",
+    //             "horario_fim": "20:25:00",
+    //             "id_professor": 12,
+    //             "uuid_agendamento": "#36817",
+    //             "id_grade": "17",
+    //             "id_laboratorio": "26",
+    //             "created_at": "2023-07-26T23:43:50.096Z",
+    //             "updated_at": "2023-07-26T23:44:39.477Z"
+    //         }
+    //     },
+    //     {
+    //         "id": 2,
+    //         "selecionado": true,
+    //         "agendamento": []
+    //     },
+    //     {
+    //         "id": 3,
+    //         "selecionado": false,
+    //         "agendamento": {
+    //             "id": 22,
+    //             "date": "2023-07-27T23:43:36.760Z",
+    //             "horario_inicio": "21:25:00",
+    //             "horario_fim": "22:15:00",
+    //             "id_professor": 12,
+    //             "uuid_agendamento": "#36817",
+    //             "id_grade": "19",
+    //             "id_laboratorio": "26",
+    //             "created_at": "2023-07-26T23:43:50.098Z",
+    //             "updated_at": "2023-07-26T23:43:50.098Z"
+    //         }
+    //     },
+    //     {
+    //         "id": 4,
+    //         "selecionado": false,
+    //         "agendamento": {
+    //             "id": 19,
+    //             "date": "2023-07-27T23:43:36.760Z",
+    //             "horario_inicio": "22:15:00",
+    //             "horario_fim": "23:05:00",
+    //             "id_professor": 12,
+    //             "uuid_agendamento": "#36817",
+    //             "id_grade": "20",
+    //             "id_laboratorio": "26",
+    //             "created_at": "2023-07-26T23:43:50.095Z",
+    //             "updated_at": "2023-07-26T23:43:50.095Z"
+    //         }
+    //     }
+    // ]
+
+
+    const NewArray = scheduleData.map((item) => {
+      if (item.agendamento?.id === idAgendamento) {
+        return {
+          ...item,
+          selecionado: !item.selecionado,
+          edited: true,
+        };
+      }
+      return item;
+    });
+
+    console.log(NewArray);
+
+    setScheduleData(NewArray);
+
     // else {
     //   // console.log("agendamento não encontrado")
     //   const NewArray = scheduleData.map((item) => {
@@ -228,31 +310,37 @@ function ScheduleViewer({ props, selectedLaboratory }: any) {
           <h2>LAB {//preencer
           }</h2>
           {
-            scheduleData.map((item: any) => (
-              <ScheduleCell 
-              key={item.id} 
+            scheduleData.map((item: any) => {
+              const agendamentoExist = item.agendamento !== undefined;
+              console.log(agendamentoExist);
+              return (
+                <ScheduleCell
+                  key={item.id}
+                  selected={item.selecionado}
+                  onClick=
+                  {
+                    () => handleSelection(item.id, item.agendamento && item.agendamento? item.agendamento.id : undefined)
+                  }
+                >
+                  <p>{item.selecionado ? "Selecionado" : "Disponível"}</p>
+                  <p>
+                    {
+                       item.agendamento.length !== 0 ? "" : 
+                       (
+                        item.selecionado
+                        && item.agendamento.length === 0
+                        ? "* Novo Agendamento" : "-"
+                        )
 
-              // ItemWasSelected={item.ItemWasSelected 
-              // && 
-              // item.ItemWasSelected == true 
-              // ? item.Agendamento.id 
-              // : undefined} 
-
-              // selected={!selectedIds.includes(item.id)} 
-              selected={!item.selecionado} 
-
-              onClick={() => 
-              handleSelection(item.id, item.agendamento && item.agendamento
-              ? item.agendamento.id : undefined)}>
-                <p>{
-                  item.selecionado ? "Disponível" : "Selecionado"
-                }</p>
-                {
-                  item.agendamento.uuid_agendamento
-                  // item.Agendamento && item.Agendamento[0] ? <p>{item.Agendamento[0].uuid_agendamento}</p> : <p>---</p>
-                }
-              </ScheduleCell>
-            ))
+                    }
+                    </p>
+                  <UidLabel canceled={item.edited && !item.selecionado}>
+                    {item.agendamento.uuid_agendamento}
+                  </UidLabel>
+                  {/* // item.Agendamento && item.Agendamento[0] ? <p>{item.Agendamento[0].uuid_agendamento}</p> : <p>---</p> */}
+                </ScheduleCell>
+              );
+            })
           }
         </WeekdayContainer>
       </Container>

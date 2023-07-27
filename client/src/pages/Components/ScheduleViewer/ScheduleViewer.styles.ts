@@ -71,21 +71,32 @@ export const WeekdayContainer = styled.div`
 
 interface IProps {
   selected: boolean
+
+  // ItemWasSelected: boolean
+}
+
+interface IProps2 {
+ 
+  canceled: boolean
   // ItemWasSelected: boolean
 }
 
 
 
 export const ScheduleCell = styled.div`
+  background-color: ${({selected}: IProps) =>{
+    return selected ? Colors.mainpurple : Colors.horariosCard}
+  };
+  box-shadow: ${({ selected }: IProps) =>{
+    return selected ? "6px 4px 12px rgba(0, 0, 0, 0.2)" : "none"}
+    };
+  /* border: ${({ selected }: IProps) => (selected ? "2px solid #7663ad" : "none")}; */
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   /* background-color: ${Colors.horariosCard}; */
-  background-color: ${({selected}: IProps) =>{
-    return selected ? Colors.mainpurple : Colors.horariosCard}
-  }
-  ;
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;
@@ -102,11 +113,25 @@ export const ScheduleCell = styled.div`
   }
   p {
     padding: 0 0.5rem;
-    color: ${Colors.textcolor};
     text-align: center;
     text-align-last: center;
     font-size: 0.9rem;
   }
+
+
+
 `
 
+
+export const UidLabel = styled.p`
+  
+  font-weight: 400;
+ 
+  color: ${({canceled}: IProps2) =>{
+    return canceled ? "red" : Colors.textcolor}
+  };
+  text-decoration: ${({canceled}: IProps2) =>{
+    return canceled ? "line-through" : "none"}
+  };
+`
 
