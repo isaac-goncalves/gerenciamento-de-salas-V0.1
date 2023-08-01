@@ -34,7 +34,8 @@
     "react-transition-group": "^4.4.5",
     "react-use": "^17.4.0",
     "react-widgets": "^5.8.4",
-    "styled-components": "5.3.3"
+    "styled-components": "5.3.3",
+    "sweetalert2": "^11.7.20"
   },
   "devDependencies": {
     "@types/node": "^20.2.1",

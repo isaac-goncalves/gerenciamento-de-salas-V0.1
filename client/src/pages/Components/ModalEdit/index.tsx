@@ -9,10 +9,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import ScheduleViewer from '../ScheduleViewer';
 import { Laboratorio } from '../../Agendamentos/Agendamento.styles';
 
+import Swal from 'sweetalert2'
+
 interface ModalProps {
   isVisible: boolean
   onClose: Function
   editedData: any
+  daysIds: any
 }
 
 interface EditedData {
@@ -48,44 +51,127 @@ interface Professor {
 const ModalEdit = ({
   isVisible,
   onClose,
-  editedData
-
+  editedData,
+  daysIds
 }: ModalProps) => {
 
   if (!isVisible) return null
-  
+
   const [formData, setFormData] = useState<EditedData>(editedData);
   const [professores, setProfessores] = useState<ProfessoreProps[]>([]);
   const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
   const [startDate, setStartDate] = useState<Date>();
   const [selectedLaboratory, setSelectedLaboratory] = useState<any>();
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
+  const [selectedData, setSelectedData] = useState<any>();
+
+  async function handleDataSelection(selectedData: any) {
+    console.log("handleSelection")
+    console.log(selectedData)
+    setSelectedData(selectedData);
+  }
 
   async function handleEdit() {
+    console.clear()
+    console.log("daysIds")
+    console.log(daysIds)
+    // swal() adicionar swal que pergunta se tem certeza que quer editar
 
-    const updatedFormData = {
-      ...formData,
+    // const updatedAgendamentos: any = []
+    const deletedAgendamentos: any = []
+    const newAgendamentos: any = []
+
+    console.log("selectedData")
+    console.log(selectedData)
+
+    selectedData.forEach((agendamento: any, index: number) => {
+
+      console.log("agendamento")
+      console.log(agendamento.agendamento)
+
+      //verify if object is empty inside  
+
+      const agendamentoExist = agendamento.agendamento.id != null ? true : false
+      console.log("agendamentoExist:" + agendamentoExist)
+
+      if (!agendamentoExist && agendamento.selecionado) {
+       
+         //fazer uma forma de o item agendamento ter o valor da grade neste ponto
+        newAgendamentos.push(daysIds[index])
+      }
+
+      if (agendamentoExist && agendamento.selecionado === false) {
+        const deletedAgendamento = {
+          id: agendamento.agendamento.id
+        }
+        deletedAgendamentos.push(deletedAgendamento)
+      }
+    })
+
+    const updatedAgendamentos = {
+      id: formData.id,
       date: startDate,
       id_laboratorio: selectedLaboratory,
       id_professor: selectedProfessor,
-      nome_professor: professores.find(professor => professor.id === selectedProfessor)?.name
     }
 
+    console.log("newAgendamentos")
+    console.log(newAgendamentos)
+    console.log("deletedAgendamentos")
+    console.log(deletedAgendamentos)
+    console.log("updatedAgendamentos")
+    console.log(updatedAgendamentos)
+
+
+  //swall asking to confirm the edit
+  Swal.fire({
+    title: 'Tem certeza que deseja editar?',
+    text: "Você não poderá reverter isso!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Editar',
+    cancelButtonText: 'Cancelar'
+  }).then ((result) => {  
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Editado!',
+        'O agendamento foi editado.',
+        'success'
+      )
+      onClose(true)
+    }
+  })
+  //enable confetti when edit is confirmed
+
+
+    console.log("editedData")
+    // const updatedFormData = {
+    //   ...formData,
+    //   date: startDate,
+    //   id_laboratorio: selectedLaboratory,
+    //   id_professor: selectedProfessor,
+    //   nome_professor: professores.find(professor => professor.id === selectedProfessor)?.name
+    // }
+
+
+
     try {
-      const response = await fetch(`http://localhost:3333/agendamento/${formData.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedFormData)
-      })
+      // const response = await fetch(`http://localhost:3333/agendamento/${formData.id}`, {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(updatedFormData)
+      // })
 
-      const data = await response.json()
+      // const data = await response.json()
 
-      if (data) {
-        toast.success('Agendamento editado com sucesso!')
-        onClose(true)
-      }
+      // if (data) {
+      //   toast.success('Agendamento editado com sucesso!')
+      //   onClose(true)
+      // }
     } catch (error) {
       toast.error('Erro ao editar agendamento, tente novamente.')
     }
@@ -93,9 +179,11 @@ const ModalEdit = ({
 
   useEffect(() => {
 
-     console.log("ModalEdit useEffect")
-
+    console.log("ModalEdit useEffect")
+ 
     setFormData(editedData);
+
+    
 
     const fetchProfessorData = async () => {
       try {
@@ -206,7 +294,6 @@ const ModalEdit = ({
     });
   }
 
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -306,8 +393,6 @@ const ModalEdit = ({
           <SideBysideContainer>
             <DetailsWrapper>
               <div>
-
-
                 <DetailsText>Semestre:</DetailsText>
                 <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
                   {laboratory.length > 0 ? (
@@ -350,9 +435,9 @@ const ModalEdit = ({
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>
-                <ScheduleViewer props={formData} selectedLaboratory = {
+                <ScheduleViewer props={formData} selectedLaboratory={
                   selectedLaboratory
-                }/>
+                } handleDataSelection={handleDataSelection} />
               </ClockTimeWrapper>
               <ButtonsWrapper>
                 <StyledButton onClick={() => handleEdit()}>Editar</StyledButton>

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
-console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
+console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
@@ -105,6 +105,8 @@ const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
 
   const [editedData, setEditedData] = useState<any>({});
+  
+  const [daysIds, setDaysIds] = useState<any>([]);
 
   const [editingModal, setEditingModal] = React.useState(false)
 
@@ -156,9 +158,11 @@ const Dashboard: React.FC = () => {
     if (resetParams) fetchData();
   };
 
-  const openEditModal = (editedData: any) => {
+  const openEditModal = (editedData: any, daysIds: any) => {
     console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
+    console.log("daysIds: " + JSON.stringify(daysIds, null, 2))
     setEditedData(editedData);
+    setDaysIds(daysIds)
     setEditingModal(true);
   };
 
@@ -231,8 +235,6 @@ const Dashboard: React.FC = () => {
   }, [userData]);
 
   useEffect(() => {
-
-    console.clear();
 
     console.log('Starting to render stuff...');
 
@@ -419,6 +421,7 @@ const Dashboard: React.FC = () => {
     return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
   };
 
+  
   const renderWeekday = (dayName: string, dayData: any) => (
     <WeekdayContainer>
       <WeekDay>{getDayBasedOnWeekday(dayName, startDate)}</WeekDay>
@@ -444,8 +447,16 @@ const Dashboard: React.FC = () => {
               console.log("Clicked")
               console.log(item.agendamentos.length)
 
+              const daysIds:any = []
+              
+              dayData.forEach((item: any) => {
+                item.id ? daysIds.push(item.id) : null
+              })
+
+              console.log(daysIds)
+
               if (item.agendamentos.length > 0) {
-                openEditModal(item.agendamentos[0])
+                openEditModal(item.agendamentos[0], daysIds)
               } else {
                 console.log("Não há agendamento!")
               }
@@ -525,7 +536,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <><ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} />
+    <><ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} daysIds={daysIds} />
       <Container>
         <Helmet>
           <title>SGSA - Dashboard</title>
