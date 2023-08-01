@@ -71,7 +71,7 @@ export class AgendamentoController {
   }
 
   async get (request: Request, response: Response) {
-    console.log('GET agendamento')
+    // console.log('GET agendamento')
 
     try {
       const agendamentos = await agendamentosRepository.find()
@@ -98,7 +98,7 @@ export class AgendamentoController {
         })
       )
 
-      console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
+      // console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
 
       return response.status(200).json(agendamentos)
     } catch (error) {
@@ -198,12 +198,15 @@ export class AgendamentoController {
   }
 
   async delete (request: Request, response: Response) {
-    const id = Number(request.params.id)
 
+    const ids = request.body.ids
+
+    console.log(ids)
+    
     try {
-      const options: FindOneOptions<Agendamento> = {
-        where: { id: id }
-      }
+      ids.map(async (id : any) => {
+        
+      const options: FindOneOptions<Agendamento> = { where: { id: Number(id) }}
 
       const agendamento = await agendamentosRepository.findOne(options)
 
@@ -216,6 +219,7 @@ export class AgendamentoController {
       console.log(`Agendamento with id ${id} deleted`)
 
       return response.status(204).send()
+    })
     } catch (error) {
       console.error(error)
       return response.status(500).json({ message: 'Internal server error' })

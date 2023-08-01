@@ -41,7 +41,6 @@ function Perfil() {
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
 
-
     useEffect(() => {
         fetchData();
     }, []);

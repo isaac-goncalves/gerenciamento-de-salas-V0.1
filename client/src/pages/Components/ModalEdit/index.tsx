@@ -95,8 +95,8 @@ const ModalEdit = ({
       console.log("agendamentoExist:" + agendamentoExist)
 
       if (!agendamentoExist && agendamento.selecionado) {
-       
-         //fazer uma forma de o item agendamento ter o valor da grade neste ponto
+
+        //fazer uma forma de o item agendamento ter o valor da grade neste ponto
         newAgendamentos.push(daysIds[index])
       }
 
@@ -122,28 +122,63 @@ const ModalEdit = ({
     console.log("updatedAgendamentos")
     console.log(updatedAgendamentos)
 
+    
+    function createAgendamento() {
+      const finalData: any = {
+        date: startDate,
+        id_professor: "12",
+        ids_grade: newAgendamentos,
+        id_laboratorio: selectedLaboratory,
+      }
+  
+      console.log(finalData)
 
-  //swall asking to confirm the edit
-  Swal.fire({
-    title: 'Tem certeza que deseja editar?',
-    text: "Você não poderá reverter isso!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Editar',
-    cancelButtonText: 'Cancelar'
-  }).then ((result) => {  
-    if (result.isConfirmed) {
-      Swal.fire(
-        'Editado!',
-        'O agendamento foi editado.',
-        'success'
-      )
-      onClose(true)
+      fetch('http://localhost:3333/agendamento', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify(finalData),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          toast.success('Agendamento realizado com sucesso!');
+          onClose(true);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     }
-  })
-  //enable confetti when edit is confirmed
+
+    function deleteAgendamento() {
+      
+    }
+
+    //swall asking to confirm the edit
+    Swal.fire({
+      title: 'Tem certeza que deseja editar?',
+      text: "Você não poderá reverter isso!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Editar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        createAgendamento()
+
+        Swal.fire(
+          'Editado!',
+          'O agendamento foi editado.',
+          'success'
+        )
+        onClose(true)
+      }
+    })
+    //enable confetti when edit is confirmed
 
 
     console.log("editedData")
@@ -180,10 +215,10 @@ const ModalEdit = ({
   useEffect(() => {
 
     console.log("ModalEdit useEffect")
- 
+
     setFormData(editedData);
 
-    
+
 
     const fetchProfessorData = async () => {
       try {

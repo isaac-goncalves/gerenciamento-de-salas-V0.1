@@ -180,7 +180,6 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection }: any)
         };
       }
 
-
       return item;
     });
 
