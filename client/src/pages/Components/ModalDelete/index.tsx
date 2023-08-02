@@ -48,11 +48,9 @@ const ModalDelete = ({
 
   async function handleDelete() {
     try {
-
       const params = {
         ids : [deleteData.id]
       }
-
       const response = await fetch(`http://localhost:3333/agendamento`, {
         method: 'DELETE',
         body: JSON.stringify(params),

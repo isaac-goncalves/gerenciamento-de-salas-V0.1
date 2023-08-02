@@ -81,6 +81,8 @@ const ModalEdit = ({
     const deletedAgendamentos: any = []
     const newAgendamentos: any = []
 
+    const uuidAgendamento = formData.uuid_agendamento
+
     console.log("selectedData")
     console.log(selectedData)
 
@@ -101,10 +103,7 @@ const ModalEdit = ({
       }
 
       if (agendamentoExist && agendamento.selecionado === false) {
-        const deletedAgendamento = {
-          id: agendamento.agendamento.id
-        }
-        deletedAgendamentos.push(deletedAgendamento)
+        deletedAgendamentos.push(agendamento.agendamento.id)
       }
     })
 
@@ -115,6 +114,8 @@ const ModalEdit = ({
       id_professor: selectedProfessor,
     }
 
+    console.log("uuidAgendamento")
+    console.log(uuidAgendamento)
     console.log("newAgendamentos")
     console.log(newAgendamentos)
     console.log("deletedAgendamentos")
@@ -123,22 +124,28 @@ const ModalEdit = ({
     console.log(updatedAgendamentos)
 
     
-    function createAgendamento() {
+    async function createAgendamento() {
+
+      // "date": "2023-08-04T23:32:05.865Z",
+      // "id_laboratorio": 27,
+      // "id_professor": "12",
+      // "uuid_agendamento": "#89268"
+
       const finalData: any = {
-        date: startDate,
-        id_professor: "12",
         ids_grade: newAgendamentos,
+        date: startDate,
         id_laboratorio: selectedLaboratory,
+        id_professor: selectedProfessor,
+        uuid_agendamento: uuidAgendamento,
       }
   
       console.log(finalData)
 
-      fetch('http://localhost:3333/agendamento', {
+     await  fetch('http://localhost:3333/agendamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-
         body: JSON.stringify(finalData),
       })
         .then(response => response.json())
@@ -152,8 +159,29 @@ const ModalEdit = ({
         });
     }
 
-    function deleteAgendamento() {
-      
+    async function deleteAgendamento() {
+      try {
+        const params = {
+          ids : [deletedAgendamentos]
+        }
+        const response = await fetch(`http://localhost:3333/agendamento`, {
+          method: 'DELETE',
+          body: JSON.stringify(params),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (response.ok) {
+          toast.success('Agendamento deletado com sucesso!');
+          console.log("deletado com sucesso")
+          onClose(true);
+        } else {
+          toast.error('Erro ao deletar agendamento, tente novamente.');
+        }
+      } catch (error) {
+        toast.error('Erro ao deletar agendamento, tente novamente.');
+      }
     }
 
     //swall asking to confirm the edit
@@ -166,9 +194,15 @@ const ModalEdit = ({
       cancelButtonColor: '#d33',
       confirmButtonText: 'Editar',
       cancelButtonText: 'Cancelar'
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        createAgendamento()
+     
+        if (newAgendamentos.length > 0) {
+          await createAgendamento()
+        }
+        if (deletedAgendamentos.length > 0) {
+          await deleteAgendamento()
+        }
 
         Swal.fire(
           'Editado!',
@@ -189,8 +223,6 @@ const ModalEdit = ({
     //   id_professor: selectedProfessor,
     //   nome_professor: professores.find(professor => professor.id === selectedProfessor)?.name
     // }
-
-
 
     try {
       // const response = await fetch(`http://localhost:3333/agendamento/${formData.id}`, {
@@ -217,8 +249,6 @@ const ModalEdit = ({
     console.log("ModalEdit useEffect")
 
     setFormData(editedData);
-
-
 
     const fetchProfessorData = async () => {
       try {

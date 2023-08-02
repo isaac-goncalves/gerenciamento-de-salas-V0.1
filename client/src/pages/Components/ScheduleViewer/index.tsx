@@ -82,9 +82,8 @@ function transformData(agendamentos: any) {
 
     // console.log(agendamentoExisteNesteHorario)
 
-    console.log("agendamento.horario_inicio === clockTimesArray[i]")
-    console.log(agendamentoExisteNesteHorario != "" ? true : false)
-    console.log("===================================================")
+    console.log("================================")
+    console.log("Agendamento Existe: " + (agendamentoExisteNesteHorario != "" ? true : false))
 
     const item = {
       id: i,
@@ -92,7 +91,6 @@ function transformData(agendamentos: any) {
       agendamento: agendamentoExisteNesteHorario != "" ? agendamentoExisteNesteHorario : {},
     }
 
-    console.log("item")
     console.log(item)
 
     items.push(item)
