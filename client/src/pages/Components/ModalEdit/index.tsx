@@ -23,10 +23,10 @@ interface EditedData {
   date: any;
   horario_inicio: string;
   horario_fim: string;
-  id_professor: string;
-  id_grade: string;
+  id_professor: number;
+  id_grade: number;
   uuid_agendamento: string;
-  id_laboratorio: string;
+  id_laboratorio: number;
   created_at: string;
   updated_at: string;
 }
@@ -64,6 +64,7 @@ const ModalEdit = ({
   const [selectedLaboratory, setSelectedLaboratory] = useState<any>();
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
   const [selectedData, setSelectedData] = useState<any>();
+  const [initialDate, setInitialDate] = useState<any>();
 
   async function handleDataSelection(selectedData: any) {
     console.log("handleSelection")
@@ -107,23 +108,13 @@ const ModalEdit = ({
       }
     })
 
-    const updatedAgendamentos = {
-      id: formData.id,
-      date: startDate,
-      id_laboratorio: selectedLaboratory,
-      id_professor: selectedProfessor,
-    }
-
     console.log("uuidAgendamento")
     console.log(uuidAgendamento)
     console.log("newAgendamentos")
     console.log(newAgendamentos)
     console.log("deletedAgendamentos")
     console.log(deletedAgendamentos)
-    console.log("updatedAgendamentos")
-    console.log(updatedAgendamentos)
 
-    
     async function createAgendamento() {
 
       // "date": "2023-08-04T23:32:05.865Z",
@@ -138,10 +129,10 @@ const ModalEdit = ({
         id_professor: selectedProfessor,
         uuid_agendamento: uuidAgendamento,
       }
-  
+
       console.log(finalData)
 
-     await  fetch('http://localhost:3333/agendamento', {
+      await fetch('http://localhost:3333/agendamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -162,7 +153,7 @@ const ModalEdit = ({
     async function deleteAgendamento() {
       try {
         const params = {
-          ids : [deletedAgendamentos]
+          ids: deletedAgendamentos
         }
         const response = await fetch(`http://localhost:3333/agendamento`, {
           method: 'DELETE',
@@ -171,7 +162,7 @@ const ModalEdit = ({
             'Content-Type': 'application/json',
           },
         });
-  
+
         if (response.ok) {
           toast.success('Agendamento deletado com sucesso!');
           console.log("deletado com sucesso")
@@ -183,6 +174,52 @@ const ModalEdit = ({
         toast.error('Erro ao deletar agendamento, tente novamente.');
       }
     }
+
+    // async function updateAgendamento() {
+
+
+
+    console.log("updatedAgendamentos")
+    console.log(new Date(formData.date))
+    console.log(initialDate)
+    //se algo for alterado no agendamento, ele é atualizado
+
+    const agendamentoAlterado =
+      formData.date !== new Date(initialDate).toISOString()
+        || formData.id_laboratorio !== selectedLaboratory
+        || formData.id_professor !== selectedProfessor ? true : false
+
+    console.log("agendamentoAlterado: " + agendamentoAlterado)
+
+    if (agendamentoAlterado) {
+      try {
+
+        const updatedAgendamentos = {
+          date: formData.date,
+          id_laboratorio: selectedLaboratory,
+          id_professor: selectedProfessor,
+          uuid_agendamento: uuidAgendamento,
+        }
+
+        const response = await fetch(`http://localhost:3333/agendamento`, {
+          method: 'PUT',
+          body: JSON.stringify(updatedAgendamentos),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.ok) {
+          toast.success('Agendamento Atualizado com sucesso!');
+          console.log("Atualizado com sucesso")
+          onClose(true);
+        } else {
+          toast.error('Erro ao Atualizado agendamento, tente novamente.');
+        }
+      } catch (error) {
+        toast.error('Erro ao Atualizado agendamento, tente novamente.');
+      }
+    }
+    // }
 
     //swall asking to confirm the edit
     Swal.fire({
@@ -196,13 +233,14 @@ const ModalEdit = ({
       cancelButtonText: 'Cancelar'
     }).then(async (result) => {
       if (result.isConfirmed) {
-     
+
         if (newAgendamentos.length > 0) {
           await createAgendamento()
         }
-        if (deletedAgendamentos.length > 0) {
-          await deleteAgendamento()
-        }
+        // if (deletedAgendamentos.length > 0) {
+        //   await deleteAgendamento()
+        // }
+        // await updateAgendamento()
 
         Swal.fire(
           'Editado!',
@@ -214,8 +252,6 @@ const ModalEdit = ({
     })
     //enable confetti when edit is confirmed
 
-
-    console.log("editedData")
     // const updatedFormData = {
     //   ...formData,
     //   date: startDate,
@@ -247,8 +283,12 @@ const ModalEdit = ({
   useEffect(() => {
 
     console.log("ModalEdit useEffect")
+    console.log(formData)
 
-    setFormData(editedData);
+    if (!formData) {
+      setFormData(editedData);
+    }
+    setInitialDate(new Date(editedData.date));
 
     const fetchProfessorData = async () => {
       try {
@@ -318,8 +358,6 @@ const ModalEdit = ({
     //     "updated_at": "2023-04-12T19:17:14.002Z"
     // }
 
-
-
     function onEsc(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         onClose()
@@ -331,7 +369,7 @@ const ModalEdit = ({
     return () => {
       window.removeEventListener('keydown', onEsc)
     }
-  }, [editedData, selectedLaboratory])
+  }, [editedData])
 
   async function fetchProfessors(token: string) {
     // console.log("Fetching fetchProfessors...")
@@ -445,8 +483,8 @@ const ModalEdit = ({
             <DateTimeDiv>
               <DetailsText>Data de agendamento</DetailsText>
               <DatePicker selected={startDate} onChange={(date) => {
-                setStartDate(date || new Date())
-                setFormData({ ...formData, date: date || new Date() })
+                // setStartDate(date || new Date())
+                // setFormData({ ...formData, date: date || new Date() })
               }} />
             </DateTimeDiv>
             <DateTimeDiv>
@@ -459,7 +497,7 @@ const ModalEdit = ({
             <DetailsWrapper>
               <div>
                 <DetailsText>Semestre:</DetailsText>
-                <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+                {/* <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
                   {laboratory.length > 0 ? (
                     laboratory.map((laboratory) => (
                       <option key={laboratory.id} value={laboratory.id}>
@@ -469,7 +507,7 @@ const ModalEdit = ({
                   ) : (
                     <option value="">No professors available</option>
                   )}
-                </StyledSelect>
+                </StyledSelect> */}
               </div>
               <div>
                 <DetailsText>Laboratório:</DetailsText>

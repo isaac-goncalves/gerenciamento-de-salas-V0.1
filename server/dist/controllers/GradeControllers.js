@@ -30,9 +30,9 @@ const gradeRepositories_1 = require("../repositories/gradeRepositories");
 class GradeController {
     getDashboardData(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('get grade');
+            console.log('getDashboardData');
             const { semestre } = request.body;
-            console.log(request.body);
+            // console.log(request.body);
             try {
                 //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
                 //pegar o semestre da pessoa e filtrar tambem
@@ -100,9 +100,9 @@ class GradeController {
     }
     getAgendamentosData(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("get grade");
+            console.log("getAgendamentosData");
             const { semestre, professor_id } = request.body;
-            console.log(request.body);
+            // console.log(request.body);
             try {
                 // Retrieve grade data for the specified professor and semester
                 const query = `

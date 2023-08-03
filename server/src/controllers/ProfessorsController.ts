@@ -7,7 +7,7 @@ import { laboratoriosRepository } from '../repositories/laboratoriosRepository'
 export class ProfessorsController {
   
   async get (request: Request, response: Response) {
-    // console.log('get professores')
+     console.log('get professores')
 
     //grab token
 

@@ -25,7 +25,7 @@ function getNearestMonday(date: Date) {
  
   date = new Date(date)
 
-  console.log (date.getUTCDay())
+  // console.log (date.getUTCDay())
   
 //if is sunday return next monday
   if (date.getUTCDay() === 0) {
@@ -50,11 +50,11 @@ export class GradeController {
     const { semestre } = request.body
     const { date } = request.body
 
-    console.log(date)
+    // console.log(date)
 
     const nearestMonday = getNearestMonday(date)
 
-    console.log(nearestMonday)
+    // console.log(nearestMonday)
 
     const nextFriday = addDays(nearestMonday, 4)
 
@@ -114,9 +114,9 @@ export class GradeController {
             FROM
             agendamento
             LEFT JOIN
-            professores ON CAST(id_professor AS INTEGER) = professores.id
+            professores ON id_professor = professores.id
             LEFT JOIN
-            laboratorios ON CAST(id_laboratorio AS INTEGER) = laboratorios.id
+            laboratorios ON id_laboratorio = laboratorios.id
             WHERE
             id_grade = '${id_grade}'
             AND 
@@ -130,7 +130,7 @@ export class GradeController {
         })
       )
 
-       console.log(JSON.stringify(gradeWithAgendamento))
+      //  console.log(JSON.stringify(gradeWithAgendamento))
 
       return response.status(200).json(gradeWithAgendamento)
     } catch (error) {
@@ -140,9 +140,9 @@ export class GradeController {
   }
 
   async getAgendamentosData (request: Request, response: Response) {
-    console.log('get grade')
+    console.log('getAgendamentosData')
     const { semestre, professor_id } = request.body
-    console.log(request.body)
+    // console.log(request.body)
 
     try {
       // Retrieve grade data for the specified professor and semester

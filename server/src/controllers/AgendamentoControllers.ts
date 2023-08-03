@@ -11,12 +11,13 @@ export class AgendamentoController {
   async create (request: Request, response: Response) {
     console.log('create agendamento')
 
-    const { date, id_professor, ids_grade, id_laboratorio, uuid_agendamento } = request.body
+    const { date, id_professor, ids_grade, id_laboratorio, uuid_agendamento } =
+      request.body
 
     if (!date || !id_professor || !ids_grade || !id_laboratorio)
       return response.status(400).json({ message: 'missing data' })
 
-    console.log(date, id_professor, ids_grade, id_laboratorio)
+    // console.log(date, id_professor, ids_grade, id_laboratorio)
 
     if (ids_grade.length === 0)
       return response.status(400).json({ message: 'missing data' })
@@ -27,7 +28,7 @@ export class AgendamentoController {
       const id = `#${paddedNumber}` // Concatenate the "#" symbol with the padded number
       return id
     }
-    const uniqueId = uuid_agendamento ? uuid_agendamento :  generateID() 
+    const uniqueId = uuid_agendamento ? uuid_agendamento : generateID()
 
     ids_grade.forEach(async (id_grade: any) => {
       const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `
@@ -66,8 +67,83 @@ export class AgendamentoController {
     return response.status(201).json({ message: 'agendamento created' })
   }
 
+  async delete (request: Request, response: Response) {
+    const ids = request.body.ids
+    try {
+      // console.log(ids)
+      ids.map(async (idAgendamento: any) => {
+        const options: FindOneOptions<Agendamento> = {
+          where: { id: idAgendamento }
+        }
+
+        const agendamento = await agendamentosRepository.findOne(options)
+
+        if (!agendamento) {
+          return response.status(404).json({ message: 'Agendamento not found' })
+        }
+
+        await agendamentosRepository.delete(idAgendamento)
+
+        console.log(`Agendamento with id ${idAgendamento} deleted`)
+      })
+      return response.status(200).json({ message: 'Agendamento deleted' })
+    } catch (error) {
+      console.error(error)
+      return response.status(500).json({ message: 'Internal server error' })
+    }
+  }
+
+  async update (request: Request, response: Response) {
+    const id = Number(request.params.id)
+
+    const {
+      date,
+      id_professor,
+      id_laboratorio,
+      uuid_agendamento
+    } = request.body
+
+    console.log(
+      date,
+      id_professor,
+      id_laboratorio,
+      uuid_agendamento
+    )
+
+    try {
+      const options: FindOneOptions<Agendamento> = {
+        where: { uuid_agendamento: uuid_agendamento }
+      }
+      //grab all agendamentes with thar uuid_agendamento
+      const agendamentos = await agendamentosRepository.find(options)
+
+      console.log(agendamentos)
+
+      if (agendamentos.length === 0) {
+        return response.status(404).json({ message: 'Agendamento not found' })
+      }
+
+      //update all agendamentos with that uuid_agendamento
+      agendamentos.forEach(agendamento => {
+        agendamento.date = date;
+        agendamento.id_professor = id_professor;
+        agendamento.id_laboratorio = id_laboratorio;
+        agendamento.updated_at = new Date();
+      });
+    
+      // Save the updated agendamentos
+      await agendamentosRepository.save(agendamentos);
+
+      return response.status(200).json({ message: 'Agendamento updated' })
+
+    } catch (error) {
+      console.error(error)
+      return response.status(500).json({ message: 'Internal server error' })
+    }
+  }
+
   async get (request: Request, response: Response) {
-    // console.log('GET agendamento')
+    console.log('get agendamento')
 
     try {
       const agendamentos = await agendamentosRepository.find()
@@ -86,7 +162,7 @@ export class AgendamentoController {
 
           const queryProfessor = ` SELECT name FROM professores WHERE id = ${id_professor} `
           const nomeProfessor = await gradeRepositories.query(queryProfessor)
-          console.log(nomeProfessor)
+          // console.log(nomeProfessor)
 
           agendamento.nome_professor = nomeProfessor[0]?.name || ''
 
@@ -106,8 +182,8 @@ export class AgendamentoController {
   async getLaboratoriosSchedule (request: Request, response: Response) {
     try {
       const { date } = request.body
-      console.log('get Schedules ' + date + '------------------------')
-      console.log(date)
+      // console.log('get Schedules ' + date + '------------------------')
+      // console.log(date)
 
       const isoDate = new Date(date)
       isoDate.setHours(0, 0, 0, 0)
@@ -118,7 +194,7 @@ export class AgendamentoController {
         isSameDay(new Date(a.date), isoDate)
       )
 
-      console.log(agendamentos)
+      // console.log(agendamentos)
 
       //#TODO - get all professors names DONE
 
@@ -135,7 +211,7 @@ export class AgendamentoController {
         return obj
       })
 
-      console.log(newProfessores)
+      // console.log(newProfessores)
 
       //atualizando os agendamentos com os nomes dos professores
 
@@ -193,110 +269,28 @@ export class AgendamentoController {
     }
   }
 
-  async delete (request: Request, response: Response) {
-
-    const ids = request.body.ids
-
-    console.log(ids)
-    
-    try {
-      ids.map(async (id : any) => {
-        
-      const options: FindOneOptions<Agendamento> = { where: { id: Number(id) }}
-
-      const agendamento = await agendamentosRepository.findOne(options)
-
-      if (!agendamento) {
-        return response.status(404).json({ message: 'Agendamento not found' })
-      }
-
-      await agendamentosRepository.delete(id)
-
-      console.log(`Agendamento with id ${id} deleted`)
-
-      return response.status(204).send()
-    })
-    } catch (error) {
-      console.error(error)
-      return response.status(500).json({ message: 'Internal server error' })
-    }
-  }
-
-  async update (request: Request, response: Response) {
-    const id = Number(request.params.id)
-    const {
-      date,
-      horario_inicio,
-      horario_fim,
-      id_professor,
-      id_grade,
-      id_laboratorio
-    } = request.body
-
-    // console.log(
-    //   id,
-    //   date,
-    //   horario_inicio,
-    //   horario_fim,
-    //   id_professor,
-    //   id_grade,
-    //   id_laboratorio
-    // )
-
-    try {
-      const options: FindOneOptions<Agendamento> = {
-        where: { id: id }
-        // other options here, such as relations or order
-      }
-
-      const agendamento = await agendamentosRepository.findOne(options)
-
-      if (!agendamento) {
-        return response.status(404).json({ message: 'Agendamento not found' })
-      }
-
-      agendamentosRepository.merge(agendamento, {
-        date,
-        horario_inicio,
-        horario_fim,
-        id_professor,
-        id_grade,
-        id_laboratorio,
-        updated_at: new Date()
-      })
-
-      const results = await agendamentosRepository.save(agendamento)
-
-      console.log(`Agendamento with id ${id} updated`)
-
-      return response.status(200).json(results)
-    } catch (error) {
-      console.error(error)
-      return response.status(500).json({ message: 'Internal server error' })
-    }
-  }
-
   async getGroupedById (request: Request, response: Response) {
-   console.log("get Grouped");
-    const { uuid_agendamento } = request.body;
-    console.log(uuid_agendamento);
-  
+    console.log('getGroupedById')
+    const { uuid_agendamento } = request.body
+    // console.log(uuid_agendamento)
+
     try {
       // Retrieve grade data for the specified professor and semester
-      
-      const query = `SELECT * FROM agendamento WHERE uuid_agendamento = '${uuid_agendamento}'`;
 
-      const gradeGroupedById = await agendamentosRepository.query(query);
+      const query = `SELECT * FROM agendamento WHERE uuid_agendamento = '${uuid_agendamento}'`
 
-      console.log(gradeGroupedById);
+      const gradeGroupedById = await agendamentosRepository.query(query)
 
-      return response.status(200).json(gradeGroupedById);
+      // console.log(gradeGroupedById)
+
+      return response.status(200).json(gradeGroupedById)
     } catch (error) {
-      console.log(error);
-      return response.status(500).json({ message: "internal server error" });
+      console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
     }
   }
 }
+
 function getTimeSlot (horario_inicio: string): number {
   switch (horario_inicio) {
     case '18:45':

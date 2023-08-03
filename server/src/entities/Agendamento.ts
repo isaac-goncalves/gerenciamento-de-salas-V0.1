@@ -34,10 +34,10 @@ export class Agendamento {
   uuid_agendamento: string
 
   @Column()
-  id_grade: string
+  id_grade: number
 
   @Column()
-  id_laboratorio: string
+  id_laboratorio: number
 
   @CreateDateColumn()
   created_at: Date

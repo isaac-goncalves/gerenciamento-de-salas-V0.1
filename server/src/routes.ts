@@ -42,7 +42,7 @@ routes.get('/template/download', new ETLControllers().download)
 routes.post('/template/upload', new ETLControllers().upload)
 
 routes.post('/agendamento', new AgendamentoController().create)
-routes.put('/agendamento/:id', new AgendamentoController().update);
+routes.put('/agendamento', new AgendamentoController().update);
 routes.delete('/agendamento', new AgendamentoController().delete);
 
 // routes.post("/transaction", new TransactionsController().create);
