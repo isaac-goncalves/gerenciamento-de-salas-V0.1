@@ -1,71 +1,62 @@
+Portuguese:
 <img width="1280" alt="image" src="https://github.com/isaac-goncalves/gerenciamento-de-salas-V0.1/assets/82903174/7940b3fb-c671-4e33-8829-810ea8d6a115">
+🔬📚 Sistema de Gerenciamento de Laboratórios e Salas de Aula - FT Taubaté 📚🔬
 
-docker build -t frontend-sgsa . //constroi a imagem do frontend
-docker run -p 4173:3000 frontend-sgsa //roda o container do frontend
-docker run -p 4173:3000 --name frontend-sgsa-v1 frontend-sgsa //roda o container do frontend
-docker run -d --rm -p 5173:5173 --name frontend-sgsa-v1 frontend-sgsa
+Bem-vindo ao projeto de software desenvolvido como parte da disciplina de Engenharia de Software 3 na renomada Faculdade de Tecnologia de Taubaté! Este sistema inovador visa revolucionar a forma como os laboratórios e salas de aula são gerenciados e agendados dentro da faculdade.
 
-Promp para arrumar a visão de professores
+🚀 Recursos Principais 🚀
 
-i need to improve this functino on typescript
+Agendamento intuitivo de laboratórios e salas de aula.
+Integração de ETL em Python para otimização de dados.
+Utilização da moderna stack: Vite, Postgres, Node.js, TypeScript e TypeORM.
+📊 ETL com Python
+O sistema apresenta um processo de ETL (Extração, Transformação e Carregamento) implementado em Python. Isso permite uma análise aprofundada dos dados, fornecendo insights valiosos para a otimização contínua do uso de recursos.
 
-i need to fix the time i have this timings 
+🔧 Tecnologias Utilizadas 🔧
 
+Vite: Um construtor rápido e eficiente.
+Postgres: Banco de dados robusto e escalável.
+Node.js: Plataforma de desenvolvimento backend.
+TypeScript: Superset tipado do JavaScript.
+TypeORM: Mapeamento de objeto-relacional para TypeScript.
+Python: Linguagem poderosa para processamento de dados e ETL.
+📖 Como Contribuir 📖
 
-****
- "quarta": [
-    {
-      "id": 139,
-      "horario_inicio": "21:25",
-      "horario_fim": "22:15",
-      "dia_da_semana": 3,
-      "semestre": 6,
-      "created_at": "2023-04-15T23:43:42.997Z",
-      "updated_at": "2023-04-15T23:43:42.997Z",
-      "professor": "Pedro Jacob",
-      "disciplina": "Ética",
-      "laboratorio": "Sala-17",
-      "agendamentos": []
-    },
-    {
-      "id": 140,
-      "horario_inicio": "22:15",
-      "horario_fim": "23:05",
-      "dia_da_semana": 3,
-      "semestre": 6,
-      "created_at": "2023-04-15T23:43:42.997Z",
-      "updated_at": "2023-04-15T23:43:42.997Z",
-      "professor": "Pedro Jacob",
-      "disciplina": "Ética",
-      "laboratorio": "Sala-17",
-      "agendamentos": []
-    },
-    {
-      "disciplina": "Intervalo"
-    },
-    {
-      "disciplina": "Nenhuma Aula"
-    },
-    {
-      "disciplina": "Nenhuma Aula"
-    },
-    {
-      "disciplina": "Nenhuma Aula"
-    }
-  ],
+Faça um fork deste repositório.
+Crie uma branch para sua feature: git checkout -b sua-feature.
+Faça suas alterações e commit: git commit -m 'Adicione sua feature'.
+Envie para a branch principal: git push origin sua-feature.
+Abra um pull request e aguarde a análise.
+📞 Contato 📞
+Para qualquer dúvida ou sugestão, sinta-se à vontade para entrar em contato aqui.
 
-the data has to compare to this values and keep the order of the classes and the position of intervalo 
+English:
+🔬📚 Laboratory and Classroom Management System - FT Taubaté 📚🔬
 
-const strings = [
-    '1ª Aula: 18:45 - 19:35',
-    '2ª Aula: 19:35 - 20:25',
-    '3ª Aula: 20:25 - 20:35',
-    '4ª Aula: 20:35 - 21:25',
-    '5ª Aula: 21:25 - 22:15'
-  ];
+Welcome to the software project developed as part of the Software Engineering 3 course at the prestigious Faculdade de Tecnologia de Taubaté! This innovative system aims to revolutionize the way laboratories and classrooms are managed and scheduled within the college.
 
-  comandos para rodar o ngrok
+🚀 Key Features 🚀
 
-  ngrok http 3333
+Intuitive scheduling of laboratories and classrooms.
+Python-based ETL integration for data optimization.
+Utilization of a modern stack: Vite, Postgres, Node.js, TypeScript, and TypeORM.
+📊 Python-based ETL
+The system includes an ETL (Extraction, Transformation, Loading) process implemented in Python. This enables in-depth data analysis, providing valuable insights for continuous resource usage optimization.
 
-  ngrok http 5173
+🔧 Technologies Used 🔧
+
+Vite: Swift and efficient build tool.
+Postgres: Robust and scalable database.
+Node.js: Backend development platform.
+TypeScript: Typed superset of JavaScript.
+TypeORM: Object-relational mapping for TypeScript.
+Python: Powerful language for data processing and ETL.
+📖 How to Contribute 📖
+
+Fork this repository.
+Create a branch for your feature: git checkout -b your-feature.
+Make your changes and commit: git commit -m 'Add your feature'.
+Push to the main branch: git push origin your-feature.
+Open a pull request and await review.
+📞 Contact 📞
+For any questions or suggestions, feel free to reach out here.
