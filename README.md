@@ -20,15 +20,6 @@ Node.js: Plataforma de desenvolvimento backend.
 TypeScript: Superset tipado do JavaScript.
 TypeORM: Mapeamento de objeto-relacional para TypeScript.
 Python: Linguagem poderosa para processamento de dados e ETL.
-📖 Como Contribuir 📖
-
-Faça um fork deste repositório.
-Crie uma branch para sua feature: git checkout -b sua-feature.
-Faça suas alterações e commit: git commit -m 'Adicione sua feature'.
-Envie para a branch principal: git push origin sua-feature.
-Abra um pull request e aguarde a análise.
-📞 Contato 📞
-Para qualquer dúvida ou sugestão, sinta-se à vontade para entrar em contato aqui.
 
 English:
 🔬📚 Laboratory and Classroom Management System - FT Taubaté 📚🔬
@@ -51,12 +42,3 @@ Node.js: Backend development platform.
 TypeScript: Typed superset of JavaScript.
 TypeORM: Object-relational mapping for TypeScript.
 Python: Powerful language for data processing and ETL.
-📖 How to Contribute 📖
-
-Fork this repository.
-Create a branch for your feature: git checkout -b your-feature.
-Make your changes and commit: git commit -m 'Add your feature'.
-Push to the main branch: git push origin your-feature.
-Open a pull request and await review.
-📞 Contact 📞
-For any questions or suggestions, feel free to reach out here.
