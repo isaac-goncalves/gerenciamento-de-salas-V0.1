@@ -316,7 +316,7 @@ function Perfil() {
                 <title>SGSA - Perfil</title>
             </Helmet>
             <ToastContainer />
-            <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} />
+            <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} daysIds={[1,2,3,4]}/>
             <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />
             <Wrapper>
                 <Header>
