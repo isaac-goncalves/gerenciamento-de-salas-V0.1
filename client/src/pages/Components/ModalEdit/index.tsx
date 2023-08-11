@@ -15,7 +15,7 @@ interface ModalProps {
   isVisible: boolean
   onClose: Function
   editedData: any
-  daysIds: any
+  daysIds: any 
 }
 
 interface EditedData {
@@ -52,7 +52,7 @@ const ModalEdit = ({
   isVisible,
   onClose,
   editedData,
-  daysIds
+  daysIds 
 }: ModalProps) => {
 
   if (!isVisible) return null
