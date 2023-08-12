@@ -59,16 +59,43 @@ export const ClassesContainer = styled.div`
   gap: 0.5rem;
 `
 
-export const CourseSemester = styled.p`
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: ${Colors.textcolor};
+export const PageName = styled.h1`
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: ${Colors.mainpurple};
+
+  //hide when screen is small
+
+  @media screen and (max-width: 1000px) {
+    font-size: 1.2rem;
+  }
+
 `
 
 export const CourseName = styled.h1`
   font-size: 1.6rem;
   font-weight: 600;
   color: ${Colors.mainpurple};
+
+  //hide when screen is small
+
+  @media screen and (max-width: 1000px) {
+
+    display: none;
+  }
+
+`
+export const CourseSemester = styled.p`
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: ${Colors.textcolor};
+
+  //hide when screen is small
+
+  @media screen and (max-width: 1000px) {
+    font-size: 1.2rem;
+  }
+
 `
 
 export const FilterWrapper = styled.h2`
@@ -125,7 +152,7 @@ export const DatePickWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 85%;
+  width: 90%;
   gap: 1rem;
   background-color: ${Colors.white};
   border-radius: 12px;
@@ -147,11 +174,42 @@ export const DatepickArrowsContainer = styled.div`
   display: flex;
 `
 
+export const PularParaHojeText = styled.p`
+  // hide when screen is small
+
+  @media screen and (max-width: 715px) {
+    
+    display: none;
+  
+  }
+`
+
+export const CurrentMonth = styled.p`
+  //hide when screen is small
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+
+  @media screen and (max-width: 925px) {
+    display: none;
+  }
+`
+
+
 export const CalendarWrapper = styled.div`
   display: flex;
   width: 15rem;
   align-items: center;
   gap: 1rem;
+
+  //hide when screen is small
+  @media screen and (max-width: 1470px) {
+    display: none;
+  }
+
 `
 export const StyledDatePicker = styled(DatePicker)`
   z-index: 99;

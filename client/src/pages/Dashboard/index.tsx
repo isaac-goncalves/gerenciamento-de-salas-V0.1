@@ -16,7 +16,7 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper } from './Dashboard.styles'
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -467,31 +467,31 @@ const Dashboard: React.FC = () => {
               <Professor>{professor}</Professor>
               {
                 !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
-                selectedMethod === 'professor'  ? 
-                <SemestreSalaWrapper>
-                  <Semestre>{semestre}º Semestre</Semestre>
-                  <SalaWrapper>
-                    <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                    {agendamento && agendamento.laboratorio && (
-                      <>
-                        <MdKeyboardDoubleArrowRight />
-                        <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                      </>
-                    )}
-                  </SalaWrapper>
-                </SemestreSalaWrapper>
-                :
-                <SalaWrapper>
-                <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                {agendamento && agendamento.laboratorio && (
-                  <>
-                    <MdKeyboardDoubleArrowRight />
-                    <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                  </>
-                )}
-              </SalaWrapper>
-              : 
-              null
+                  selectedMethod === 'professor' ?
+                    <SemestreSalaWrapper>
+                      <Semestre>{semestre}º Semestre</Semestre>
+                      <SalaWrapper>
+                        <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                        {agendamento && agendamento.laboratorio && (
+                          <>
+                            <MdKeyboardDoubleArrowRight />
+                            <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                          </>
+                        )}
+                      </SalaWrapper>
+                    </SemestreSalaWrapper>
+                    :
+                    <SalaWrapper>
+                      <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                      {agendamento && agendamento.laboratorio && (
+                        <>
+                          <MdKeyboardDoubleArrowRight />
+                          <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                        </>
+                      )}
+                    </SalaWrapper>
+                  :
+                  null
               }
             </Schedule>
           );
@@ -563,11 +563,11 @@ const Dashboard: React.FC = () => {
         </Helmet>
         <Header>
           <CoursesWrapper>
+            <PageName>
+              Dashboard
+            </PageName>
             <CourseName>
-              <p>Dashboard</p>
-            </CourseName>
-            <CourseName>
-              Analise e desenvolvimento de sistemas
+              Análise e Desenv. de Sistemas
             </CourseName>
             <CourseSemester>
               1º Semestre de 2023
@@ -577,7 +577,7 @@ const Dashboard: React.FC = () => {
             <DatepickContainer>
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
                 <DateIcon src={dateIcon} />
-                <p>Pular para hoje</p>
+                <PularParaHojeText>Pular para hoje</PularParaHojeText>
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
                 <DateIcon src={arrowLeft} />
@@ -585,8 +585,9 @@ const Dashboard: React.FC = () => {
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>
                 <DateIcon src={arrowRight} />
               </DatepickArrowsContainer>
-              <p>{GetCurrentMonthAndYear(startDate)}</p>
-              <DateIcon src={arrowDown} />
+              <CurrentMonth>{GetCurrentMonthAndYear(startDate)}
+                <DateIcon src={arrowDown} />
+              </CurrentMonth>
               <CalendarWrapper>
                 Semana do dia
                 <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
