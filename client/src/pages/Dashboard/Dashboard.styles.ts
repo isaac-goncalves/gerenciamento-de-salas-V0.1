@@ -301,10 +301,19 @@ export const Disciplina = styled.p`
 font-weight: 500;
 color: ${Colors.textcolor};
 `
+
+export const SemestreSalaWrapper = styled.p`
+  display: flex;
+  gap: 0.4rem;
+`
+
 export const Professor = styled.p`
 font-style: italic;
 color: ${Colors.textcolor};
-
+`
+export const Semestre = styled.p`
+  font-style: italic;
+  color: ${Colors.mainpurple};
 `
 interface StyledComponentProps {
   agendamento: boolean;

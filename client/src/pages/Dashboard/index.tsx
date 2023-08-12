@@ -16,17 +16,17 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect } from './Dashboard.styles'
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRight } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
 
-import dateIcon  from '../../../public/images/dia_de_hoje.png';
-import arrowLeft  from '../../../public/images/pickDateicons/arrow_left.svg';
-import arrowRight  from '../../../public/images/pickDateicons/arrow_right.svg';
-import arrowDown  from '../../../public/images/pickDateicons/arrow_down.svg';
+import dateIcon from '../../../public/images/dia_de_hoje.png';
+import arrowLeft from '../../../public/images/pickDateicons/arrow_left.svg';
+import arrowRight from '../../../public/images/pickDateicons/arrow_right.svg';
+import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
 
 interface ScheduleItem {
   id: number;
@@ -105,7 +105,7 @@ const Dashboard: React.FC = () => {
   const [grade, setgrade] = useState<any>();
 
   const [editedData, setEditedData] = useState<any>({});
-  
+
   const [daysIds, setDaysIds] = useState<any>([]);
 
   const [editingModal, setEditingModal] = React.useState(false)
@@ -421,7 +421,7 @@ const Dashboard: React.FC = () => {
     return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
   };
 
-  
+
   const renderWeekday = (dayName: string, dayData: any) => (
     <WeekdayContainer>
       <WeekDay>{getDayBasedOnWeekday(dayName, startDate)}</WeekDay>
@@ -433,6 +433,7 @@ const Dashboard: React.FC = () => {
             professor,
             laboratorio,
             agendamentos,
+            semestre,
           } = item;
 
           const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
@@ -447,8 +448,8 @@ const Dashboard: React.FC = () => {
               console.log("Clicked")
               console.log(item.agendamentos.length)
 
-              const daysIds:any = []
-              
+              const daysIds: any = []
+
               dayData.forEach((item: any) => {
                 item.id ? daysIds.push(item.id) : null
               })
@@ -464,7 +465,23 @@ const Dashboard: React.FC = () => {
               className={isCurrentTime ? '' : 'hoverEffect'}>
               <Disciplina>{disciplina}</Disciplina>
               <Professor>{professor}</Professor>
-              <SalaWrapper>
+              {
+                !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
+                selectedMethod === 'professor'  ? 
+                <SemestreSalaWrapper>
+                  <Semestre>{semestre}º Semestre</Semestre>
+                  <SalaWrapper>
+                    <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                    {agendamento && agendamento.laboratorio && (
+                      <>
+                        <MdKeyboardDoubleArrowRight />
+                        <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                      </>
+                    )}
+                  </SalaWrapper>
+                </SemestreSalaWrapper>
+                :
+                <SalaWrapper>
                 <Sala agendamento={agendamento}>{laboratorio}</Sala>
                 {agendamento && agendamento.laboratorio && (
                   <>
@@ -473,6 +490,9 @@ const Dashboard: React.FC = () => {
                   </>
                 )}
               </SalaWrapper>
+              : 
+              null
+              }
             </Schedule>
           );
         })}
