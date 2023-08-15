@@ -14,11 +14,11 @@ import Swal from 'sweetalert2'
 interface ModalProps {
   isVisible: boolean
   onClose: Function
-  editedData: any
+  initialData: any
   daysIds: any
 }
 
-interface EditedData {
+interface InitialDataProps {
   id: number;
   date: any;
   horario_inicio: string;
@@ -51,13 +51,13 @@ interface Professor {
 const ModalEdit = ({
   isVisible,
   onClose,
-  editedData,
+  initialData,
   daysIds
 }: ModalProps) => {
 
   if (!isVisible) return null
 
-  const [formData, setFormData] = useState<EditedData>(editedData);
+  const [formData, setFormData] = useState<InitialDataProps>(initialData);
   const [professores, setProfessores] = useState<ProfessoreProps[]>([]);
   const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
   const [startDate, setStartDate] = useState<Date>();

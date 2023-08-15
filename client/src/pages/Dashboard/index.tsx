@@ -556,7 +556,8 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <><ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} editedData={editedData} daysIds={daysIds} />
+    <>
+      <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} />
       <Container>
         <Helmet>
           <title>SGSA - Dashboard</title>
