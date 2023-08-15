@@ -286,20 +286,20 @@ const ModalEdit = ({
     console.log(formData)
 
     if (!formData) {
-      setFormData(editedData);
+      setFormData(initialData);
     }
-    setInitialDate(new Date(editedData.date));
+    setInitialDate(new Date(initialData.date));
 
     const fetchProfessorData = async () => {
       try {
         await fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
 
-        // console.log("editedData.id_professor")
-        // console.log(editedData.id_professor)
+        // console.log("initialData.id_professor")
+        // console.log(initialData.id_professor)
 
-        if (editedData.id_professor) {
+        if (initialData.id_professor) {
 
-          setSelectedProfessor(editedData.id_professor);
+          setSelectedProfessor(initialData.id_professor);
 
         }
 
@@ -317,9 +317,9 @@ const ModalEdit = ({
         // console.log("editedData.laboratory")
         // console.log(editedData.id_laboratorio)
 
-        if (editedData.id_laboratorio) {
+        if (initialData.id_laboratorio) {
 
-          setSelectedLaboratory(editedData.id_laboratorio);
+          setSelectedLaboratory(initialData.id_laboratorio);
 
         }
         // console.log("selectedLaboratory")
@@ -369,7 +369,7 @@ const ModalEdit = ({
     return () => {
       window.removeEventListener('keydown', onEsc)
     }
-  }, [editedData])
+  }, [initialData])
 
   async function fetchProfessors(token: string) {
     // console.log("Fetching fetchProfessors...")
