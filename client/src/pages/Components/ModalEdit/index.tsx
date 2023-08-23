@@ -132,7 +132,7 @@ const ModalEdit = ({
 
       console.log(finalData)
 
-      await fetch('http://localhost:3333/agendamento', {
+      await fetch('http://localhost:430/agendamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ const ModalEdit = ({
         const params = {
           ids: deletedAgendamentos
         }
-        const response = await fetch(`http://localhost:3333/agendamento`, {
+        const response = await fetch(`http://localhost:430/agendamento`, {
           method: 'DELETE',
           body: JSON.stringify(params),
           headers: {
@@ -201,7 +201,7 @@ const ModalEdit = ({
           uuid_agendamento: uuidAgendamento,
         }
 
-        const response = await fetch(`http://localhost:3333/agendamento`, {
+        const response = await fetch(`http://localhost:430/agendamento`, {
           method: 'PUT',
           body: JSON.stringify(updatedAgendamentos),
           headers: {
@@ -261,7 +261,7 @@ const ModalEdit = ({
     // }
 
     try {
-      // const response = await fetch(`http://localhost:3333/agendamento/${formData.id}`, {
+      // const response = await fetch(`http://localhost:430/agendamento/${formData.id}`, {
       //   method: 'PUT',
       //   headers: {
       //     'Content-Type': 'application/json'
@@ -373,7 +373,7 @@ const ModalEdit = ({
 
   async function fetchProfessors(token: string) {
     // console.log("Fetching fetchProfessors...")
-    await fetch('http://localhost:3333/professors', {
+    await fetch('http://localhost:430/professors', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -386,7 +386,7 @@ const ModalEdit = ({
 
   async function fetchLaboratory(token: string) {
     // console.log("Fetching fetchLaboratory...")
-    await fetch('http://localhost:3333/laboratory', {
+    await fetch('http://localhost:430/laboratory', {
       method: 'GET',
       headers: {
         'Authorization': 'bearer ' + token,

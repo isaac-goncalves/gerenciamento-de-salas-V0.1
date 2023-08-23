@@ -12,5 +12,5 @@ data_source_1.AppDataSource.initialize().then(() => {
     app.use(express_1.default.json());
     app.use((0, cors_1.default)());
     app.use(routes_1.default);
-    return app.listen(3333, () => console.log("Ola Isaac: Servidor rodando na porta 3333"));
+    return app.listen(430, () => console.log("Ola Isaac: Servidor rodando na porta 430"));
 });

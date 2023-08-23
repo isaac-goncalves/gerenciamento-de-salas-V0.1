@@ -11,7 +11,7 @@
     # Install dependencies
     RUN npm install
 
-    EXPOSE 3333
+    EXPOSE 430
 
 # Set the command to start the server
 CMD ["npm", "run", "dev"]

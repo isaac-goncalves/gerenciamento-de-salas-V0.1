@@ -139,7 +139,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection }: any)
 
     const bodyParams = JSON.stringify(obj)
 
-    await fetch('http://localhost:3333/agendamento/grouped', {
+    await fetch('http://localhost:430/agendamento/grouped', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
