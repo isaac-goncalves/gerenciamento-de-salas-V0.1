@@ -7,3 +7,4 @@ backend/dist
 server/.env
 server/dist
 
+server/dist
