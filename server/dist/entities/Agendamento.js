@@ -23,7 +23,7 @@ __decorate([
 ], Agendamento.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Date)
 ], Agendamento.prototype, "date", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -43,11 +43,11 @@ __decorate([
 ], Agendamento.prototype, "uuid_agendamento", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Agendamento.prototype, "id_grade", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Agendamento.prototype, "id_laboratorio", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),

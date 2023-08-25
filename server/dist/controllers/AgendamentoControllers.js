@@ -19,21 +19,19 @@ class AgendamentoController {
     create(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('create agendamento');
-            const { date, id_professor, ids_grade, id_laboratorio } = request.body;
+            const { date, id_professor, ids_grade, id_laboratorio, uuid_agendamento } = request.body;
             if (!date || !id_professor || !ids_grade || !id_laboratorio)
                 return response.status(400).json({ message: 'missing data' });
-            console.log(date, id_professor, ids_grade, id_laboratorio);
+            // console.log(date, id_professor, ids_grade, id_laboratorio)
             if (ids_grade.length === 0)
                 return response.status(400).json({ message: 'missing data' });
-            //create  unique identifier for agendamento and store on uuid_agendamento
             function generateID() {
                 const randomNumber = Math.floor(Math.random() * 100000); // Generate a random number between 0 and 99999
                 const paddedNumber = randomNumber.toString().padStart(5, '0'); // Pad the number with leading zeros if necessary
                 const id = `#${paddedNumber}`; // Concatenate the "#" symbol with the padded number
                 return id;
             }
-            // Usage example
-            const uniqueId = generateID();
+            const uniqueId = uuid_agendamento ? uuid_agendamento : generateID();
             ids_grade.forEach((id_grade) => __awaiter(this, void 0, void 0, function* () {
                 const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `;
                 const horariosImportadosGrade = yield gradeRepositories_1.gradeRepositories.query(query);
@@ -63,9 +61,65 @@ class AgendamentoController {
             return response.status(201).json({ message: 'agendamento created' });
         });
     }
+    delete(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const ids = request.body.ids;
+            try {
+                // console.log(ids)
+                ids.map((idAgendamento) => __awaiter(this, void 0, void 0, function* () {
+                    const options = {
+                        where: { id: idAgendamento }
+                    };
+                    const agendamento = yield agendamentoRepository_1.agendamentosRepository.findOne(options);
+                    if (!agendamento) {
+                        return response.status(404).json({ message: 'Agendamento not found' });
+                    }
+                    yield agendamentoRepository_1.agendamentosRepository.delete(idAgendamento);
+                    console.log(`Agendamento with id ${idAgendamento} deleted`);
+                }));
+                return response.status(200).json({ message: 'Agendamento deleted' });
+            }
+            catch (error) {
+                console.error(error);
+                return response.status(500).json({ message: 'Internal server error' });
+            }
+        });
+    }
+    update(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = Number(request.params.id);
+            const { date, id_professor, id_laboratorio, uuid_agendamento } = request.body;
+            console.log(date, id_professor, id_laboratorio, uuid_agendamento);
+            try {
+                const options = {
+                    where: { uuid_agendamento: uuid_agendamento }
+                };
+                //grab all agendamentes with thar uuid_agendamento
+                const agendamentos = yield agendamentoRepository_1.agendamentosRepository.find(options);
+                console.log(agendamentos);
+                if (agendamentos.length === 0) {
+                    return response.status(404).json({ message: 'Agendamento not found' });
+                }
+                //update all agendamentos with that uuid_agendamento
+                agendamentos.forEach(agendamento => {
+                    agendamento.date = date;
+                    agendamento.id_professor = id_professor;
+                    agendamento.id_laboratorio = id_laboratorio;
+                    agendamento.updated_at = new Date();
+                });
+                // Save the updated agendamentos
+                yield agendamentoRepository_1.agendamentosRepository.save(agendamentos);
+                return response.status(200).json({ message: 'Agendamento updated' });
+            }
+            catch (error) {
+                console.error(error);
+                return response.status(500).json({ message: 'Internal server error' });
+            }
+        });
+    }
     get(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('GET agendamento');
+            console.log('get agendamento');
             try {
                 const agendamentos = yield agendamentoRepository_1.agendamentosRepository.find();
                 agendamentos.sort((a, b) => {
@@ -77,38 +131,11 @@ class AgendamentoController {
                     const id_professor = agendamento.id_professor;
                     const queryProfessor = ` SELECT name FROM professores WHERE id = ${id_professor} `;
                     const nomeProfessor = yield gradeRepositories_1.gradeRepositories.query(queryProfessor);
-                    console.log(nomeProfessor);
+                    // console.log(nomeProfessor)
                     agendamento.nome_professor = ((_a = nomeProfessor[0]) === null || _a === void 0 ? void 0 : _a.name) || '';
                     return agendamento;
                 })));
-                console.log(JSON.stringify(agendamentoWithProfessorName, null, 2));
-                // const newAgendamento = await agendamentos.map(
-                //   async (agendamento: any) => {
-                //     const id_professor = agendamento.id_professor
-                //     const id_laboratorio = agendamento.id_laboratorio
-                //     const queryProfessor = ` SELECT nome_completo FROM professores WHERE id = ${id_professor} `
-                //     const queryLaboratorio = ` SELECT descricao FROM laboratorios WHERE id = ${id_laboratorio} `
-                //     // const queryGrade = ` SELECT nome FROM grade WHERE id = ${id_grade} `
-                //     // const queryDiscipla = ` SELECT nome FROM disciplina WHERE id = ${} `
-                //     // const nomeDisciplina = await gradeRepositories.query(queryGrade)
-                //     const nomeProfessor = await gradeRepositories.query(queryProfessor)
-                //     const nomeLaboratorio = await gradeRepositories.query(
-                //       queryLaboratorio
-                //     )
-                //     agendamento.nome_professor = nomeProfessor[0].nome
-                //     // agendamento.nome_grade = nomeGrade[0].nome
-                //     agendamento.nome_laboratorio = nomeLaboratorio[0].nome
-                //     return [
-                //       ...agendamento,
-                //       agendamento.nome_professor,
-                //       // agendamento.nome_grade,
-                //       agendamento.nome_laboratorio
-                //     ]
-                //   }
-                // )
-                // console.log(newAgendamento)
-                // const NomeProfessor = await gradeRepositories.query(` SELECT nome FROM professor WHERE id = ${id_professor} `);
-                // console.log(NomeProfessor)
+                // console.log(JSON.stringify(agendamentoWithProfessorName, null, 2))
                 return response.status(200).json(agendamentos);
             }
             catch (error) {
@@ -121,13 +148,13 @@ class AgendamentoController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { date } = request.body;
-                console.log('get Schedules ' + date + '------------------------');
-                console.log(date);
+                // console.log('get Schedules ' + date + '------------------------')
+                // console.log(date)
                 const isoDate = new Date(date);
                 isoDate.setHours(0, 0, 0, 0);
                 const allAgendamentos = yield agendamentoRepository_1.agendamentosRepository.find();
                 const agendamentos = allAgendamentos.filter(a => (0, date_fns_1.isSameDay)(new Date(a.date), isoDate));
-                console.log(agendamentos);
+                // console.log(agendamentos)
                 //#TODO - get all professors names DONE
                 //----------------------------------------------------
                 const allProfessors = yield professoresRepositories_1.professoresRepository.find();
@@ -140,7 +167,7 @@ class AgendamentoController {
                     };
                     return obj;
                 });
-                console.log(newProfessores);
+                // console.log(newProfessores)
                 //atualizando os agendamentos com os nomes dos professores
                 const updatedAgendamentos = agendamentos.map(agendamento => {
                     // Find the professor with the same id as the current Agendamento's id_professor
@@ -149,7 +176,7 @@ class AgendamentoController {
                     return Object.assign(Object.assign({}, agendamento), { professor_name: professor ? professor.name : null });
                 });
                 // console.log(updatedAgendamentos);
-                //----------------------------------------------------      
+                //----------------------------------------------------
                 //#TODO - gmake ids go from 1 to ++ - DOING
                 //----------------------------------------------------
                 let scheduleData = {};
@@ -178,65 +205,21 @@ class AgendamentoController {
             }
         });
     }
-    delete(request, response) {
+    getGroupedById(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = Number(request.params.id);
+            console.log('getGroupedById');
+            const { uuid_agendamento } = request.body;
+            // console.log(uuid_agendamento)
             try {
-                const options = {
-                    where: { id: id }
-                };
-                const agendamento = yield agendamentoRepository_1.agendamentosRepository.findOne(options);
-                if (!agendamento) {
-                    return response.status(404).json({ message: 'Agendamento not found' });
-                }
-                yield agendamentoRepository_1.agendamentosRepository.delete(id);
-                console.log(`Agendamento with id ${id} deleted`);
-                return response.status(204).send();
+                // Retrieve grade data for the specified professor and semester
+                const query = `SELECT * FROM agendamento WHERE uuid_agendamento = '${uuid_agendamento}'`;
+                const gradeGroupedById = yield agendamentoRepository_1.agendamentosRepository.query(query);
+                // console.log(gradeGroupedById)
+                return response.status(200).json(gradeGroupedById);
             }
             catch (error) {
-                console.error(error);
-                return response.status(500).json({ message: 'Internal server error' });
-            }
-        });
-    }
-    update(request, response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const id = Number(request.params.id);
-            const { date, horario_inicio, horario_fim, id_professor, id_grade, id_laboratorio } = request.body;
-            // console.log(
-            //   id,
-            //   date,
-            //   horario_inicio,
-            //   horario_fim,
-            //   id_professor,
-            //   id_grade,
-            //   id_laboratorio
-            // )
-            try {
-                const options = {
-                    where: { id: id }
-                    // other options here, such as relations or order
-                };
-                const agendamento = yield agendamentoRepository_1.agendamentosRepository.findOne(options);
-                if (!agendamento) {
-                    return response.status(404).json({ message: 'Agendamento not found' });
-                }
-                agendamentoRepository_1.agendamentosRepository.merge(agendamento, {
-                    date,
-                    horario_inicio,
-                    horario_fim,
-                    id_professor,
-                    id_grade,
-                    id_laboratorio,
-                    updated_at: new Date()
-                });
-                const results = yield agendamentoRepository_1.agendamentosRepository.save(agendamento);
-                console.log(`Agendamento with id ${id} updated`);
-                return response.status(200).json(results);
-            }
-            catch (error) {
-                console.error(error);
-                return response.status(500).json({ message: 'Internal server error' });
+                console.log(error);
+                return response.status(500).json({ message: 'internal server error' });
             }
         });
     }

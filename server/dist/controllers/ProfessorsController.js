@@ -11,31 +11,49 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfessorsController = void 0;
 const professoresRepositories_1 = require("../repositories/professoresRepositories");
+const laboratoriosRepository_1 = require("../repositories/laboratoriosRepository");
 class ProfessorsController {
     get(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            // console.log('get professores');
+            console.log('get professores');
             //grab token
             const token = request.headers.authorization;
             //verify token
-            if (!token)
-                return response.status(401).json({ message: 'missing token' });
-            const [, tokenValue] = token.split(' ');
+            // if (!token) return response.status(401).json({ message: 'missing token' })
+            // const [, tokenValue] = token.split(' ')
             try {
                 const professores = yield professoresRepositories_1.professoresRepository.find();
-                // console.log(JSON.stringify(professores, null, 2));
+                // console.log(JSON.stringify(professores, null, 2))
                 const newProfessores = yield professores.map((professor) => {
                     const id = professor.id;
                     const name = professor.name;
-                    // console.log(id, name);
+                    // console.log(id, name)
                     const obj = {
                         id: id,
                         name: name
                     };
                     return obj;
                 });
-                // console.log(newProfessores);
+                // console.log(newProfessores)
                 return response.status(200).json(newProfessores);
+            }
+            catch (error) {
+                return response.status(500).json({ message: 'internal server error' });
+            }
+        });
+    }
+    getLaboratory(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // console.log('get getLaboratory')
+            //grab token
+            const token = request.headers.authorization;
+            //verify token
+            // if (!token) return response.status(401).json({ message: 'missing token' })
+            // const [, tokenValue] = token.split(' ')
+            try {
+                const laboratory = yield laboratoriosRepository_1.laboratoriosRepository.find();
+                // console.log(JSON.stringify(laboratory, null, 2))
+                return response.status(200).json(laboratory);
             }
             catch (error) {
                 return response.status(500).json({ message: 'internal server error' });

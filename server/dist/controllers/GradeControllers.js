@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GradeController = void 0;
 const gradeRepositories_1 = require("../repositories/gradeRepositories");
+const date_fns_1 = require("date-fns");
 // import { professoresRepository } from "../repositories/professoresRepository";
 // import { laboratoriosRepository } from "../repositories/laboratoriosRepository";
 // import { disciplinasRepository } from "../repositories/disciplinasRepositories";
@@ -27,12 +28,30 @@ const gradeRepositories_1 = require("../repositories/gradeRepositories");
 //     created_at: Date;
 //     updated_at: Date;
 // }
+function getNearestMonday(date) {
+    date = new Date(date);
+    // console.log (date.getUTCDay())
+    //if is sunday return next monday
+    if (date.getUTCDay() === 0) {
+        const nextMonday = (0, date_fns_1.addDays)(date, 1);
+        return nextMonday;
+    }
+    const nearestMonday = (0, date_fns_1.setDay)((0, date_fns_1.startOfWeek)(date), 1);
+    return nearestMonday;
+}
+function formatDateForSQL(date) {
+    return date.toISOString();
+}
 class GradeController {
     getDashboardData(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('getDashboardData');
+            console.log('get grade');
             const { semestre } = request.body;
-            // console.log(request.body);
+            const { date } = request.body;
+            // console.log(date)
+            const nearestMonday = getNearestMonday(date);
+            // console.log(nearestMonday)
+            const nextFriday = (0, date_fns_1.addDays)(nearestMonday, 4);
             try {
                 //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
                 //pegar o semestre da pessoa e filtrar tambem
@@ -57,7 +76,7 @@ class GradeController {
               LEFT JOIN 
                   laboratorios ON grade.id_sala = laboratorios.id 
               WHERE 
-                  grade.semestre = '${semestre}'
+                  grade.semestre = '${semestre}' 
               ORDER BY
                   grade.id ASC
             `;
@@ -67,30 +86,35 @@ class GradeController {
                     const id_grade = grade.id;
                     const queryAgendamento = `
             SELECT
-            agendamento.id as id_agendamento,
+            agendamento.id as id,
             date,
+            uuid_agendamento,
             horario_inicio,
             horario_fim,
             id_professor,
             id_grade,
             id_laboratorio,
             professores.name as professor,
-            laboratorios.descricao as laboratorio
+            laboratorios.descricao as laboratorio,
+            agendamento.updated_at,
+            agendamento.created_at
             FROM
             agendamento
-            INNER JOIN
-            professores ON CAST(id_professor AS INTEGER) = professores.id
-            INNER JOIN
-            laboratorios ON CAST(id_laboratorio AS INTEGER) = laboratorios.id
+            LEFT JOIN
+            professores ON id_professor = professores.id
+            LEFT JOIN
+            laboratorios ON id_laboratorio = laboratorios.id
             WHERE
             id_grade = '${id_grade}'
+            AND 
+            date BETWEEN '${formatDateForSQL(nearestMonday)}' AND '${formatDateForSQL(nextFriday)}'
           `;
                     const agendamentos = yield gradeRepositories_1.gradeRepositories.query(queryAgendamento);
                     grade.agendamentos = agendamentos || [];
                     return grade;
                 })));
-                // console.log(gradeWithAgendamento)
-                return response.status(200).json(gradeWithProfessor);
+                //  console.log(JSON.stringify(gradeWithAgendamento))
+                return response.status(200).json(gradeWithAgendamento);
             }
             catch (error) {
                 console.log(error);
@@ -100,9 +124,9 @@ class GradeController {
     }
     getAgendamentosData(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("getAgendamentosData");
+            console.log('getAgendamentosData');
             const { semestre, professor_id } = request.body;
-            // console.log(request.body);
+            // console.log(request.body)
             try {
                 // Retrieve grade data for the specified professor and semester
                 const query = `
@@ -151,9 +175,9 @@ class GradeController {
               laboratorios.descricao as laboratorio
             FROM
               agendamento
-            INNER JOIN
+            LEFT JOIN
               professores ON CAST(id_professor AS INTEGER) = professores.id
-            INNER JOIN
+            LEFT JOIN
               laboratorios ON CAST(id_laboratorio AS INTEGER) = laboratorios.id
             WHERE
               id_grade = '${id_grade}'
@@ -167,7 +191,7 @@ class GradeController {
             }
             catch (error) {
                 console.log(error);
-                return response.status(500).json({ message: "internal server error" });
+                return response.status(500).json({ message: 'internal server error' });
             }
         });
     }
