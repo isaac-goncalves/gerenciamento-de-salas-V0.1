@@ -17,9 +17,7 @@ AppDataSource.initialize().then(() => {
     app.use(routes);
 
     // Create an HTTPS server using the SSL/TLS certificates
-    const server = https.createServer(app);
+    return app.listen(3333, () => console.log("Ola Isaac: Servidor rodando na porta 3333"));
 
-    server.listen(80, () => {
-        console.log("Ola Isaac: Servidor rodando na porta 80");
-    });
+
 });
