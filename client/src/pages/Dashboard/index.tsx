@@ -99,7 +99,7 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
   }
   return groupedData;
 }
-
+//COMPONENTS -------------------------------------------------------------------------
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
@@ -121,7 +121,7 @@ const Dashboard: React.FC = () => {
   
 
 //USERSESSIONDATA
-  const [userData, setUserData] = useState( 
+  const [userData, setUserData] = useState<any>( 
     {
       userData: {
         id: 0,
@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
             // set to nearest Friday
             const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); 
             
-//USE EFFECTS
+//USE EFFECTS -------------------------------------------------------------------------
     useLayoutEffect(() => {
       console.log('Starting to render stuff...');
 
@@ -164,7 +164,7 @@ const Dashboard: React.FC = () => {
         const userDataJson = JSON.parse(localUserData || '{}');
         const { userData: storedUserData, token } = userDataJson;
 
-        console.log('userData' + storedUserData);
+        console.log(JSON.stringify(storedUserData));
         console.log('token' + token);
 
         if (token == null || localUserData == null) {
@@ -224,15 +224,82 @@ const Dashboard: React.FC = () => {
       };
     }, []);
 
-  //FUNCTIONS
+  //FUNCTIONS -------------------------------------------------------------------------
+
+    function handleScheduleClick(dayData:any, item:any, dayDateObject: Date) {
+      console.clear()
+      console.log("Clicked")
+      console.log(item.agendamentos.length)
+
+      const daysIds: any = []
+
+      dayData.forEach((item: any) => {
+        item.id ? daysIds.push(item.id) : null
+      })
+
+      console.log(daysIds)
+      console.log(dayDateObject?.toISOString())
+
+      if (item.agendamentos.length > 0) {
+        // console.log("Agendamento exist and the item is") 
+        console.log(JSON.stringify( item.agendamentos[0], null, 2))
+        console.log("agendamento exist")
+
+        openEditModal(item.agendamentos[0], daysIds)
+      } else {
+
+        // MONTA OBJ DE MOVO AGENDAMENTO
+        //{
+        //   "id": 9,
+        //   "date": "2023-08-25T00:23:27.240Z",
+        //   "uuid_agendamento": "#21324",
+        //   "horario_inicio": "18:45:00",
+        //   "horario_fim": "19:35:00",
+        //   "id_professor": 12,
+        //   "id_grade": 16,
+        //   "id_laboratorio": 25,
+        //   "professor": "Marcos Allan",
+        //   "laboratorio": "Laboratorio-5",
+        //   "updated_at": "2023-08-27T00:23:37.849Z",
+        //   "created_at": "2023-08-27T00:23:37.849Z"
+        // }
+        
+        const newAgedamentoData = {
+          date: dayDateObject?.toISOString(),
+          uuid_agendamento: "-",
+          id_professor: userData.userData.professor_id,
+          id_laboratorio: 0,
+          updated_at: new Date()?.toISOString(),
+          created_at: new Date()?.toISOString()
+        }
+
+        //ABRE MODAL DE NOVO AGENDAMNTO CASO USUARIO ESTEJA NO MODO DE CRIAÇÂO 
+        userIsScheduling 
+        ? 
+        openEditModal(newAgedamentoData, daysIds)
+        :
+        console.log("Is not agendating")
+      }
+    }
 
   //RENDER FUNCTIONS
-    const renderWeekday = (dayName: string, dayData: any) => (
+    const renderWeekday = (dayName: string, dayData: any) => {
+    
+      const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
+      // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
+      const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
+      const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
+      
+      console.log("currentWeekday")
+      console.log(dayDateObject)
+
+    return(
       <WeekdayContainer>
-        <WeekDay>{getDayBasedOnWeekday(dayName, startDate)}</WeekDay>
+        <WeekDay>{currentWeekDay}</WeekDay>
         <SchedulesContainer isCurrentDay={currentDay === dayName}>
           <h2>{dayName}</h2>
-          {dayData.map((item: any) => {
+          {
+          dayData.map((item: any) => {
             const {
               disciplina,
               professor,
@@ -249,72 +316,7 @@ const Dashboard: React.FC = () => {
             // console.log(currentTime)
   
             return (
-              <Schedule onClick={() => {
-                console.clear()
-                console.log("Clicked")
-                console.log(item.agendamentos.length)
-  
-                const daysIds: any = []
-  
-                dayData.forEach((item: any) => {
-                  item.id ? daysIds.push(item.id) : null
-                })
-  
-                console.log(daysIds)
-  
-                if (item.agendamentos.length > 0) {
-                  // console.log("Agendamento exist and the item is") 
-                  console.log(JSON.stringify( item.agendamentos[0], null, 2))
-                  console.log("agendamento exist")
-                  openEditModal(item.agendamentos[0], daysIds)
-                } else {
-  
-                  // MONTA OBJ DE MOVO AGENDAMENTO
-  //{
-  //   "id": 9,
-  //   "date": "2023-08-25T00:23:27.240Z",
-  //   "uuid_agendamento": "#21324",
-  //   "horario_inicio": "18:45:00",
-  //   "horario_fim": "19:35:00",
-  //   "id_professor": 12,
-  //   "id_grade": 16,
-  //   "id_laboratorio": 25,
-  //   "professor": "Marcos Allan",
-  //   "laboratorio": "Laboratorio-5",
-  //   "updated_at": "2023-08-27T00:23:37.849Z",
-  //   "created_at": "2023-08-27T00:23:37.849Z"
-  // }
-  console.log(startDate?.toISOString())
-                  const newAgedamentoData = {
-                    id: 0,
-                    date: startDate?.toISOString(),
-                    uuid_agendamento: "#21324",
-                    horario_inicio: "18:45:00",
-                    horario_fim: "19:35:00",
-                    id_professor: selectedProfessor.id,
-                    id_grade: 16,
-  
-                    id_laboratorio: 25,
-  
-                    professor: selectedProfessor.name,
-  
-                    laboratorio: "Laboratorio-5",
-  
-                    updated_at: "2023-08-27T00:23:37.849Z",
-  
-                    created_at: "2023-08-27T00:23:37.849Z"
-  
-  
-                  }
-  
-                  //ABRE MODAL DE NOVO AGENDAMNTO CASO USUARIO ESTEJA NO MODO DE CRIAÇÂO 
-                  userIsScheduling 
-                  ? 
-                  openEditModal(newAgedamentoData, daysIds)
-                  :
-                  console.log("Is not agendating")
-                }
-              }} isCurrentTime={isCurrentTime}
+              <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
                 className={isCurrentTime ? '' : 'hoverEffect'}>
                 <Disciplina>{disciplina}</Disciplina>
                 <Professor>{professor}</Professor>
@@ -351,7 +353,8 @@ const Dashboard: React.FC = () => {
           })}
         </SchedulesContainer>
       </WeekdayContainer>
-    );
+    )
+  };
     const renderLoading = () => {
       return (
         <WeekContainer>
@@ -377,7 +380,13 @@ const Dashboard: React.FC = () => {
   
   //MODAL HANDLE FUNCTIONS
     function handleSchedulingButtonClick() {
-      
+      if( userIsScheduling == true ) {
+        toast.info('Modo de agendamento desativado!');
+      }
+      else {
+        toast.info('Selecione um dia para agendar!');
+      }
+
       setUserIsScheduling(!userIsScheduling)
       console.log(userIsScheduling)
       //habilitar oarametro que fd-diz que esta em modo agendamento
@@ -432,7 +441,7 @@ const Dashboard: React.FC = () => {
       setStartDate(monday);
       setEndDate(friday);
     };  
-    const getDayBasedOnWeekday = (dayName: string, startDate: any) => {
+    const getDayBasedOnWeekday:any = (dayName: string, startDate: any) => {
       const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
       const dayIndex = days.indexOf(dayName);
 
@@ -447,8 +456,11 @@ const Dashboard: React.FC = () => {
       nextDay.setDate(startDate.getDate() + daysUntilNext);
 
       const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-
-      return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
+    
+      return  {
+        currentWeekDay: `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`,                       
+        dayDateObject: nextDay
+      }
     };
     const isWithinClassTime = (startTime: any, endTime: any) => {
 
@@ -593,10 +605,12 @@ const Dashboard: React.FC = () => {
       )
     }
     
+    //RENDERS -------------------------------------------------------------------------
   return (
     <>
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} />
-      <Container>
+      <ToastContainer />
+     <Container>
         <Helmet>
           <title>SGSA - Dashboard</title>
         </Helmet>
