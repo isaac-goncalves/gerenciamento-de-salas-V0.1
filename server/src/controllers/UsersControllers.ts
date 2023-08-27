@@ -240,8 +240,8 @@ export class UserController {
   async login (request: Request, response: Response) {
     const { email, password } = request.body
 
-    // console.log(email, password)
-    // console.log('----------------------------')
+    console.log('----------------------------')
+    console.log("LOGIN ATTEMPT")
 
     if (!email || !password) {
       return response
@@ -283,16 +283,23 @@ export class UserController {
         // console.log(aluno)
         userData = aluno
       } else if (userExists.role === 'professor') {
-        const professor = await professoresRepository.findOneBy({
+        let professor: any = await professoresRepository.findOneBy({
           //caso o usuario seja um professor, busca o professor no banco de dados
-          user_id: userExists.id
+          user_id: userExists.id,
         })
-        // console.log('professor=')
-        // console.log(professor)
+
+        const professorId = professor?.id
+
+        professor = {
+          ...professor,
+          professor_id : professorId
+        }
+
+        console.log('professor=')
+        console.log(professor)
         userData = professor
 
-
-        const {disciplina, ...restUserData} = userData
+        const { disciplina, ...restUserData } = userData
 
         const disciplinaObj = await disciplinasRepository.findOneBy({
           id: disciplina
@@ -309,7 +316,6 @@ export class UserController {
           userData: returnObj,
           token: token
         })
-
       } else {
         // console.log('role nao encontrado')
         return response.status(400).json({ error: 'Role nao encontrado' }) //caso o usuario nao seja nem professor nem aluno, retorna erro
