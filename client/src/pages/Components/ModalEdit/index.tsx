@@ -26,7 +26,7 @@ interface InitialDataProps {
   horario_fim: string;
   id_professor: number;
   id_grade: number;
-  // uuid_agendamento: string;
+  uuid_agendamento: string;
   id_laboratorio: number;
   created_at: string;
   updated_at: string;
@@ -79,6 +79,9 @@ const ModalEdit = ({
     }
     setStartDate(new Date(formData.date))
 
+    fetchProfessorData();
+    fetchLaboratoryData();
+
     //CREATE
     if (action == "CREATE") {
       console.log("CREATE")
@@ -86,8 +89,7 @@ const ModalEdit = ({
     //EDIT
     else {
 
-      fetchProfessorData();
-      fetchLaboratoryData();
+
 
       // console.log("editedData")
 
@@ -100,7 +102,7 @@ const ModalEdit = ({
       // console.log("selectedProfessor")
       // console.log(selectedProfessor)
 
-      
+
 
       //  const exampleEditedData = {
       //     "id": 26,
@@ -230,7 +232,7 @@ const ModalEdit = ({
         date: startDate,
         id_laboratorio: selectedLaboratory,
         id_professor: selectedProfessor,
-        uuid_agendamento: uuidAgendamento,
+        uuid_agendamento: uuidAgendamento?.toString(),
       }
 
       console.log(finalData)
@@ -404,7 +406,17 @@ const ModalEdit = ({
         'Authorization': 'bearer ' + token,
       }
     }).then((response) => response.json()).then((data) => {
-      // console.log(data)
+      console.log(data)
+      const newLabsWithPlaceholder =
+      {
+        id: 0,
+        descricao: 'Selecione um laboratório',
+        andar: 0,
+        capacidade: 0
+      }
+
+      data.push(newLabsWithPlaceholder)
+
       return setLaboratory(data.reverse())
     });
   }
@@ -452,11 +464,11 @@ const ModalEdit = ({
 
     const andar = laboratory.find((lab) => lab.id === id)?.andar;
 
-    const andaresString = ['Primeiro Andar', 'Segundo Andar'];
+    const andaresString = ['Nenhum lab selecionado!', 'Primeiro Andar', 'Segundo Andar'];
 
-    const dayOfWeek = andaresString[(andar || 0) + 1] || null;
+    const laboratoryString = andaresString[(andar || 0)] || null;
 
-    return dayOfWeek;
+    return laboratoryString;
 
   }
 
@@ -474,7 +486,14 @@ const ModalEdit = ({
           <BackgroundImage src={background} />
         </ImageWrapper>
         <FormWrapper>
-          <StyledTitle>Editar Agendamento</StyledTitle>
+          <StyledTitle>
+            {
+              action == "CREATE" ?
+                "Criar Agendamento"
+                :
+                "Editar Agendamento"
+            }
+          </StyledTitle>
           {/* <p>{JSON.stringify(formData, null, 2)}</p> */}
           {/* <p>ID: {formData.id}</p> */}
           <ProfessorWrapper>
@@ -542,11 +561,23 @@ const ModalEdit = ({
 
                 {/* formData.uuid_agendamento */}
 
-                {/* <div>
+                <div>
                   <p>
-                    {formData.uuid_agendamento}
+                    {
+
+                      action === "CREATE"
+
+                        ?
+
+                        "-NOVO😂-"
+
+                        :
+
+                        formData.uuid_agendamento
+
+                    }
                   </p>
-                </div> */}
+                </div>
 
               </DetailsText>
             </DetailsWrapper>
@@ -557,7 +588,12 @@ const ModalEdit = ({
                 } handleDataSelection={handleDataSelection} />
               </ClockTimeWrapper>
               <ButtonsWrapper>
-                <StyledButton onClick={() => handleEdit()}>Editar</StyledButton>
+                <StyledButton onClick={() => handleEdit()}>{
+                  action == "CREATE" ?
+                  "Criar"
+                  :
+                  "Editar"
+                }</StyledButton>
                 <StyledButton onClick={() => onClose()}>Cancelar</StyledButton>
               </ButtonsWrapper>
             </ClocktimeAndButoonsWrapper>
