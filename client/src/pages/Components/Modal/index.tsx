@@ -162,7 +162,7 @@ const Modal = ({
     console.log(finalData)
       
     
-    fetch('http://localhost:430/agendamento', {
+    fetch('http://localhost:3333/agendamento', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

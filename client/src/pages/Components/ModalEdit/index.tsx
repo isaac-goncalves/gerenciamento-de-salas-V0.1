@@ -12,6 +12,7 @@ import { Laboratorio } from '../../Agendamentos/Agendamento.styles';
 import Swal from 'sweetalert2'
 
 interface ModalProps {
+  action: string
   isVisible: boolean
   onClose: Function
   initialData: any
@@ -25,7 +26,7 @@ interface InitialDataProps {
   horario_fim: string;
   id_professor: number;
   id_grade: number;
-  uuid_agendamento: string;
+  // uuid_agendamento: string;
   id_laboratorio: number;
   created_at: string;
   updated_at: string;
@@ -49,10 +50,11 @@ interface Professor {
 }
 
 const ModalEdit = ({
+  action,
   isVisible,
   onClose,
   initialData,
-  daysIds
+  daysIds,
 }: ModalProps) => {
 
   if (!isVisible) return null
@@ -65,6 +67,106 @@ const ModalEdit = ({
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
   const [selectedData, setSelectedData] = useState<any>();
   const [initialDate, setInitialDate] = useState<any>();
+
+  useEffect(() => {
+
+    console.log("ModalEdit useEffect")
+    console.log(formData)
+    //RUNS FOR BOTH
+    if (!formData) {
+      setFormData(initialData);
+      setInitialDate(new Date(initialData.date));
+    }
+    setStartDate(new Date(formData.date))
+
+    //CREATE
+    if (action == "CREATE") {
+      console.log("CREATE")
+    }
+    //EDIT
+    else {
+
+      fetchProfessorData();
+      fetchLaboratoryData();
+
+      // console.log("editedData")
+
+      // console.log(editedData)
+
+      // console.log("Formdata")
+
+      // console.log(formData)
+
+      // console.log("selectedProfessor")
+      // console.log(selectedProfessor)
+
+      
+
+      //  const exampleEditedData = {
+      //     "id": 26,
+      //     "date": "2023-04-14T19:17:02.673Z",
+      //     "horario_inicio": "21:25",
+      //     "horario_fim": "22:15",
+      //     "id_professor": "12",
+      //     "id_grade": "24",
+      //     "id_laboratorio": "7",
+      //     "created_at": "2023-04-12T19:17:14.002Z",
+      //     "updated_at": "2023-04-12T19:17:14.002Z"
+      // }
+
+      // function onEsc(event: KeyboardEvent) {
+      //   if (event.key === 'Escape') {
+      //     onClose()
+      //   }
+      // }
+
+      // window.addEventListener('keydown', onEsc)
+
+      // return () => {
+      //   window.removeEventListener('keydown', onEsc)
+      // }
+    }
+  }, [initialData])
+
+  const fetchProfessorData = async () => {
+    try {
+      await fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
+
+      // console.log("initialData.id_professor")
+      // console.log(initialData.id_professor)
+
+      if (initialData.id_professor) {
+
+        setSelectedProfessor(initialData.id_professor);
+
+      }
+
+      // console.log(selectedProfessor)
+
+    } catch (error) {
+      // console.log(error); // Handle the error appropriately
+    }
+  };
+
+  const fetchLaboratoryData = async () => {
+    try {
+      await fetchLaboratory("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
+
+      // console.log("editedData.laboratory")
+      // console.log(editedData.id_laboratorio)
+
+      if (initialData.id_laboratorio) {
+
+        setSelectedLaboratory(initialData.id_laboratorio);
+
+      }
+      // console.log("selectedLaboratory")
+      // console.log(selectedLaboratory)
+
+    } catch (error) {
+      // console.log(error); // Handle the error appropriately
+    }
+  };
 
   async function handleDataSelection(selectedData: any) {
     console.log("handleSelection")
@@ -82,7 +184,8 @@ const ModalEdit = ({
     const deletedAgendamentos: any = []
     const newAgendamentos: any = []
 
-    const uuidAgendamento = formData.uuid_agendamento
+    const uuidAgendamento = 23
+    // formData.uuid_agendamento 
 
     console.log("selectedData")
     console.log(selectedData)
@@ -132,7 +235,7 @@ const ModalEdit = ({
 
       console.log(finalData)
 
-      await fetch('http://localhost:430/agendamento', {
+      await fetch('http://localhost:3333/agendamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,7 +258,7 @@ const ModalEdit = ({
         const params = {
           ids: deletedAgendamentos
         }
-        const response = await fetch(`http://localhost:430/agendamento`, {
+        const response = await fetch(`http://localhost:3333/agendamento`, {
           method: 'DELETE',
           body: JSON.stringify(params),
           headers: {
@@ -201,7 +304,7 @@ const ModalEdit = ({
           uuid_agendamento: uuidAgendamento,
         }
 
-        const response = await fetch(`http://localhost:430/agendamento`, {
+        const response = await fetch(`http://localhost:3333/agendamento`, {
           method: 'PUT',
           body: JSON.stringify(updatedAgendamentos),
           headers: {
@@ -261,7 +364,7 @@ const ModalEdit = ({
     // }
 
     try {
-      // const response = await fetch(`http://localhost:430/agendamento/${formData.id}`, {
+      // const response = await fetch(`http://localhost:3333/agendamento/${formData.id}`, {
       //   method: 'PUT',
       //   headers: {
       //     'Content-Type': 'application/json'
@@ -280,100 +383,9 @@ const ModalEdit = ({
     }
   }
 
-  useEffect(() => {
-
-    console.log("ModalEdit useEffect")
-    console.log(formData)
-
-    if (!formData) {
-      setFormData(initialData);
-    }
-    setInitialDate(new Date(initialData.date));
-
-    const fetchProfessorData = async () => {
-      try {
-        await fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
-
-        // console.log("initialData.id_professor")
-        // console.log(initialData.id_professor)
-
-        if (initialData.id_professor) {
-
-          setSelectedProfessor(initialData.id_professor);
-
-        }
-
-        // console.log(selectedProfessor)
-
-      } catch (error) {
-        // console.log(error); // Handle the error appropriately
-      }
-    };
-
-    const fetchLaboratoryData = async () => {
-      try {
-        await fetchLaboratory("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
-
-        // console.log("editedData.laboratory")
-        // console.log(editedData.id_laboratorio)
-
-        if (initialData.id_laboratorio) {
-
-          setSelectedLaboratory(initialData.id_laboratorio);
-
-        }
-        // console.log("selectedLaboratory")
-        // console.log(selectedLaboratory)
-
-      } catch (error) {
-        // console.log(error); // Handle the error appropriately
-      }
-    };
-
-    fetchProfessorData();
-    fetchLaboratoryData();
-
-    // console.log("editedData")
-
-    // console.log(editedData)
-
-    // console.log("Formdata")
-
-    // console.log(formData)
-
-    // console.log("selectedProfessor")
-    // console.log(selectedProfessor)
-
-    setStartDate(new Date(formData.date))
-
-    //  const exampleEditedData = {
-    //     "id": 26,
-    //     "date": "2023-04-14T19:17:02.673Z",
-    //     "horario_inicio": "21:25",
-    //     "horario_fim": "22:15",
-    //     "id_professor": "12",
-    //     "id_grade": "24",
-    //     "id_laboratorio": "7",
-    //     "created_at": "2023-04-12T19:17:14.002Z",
-    //     "updated_at": "2023-04-12T19:17:14.002Z"
-    // }
-
-    function onEsc(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        onClose()
-      }
-    }
-
-    window.addEventListener('keydown', onEsc)
-
-    return () => {
-      window.removeEventListener('keydown', onEsc)
-    }
-  }, [initialData])
-
   async function fetchProfessors(token: string) {
     // console.log("Fetching fetchProfessors...")
-    await fetch('http://localhost:430/professors', {
+    await fetch('http://localhost:3333/professors', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -386,7 +398,7 @@ const ModalEdit = ({
 
   async function fetchLaboratory(token: string) {
     // console.log("Fetching fetchLaboratory...")
-    await fetch('http://localhost:430/laboratory', {
+    await fetch('http://localhost:3333/laboratory', {
       method: 'GET',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -528,11 +540,13 @@ const ModalEdit = ({
               <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
               <DetailsText>ID de agendamento: <br />
 
-                <div>
+                {/* formData.uuid_agendamento */}
+
+                {/* <div>
                   <p>
                     {formData.uuid_agendamento}
                   </p>
-                </div>
+                </div> */}
 
               </DetailsText>
             </DetailsWrapper>

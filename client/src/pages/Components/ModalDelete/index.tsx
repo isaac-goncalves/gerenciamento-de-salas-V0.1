@@ -51,7 +51,7 @@ const ModalDelete = ({
       const params = {
         ids : [deleteData.id]
       }
-      const response = await fetch(`http://localhost:430/agendamento`, {
+      const response = await fetch(`http://localhost:3333/agendamento`, {
         method: 'DELETE',
         body: JSON.stringify(params),
         headers: {

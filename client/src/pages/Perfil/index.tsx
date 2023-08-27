@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet'
 
 import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
-const apiUrl = 'https://20.226.17.26:430';
+const apiUrl = 'https://20.226.17.26:3333';
 
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';

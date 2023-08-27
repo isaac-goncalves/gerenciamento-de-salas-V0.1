@@ -16,7 +16,7 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText } from './Dashboard.styles'
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -60,7 +60,6 @@ type GroupedData = {
   [key: string]: Array<ScheduleItem | IntervalItem>;
 }
 
-
 function groupByWeekday(data: ScheduleItem[]): GroupedData {
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
   const totalItemsPerDay = 6;
@@ -102,22 +101,27 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
 }
 
 const Dashboard: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+
+//STORE FETCHED DATA
   const [grade, setgrade] = useState<any>();
-
-  const [editedData, setEditedData] = useState<any>({});
-
-  const [daysIds, setDaysIds] = useState<any>([]);
-
-  const [editingModal, setEditingModal] = React.useState(false)
-
-  const [professores, setProfessores] = useState<ProfessoreProps[]>([ // Professores state
+    const [professores, setProfessores] = useState<ProfessoreProps[]>([ 
     {
       id: 0,
       name: "Selecione um professor",
     },
   ]);
 
-  const [userData, setUserData] = useState( //userSessionData
+
+//MODALPROPS
+  const [userIsScheduling, setUserIsScheduling] = useState<boolean>(false);
+  const [editedData, setEditedData] = useState<any>({});
+  const [daysIds, setDaysIds] = useState<any>([]);
+  const [schedulingModalIsVisible, setSchedulingModalIsVisible] = React.useState(false)
+  
+
+//USERSESSIONDATA
+  const [userData, setUserData] = useState( 
     {
       userData: {
         id: 0,
@@ -127,349 +131,209 @@ const Dashboard: React.FC = () => {
     }
   );
 
-  const [selectedSemesterValue, setSelectedSemesterValue] = useState(1)
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-
+//STORE FILTER DATA
   const [selectedMethod, setSelectedMethod] = useState("semestre");
-
-  const [selectedProfessor, setSelectedProfessor] = useState<Professor>( // Selected professor state
+  const [selectedSemesterValue, setSelectedSemesterValue] = useState(1)
+  const [selectedProfessor, setSelectedProfessor] = useState<Professor>( 
     {
       id: 0,
       name: "Selecione um professor",
     },
   );
 
-  const [date, setDate] = useState(new Date());
-  const [loading, setLoading] = useState(false);
+//WEIRD DATE STUFF
+            const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
-  const [currentDay, setCurrentDay] = useState('');
-  const [currentTime, setCurrentTime] = useState('');
+            const [date, setDate] = useState(new Date());
+            const [currentDay, setCurrentDay] = useState('');
+            const [currentTime, setCurrentTime] = useState('');
+            // set to nearest Monday
+            const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); 
+            // set to nearest Friday
+            const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); 
+            
+//USE EFFECTS
+    useLayoutEffect(() => {
+      console.log('Starting to render stuff...');
 
-  const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1)); // set to nearest Monday
-  const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5)); // set to nearest Friday
+      if (userData.token === '' || userData.userData.id === 0) {
+        console.log('userData is null');
 
-  const handleSemestreChange = (event: any) => {
-    setSelectedSemesterValue(event.target.value)
-  }
+        const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+        const userDataJson = JSON.parse(localUserData || '{}');
+        const { userData: storedUserData, token } = userDataJson;
 
-  const handleCloseModalEdit = (resetParams: boolean) => {
-    setEditingModal(false);
-    if (resetParams) fetchData();
-  };
+        console.log('userData' + storedUserData);
+        console.log('token' + token);
 
-  const openEditModal = (editedData: any, daysIds: any) => {
-    console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
-    console.log("daysIds: " + JSON.stringify(daysIds, null, 2))
-    setEditedData(editedData);
-    setDaysIds(daysIds)
-    setEditingModal(true);
-  };
-
-  const handleSelectToday = () => {
-    const today = new Date()
-    const monday = startOfWeek(today, { weekStartsOn: 1 });
-    const friday = endOfWeek(today, { weekStartsOn: 6 });
-    setStartDate(monday);
-    setEndDate(friday);
-  }
-
-  const handleArrowLeft = () => {
-    const startDateTransformed = new Date(startDate as any)
-    const endDateTransformed = new Date(endDate as any)
-    const monday = subWeeks(startDateTransformed, 1)
-    const friday = subWeeks(endDateTransformed, 1)
-    setStartDate(monday);
-
-    setEndDate(friday);
-  }
-
-  const handleArrowRight = () => {
-    const startDateTransformed = new Date(startDate as any)
-    const endDateTransformed = new Date(endDate as any)
-    const monday = addWeeks(startDateTransformed, 1)
-    const friday = addWeeks(endDateTransformed, 1)
-    setStartDate(monday);
-
-    setEndDate(friday);
-  }
-
-  const handleStartDateChange = (date: Date) => {
-    const monday = startOfWeek(date, { weekStartsOn: 1 });
-    const friday = endOfWeek(date, { weekStartsOn: 6 });
-    setStartDate(monday);
-    setEndDate(friday);
-  };
-
-  const handleEndDateChange = (date: Date) => {
-    const monday = startOfWeek(date, { weekStartsOn: 1 });
-    const friday = endOfWeek(date, { weekStartsOn: 6 });
-    setStartDate(monday);
-    setEndDate(friday);
-  };
-
-  useLayoutEffect(() => {
-    console.log('Starting to render stuff...');
-
-    if (userData.token === '' || userData.userData.id === 0) {
-      console.log('userData is null');
-
-      const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
-      const userDataJson = JSON.parse(localUserData || '{}');
-      const { userData: storedUserData, token } = userDataJson;
-
-      console.log('userData' + storedUserData);
-      console.log('token' + token);
-
-      if (token == null || localUserData == null) {
-        toast.error('Você precisa estar logado para acessar essa página!');
-        localStorage.removeItem('gerenciamento-de-salas@v1.1');
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 2000);
-      } else {
-        // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
-        setUserData(userDataJson);
+        if (token == null || localUserData == null) {
+          toast.error('Você precisa estar logado para acessar essa página!');
+          localStorage.removeItem('gerenciamento-de-salas@v1.1');
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
+        } else {
+          // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+          setUserData(userDataJson);
+        }
       }
-    }
-  }, [userData]);
+    }, [userData]);
+    useEffect(() => {
 
-  useEffect(() => {
+      console.log('Starting to render stuff...');
 
-    console.log('Starting to render stuff...');
+      console.log(startDate)
 
-    console.log(startDate)
+      if (userData.token !== '' && userData.userData.id !== 0) {
 
-    if (userData.token !== '' && userData.userData.id !== 0) {
+        console.log("Usuário logado!")
 
-      console.log("Usuário logado!")
+        // console.log(selectedMethod)
+        if (selectedMethod == "professor") {
+          fetchProfessorData();
+        }
+        else {
+          fetchSemestreData();
+        }
 
-      // console.log(selectedMethod)
-      if (selectedMethod == "professor") {
-        fetchProfessorData();
+        fetchProfessors(userData.token);
+
       }
       else {
-        fetchSemestreData();
+        console.log("Usuário nao esta logado!")
       }
 
-      fetchProfessors(userData.token);
+    }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate, startDate]);
+    useEffect(() => {
+      const updateCurrentDayAndTime = () => {
+        const now = new Date();
+        const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+        setCurrentDay(days[now.getDay()]);
 
-    }
-    else {
-      console.log("Usuário nao esta logado!")
-    }
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        setCurrentTime(`${hours}:${minutes}`);
+      };
 
-  }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate, startDate]);
+      updateCurrentDayAndTime();
+      const timerId = setInterval(updateCurrentDayAndTime, 60000); // Update every minute
 
-  useEffect(() => {
-    const updateCurrentDayAndTime = () => {
-      const now = new Date();
-      const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-      setCurrentDay(days[now.getDay()]);
+      return () => {
+        clearInterval(timerId);
+      };
+    }, []);
 
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      setCurrentTime(`${hours}:${minutes}`);
-    };
+  //FUNCTIONS
 
-    updateCurrentDayAndTime();
-    const timerId = setInterval(updateCurrentDayAndTime, 60000); // Update every minute
-
-    return () => {
-      clearInterval(timerId);
-    };
-  }, []);
-
-
-  async function fetchProfessors(token: string) {
-    console.log("Fetching fetchProfessors...")
-    // console.log(process.env.REACT_APP_API_KEY)
-    await fetch(`${apiUrl}/professors`, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'bearer ' + token,
-      }
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-
-      setProfessores(data);
-
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
-
-  async function fetchSemestreData() {
-    fetch(`${apiUrl}/grade/dashboard`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        semestre: selectedSemesterValue || 1,
-        date: startDate //add localStorage later
-      })
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-      const transformedData = groupByWeekday(data)
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-      setTimeout(() => {
-        setLoading(true) // teste de loading
-      }, 2000)
-      // setLoading(true)
-      // console.log(transformedData.segunda[0].agendamentos.professor)
-      return setgrade(transformedData as any)
-    }
-    )
-  }
-
-  async function fetchProfessorData() {
-    console.log("Fetching fetchProfessorData...")
-    console.log(selectedProfessor)
-    fetch(`${apiUrl}/grade/agendamentos`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        professor_id: selectedProfessor.id || 1,
-      })
-    }).then((response) => response.json()).then((data) => {
-      console.log(data)
-
-      const transformedData = groupByWeekday(data)
-      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-
-      setTimeout(() => {
-        setLoading(true) // teste de loading
-      }, 2000)
-      // console.log(transformedData)
-      // console.log("transformedData" + JSON.stringify(transformedData, null, 2))
-      // setLoading(true)
-      return setgrade(transformedData as any)
-    }
-    )
-  }
-
-  // useEffect(() => {
-  //   setLoading(false)
-  //   fetchProfessors(userData.token);
-  //   fetchData();
-  // }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate])
-
-  async function fetchData() {
-    fetch(`${apiUrl}/grade/dashboard`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        semestre: selectedSemesterValue || 1,
-        date: selectedDate || new Date() //add localStorage later
-      })
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-      const transformedData = groupByWeekday(data)
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-      setTimeout(() => {
-        setLoading(true) // teste de loading
-      }, 2000)
-      // setLoading(true)
-      // console.log(transformedData.segunda[0].agendamentos.professor)
-      return setgrade(transformedData)
-    }
-    )
-  }
-
-  const isWithinClassTime = (startTime: any, endTime: any) => {
-
-    // console.log("Start Time: " + startTime)
-    // console.log("End Time: " + endTime)
-
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const [endHour, endMinute] = endTime.split(':').map(Number);
-
-    const start = new Date();
-    start.setHours(startHour, startMinute, 0, 0);
-
-    const end = new Date();
-    end.setHours(endHour, endMinute, 0, 0);
-
-    return now >= start && now <= end;
-  };
-
-  const getDayBasedOnWeekday = (dayName: string, startDate: any) => {
-    const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-    const dayIndex = days.indexOf(dayName);
-
-    if (dayIndex === -1) {
-      throw new Error('Invalid day name');
-    }
-
-    const currentDay = startDate.getDay();
-    const daysUntilNext = (dayIndex - currentDay + 7) % 7;
-
-    const nextDay = new Date(startDate.getTime());
-    nextDay.setDate(startDate.getDate() + daysUntilNext);
-
-    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-
-    return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
-  };
-
-
-  const renderWeekday = (dayName: string, dayData: any) => (
-    <WeekdayContainer>
-      <WeekDay>{getDayBasedOnWeekday(dayName, startDate)}</WeekDay>
-      <SchedulesContainer isCurrentDay={currentDay === dayName}>
-        <h2>{dayName}</h2>
-        {dayData.map((item: any) => {
-          const {
-            disciplina,
-            professor,
-            laboratorio,
-            agendamentos,
-            semestre,
-          } = item;
-
-          const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
-          const isCurrentTime = false
-          // isWithinClassTime(item.horario_inicio, item.horario_fim);
-
-          // console.log(isCurrentTime)
-          // console.log(currentTime)
-
-          return (
-            <Schedule onClick={() => {
-              console.log("Clicked")
-              console.log(item.agendamentos.length)
-
-              const daysIds: any = []
-
-              dayData.forEach((item: any) => {
-                item.id ? daysIds.push(item.id) : null
-              })
-
-              console.log(daysIds)
-
-              if (item.agendamentos.length > 0) {
-                openEditModal(item.agendamentos[0], daysIds)
-              } else {
-                console.log("Não há agendamento!")
-              }
-            }} isCurrentTime={isCurrentTime}
-              className={isCurrentTime ? '' : 'hoverEffect'}>
-              <Disciplina>{disciplina}</Disciplina>
-              <Professor>{professor}</Professor>
-              {
-                !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
-                  selectedMethod === 'professor' ?
-                    <SemestreSalaWrapper>
-                      <Semestre>{semestre}º Semestre</Semestre>
+  //RENDER FUNCTIONS
+    const renderWeekday = (dayName: string, dayData: any) => (
+      <WeekdayContainer>
+        <WeekDay>{getDayBasedOnWeekday(dayName, startDate)}</WeekDay>
+        <SchedulesContainer isCurrentDay={currentDay === dayName}>
+          <h2>{dayName}</h2>
+          {dayData.map((item: any) => {
+            const {
+              disciplina,
+              professor,
+              laboratorio,
+              agendamentos,
+              semestre,
+            } = item;
+  
+            const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
+            const isCurrentTime = false
+            // isWithinClassTime(item.horario_inicio, item.horario_fim);
+  
+            // console.log(isCurrentTime)
+            // console.log(currentTime)
+  
+            return (
+              <Schedule onClick={() => {
+                console.clear()
+                console.log("Clicked")
+                console.log(item.agendamentos.length)
+  
+                const daysIds: any = []
+  
+                dayData.forEach((item: any) => {
+                  item.id ? daysIds.push(item.id) : null
+                })
+  
+                console.log(daysIds)
+  
+                if (item.agendamentos.length > 0) {
+                  // console.log("Agendamento exist and the item is") 
+                  console.log(JSON.stringify( item.agendamentos[0], null, 2))
+                  console.log("agendamento exist")
+                  openEditModal(item.agendamentos[0], daysIds)
+                } else {
+  
+                  // MONTA OBJ DE MOVO AGENDAMENTO
+  //{
+  //   "id": 9,
+  //   "date": "2023-08-25T00:23:27.240Z",
+  //   "uuid_agendamento": "#21324",
+  //   "horario_inicio": "18:45:00",
+  //   "horario_fim": "19:35:00",
+  //   "id_professor": 12,
+  //   "id_grade": 16,
+  //   "id_laboratorio": 25,
+  //   "professor": "Marcos Allan",
+  //   "laboratorio": "Laboratorio-5",
+  //   "updated_at": "2023-08-27T00:23:37.849Z",
+  //   "created_at": "2023-08-27T00:23:37.849Z"
+  // }
+  console.log(startDate?.toISOString())
+                  const newAgedamentoData = {
+                    id: 0,
+                    date: startDate?.toISOString(),
+                    uuid_agendamento: "#21324",
+                    horario_inicio: "18:45:00",
+                    horario_fim: "19:35:00",
+                    id_professor: selectedProfessor.id,
+                    id_grade: 16,
+  
+                    id_laboratorio: 25,
+  
+                    professor: selectedProfessor.name,
+  
+                    laboratorio: "Laboratorio-5",
+  
+                    updated_at: "2023-08-27T00:23:37.849Z",
+  
+                    created_at: "2023-08-27T00:23:37.849Z"
+  
+  
+                  }
+  
+                  //ABRE MODAL DE NOVO AGENDAMNTO CASO USUARIO ESTEJA NO MODO DE CRIAÇÂO 
+                  userIsScheduling 
+                  ? 
+                  openEditModal(newAgedamentoData, daysIds)
+                  :
+                  console.log("Is not agendating")
+                }
+              }} isCurrentTime={isCurrentTime}
+                className={isCurrentTime ? '' : 'hoverEffect'}>
+                <Disciplina>{disciplina}</Disciplina>
+                <Professor>{professor}</Professor>
+                {
+                  !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
+                    selectedMethod === 'professor' ?
+                      <SemestreSalaWrapper>
+                        <Semestre>{semestre}º Semestre</Semestre>
+                        <SalaWrapper>
+                          <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                          {agendamento && agendamento.laboratorio && (
+                            <>
+                              <MdKeyboardDoubleArrowRight />
+                              <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                            </>
+                          )}
+                        </SalaWrapper>
+                      </SemestreSalaWrapper>
+                      :
                       <SalaWrapper>
                         <Sala agendamento={agendamento}>{laboratorio}</Sala>
                         {agendamento && agendamento.laboratorio && (
@@ -479,85 +343,259 @@ const Dashboard: React.FC = () => {
                           </>
                         )}
                       </SalaWrapper>
-                    </SemestreSalaWrapper>
                     :
-                    <SalaWrapper>
-                      <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                      {agendamento && agendamento.laboratorio && (
-                        <>
-                          <MdKeyboardDoubleArrowRight />
-                          <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                        </>
-                      )}
-                    </SalaWrapper>
-                  :
-                  null
-              }
-            </Schedule>
-          );
-        })}
-      </SchedulesContainer>
-    </WeekdayContainer>
-  );
-
-  const renderLoading = () => {
-    return (
-      <WeekContainer>
-        <ToastContainer />
-        {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
-          <WeekdayContainer key={day}>
-            <WeekDay><PacmanLoader color={Colors.lightgrayInput} size={10} loading /></WeekDay>
-            <SchedulesContainer isCurrentDay={false}>
-              <h2>{day}</h2>
-              {Array(6)
-                .fill(0)
-                .map((_, index) => (
-                  <Schedule isCurrentTime={false} key={index}>
-                    <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
-                  </Schedule>
-                ))}
-            </SchedulesContainer>
-          </WeekdayContainer>
-        ))}
-      </WeekContainer>
-    )
-  };
-
-  const handleSelectProfessor = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    // console.log(event.target.value)
-
-    const professorObject = {
-      id: parseInt(event.target.value),
-      name: "test"
+                    null
+                }
+              </Schedule>
+            );
+          })}
+        </SchedulesContainer>
+      </WeekdayContainer>
+    );
+    const renderLoading = () => {
+      return (
+        <WeekContainer>
+          <ToastContainer />
+          {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
+            <WeekdayContainer key={day}>
+              <WeekDay><PacmanLoader color={Colors.lightgrayInput} size={10} loading /></WeekDay>
+              <SchedulesContainer isCurrentDay={false}>
+                <h2>{day}</h2>
+                {Array(6)
+                  .fill(0)
+                  .map((_, index) => (
+                    <Schedule isCurrentTime={false} key={index}>
+                      <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
+                    </Schedule>
+                  ))}
+              </SchedulesContainer>
+            </WeekdayContainer>
+          ))}
+        </WeekContainer>
+      )
+    };
+  
+  //MODAL HANDLE FUNCTIONS
+    function handleSchedulingButtonClick() {
+      
+      setUserIsScheduling(!userIsScheduling)
+      console.log(userIsScheduling)
+      //habilitar oarametro que fd-diz que esta em modo agendamento
     }
-    setSelectedProfessor(
-      professorObject
-    )
-  }
+    const handleCloseModalEdit = (resetParams: boolean) => {
+      setSchedulingModalIsVisible(false);
+      if (resetParams) fetchData();
+    };
+    const openEditModal = (editedData: any, daysIds: any) => {
+      console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
+      console.log("daysIds: " + JSON.stringify(daysIds, null, 2))
+      setEditedData(editedData);
+      setDaysIds(daysIds)
+      setSchedulingModalIsVisible(true);
+    };
 
-  const handleSemesterChange = (event: any) => {
-    setSelectedSemesterValue(event.target.value)
-  }
+  //DATEPICKER FUNCTIONS
+    const handleSelectToday = () => {
+      const today = new Date()
+      const monday = startOfWeek(today, { weekStartsOn: 1 });
+      const friday = endOfWeek(today, { weekStartsOn: 6 });
+      setStartDate(monday);
+      setEndDate(friday);
+    }
+    const handleArrowLeft = () => {
+      const startDateTransformed = new Date(startDate as any)
+      const endDateTransformed = new Date(endDate as any)
+      const monday = subWeeks(startDateTransformed, 1)
+      const friday = subWeeks(endDateTransformed, 1)
+      setStartDate(monday);
 
-  const handleMethodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    // console.log(event.target.value)
-    setSelectedMethod(event.target.value)
-  }
+      setEndDate(friday);
+    }
+    const handleArrowRight = () => {
+      const startDateTransformed = new Date(startDate as any)
+      const endDateTransformed = new Date(endDate as any)
+      const monday = addWeeks(startDateTransformed, 1)
+      const friday = addWeeks(endDateTransformed, 1)
+      setStartDate(monday);
 
-  const GetCurrentMonthAndYear = (date: any) => {
-    // console.log(date)
-    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+      setEndDate(friday);
+    }
+    const handleStartDateChange = (date: Date) => {
+      const monday = startOfWeek(date, { weekStartsOn: 1 });
+      const friday = endOfWeek(date, { weekStartsOn: 6 });
+      setStartDate(monday);
+      setEndDate(friday);
+    };
+    const handleEndDateChange = (date: Date) => {
+      const monday = startOfWeek(date, { weekStartsOn: 1 });
+      const friday = endOfWeek(date, { weekStartsOn: 6 });
+      setStartDate(monday);
+      setEndDate(friday);
+    };  
+    const getDayBasedOnWeekday = (dayName: string, startDate: any) => {
+      const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      const dayIndex = days.indexOf(dayName);
 
-    const month = monthNames[date.getMonth()]
-    const year = date.getFullYear()
+      if (dayIndex === -1) {
+        throw new Error('Invalid day name');
+      }
 
-    return `${month} de ${year}`
-  }
+      const currentDay = startDate.getDay();
+      const daysUntilNext = (dayIndex - currentDay + 7) % 7;
 
+      const nextDay = new Date(startDate.getTime());
+      nextDay.setDate(startDate.getDate() + daysUntilNext);
+
+      const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+      return `${nextDay.getDate().toString().padStart(2, '0')}/${monthNames[nextDay.getMonth()]}`;
+    };
+    const isWithinClassTime = (startTime: any, endTime: any) => {
+
+      // console.log("Start Time: " + startTime)
+      // console.log("End Time: " + endTime)
+
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+
+      const [startHour, startMinute] = startTime.split(':').map(Number);
+      const [endHour, endMinute] = endTime.split(':').map(Number);
+
+      const start = new Date();
+      start.setHours(startHour, startMinute, 0, 0);
+
+      const end = new Date();
+      end.setHours(endHour, endMinute, 0, 0);
+
+      return now >= start && now <= end;
+    };
+ 
+  //FILTER FUNCTIONS
+    const handleSelectProfessor = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      // console.log(event.target.value)
+
+      const professorObject = {
+        id: parseInt(event.target.value),
+        name: "test"
+      }
+      setSelectedProfessor(
+        professorObject
+      )
+    }
+    const handleSemesterChange = (event: any) => {
+      setSelectedSemesterValue(event.target.value)
+    }
+    const handleMethodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      // console.log(event.target.value)
+      setSelectedMethod(event.target.value)
+    }
+    const GetCurrentMonthAndYear = (date: any) => {
+      // console.log(date)
+      const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+      const month = monthNames[date.getMonth()]
+      const year = date.getFullYear()
+
+      return `${month} de ${year}`
+    }
+
+  //FETCH FUNCTION
+    async function fetchProfessors(token: string) {
+      console.log("Fetching fetchProfessors...")
+      // console.log(process.env.REACT_APP_API_KEY)
+      await fetch(`${apiUrl}/professors`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'bearer ' + token,
+        }
+      }).then((response) => response.json()).then((data) => {
+        // console.log(data)
+
+        setProfessores(data);
+
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+    async function fetchSemestreData() {
+      fetch(`${apiUrl}/grade/dashboard`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          semestre: selectedSemesterValue || 1,
+          date: startDate //add localStorage later
+        })
+      }).then((response) => response.json()).then((data) => {
+        // console.log(data)
+        const transformedData = groupByWeekday(data)
+        // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+        setTimeout(() => {
+          setLoading(true) // teste de loading
+        }, 2000)
+        // setLoading(true)
+        // console.log(transformedData.segunda[0].agendamentos.professor)
+        return setgrade(transformedData as any)
+      }
+      )
+    }
+    async function fetchProfessorData() {
+      console.log("Fetching fetchProfessorData...")
+      console.log(selectedProfessor)
+      fetch(`${apiUrl}/grade/agendamentos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          professor_id: selectedProfessor.id || 1,
+        })
+      }).then((response) => response.json()).then((data) => {
+        console.log(data)
+
+        const transformedData = groupByWeekday(data)
+        console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+
+        setTimeout(() => {
+          setLoading(true) // teste de loading
+        }, 2000)
+        // console.log(transformedData)
+        // console.log("transformedData" + JSON.stringify(transformedData, null, 2))
+        // setLoading(true)
+        return setgrade(transformedData as any)
+      }
+      )
+    }
+    async function fetchData() {
+      fetch(`${apiUrl}/grade/dashboard`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          semestre: selectedSemesterValue || 1,
+          date: selectedDate || new Date() //add localStorage later
+        })
+      }).then((response) => response.json()).then((data) => {
+        // console.log(data)
+        const transformedData = groupByWeekday(data)
+        // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+        setTimeout(() => {
+          setLoading(true) // teste de loading
+        }, 2000)
+        // setLoading(true)
+        // console.log(transformedData.segunda[0].agendamentos.professor)
+        return setgrade(transformedData)
+      }
+      )
+    }
+    
   return (
     <>
-      <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} />
+      <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} />
       <Container>
         <Helmet>
           <title>SGSA - Dashboard</title>
@@ -596,6 +634,7 @@ const Dashboard: React.FC = () => {
                 <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
               </CalendarWrapper>
             </DatepickContainer>
+
             <FilterWrapper>
               <FiFilter
                 size={20} />
@@ -643,6 +682,15 @@ const Dashboard: React.FC = () => {
                   </option>
                 </StyledSelect>}
             </FilterWrapper>
+            <>
+                    {
+                      userIsScheduling ?
+                      <ButtonConfimarAgendamento onClick={handleSchedulingButtonClick}>Cancelar</ButtonConfimarAgendamento>
+                      :
+                      <ButtonConfimarAgendamento  onClick={handleSchedulingButtonClick}>Novo agendamento</ButtonConfimarAgendamento>
+                    }
+
+            </>
           </DatePickWrapper>
         </Header>
         <ClassesContainer>

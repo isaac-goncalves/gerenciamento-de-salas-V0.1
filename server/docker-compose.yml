@@ -23,5 +23,5 @@ services:
       DB_PASSWORD: 2406
       DB_NAME: gerenciamento-de-salas
     ports:
-      - "430:430"
+      - "430:3333"
     command: sh -c "npm run migration:generate && npm run migration:run && npm run dev"

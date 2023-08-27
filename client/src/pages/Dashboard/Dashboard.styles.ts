@@ -170,6 +170,26 @@ export const DatepickContainer = styled.div`
   }
 `
 
+export const ButtonConfimarAgendamento = styled.button`
+font-size: 1.0rem;
+white-space: nowrap;
+background-color: ${Colors.mainpurple};
+  color: #ffffff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #663399;
+  
+  }
+
+`
+
 export const DatepickArrowsContainer = styled.div`
   display: flex;
 `

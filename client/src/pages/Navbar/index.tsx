@@ -69,7 +69,7 @@ const Navbar = () => {
                             }
                         </RowWrapper>
                     </MenuLink>
-                    <MenuLink to="/agendamentos" >
+                    {/* <MenuLink to="/agendamentos" >
                         <RowWrapper>
                             <BsCalendarDate style={{
                                 color: Colors.mainpurple,
@@ -79,7 +79,7 @@ const Navbar = () => {
                                 menuOpen && <p>AGENDAMENTOS</p>
                             }
                         </RowWrapper>
-                    </MenuLink>
+                    </MenuLink> */}
                     <MenuLink to="/perfil" >
                         <RowWrapper>
                             <CgProfile style={{
