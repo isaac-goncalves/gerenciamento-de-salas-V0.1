@@ -28,7 +28,12 @@ export class AgendamentoController {
       const id = `#${paddedNumber}` // Concatenate the "#" symbol with the padded number
       return id
     }
-    const uniqueId = uuid_agendamento ? uuid_agendamento : generateID()
+
+    let uniqueId = uuid_agendamento ? uuid_agendamento : generateID()
+
+    if( uuid_agendamento == "-" ) {
+      uniqueId = generateID();
+    }
 
     ids_grade.forEach(async (id_grade: any) => {
       const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `

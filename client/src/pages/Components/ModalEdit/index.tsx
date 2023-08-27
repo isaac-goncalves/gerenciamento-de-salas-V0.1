@@ -59,6 +59,7 @@ const ModalEdit = ({
 
   if (!isVisible) return null
 
+  //STATES
   const [formData, setFormData] = useState<InitialDataProps>(initialData);
   const [professores, setProfessores] = useState<ProfessoreProps[]>([]);
   const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
@@ -66,8 +67,9 @@ const ModalEdit = ({
   const [selectedLaboratory, setSelectedLaboratory] = useState<any>();
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
   const [selectedData, setSelectedData] = useState<any>();
-  const [initialDate, setInitialDate] = useState<any>();
+  // const [initialDate, setInitialDate] = useState<any>();
 
+  //USEFECCTS
   useEffect(() => {
 
     console.log("ModalEdit useEffect")
@@ -75,7 +77,7 @@ const ModalEdit = ({
     //RUNS FOR BOTH
     if (!formData) {
       setFormData(initialData);
-      setInitialDate(new Date(initialData.date));
+      // setInitialDate(new Date(initialData.date));
     }
     setStartDate(new Date(formData.date))
 
@@ -85,51 +87,16 @@ const ModalEdit = ({
     //CREATE
     if (action == "CREATE") {
       console.log("CREATE")
+
+
     }
     //EDIT
     else {
-
-
-
-      // console.log("editedData")
-
-      // console.log(editedData)
-
-      // console.log("Formdata")
-
-      // console.log(formData)
-
-      // console.log("selectedProfessor")
-      // console.log(selectedProfessor)
-
-
-
-      //  const exampleEditedData = {
-      //     "id": 26,
-      //     "date": "2023-04-14T19:17:02.673Z",
-      //     "horario_inicio": "21:25",
-      //     "horario_fim": "22:15",
-      //     "id_professor": "12",
-      //     "id_grade": "24",
-      //     "id_laboratorio": "7",
-      //     "created_at": "2023-04-12T19:17:14.002Z",
-      //     "updated_at": "2023-04-12T19:17:14.002Z"
-      // }
-
-      // function onEsc(event: KeyboardEvent) {
-      //   if (event.key === 'Escape') {
-      //     onClose()
-      //   }
-      // }
-
-      // window.addEventListener('keydown', onEsc)
-
-      // return () => {
-      //   window.removeEventListener('keydown', onEsc)
-      // }
+      console.log("EDIT")
     }
   }, [initialData])
 
+  //FETCHES
   const fetchProfessorData = async () => {
     try {
       await fetchProfessors("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
@@ -149,7 +116,6 @@ const ModalEdit = ({
       // console.log(error); // Handle the error appropriately
     }
   };
-
   const fetchLaboratoryData = async () => {
     try {
       await fetchLaboratory("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
@@ -169,45 +135,71 @@ const ModalEdit = ({
       // console.log(error); // Handle the error appropriately
     }
   };
+  async function fetchProfessors(token: string) {
+    // console.log("Fetching fetchProfessors...")
+    await fetch('http://localhost:3333/professors', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'bearer ' + token,
+      }
+    }).then((response) => response.json()).then((data) => {
+      // console.log(data)
+      return setProfessores(data)
+    });
+  }
+  async function fetchLaboratory(token: string) {
+    // console.log("Fetching fetchLaboratory...")
+    await fetch('http://localhost:3333/laboratory', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'bearer ' + token,
+      }
+    }).then((response) => response.json()).then((data) => {
+      console.log(data)
+      const newLabsWithPlaceholder =
+      {
+        id: 0,
+        descricao: 'Selecione um laboratório',
+        andar: 0,
+        capacidade: 0
+      }
 
-  async function handleDataSelection(selectedData: any) {
-    console.log("handleSelection")
-    console.log(selectedData)
-    setSelectedData(selectedData);
+      data.push(newLabsWithPlaceholder)
+
+      return setLaboratory(data.reverse())
+    });
   }
 
+  //HANDLE CLICKS
+
   async function handleEdit() {
+    const deletedAgendamentos: any = []
+    const newAgendamentos: any = []
     console.clear()
     console.log("daysIds")
     console.log(daysIds)
-    // swal() adicionar swal que pergunta se tem certeza que quer editar
-
-    // const updatedAgendamentos: any = []
-    const deletedAgendamentos: any = []
-    const newAgendamentos: any = []
-
-    const uuidAgendamento = 23
-    // formData.uuid_agendamento 
-
     console.log("selectedData")
     console.log(selectedData)
 
+    //SET UUID
+    const uuidAgendamento = formData.uuid_agendamento
+
+    //VERIFY IF UUID IS EMPTY
     selectedData.forEach((agendamento: any, index: number) => {
 
       console.log("agendamento")
       console.log(agendamento.agendamento)
 
       //verify if object is empty inside  
-
       const agendamentoExist = agendamento.agendamento.id != null ? true : false
       console.log("agendamentoExist:" + agendamentoExist)
 
+      //INSERT ON NEW AGENDAMENTO IF (NOT EXIST AND IS SELECTED) aka CREATE AGENDAMENTO
       if (!agendamentoExist && agendamento.selecionado) {
-
-        //fazer uma forma de o item agendamento ter o valor da grade neste ponto
         newAgendamentos.push(daysIds[index])
       }
 
+      //INSERT ON DELETE AGENDAMENTO IF (EXIST AND IS NOT SELECTED) aka DELETE AGENDAMENTO
       if (agendamentoExist && agendamento.selecionado === false) {
         deletedAgendamentos.push(agendamento.agendamento.id)
       }
@@ -219,6 +211,8 @@ const ModalEdit = ({
     console.log(newAgendamentos)
     console.log("deletedAgendamentos")
     console.log(deletedAgendamentos)
+    console.log("selectedLaboratory")
+    console.log(selectedLaboratory)
 
     async function createAgendamento() {
 
@@ -280,76 +274,85 @@ const ModalEdit = ({
       }
     }
 
-    // async function updateAgendamento() {
-
-
-
     console.log("updatedAgendamentos")
     console.log(new Date(formData.date))
-    console.log(initialDate)
-    //se algo for alterado no agendamento, ele é atualizado
+    // console.log(initialDate)
 
-    const agendamentoAlterado =
-      formData.date !== new Date(initialDate).toISOString()
-        || formData.id_laboratorio !== selectedLaboratory
-        || formData.id_professor !== selectedProfessor ? true : false
 
-    console.log("agendamentoAlterado: " + agendamentoAlterado)
+    //EXCLUDES CHECK FOR UPDATE ID WE ARE CREATING THE AGENDAMENTO aka UPDATE AGENDAMENTO IF UDPATE
+    if (uuidAgendamento != "-") {
+      const agendamentoAlterado =
+        formData.date !== new Date(formData.date).toISOString()
+          || formData.id_laboratorio !== selectedLaboratory
+          || formData.id_professor !== selectedProfessor ? true : false
 
-    if (agendamentoAlterado) {
-      try {
+      console.log("agendamentoAlterado: " + agendamentoAlterado)
 
-        const updatedAgendamentos = {
-          date: formData.date,
-          id_laboratorio: selectedLaboratory,
-          id_professor: selectedProfessor,
-          uuid_agendamento: uuidAgendamento,
-        }
+      if (agendamentoAlterado) {
+        try {
 
-        const response = await fetch(`http://localhost:3333/agendamento`, {
-          method: 'PUT',
-          body: JSON.stringify(updatedAgendamentos),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        if (response.ok) {
-          toast.success('Agendamento Atualizado com sucesso!');
-          console.log("Atualizado com sucesso")
-          onClose(true);
-        } else {
+          const updatedAgendamentos = {
+            date: formData.date,
+            id_laboratorio: selectedLaboratory,
+            id_professor: selectedProfessor,
+            uuid_agendamento: uuidAgendamento,
+          }
+
+          const response = await fetch(`http://localhost:3333/agendamento`, {
+            method: 'PUT',
+            body: JSON.stringify(updatedAgendamentos),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            toast.success('Agendamento Atualizado com sucesso!');
+            console.log("Atualizado com sucesso")
+            onClose(true);
+          } else {
+            toast.error('Erro ao Atualizado agendamento, tente novamente.');
+          }
+        } catch (error) {
           toast.error('Erro ao Atualizado agendamento, tente novamente.');
         }
-      } catch (error) {
-        toast.error('Erro ao Atualizado agendamento, tente novamente.');
       }
     }
-    // }
 
-    //swall asking to confirm the edit
+    //SWAL ASKING TO EDIT
+    if (selectedLaboratory === undefined) {
+      toast.error('Selecione um laboratório!');
+      return
+    }
+    if (newAgendamentos.length == 0 && action == "CREATE") {
+      toast.error('Selecione um horário!');
+      return
+    }
+
     Swal.fire({
-      title: 'Tem certeza que deseja editar?',
+      title: `Tem certeza que deseja ${action === "CREATE" ? "criar" : "editar"
+        }?`,
       text: "Você não poderá reverter isso!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Editar',
+      confirmButtonText: `${action === "CREATE" ? "Criar" : "Editar"}`,
       cancelButtonText: 'Cancelar'
     }).then(async (result) => {
       if (result.isConfirmed) {
-
         if (newAgendamentos.length > 0) {
           await createAgendamento()
         }
-        // if (deletedAgendamentos.length > 0) {
-        //   await deleteAgendamento()
-        // }
-        // await updateAgendamento()
+        if (deletedAgendamentos.length > 0) {
+          await deleteAgendamento()
+        }
+        //  await updateAgendamento()
 
         Swal.fire(
-          'Editado!',
-          'O agendamento foi editado.',
+          `${action === "CREATE" ? "Criado" : "Editado"
+          }!`,
+          `O agendamento foi ${action === "CREATE" ? "criado" : "editado"
+          } com sucesso.`,
           'success'
         )
         onClose(true)
@@ -385,47 +388,13 @@ const ModalEdit = ({
     }
   }
 
-  async function fetchProfessors(token: string) {
-    // console.log("Fetching fetchProfessors...")
-    await fetch('http://localhost:3333/professors', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'bearer ' + token,
-      }
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-      return setProfessores(data)
-    });
+  async function handleDataSelection(selectedData: any) {
+    console.log("handleSelection")
+    console.log(selectedData)
+    setSelectedData(selectedData);
   }
 
-  async function fetchLaboratory(token: string) {
-    // console.log("Fetching fetchLaboratory...")
-    await fetch('http://localhost:3333/laboratory', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'bearer ' + token,
-      }
-    }).then((response) => response.json()).then((data) => {
-      console.log(data)
-      const newLabsWithPlaceholder =
-      {
-        id: 0,
-        descricao: 'Selecione um laboratório',
-        andar: 0,
-        capacidade: 0
-      }
-
-      data.push(newLabsWithPlaceholder)
-
-      return setLaboratory(data.reverse())
-    });
-  }
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
+  //HANDLE SELECTS
   const handleSelectProfessorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     // console.log(event.target.value)
 
@@ -452,6 +421,12 @@ const ModalEdit = ({
     }
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  //AUX FUNCTIONS  
   const GetDayOfWeek = (date: any) => {
     const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
@@ -590,9 +565,9 @@ const ModalEdit = ({
               <ButtonsWrapper>
                 <StyledButton onClick={() => handleEdit()}>{
                   action == "CREATE" ?
-                  "Criar"
-                  :
-                  "Editar"
+                    "Criar"
+                    :
+                    "Editar"
                 }</StyledButton>
                 <StyledButton onClick={() => onClose()}>Cancelar</StyledButton>
               </ButtonsWrapper>
