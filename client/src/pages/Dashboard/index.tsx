@@ -393,7 +393,10 @@ const Dashboard: React.FC = () => {
     }
     const handleCloseModalEdit = (resetParams: boolean) => {
       setSchedulingModalIsVisible(false);
-      if (resetParams) fetchData();
+      if (resetParams) {
+        setUserIsScheduling(false)
+        fetchData()
+      };
     };
     const openEditModal = (editedData: any, daysIds: any) => {
       console.log("Edited Data: " + JSON.stringify(editedData, null, 2))

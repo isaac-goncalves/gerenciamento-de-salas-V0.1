@@ -74,9 +74,11 @@ const ModalEdit = ({
 
     console.log("ModalEdit useEffect")
     console.log(formData)
+    
     //RUNS FOR BOTH
     if (!formData) {
       setFormData(initialData);
+      toast.info('Selecione um Laboratorio e horários para criar um agendamento!')
       // setInitialDate(new Date(initialData.date));
     }
     setStartDate(new Date(formData.date))
@@ -489,14 +491,15 @@ const ModalEdit = ({
             <DateTimeDiv>
               <DetailsText>Data de agendamento</DetailsText>
               <DatePicker selected={startDate} onChange={(date) => {
-                // setStartDate(date || new Date())
-                // setFormData({ ...formData, date: date || new Date() })
+                //estudar quem vai porder alterar esta funcionalidade
+                //pois grade ids são linkados com a data de agendamento
+                setStartDate(date || new Date())
+                setFormData({ ...formData, date: startDate || new Date() })
               }} />
             </DateTimeDiv>
             <DateTimeDiv>
               <DetailsText>Dia da Semana:</DetailsText>
-              {/* <p>{GetDayOfWeek(startDate)}</p> */}
-              <p>Segunda-Feira</p>
+              <StyledText>{formData && formatDate(formData.date)}</StyledText>
             </DateTimeDiv>
           </DateTimeWrapper>
           <SideBysideContainer>
