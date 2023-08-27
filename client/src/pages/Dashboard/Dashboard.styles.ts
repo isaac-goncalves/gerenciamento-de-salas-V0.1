@@ -87,7 +87,7 @@ export const CourseName = styled.h1`
 `
 export const CourseSemester = styled.p`
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 400
   color: ${Colors.textcolor};
 
   //hide when screen is small
@@ -226,7 +226,7 @@ export const CalendarWrapper = styled.div`
   gap: 1rem;
 
   //hide when screen is small
-  @media screen and (max-width: 1470px) {
+  @media screen and (max-width: 1640px) {
     display: none;
   }
 
