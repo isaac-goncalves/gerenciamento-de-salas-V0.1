@@ -106,7 +106,7 @@ export const DetailsWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 1rem;
-  padding: 0.8rem;
+  padding: 2rem;
   background-color: ${Colors.lightwhitebackgroud};
   border-radius: 8px;
  
@@ -133,13 +133,13 @@ span{
 
   p{
     font-size: 2rem;
-    
   }
 
 
 `
 
 export const StyledText = styled.span`
+margin-left: 0.3rem;
 white-space: nowrap;
 font-size: 1.0rem;
 `
