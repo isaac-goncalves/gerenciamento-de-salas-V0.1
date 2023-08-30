@@ -73,10 +73,10 @@ const ModalEdit = ({
 
   //USEFECCTS
   useEffect(() => {
-
+    console.clear()
     console.log("ModalEdit useEffect")
     console.log(formData)
-    
+
     //RUNS FOR BOTH
     if (!formData) {
       setFormData(initialData);
@@ -92,18 +92,26 @@ const ModalEdit = ({
     if (action == "CREATE") {
       console.log("CREATE")
 
-
     }
     //EDIT
-    else {
-      console.log("EDIT")
-    }
+    else
+      if (action == "EDIT") {
+        console.log("EDIT")
+
+      }
+      else
+        if (action == "OPEN") {
+          console.log("OPEN")
+        }
+        else {
+          console.log("ERROR")
+        }
   }, [initialData])
 
-useEffect(() => {
-  console.log("selectedLaboratory useEffect")
-  console.log(selectedLaboratory)
-}, [selectedLaboratory])
+  useEffect(() => {
+    console.log("selectedLaboratory useEffect")
+    console.log(selectedLaboratory)
+  }, [selectedLaboratory])
 
   //FETCHES
   const fetchProfessorData = async () => {
@@ -461,6 +469,23 @@ useEffect(() => {
     return format(formatedDate, "PPPP", { locale: ptBR });
   };
 
+  function getTitleBasedOnAction(action: string) {
+    if (action == "CREATE") {
+      return "Criar Agendamento"
+    }
+    else
+      if (action == "EDIT") {
+        return "Editar Agendamento"
+      }
+      else
+        if (action == "OPEN") {
+          return "Abrir Agendamento"
+        }
+        else {
+          return "ERROR"
+        }
+  }
+
   return (
     <ModalOverlay onClick={() => onClose()}>
       <ModalContent onClick={e => e.stopPropagation()}>
@@ -470,17 +495,18 @@ useEffect(() => {
         <FormWrapper>
           <StyledTitle>
             {
-              action == "CREATE" ?
-                "Criar Agendamento"
-                :
-                "Editar Agendamento"
+              getTitleBasedOnAction(action)
             }
           </StyledTitle>
           {/* <p>{JSON.stringify(formData, null, 2)}</p> */}
           {/* <p>ID: {formData.id}</p> */}
           <ProfessorWrapper>
             <DetailsText>Professor:</DetailsText>
-            <StyledSelect value={selectedProfessor || ''} onChange={handleSelectProfessorChange}>
+            <StyledSelect
+              value={selectedProfessor || ''}
+              onChange={handleSelectProfessorChange}
+              disabled={action === 'OPEN'}
+            >
               {professores.length > 0 ? (
                 professores.map((professor) => (
                   <option key={professor.id} value={professor.id}>
@@ -495,12 +521,15 @@ useEffect(() => {
           <DateTimeWrapper>
             <DateTimeDiv>
               <DetailsText>Data de agendamento</DetailsText>
-              <DatePicker selected={startDate} onChange={(date) => {
-                //estudar quem vai porder alterar esta funcionalidade
-                //pois grade ids são linkados com a data de agendamento
-                setStartDate(date || new Date())
-                setFormData({ ...formData, date: startDate || new Date() })
-              }} />
+              <DatePicker
+                selected={startDate}
+                disabled={action === 'OPEN'}
+                onChange={(date) => {
+                  //estudar quem vai porder alterar esta funcionalidade
+                  //pois grade ids são linkados com a data de agendamento
+                  setStartDate(date || new Date())
+                  setFormData({ ...formData, date: startDate || new Date() })
+                }} />
             </DateTimeDiv>
             <DateTimeDiv>
               <DetailsText>Dia da Semana:</DetailsText>
@@ -525,7 +554,10 @@ useEffect(() => {
               </div>
               <div>
                 <DetailsText>Laboratório:</DetailsText>
-                <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+                <StyledSelect
+                  value={selectedLaboratory || ''}
+                  disabled={action === 'OPEN'}
+                  onChange={handleLaboratoryChange}>
                   {laboratory.length > 0 ? (
                     laboratory.map((laboratory) => (
                       <option key={laboratory.id} value={laboratory.id}>
@@ -569,13 +601,14 @@ useEffect(() => {
                 <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} />
               </ClockTimeWrapper>
               <ButtonsWrapper>
-                <StyledButton onClick={() => handleEdit()}>{
-                  action == "CREATE" ?
-                    "Criar"
-                    :
-                    "Editar"
-                }</StyledButton>
-                <StyledButton onClick={() => onClose()}>Cancelar</StyledButton>
+                {action !== 'OPEN' && (
+                  <StyledButton onClick={() => handleEdit()}>
+                    {action === 'CREATE' ? 'Criar' : 'Editar'}
+                  </StyledButton>
+                )}
+                <StyledButton onClick={() => onClose()}>
+                  {action === 'CREATE' ? 'Cancelar' : 'Fechar'}
+                </StyledButton>
               </ButtonsWrapper>
             </ClocktimeAndButoonsWrapper>
           </SideBysideContainer>
