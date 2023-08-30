@@ -31,8 +31,8 @@ export class AgendamentoController {
 
     let uniqueId = uuid_agendamento ? uuid_agendamento : generateID()
 
-    if( uuid_agendamento == "-" ) {
-      uniqueId = generateID();
+    if (uuid_agendamento == '-') {
+      uniqueId = generateID()
     }
 
     ids_grade.forEach(async (id_grade: any) => {
@@ -101,19 +101,10 @@ export class AgendamentoController {
   async update (request: Request, response: Response) {
     const id = Number(request.params.id)
 
-    const {
-      date,
-      id_professor,
-      id_laboratorio,
-      uuid_agendamento
-    } = request.body
+    const { date, id_professor, id_laboratorio, uuid_agendamento } =
+      request.body
 
-    console.log(
-      date,
-      id_professor,
-      id_laboratorio,
-      uuid_agendamento
-    )
+    console.log(date, id_professor, id_laboratorio, uuid_agendamento)
 
     try {
       const options: FindOneOptions<Agendamento> = {
@@ -130,17 +121,16 @@ export class AgendamentoController {
 
       //update all agendamentos with that uuid_agendamento
       agendamentos.forEach(agendamento => {
-        agendamento.date = date;
-        agendamento.id_professor = id_professor;
-        agendamento.id_laboratorio = id_laboratorio;
-        agendamento.updated_at = new Date();
-      });
-    
+        agendamento.date = date
+        agendamento.id_professor = id_professor
+        agendamento.id_laboratorio = id_laboratorio
+        agendamento.updated_at = new Date()
+      })
+
       // Save the updated agendamentos
-      await agendamentosRepository.save(agendamentos);
+      await agendamentosRepository.save(agendamentos)
 
       return response.status(200).json({ message: 'Agendamento updated' })
-
     } catch (error) {
       console.error(error)
       return response.status(500).json({ message: 'Internal server error' })
@@ -276,17 +266,52 @@ export class AgendamentoController {
 
   async getGroupedById (request: Request, response: Response) {
     console.log('getGroupedById')
-    const { uuid_agendamento } = request.body
-    // console.log(uuid_agendamento)
+    const { uuid_agendamento, date, laboratory_id, action } = request.body
+
+    console.log(uuid_agendamento, date, laboratory_id, action)
+
+    let query = null
+
+    // if (uuid_agendamento == '-') {
+    //   console.log('uuid_agendamento == -')
+    //   query = `
+    //   SELECT *
+    //   FROM agendamento
+    //   WHERE DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)
+    //   AND id_laboratorio = ${laboratory_id}
+    //   `
+    // } 
+     if (laboratory_id == undefined) {
+      console.log('laboratory_id == undefined')
+      query = `
+      SELECT * 
+      FROM agendamento 
+      AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)
+      `
+    } else {
+      console.log('full query when editing')
+        console.log('full query when creating only')
+        query = `
+        SELECT * 
+        FROM agendamento 
+        WHERE id_laboratorio = ${laboratory_id}
+        AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)`
+
+      }
+    
 
     try {
       // Retrieve grade data for the specified professor and semester
-
-      const query = `SELECT * FROM agendamento WHERE uuid_agendamento = '${uuid_agendamento}'`
-
+      if (date == undefined) {
+        return response.status(200).json([
+          {
+            message: 'no data'
+          }
+        ])
+      }
       const gradeGroupedById = await agendamentosRepository.query(query)
 
-      // console.log(gradeGroupedById)
+      console.log(gradeGroupedById)
 
       return response.status(200).json(gradeGroupedById)
     } catch (error) {

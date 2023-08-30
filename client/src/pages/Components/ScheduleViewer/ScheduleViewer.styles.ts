@@ -125,6 +125,7 @@ export const ScheduleCell = styled.div`
 
 export const UidLabel = styled.p`
   
+  display: flex;
   font-weight: 400;
  
   color: ${({canceled}: IProps2) =>{

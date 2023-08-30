@@ -99,7 +99,7 @@ function transformData(agendamentos: any) {
   return items;
 };
 
-function ScheduleViewer({ props, selectedLaboratory, handleDataSelection }: any) {
+function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action, professores, idUserLogado }: any) {
 
   const [form, setForm] = useState({} as any)
   const [schedule, setSchedule] = useState(array)
@@ -126,15 +126,18 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection }: any)
 
     handleDataSelection(scheduleData);
 
-  }, [props, setSelectedIds])
-
+  }, [props, setSelectedIds, selectedLaboratory,])
 
   async function fetchByGroupedId(token: string = localStorage.getItem('token') || "") {
     console.log("Fetching fetchByGroupedId...")
-    console.log(form.uuid_agendamento)
+    console.log(form)
+    console.log(selectedLaboratory)
 
     const obj = {
       uuid_agendamento: props.uuid_agendamento,
+      laboratory_id: selectedLaboratory,
+      date: form.date,
+      action: action
     }
 
     const bodyParams = JSON.stringify(obj)
@@ -209,6 +212,47 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection }: any)
     // }
   };
 
+  function getProfessorNameById(id_professor: number) {
+    // console.log(professores)
+
+    // console.log(id_professor)
+
+    if (id_professor == undefined) return
+
+    const professorObject = professores.find((item: any) => item.id == id_professor)
+
+    // console.log(professorObject.name)
+    return professorObject.name
+  }
+
+  function getTipoDeAgedamento(
+    itemIsSelected: boolean,
+    idUserAgendamento: number,
+    idUserLogado: number) 
+    {
+
+    console.log("idUserAgendamento: " + idUserAgendamento)
+    console.log("idUserLogado: " + idUserLogado)
+
+    //mostrar indisponível se o agendamento for de outro usuário
+
+    if (idUserAgendamento) {
+      if (idUserAgendamento == idUserLogado && itemIsSelected == true) {
+        return "Selecionado"
+      } else
+        if (idUserAgendamento != idUserLogado && itemIsSelected == true) {
+          return "Indisponivel"
+        }
+    }
+    if (itemIsSelected == false) {
+      return "Disponivel"
+    }
+    if (itemIsSelected == true){
+    return "Selecionado"
+    }
+
+  }
+
   return (
     <>
       <Container>
@@ -235,7 +279,13 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection }: any)
                     () => handleSelection(item.id, item.agendamento && item.agendamento ? item.agendamento.id : undefined)
                   }
                 >
-                  <p>{item.selecionado ? "Selecionado" : "Disponível"}</p>
+                  <p>{
+                    getTipoDeAgedamento(
+                      item.selecionado,
+                      item.agendamento.id_professor,
+                      idUserLogado
+                    )
+                  }</p>
                   <p>
                     {
                       item.agendamento.id != null ? "" :
@@ -247,7 +297,8 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection }: any)
                     }
                   </p>
                   <UidLabel canceled={item.edited && !item.selecionado}>
-                    {item.agendamento.uuid_agendamento}
+                    <p>{item.agendamento.uuid_agendamento}</p>
+                    <p>{getProfessorNameById(item.agendamento.id_professor)}</p>
                   </UidLabel>
                   {/* // item.Agendamento && item.Agendamento[0] ? <p>{item.Agendamento[0].uuid_agendamento}</p> : <p>---</p> */}
                 </ScheduleCell>

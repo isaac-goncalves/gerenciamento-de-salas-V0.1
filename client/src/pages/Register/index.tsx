@@ -98,6 +98,10 @@ const RegisterScreen: React.FC = () => {
         setSemestre(event.target.value);
     };
 
+    const handleChangeDisciplina = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setDisciplina(event.target.value);
+    };
+
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -161,10 +165,18 @@ const RegisterScreen: React.FC = () => {
         }
 
         if (semestre === "" && role === "aluno") {
-            toast.error("O campo semestre não pode estar vazio!");
+            toast.error("O campo Semestre não pode estar vazio!");
             return;
         }
 
+        if (disciplina === "" && role === "professor") {
+            toast.error("O campo Disciplina não pode estar vazio!");
+            return;
+        }
+        
+
+
+        const IsProfessor = (role === "professor") ? true : false;
 
         try {
 
@@ -174,8 +186,8 @@ const RegisterScreen: React.FC = () => {
                 email: email,
                 password: password,
                 role: role,
-                semester: semestre,
-                discipline: disciplina
+                semester: IsProfessor ? "" : semestre,
+                discipline: IsProfessor ? disciplina : "" 
             }
 
             console.log(params);
@@ -209,7 +221,7 @@ const RegisterScreen: React.FC = () => {
                 toast.success("Registro realizado com sucesso!");
                 setConfetti(true);
                 setTimeout(() => {
-                    window.location.href = "/dashboard";
+                    // window.location.href = "/dashboard";
                 }, 4000);
 
             }
@@ -316,7 +328,7 @@ const RegisterScreen: React.FC = () => {
                             {role === "professor" &&
                                 <InputWrapper>
                                     <label>Disciplina</label>
-                                    <StyledSelect value={semestre} onChange={handleChange}>
+                                    <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
                                         <option disabled value="">
                                             Selecione a disciplina
                                         </option>

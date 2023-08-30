@@ -12,6 +12,7 @@ import { Laboratorio } from '../../Agendamentos/Agendamento.styles';
 import Swal from 'sweetalert2'
 
 interface ModalProps {
+  idUserLogado: number
   action: string
   isVisible: boolean
   onClose: Function
@@ -50,6 +51,7 @@ interface Professor {
 }
 
 const ModalEdit = ({
+  idUserLogado,
   action,
   isVisible,
   onClose,
@@ -98,6 +100,11 @@ const ModalEdit = ({
     }
   }, [initialData])
 
+useEffect(() => {
+  console.log("selectedLaboratory useEffect")
+  console.log(selectedLaboratory)
+}, [selectedLaboratory])
+
   //FETCHES
   const fetchProfessorData = async () => {
     try {
@@ -126,12 +133,10 @@ const ModalEdit = ({
       // console.log(editedData.id_laboratorio)
 
       if (initialData.id_laboratorio) {
-
         setSelectedLaboratory(initialData.id_laboratorio);
-
       }
-      // console.log("selectedLaboratory")
-      // console.log(selectedLaboratory)
+      console.log("selectedLaboratory")
+      console.log(selectedLaboratory)
 
     } catch (error) {
       // console.log(error); // Handle the error appropriately
@@ -561,9 +566,7 @@ const ModalEdit = ({
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>
-                <ScheduleViewer props={formData} selectedLaboratory={
-                  selectedLaboratory
-                } handleDataSelection={handleDataSelection} />
+                <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} />
               </ClockTimeWrapper>
               <ButtonsWrapper>
                 <StyledButton onClick={() => handleEdit()}>{

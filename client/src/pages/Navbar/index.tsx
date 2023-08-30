@@ -23,6 +23,8 @@ const Navbar = () => {
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('gerenciamento-de-salas@v1.1') || '{}');
+        console.clear();
+        console.log(userData);
         setUser(userData.userData);
     }, []);
 
@@ -49,8 +51,8 @@ const Navbar = () => {
                     <Avatar src={avatar} />
                     {menuOpen && <>
                         <UserWrapper>
-                            <UserName>{user.name.toUpperCase()}</UserName>
-                            <UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina || "5º ADS"}`}</UserInfo>
+                            { <UserName>{user.name}</UserName> }
+                            { <UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina || "5º ADS"}`}</UserInfo> }
                         </UserWrapper>
                     </>
                     }

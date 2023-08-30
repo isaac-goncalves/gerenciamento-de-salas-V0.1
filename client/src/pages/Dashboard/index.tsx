@@ -611,7 +611,7 @@ const Dashboard: React.FC = () => {
     //RENDERS -------------------------------------------------------------------------
   return (
     <>
-      <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} />
+      <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} />
       <ToastContainer />
      <Container>
         <Helmet>
