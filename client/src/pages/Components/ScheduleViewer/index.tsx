@@ -228,8 +228,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
   function getTipoDeAgedamento(
     itemIsSelected: boolean,
     idUserAgendamento: number,
-    idUserLogado: number) 
-    {
+    idUserLogado: number) {
 
     console.log("idUserAgendamento: " + idUserAgendamento)
     console.log("idUserLogado: " + idUserLogado)
@@ -247,8 +246,8 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
     if (itemIsSelected == false) {
       return "Disponivel"
     }
-    if (itemIsSelected == true){
-    return "Selecionado"
+    if (itemIsSelected == true) {
+      return "Selecionado"
     }
 
   }
@@ -264,8 +263,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
           <p>22:15</p>
         </ClockContainer>
         <WeekdayContainer>
-          <h2>LAB {//preencer
-          }</h2>
+          <h2>LAB</h2>
           {
             scheduleData.map((item: any) => {
               // const agendamentoExist = item.agendamento !== undefined;
@@ -276,7 +274,11 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
                   selected={item.selecionado}
                   onClick=
                   {
-                    () => handleSelection(item.id, item.agendamento && item.agendamento ? item.agendamento.id : undefined)
+                    () => {
+                      if(action !== 'OPEN') {
+                        handleSelection(item.id, item.agendamento && item.agendamento ? item.agendamento.id : undefined)
+                      }
+                    }
                   }
                 >
                   <p>{
