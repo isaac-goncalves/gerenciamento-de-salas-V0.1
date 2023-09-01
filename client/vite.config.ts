@@ -15,7 +15,7 @@ export default defineConfig({
       usePolling: true,
     },
     strictPort: true,
-    port: 430, // you can replace this port with any port
+    port: 80, // you can replace this port with any port
   }
 })
 
