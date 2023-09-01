@@ -6,16 +6,16 @@ import fs from 'fs'
 export default defineConfig({
   plugins: [react()],
   server: {
-    https: {
-      key: fs.readFileSync("./cert/nice-beach-060306510.3.azurestaticapps.net.key"),
-      cert: fs.readFileSync("./cert/nice-beach-060306510.3.azurestaticapps.net.crt")
-    },
+    // https: {
+    //   key: fs.readFileSync("./cert/nice-beach-060306510.3.azurestaticapps.net.key"),
+    //   cert: fs.readFileSync("./cert/nice-beach-060306510.3.azurestaticapps.net.crt")
+    // },
     host: true,
     watch: {
       usePolling: true,
     },
     strictPort: true,
-    port: 5173, // you can replace this port with any port
+    port: 430, // you can replace this port with any port
   }
 })
 

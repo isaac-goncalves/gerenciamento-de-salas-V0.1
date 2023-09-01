@@ -11,6 +11,7 @@ import NotificationConfig from './pages/NotificationConfig'
 import RegisterScreen from './pages/Register';
 
 import GlobalStyle from './globalStyles';
+import Gerenciamento from './pages/Gerenciamento';
 
 function App() {
   return (
@@ -48,6 +49,13 @@ function App() {
             <>
               <Navbar />
               <Perfil />
+              <Circles ballCount={4} />
+            </>
+          } />
+           <Route path="/gerenciamento" element={
+            <>
+              <Navbar />
+              <Gerenciamento />
               <Circles ballCount={4} />
             </>
           } />

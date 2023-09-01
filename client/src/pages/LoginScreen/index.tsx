@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Helmet } from 'react-helmet'
 
-const apiUrl = "http://localhost:3333";
+const apiUrl = "http://gerenciamentodesalas.cloud:3333";
 
 console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
 

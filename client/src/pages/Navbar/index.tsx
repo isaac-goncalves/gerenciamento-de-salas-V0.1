@@ -51,8 +51,9 @@ const Navbar = () => {
                     <Avatar src={avatar} />
                     {menuOpen && <>
                         <UserWrapper>
-                            { <UserName>{user.name}</UserName> }
-                            { <UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina || "5º ADS"}`}</UserInfo> }
+                            {<UserName>{user.name}</UserName>}
+                            {<UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina || "5º ADS"}`}</UserInfo>}
+                            {<UserInfo>{user.semestre ? `Professor` : `Aluno`}</UserInfo>}
                         </UserWrapper>
                     </>
                     }
@@ -89,6 +90,16 @@ const Navbar = () => {
                                 fontSize: '1.4rem',
                             }} />{
                                 menuOpen && <p>PERFIL</p>
+                            }
+                        </RowWrapper>
+                    </MenuLink>
+                    <MenuLink to="/gerenciamento" >
+                        <RowWrapper>
+                            <CgProfile style={{
+                                color: Colors.mainpurple,
+                                fontSize: '1.4rem',
+                            }} />{
+                                menuOpen && <p>GERENCIAMENTO</p>
                             }
                         </RowWrapper>
                     </MenuLink>
