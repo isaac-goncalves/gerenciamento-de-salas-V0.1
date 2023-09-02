@@ -2,7 +2,7 @@ module.exports = {
     apps: [
       {
         name: 'backend-app',
-        cwd: 'server/dist', // Set the working directory to server/dist
+        cwd: '../server/dist', // Set the working directory to server/dist
         script: 'node',
         args: 'server.js', // Replace 'server.js' with your backend entry file
         exec_mode: 'fork',
