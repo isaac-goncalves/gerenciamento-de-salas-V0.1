@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet'
 
 import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
-const apiUrl = 'https://9447-20-226-17-26.ngrok.io';
+const apiUrl = 'http://20.226.17.26:3333';
     
 const templateFileName = 'TEMPLATE_BASE_DADOS1.2.xlsx';
-const templateFileUrl = 'http://localhost:3333/template/download/';
+const templateFileUrl = 'http://20.226.17.26:3333/template/download/';
 
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
