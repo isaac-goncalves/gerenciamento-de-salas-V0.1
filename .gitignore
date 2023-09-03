@@ -8,3 +8,5 @@ server/.env
 server/dist
 
 server/dist
+client/.env
+client/.env
