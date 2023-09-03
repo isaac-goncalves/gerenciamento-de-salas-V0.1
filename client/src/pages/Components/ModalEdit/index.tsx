@@ -246,7 +246,7 @@ const ModalEdit = ({
 
       console.log(finalData)
 
-      await fetch('https://6063-201-26-159-52.ngrok-free.app/agendamento', {
+      await fetch( String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/create/agendamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -255,7 +255,12 @@ const ModalEdit = ({
       })
         .then(response => response.json())
         .then(data => {
-          console.log('Success:', data);
+
+          if(data.length == 0){
+            return toast.error('Erro ao criar agendamento, tente novamente.');
+          }
+
+          console.log('success:', data);
           toast.success('Agendamento realizado com sucesso!');
           onClose(true);
         })
@@ -269,7 +274,7 @@ const ModalEdit = ({
         const params = {
           ids: deletedAgendamentos
         }
-        const response = await fetch(`https://6063-201-26-159-52.ngrok-free.app/agendamento`, {
+        const response = await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/agendamento`, {
           method: 'DELETE',
           body: JSON.stringify(params),
           headers: {

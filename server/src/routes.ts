@@ -41,7 +41,7 @@ routes.post('/alunos', new UserController().getAlunos)
 routes.get('/template/download', new ETLControllers().download)
 routes.post('/template/upload', new ETLControllers().upload)
 
-routes.post('/agendamento', new AgendamentoController().create)
+routes.post('/create/agendamento', new AgendamentoController().create)
 routes.put('/agendamento', new AgendamentoController().update);
 routes.delete('/agendamento', new AgendamentoController().delete);
 
