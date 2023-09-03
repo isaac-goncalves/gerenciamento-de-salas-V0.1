@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import { Helmet } from 'react-helmet'
 
-const apiUrl = "https://6063-201-26-159-52.ngrok-free.app";
+const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
-console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
+console.log(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL))
 
 import { useWindowSize } from 'react-use';
 
@@ -32,8 +32,8 @@ interface InputProps {
 }
 
 const LoginScreen: React.FC = () => {
-    const [email, setEmail] = useState("isaac@gmail.com");
-    const [password, setPassword] = useState("Password123$");
+    const [email, setEmail] = useState(""); //isaac@gmail.com
+    const [password, setPassword] = useState(""); //Password123$
     const [form, setForm] = useState("login");
     const [role, setRole] = useState("");
 
