@@ -108,8 +108,8 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
 
   useEffect(() => {
 
+   
     console.log("ScheduleViewer useEffect")
-
     // console.log(setSelectedIds)
     console.log(form)
 
@@ -142,7 +142,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
 
     const bodyParams = JSON.stringify(obj)
 
-    await fetch('https://6063-201-26-159-52.ngrok-free.app/agendamento/grouped', {
+    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) +'/agendamento/grouped', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,

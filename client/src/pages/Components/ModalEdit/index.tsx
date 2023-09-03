@@ -73,7 +73,7 @@ const ModalEdit = ({
 
   //USEFECCTS
   useEffect(() => {
-    console.clear()
+
     console.log("ModalEdit useEffect")
     console.log(formData)
 
@@ -132,7 +132,7 @@ const ModalEdit = ({
     } catch (error) {
       // console.log(error); // Handle the error appropriately
     }
-  };
+  }
   const fetchLaboratoryData = async () => {
     try {
       await fetchLaboratory("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjgzODQ1Mzc0LCJleHAiOjE2ODM4NzQxNzR9.rCD-m5-nyNEdCLgs8p-ON71dsEAByLbtb9A_xwj-eC4");
@@ -149,10 +149,10 @@ const ModalEdit = ({
     } catch (error) {
       // console.log(error); // Handle the error appropriately
     }
-  };
+  }
   async function fetchProfessors(token: string) {
     // console.log("Fetching fetchProfessors...")
-    await fetch('https://6063-201-26-159-52.ngrok-free.app/professors', {
+    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/professors', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -164,7 +164,7 @@ const ModalEdit = ({
   }
   async function fetchLaboratory(token: string) {
     // console.log("Fetching fetchLaboratory...")
-    await fetch('https://6063-201-26-159-52.ngrok-free.app/laboratory', {
+    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/laboratory', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -318,7 +318,7 @@ const ModalEdit = ({
             uuid_agendamento: uuidAgendamento,
           }
 
-          const response = await fetch(`https://6063-201-26-159-52.ngrok-free.app/agendamento`, {
+          const response = await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/agendamento`, {
             method: 'PUT',
             body: JSON.stringify(updatedAgendamentos),
             headers: {
