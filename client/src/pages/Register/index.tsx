@@ -192,7 +192,7 @@ const RegisterScreen: React.FC = () => {
 
             console.log(params);
 
-            const response = await fetch(`${apiUrl}/Register`, {
+            const response = await fetch(`${apiUrl}/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -221,7 +221,7 @@ const RegisterScreen: React.FC = () => {
                 toast.success("Registro realizado com sucesso!");
                 setConfetti(true);
                 setTimeout(() => {
-                    // window.location.href = "/dashboard";
+                    window.location.href = "/dashboard";
                 }, 4000);
 
             }

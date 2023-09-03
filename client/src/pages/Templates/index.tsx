@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 
 import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
-    
+
 const templateFileName = 'TEMPLATE_BASE_DADOS1.2.xlsx';
 const templateFileUrl = apiUrl + '/template/download/';
 

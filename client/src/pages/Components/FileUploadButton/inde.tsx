@@ -40,7 +40,7 @@ const FileUploadButton: React.FC = () => {
   const sendFileToBackend = (selectedFile: File) => {
     const formData = new FormData();
     formData.append('file', selectedFile);
-    fetch('http://20.226.17.26:3333/template/upload', {
+    fetch( String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) +'/template/upload', {
       method: 'POST',
       body: formData,
     })

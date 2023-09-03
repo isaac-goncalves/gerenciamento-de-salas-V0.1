@@ -54,7 +54,7 @@ const Navbar = () => {
                         <UserWrapper>
                             {<UserName>{user.name}</UserName>}
                             {<UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina || "5º ADS"}`}</UserInfo>}
-                            {<UserInfo>{user.semestre ? `Professor` : `Aluno`}</UserInfo>}
+                            {<UserInfo>{user.semestre == "" || user.semestre != undefined ? `Aluno` : `Professor`}</UserInfo>}
                         </UserWrapper>
                     </>
                     }
