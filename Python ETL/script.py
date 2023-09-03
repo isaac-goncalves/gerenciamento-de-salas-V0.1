@@ -43,7 +43,7 @@ dfDiasSemana.columns = ['dia_da_semana','id']
                 
 dfGrade.dropna(subset=['id', 'horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at'], inplace=True)
 dfDisciplinas.dropna(subset=['disciplina', 'id'], inplace=True)
-dfProfessores.dropna(subset=['name', 'id', 'surname', 'disciplina'], inplace=True)
+dfProfessores.dropna(subset=['name', 'id', 'surname','email', 'disciplina'], inplace=True)
 dfLaboratorio.dropna(subset=['descricao', 'id', 'capacidade'], inplace=True)
 dfSemestres.dropna(subset=['descricao', 'ID'], inplace=True)
 dfDiasSemana.dropna(subset=['dia_da_semana', 'id'], inplace=True)
@@ -94,12 +94,13 @@ cursor.execute(reset_sequence_query_professores)
 for index, row in dfProfessores.iterrows():
     name = row['name']
     surname = row['surname']
+    email = row['email']
     disciplina = row['disciplina']
     created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
     updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
 
     # Construct the SQL INSERT statement for professores
-    query_professores = f"INSERT INTO professores (name, surname, disciplina, created_at, updated_at) VALUES ('{name}', '{surname}', {disciplina}, '{created_at}', '{updated_at}');"
+    query_professores = f"INSERT INTO professores (name, surname, email, disciplina, created_at, updated_at) VALUES ('{name}', '{surname}','{email}', {disciplina}, '{created_at}', '{updated_at}');"
     cursor.execute(query_professores)
 
 query_set_professores_sequence = "SELECT setval('professores_id_seq', (SELECT MAX(id) FROM professores));"
