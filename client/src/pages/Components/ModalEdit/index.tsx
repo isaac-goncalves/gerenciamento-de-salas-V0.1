@@ -152,7 +152,7 @@ const ModalEdit = ({
   };
   async function fetchProfessors(token: string) {
     // console.log("Fetching fetchProfessors...")
-    await fetch('http://localhost:3333/professors', {
+    await fetch('https://6063-201-26-159-52.ngrok-free.app/professors', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -164,8 +164,8 @@ const ModalEdit = ({
   }
   async function fetchLaboratory(token: string) {
     // console.log("Fetching fetchLaboratory...")
-    await fetch('http://localhost:3333/laboratory', {
-      method: 'GET',
+    await fetch('https://6063-201-26-159-52.ngrok-free.app/laboratory', {
+      method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
       }
@@ -246,7 +246,7 @@ const ModalEdit = ({
 
       console.log(finalData)
 
-      await fetch('http://localhost:3333/agendamento', {
+      await fetch('https://6063-201-26-159-52.ngrok-free.app/agendamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -269,7 +269,7 @@ const ModalEdit = ({
         const params = {
           ids: deletedAgendamentos
         }
-        const response = await fetch(`http://localhost:3333/agendamento`, {
+        const response = await fetch(`https://6063-201-26-159-52.ngrok-free.app/agendamento`, {
           method: 'DELETE',
           body: JSON.stringify(params),
           headers: {
@@ -313,7 +313,7 @@ const ModalEdit = ({
             uuid_agendamento: uuidAgendamento,
           }
 
-          const response = await fetch(`http://localhost:3333/agendamento`, {
+          const response = await fetch(`https://6063-201-26-159-52.ngrok-free.app/agendamento`, {
             method: 'PUT',
             body: JSON.stringify(updatedAgendamentos),
             headers: {
@@ -384,7 +384,7 @@ const ModalEdit = ({
     // }
 
     try {
-      // const response = await fetch(`http://localhost:3333/agendamento/${formData.id}`, {
+      // const response = await fetch(`https://6063-201-26-159-52.ngrok-free.app/agendamento/${formData.id}`, {
       //   method: 'PUT',
       //   headers: {
       //     'Content-Type': 'application/json'

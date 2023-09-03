@@ -51,7 +51,7 @@ const ModalDelete = ({
       const params = {
         ids : [deleteData.id]
       }
-      const response = await fetch(`http://localhost:3333/agendamento`, {
+      const response = await fetch(`https://6063-201-26-159-52.ngrok-free.app/agendamento`, {
         method: 'DELETE',
         body: JSON.stringify(params),
         headers: {

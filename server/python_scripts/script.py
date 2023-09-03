@@ -20,6 +20,15 @@ connection = psycopg2.connect(
     password='2406'
 )
 
+# Local Database
+# connection = psycopg2.connect(
+#     host='sgsa05database.postgres.database.azure.com',
+#     port='5432',
+#     database='gerenciamento_de_salas',
+#     user='sgsaadmin@sgsa05database',
+#     password='I17092004c.'
+# )
+
 # Read the Excel file and specify the sheet name
 dfGrade = pd.read_excel(file_path, sheet_name='Final_table', usecols='B:K', skiprows=1, nrows=1000) #grade
 dfDisciplinas = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='B:C', skiprows=2, nrows=100) #disciplinas

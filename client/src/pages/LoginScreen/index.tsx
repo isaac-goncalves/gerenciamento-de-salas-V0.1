@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Helmet } from 'react-helmet'
 
-const apiUrl = "http://20.226.17.26:3333";
+const apiUrl = "https://6063-201-26-159-52.ngrok-free.app";
 
 console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
 

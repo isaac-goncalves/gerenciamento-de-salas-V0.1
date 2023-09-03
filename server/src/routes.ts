@@ -17,11 +17,11 @@ routes.post('/verify', new UserController().verify)
 
 routes.post('/professors', new ProfessorsController().get)
 
-routes.get('/laboratory', new ProfessorsController().getLaboratory)
+routes.post('/laboratory', new ProfessorsController().getLaboratory)
 
 routes.post('/grade/dashboard', new GradeController().getDashboardData)
 
-routes.get('/agendamento', new AgendamentoController().get)
+routes.post('/agendamento', new AgendamentoController().get)
 
 routes.get('/grade/agendamentos', new AgendamentoController().getGroupedById) // GroupByID
 
@@ -34,9 +34,9 @@ routes.post('/agendamento/grouped', new AgendamentoController().getGroupedById) 
 routes.post('/login', new UserController().login)
 routes.post('/register', new UserController().create)
 
-routes.get('/usuarios', new UserController().get)
-routes.get('/professores', new UserController().getProfessores)
-routes.get('/alunos', new UserController().getAlunos)
+routes.post('/usuarios', new UserController().get)
+routes.post('/professores', new UserController().getProfessores)
+routes.post('/alunos', new UserController().getAlunos)
 
 routes.get('/template/download', new ETLControllers().download)
 routes.post('/template/upload', new ETLControllers().upload)

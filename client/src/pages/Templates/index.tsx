@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet'
 
 import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
-const apiUrl = 'http://20.226.17.26:3333';
+const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
     
 const templateFileName = 'TEMPLATE_BASE_DADOS1.2.xlsx';
-const templateFileUrl = 'http://20.226.17.26:3333/template/download/';
+const templateFileUrl = apiUrl + '/template/download/';
 
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -62,10 +62,18 @@ function Templates() {
                 alunosDataResponse,
                 professoresDataResponse
             ] = await Promise.all([
-                fetch(`${apiUrl}/agendamento`).then(res => res.json()),
-                fetch(`${apiUrl}/usuarios`).then(res => res.json()),
-                fetch(`${apiUrl}/alunos`).then(res => res.json()),
-                fetch(`${apiUrl}/professores`).then(res => res.json())
+                fetch(`${apiUrl}/agendamento`, {
+                    method: 'post',
+                }).then(res => res.json()),
+                fetch(`${apiUrl}/usuarios`, {
+                    method: 'post',
+                }).then(res => res.json()),
+                fetch(`${apiUrl}/alunos`, {
+                    method: 'post',
+                }).then(res => res.json()),
+                fetch(`${apiUrl}/professores`, {
+                    method: 'post',
+                }).then(res => res.json())
             ]);
 
             setUserData(userDataResponse);

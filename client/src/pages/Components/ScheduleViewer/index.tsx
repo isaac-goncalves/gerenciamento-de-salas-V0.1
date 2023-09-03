@@ -142,7 +142,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
 
     const bodyParams = JSON.stringify(obj)
 
-    await fetch('http://localhost:3333/agendamento/grouped', {
+    await fetch('https://6063-201-26-159-52.ngrok-free.app/agendamento/grouped', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,

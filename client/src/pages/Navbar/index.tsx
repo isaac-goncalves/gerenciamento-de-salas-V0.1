@@ -8,6 +8,7 @@ import { Colors } from '../../colors';
 import { CgProfile } from 'react-icons/cg'
 import { GrLogout } from 'react-icons/gr'
 import { TbFileUpload } from 'react-icons/tb'
+import { BiCog } from 'react-icons/bi'
 
 import { BsCalendarDate } from 'react-icons/bs'
 import { MdSchedule, MdPerson, MdExitToApp, MdOutlineDarkMode } from 'react-icons/md';
@@ -95,7 +96,7 @@ const Navbar = () => {
                     </MenuLink>
                     <MenuLink to="/gerenciamento" >
                         <RowWrapper>
-                            <CgProfile style={{
+                            <BiCog style={{
                                 color: Colors.mainpurple,
                                 fontSize: '1.4rem',
                             }} />{

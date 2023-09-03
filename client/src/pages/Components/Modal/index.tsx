@@ -162,7 +162,7 @@ const Modal = ({
     console.log(finalData)
       
     
-    fetch('http://localhost:3333/agendamento', {
+    fetch('https://6063-201-26-159-52.ngrok-free.app/agendamento', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
