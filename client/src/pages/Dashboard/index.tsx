@@ -701,10 +701,15 @@ const Dashboard: React.FC = () => {
             </FilterWrapper>
             <>
               {
-                userIsScheduling ?
-                  <ButtonConfimarAgendamento onClick={handleSchedulingButtonClick}>Cancelar</ButtonConfimarAgendamento>
+                userData.userData.professor_id == 0 || userData.userData.professor_id == undefined ?
+                  null 
                   :
-                  <ButtonConfimarAgendamento onClick={handleSchedulingButtonClick}>Novo agendamento</ButtonConfimarAgendamento>
+                  (
+                    userIsScheduling ?
+                      <ButtonConfimarAgendamento onClick={handleSchedulingButtonClick}>Cancelar</ButtonConfimarAgendamento>
+                      :
+                      <ButtonConfimarAgendamento onClick={handleSchedulingButtonClick}>Novo agendamento</ButtonConfimarAgendamento>
+                  )
               }
 
             </>
