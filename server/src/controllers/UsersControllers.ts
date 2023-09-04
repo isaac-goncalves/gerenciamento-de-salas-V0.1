@@ -26,7 +26,7 @@ export class UserController {
     const { name, surname, email, password, role, semester, discipline } =
       request.body
 
-    // console.log(name, surname, email, password, role, semester, discipline)
+    console.log(name, surname, email, password, role, semester, discipline)
 
     if (!email || !password) {
       return response
@@ -37,8 +37,9 @@ export class UserController {
     try {
       const userExists = await usuariosRepository.findOneBy({ email })
 
+      //CHECK IF USER EXISTS
       if (userExists) {
-        // console.log('user already exists')
+        console.log('user already exists')
         return response.status(400).json({ error: 'User already exists' })
       }
 
@@ -116,7 +117,7 @@ export class UserController {
           token: token
         })
       } else if (role === 'coordenador') {
-        // console.log('coordenador selected')
+        console.log('coordenador selected')
 
         return response.status(201).json({
           message: 'Coordenador created',
@@ -129,7 +130,32 @@ export class UserController {
             discipline
           }
         })
-      } else {
+      }
+      else if (role === 'guest') {  
+      
+        const token = jwt.sign(
+          { id: savedUser.id },
+          process.env.JWT_PASS ?? '',
+          {
+            expiresIn: '8h'
+          }
+        )
+
+        return response.status(201).json({
+          message: 'Guest created',
+          userData: {
+            name,
+            surname,
+            email,
+            password,
+            role,
+            semester
+          },
+          token: token
+        })
+      
+      }
+      else {
         return response.status(400).json({ error: 'Role is missing' })
       }
     } catch (error) {
@@ -241,7 +267,7 @@ export class UserController {
     const { email, password } = request.body
 
     console.log('----------------------------')
-    console.log("LOGIN ATTEMPT")
+    console.log('LOGIN ATTEMPT')
 
     if (!email || !password) {
       return response
@@ -281,18 +307,24 @@ export class UserController {
         })
         // console.log('aluno=')
         // console.log(aluno)
-        userData = aluno
+
+        const AlunoWithRole = {
+          ...aluno,
+          role: userExists.role
+        }
+
+        userData = AlunoWithRole
       } else if (userExists.role === 'professor') {
         let professor: any = await professoresRepository.findOneBy({
           //caso o usuario seja um professor, busca o professor no banco de dados
-          user_id: userExists.id,
+          user_id: userExists.id
         })
 
         const professorId = professor?.id
 
         professor = {
           ...professor,
-          professor_id : professorId
+          professor_id: professorId
         }
 
         console.log('professor=')
@@ -309,13 +341,16 @@ export class UserController {
 
         const returnObj = {
           ...restUserData,
-          nomeDisciplina: disciplinaObj?.descricao
+          nomeDisciplina: disciplinaObj?.descricao,
+          role: userExists.role
         }
 
         return response.status(201).json({
           userData: returnObj,
           token: token
         })
+      } else if (userExists.role === 'coordenador') {
+        console.log('coordenador selected')
       } else {
         // console.log('role nao encontrado')
         return response.status(400).json({ error: 'Role nao encontrado' }) //caso o usuario nao seja nem professor nem aluno, retorna erro

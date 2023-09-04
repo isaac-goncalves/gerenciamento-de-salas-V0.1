@@ -53,8 +53,8 @@ const Navbar = () => {
                     {menuOpen && <>
                         <UserWrapper>
                             {<UserName>{user.name}</UserName>}
-                            {<UserInfo>{user.semestre ? `${user.semestre}º ADS` : `${user.nomedDisciplina || "5º ADS"}`}</UserInfo>}
-                            {<UserInfo>{user.semestre == "" || user.semestre != undefined ? `Aluno` : `Professor`}</UserInfo>}
+                            {<UserInfo>{user.role == "aluno" ? `${user.semestre}º ADS`: user.role == "professor" ? "professor": "guest"}</UserInfo>}
+                            {<UserInfo>{user.role}</UserInfo>}
                         </UserWrapper>
                     </>
                     }

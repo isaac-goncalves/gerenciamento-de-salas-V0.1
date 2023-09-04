@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo, EyeIcon, InputInternalWrapper, InputColumnWrapper } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo, EyeIcon, InputInternalWrapper, InputColumnWrapper, ButtonWrapper } from "./Login.styles"
 
 import background from '../../../public/images/background.jpg';
 import fatec from '../../../public/images/fatec.svg';
@@ -125,6 +125,52 @@ const LoginScreen: React.FC = () => {
         setShowPassword(!showPassword);
     };
 
+    const handleGuestLogin = (event: React.FormEvent) => {
+        event.preventDefault();
+        const guestRandomNumber = Math.floor(Math.random() * 1000000);
+
+        const guestCreationObject =
+        {
+        name: "Guest",
+        surname: "guest",
+        email: `${guestRandomNumber}_guest@mail.com`,
+        password: "Password123$",
+        role: "guest",
+        semestre: 1
+        }
+
+        fetch(`${apiUrl}/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(guestCreationObject),
+        })
+
+        .then((response) => response.json())
+        .then((data) => {
+
+            const obj = {
+                userData: data.userData,
+                token: data.token
+            }
+            console.log(JSON.stringify(obj));
+
+            localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(obj));
+
+            setConfetti(true);
+            toast.success("Usuário guest criado com sucesso!");
+
+            setTimeout(() => {
+                console.log("redirecting")
+                window.location.href = "/dashboard";
+            }
+                , 4000);
+        }
+        )
+
+    }
+
 
     return (
         <Container>
@@ -145,7 +191,7 @@ const LoginScreen: React.FC = () => {
                     <BackgroundImage src={background} />
                     <FatecImage src={fatec} />
                 </SideContainer>
-                <Form onSubmit={handleSubmit}>
+                <Form>
                     <TitleWrapper>
                         <p>Bem vindo ao</p>
                         <div>
@@ -153,7 +199,7 @@ const LoginScreen: React.FC = () => {
                         </div>
                     </TitleWrapper>
                     <ContentWrapper>
-                        <TeamsWrapper>
+                        <TeamsWrapper onClick={() => toast.info("Em breve disponivel 😓💻")}>
                             <TeamsLogo src={teamsLogo} />
                             <p>Entrar com o Teams</p>
                         </TeamsWrapper>
@@ -184,7 +230,7 @@ const LoginScreen: React.FC = () => {
                                     <InputInternalWrapper>
                                         <Input
                                             type={showPassword ? 'text' : 'password'}
-                                            placeholder="********"
+                                            placeholder="**********"
                                             value={password}
                                             onChange={(event: any) => setPassword(event.target.value)}
                                         />
@@ -203,7 +249,10 @@ const LoginScreen: React.FC = () => {
                             <EsqueceuSenha>Esqueceu sua senha?</EsqueceuSenha>
                         </MantenhaMeConectadoWrapper>
                         <ButtonsWrapper>
-                            <Button type="submit">Login</Button>
+                            <ButtonWrapper>
+                                <Button onClick={handleSubmit}>Login</Button>
+                                <Button onClick={handleGuestLogin} >Guest</Button>
+                            </ButtonWrapper>
                             <div>
                                 <p>
                                     Não possui uma conta?

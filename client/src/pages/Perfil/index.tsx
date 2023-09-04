@@ -21,6 +21,7 @@ import ModalEdit from '../Components/ModalEdit';
 import ModalDelete from '../Components/ModalDelete'
 import FileUploadButton from '../Components/FileUploadButton/inde';
 import FileDownloadButton from '../Components/FileDownloadButton/inde';
+import { BsWhatsapp } from 'react-icons/bs';
 
 function Perfil() {
 
@@ -111,6 +112,11 @@ function Perfil() {
     };
 
     const handleDeleteClick = (editedData: any) => {
+        if (userData.userData.role == 'aluno' || userData.userData.role == "guest") {
+            toast.error('Usuário sem permissão para excluir agendamentos');
+            return;
+        }
+
         setEditedData(editedData);
         setDeleteModal(true);
 
@@ -304,19 +310,23 @@ function Perfil() {
     }
 
     const renderTable = () => {
-        if (selectedTable === 'agendamentos') {
-            return <AppointmentTable data={appointmentData} />
-        }
-        else if (selectedTable === 'usuarios') {
-            return <UsersTable data={userData} />
-        }
-        else if (selectedTable === 'alunos') {
-            return <AlunosTable data={alunosData} />
-        }
-        else if (selectedTable === 'professores') {
-            return <ProfessoresTable data={professoresData} />
-        }
+        return (
+            <>
+                <image></image>
+                <select></select>
+                <select></select>
+
+                <FileUploadButton />
+            </>
+        )
     }
+
+    const handleClick = () => {
+        const whatsappLink =
+            'whatsapp://send?text=Agende%20suas%20salas%20de%20aula%20e%20laborat%C3%B3rios%20de%20forma%20simples%20e%20eficiente%20com%20o%20Gerenciamento%20de%20Salas!%20%F0%9F%94%8D%F0%9F%92%A8%0AAcesse%20agora:%20gerenciamentodesalas.cloud%20%F0%9F%96%A5%F0%9F%94%92%0AFacilite%20sua%20vida%20acad%C3%AAmica!%20%F0%9F%93%9A%20%23FATEC';
+
+        window.location.href = whatsappLink;
+    };
 
     return (
         <Container>
@@ -360,7 +370,10 @@ function Perfil() {
                 </Header>
                 <SearchBar>
                     <input type="text" placeholder="Pesquisar" />
-                    <button type="submit">Convidar</button>
+                    <button onClick={handleClick}>
+                        <BsWhatsapp />
+                        Convidar pelo Whatsapp
+                    </button>
                 </SearchBar>
                 <TableSelector>
                     <select value={selectedTable} onChange={handleTableChange}>

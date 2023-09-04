@@ -299,7 +299,7 @@ const RegisterScreen: React.FC = () => {
                                 onChange={handleRoleChange}
                             />
                             <label>Professor</label>
-                            <input
+                            {/* <input
                                 type="radio"
                                 id="professor"
                                 name="role"
@@ -307,7 +307,7 @@ const RegisterScreen: React.FC = () => {
                                 checked={role === 'coordenador'}
                                 onChange={handleRoleChange}
                             />
-                            <label>Coordenador</label>
+                            <label>Coordenador</label> */}
                         </RadioWrapper>
                         <>
                             {role === "aluno" &&

@@ -156,7 +156,7 @@ const Dashboard: React.FC = () => {
   //USE EFFECTS -------------------------------------------------------------------------
   useLayoutEffect(() => {
     console.log('Starting to render stuff...');
-
+    
     if (userData.token === '' || userData.userData.id === 0) {
       console.log('userData is null');
 
@@ -175,14 +175,19 @@ const Dashboard: React.FC = () => {
         }, 2000);
       } else {
         // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+
+      
+        setSelectedSemesterValue(userDataJson.userData.semestre);
+   
         setUserData(userDataJson);
       }
     }
   }, [userData]);
+
   useEffect(() => {
 
     console.log('Starting to render stuff...');
-
+   
     console.log(startDate)
 
     if (userData.token !== '' && userData.userData.id !== 0) {
@@ -197,6 +202,7 @@ const Dashboard: React.FC = () => {
         fetchSemestreData();
       }
 
+
       fetchProfessors(userData.token);
 
     }
@@ -205,7 +211,11 @@ const Dashboard: React.FC = () => {
     }
 
   }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate, startDate]);
+  
   useEffect(() => {
+
+   
+
     const updateCurrentDayAndTime = () => {
       const now = new Date();
       const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -219,15 +229,19 @@ const Dashboard: React.FC = () => {
     updateCurrentDayAndTime();
     const timerId = setInterval(updateCurrentDayAndTime, 60000); // Update every minute
 
+    // setSelectedSemesterValue(userData.userData.semestre)
     return () => {
       clearInterval(timerId);
     };
+
   }, []);
+
+ 
 
   //FUNCTIONS -------------------------------------------------------------------------
 
   function handleScheduleClick(dayData: any, item: any, dayDateObject: Date) {
-    console.clear()
+    // console.clear()
     console.log("Clicked")
     console.log(item.agendamentos.length)
 

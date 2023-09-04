@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import { Helmet } from 'react-helmet'
 
@@ -29,7 +29,47 @@ import FileDownloadButton from '../Components/FileDownloadButton/inde';
 
 function Templates() {
 
-    const [userData, setUserData] = React.useState<UserData[]>([])
+    //USERSESSIONDATA
+    const [userData, setUserData] = useState<any>(
+        {
+            userData: {
+                id: 0,
+                name: "Selecione um professor",
+            },
+            token: ""
+        }
+    );
+
+    useLayoutEffect(() => {
+        console.log('Starting to render stuff...');
+        if (userData.token === '' || userData.userData.id === 0) {
+            console.log('userData is null');
+
+            const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+            const userDataJson = JSON.parse(localUserData || '{}');
+            const { userData: storedUserData, token } = userDataJson;
+
+            console.log(JSON.stringify(storedUserData));
+            console.log('token' + token);
+
+            if (token == null || localUserData == null) {
+                toast.error('Você precisa estar logado para acessar essa página!');
+                localStorage.removeItem('gerenciamento-de-salas@v1.1');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            } else {
+                 console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+
+
+                setUserData(userDataJson);
+            }
+        }
+    }, [userData]);
+
+
+
+    const [userFetchedData, setUserFetchedData] = React.useState<UserData[]>([])
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
     const [alunosData, setAlunosData] = React.useState<any>([])
     const [professoresData, setProfessoresData] = React.useState<any>([])
@@ -45,6 +85,7 @@ function Templates() {
 
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
+
 
 
 
@@ -76,7 +117,7 @@ function Templates() {
                 }).then(res => res.json())
             ]);
 
-            setUserData(userDataResponse);
+            setUserFetchedData(userDataResponse);
             setAppointmentData(appointmentDataResponse);
             setAlunosData(alunosDataResponse);
 
@@ -166,7 +207,7 @@ function Templates() {
                 <MainContainer>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />
                     <FileDownloadButton buttonText={"Download Template Atualizado"} fileName={templateFileName} fileUrl={templateFileUrl} />
-                    <FileUploadButton />
+                    <FileUploadButton loggedUserRole={userData.userData.role} />
                 </MainContainer>
                 {
                     // isLoading ?

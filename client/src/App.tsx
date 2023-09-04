@@ -21,13 +21,13 @@ function App() {
           <Route path="/" element={
             <>
               <LoginScreen />
-              <Circles ballCount={4} />
+              {/* <Circles ballCount={4} /> */}
             </>
           } />
           <Route path="/register" element={
             <>
               <RegisterScreen />
-              <Circles ballCount={4} />
+              {/* <Circles ballCount={4} /> */}
             </>
           } />
 
@@ -42,35 +42,35 @@ function App() {
             <>
               <Navbar />
               <Agendamentos />
-              <Circles ballCount={4} />
+              {/* <Circles ballCount={4} /> */}
             </>
           } />
           <Route path="/perfil" element={
             <>
               <Navbar />
               <Perfil />
-              <Circles ballCount={4} />
+              {/* <Circles ballCount={4} /> */}
             </>
           } />
            <Route path="/gerenciamento" element={
             <>
               <Navbar />
               <Gerenciamento />
-              <Circles ballCount={4} />
+              {/* <Circles ballCount={4} /> */}
             </>
           } />
           <Route path="/templates" element={
             <>
               <Navbar />
               <Templates />
-              <Circles ballCount={4} />
+              {/* <Circles ballCount={4} /> */}
             </>
           } />
           <Route path="/notification" element={
             <>
               <Navbar />
               <NotificationConfig />
-              <Circles ballCount={4} />
+              {/* <Circles ballCount={4} /> */}
             </>
           } />
         </Routes>

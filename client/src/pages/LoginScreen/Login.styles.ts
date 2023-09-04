@@ -45,7 +45,7 @@ export const FatecImage = styled.img`
   bottom: 10%;
   left: 10%;
   width: 300px;
-  object-fit: cover;
+  object-fit: scale-down;
 `
 
 export const SGSALogo = styled.img`
@@ -84,13 +84,13 @@ export const ButtonsWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  gap: 2rem;
+
 
   div {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
     P {
       span {
         color: ${Colors.mainpurple};
@@ -119,7 +119,15 @@ export const Button = styled.button`
   }
 `
 
+export const ButtonWrapper = styled.div`
+display: flex;
+justify-content: center;
+width: 100%;
+gap:1rem
+`
+
 export const TitleWrapper = styled.div`
+  padding: 0 2rem;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -135,7 +143,7 @@ export const TitleWrapper = styled.div`
 `
 
 export const Separator = styled.div`
-  margin: 2rem 0;
+  margin: 1rem 0;
   width: 100%;
   display: flex;
   align-items: center;
@@ -150,7 +158,7 @@ export const Separator = styled.div`
   div:nth-child(2) {
     color: var(--grey-blue);
     font-family: 'Poppins', sans-serif;
-    padding: 0 2rem;
+    padding: 0 rem;
   }
 `
 
@@ -159,7 +167,7 @@ export const Form = styled.form`
   height: 95%;
   width: 90%;
   background-color: #fff;
-  justify-content: space-between;
+  
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
@@ -298,7 +306,7 @@ export const TeamsWrapper = styled.div`
   align-items: center;
   width: 100%;
   justify-content: center;
-  height: 78px;
+  height: 4rem;
   background: #ffffff;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.11);
   border-radius: 8px;

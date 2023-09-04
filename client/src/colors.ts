@@ -2,6 +2,7 @@ export const Colors = {
   circleColor: 'rgba(220, 213, 242, 0.51);',
   primary: '#F4F4F4',
   white: 'rgba(255, 255, 255, 0.4);',
+  realwhite: 'rgba(255, 255, 255, 1);',
   textcolor: '#2F2F2F',
   textColorDisabled: '#757575',
   lightgray: '#ECECEC',

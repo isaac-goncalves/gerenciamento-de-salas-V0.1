@@ -72,21 +72,26 @@ export const SearchBar = styled.div`
     border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
-    color: ${Colors.textcolor};
+    color: ${Colors.white};
   }
 
   button {
-    width: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding:  0.5rem;
     height: 2.5rem;
     border: none;
     background-color: ${Colors.mainpurple};
-    color: ${Colors.white};
+    color: ${Colors.realwhite};
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-left: 1rem;
     cursor: pointer;
+    white-space: nowrap;
   }
 `
 

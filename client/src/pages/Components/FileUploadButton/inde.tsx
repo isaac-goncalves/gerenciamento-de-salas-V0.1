@@ -1,9 +1,10 @@
-import React, { ChangeEvent } from 'react';
-import { toast } from 'react-toastify';
+import React, { ChangeEvent, useEffect } from 'react';
+
 import styled from 'styled-components';
 import { Colors } from '../../../colors';
 
 import { HiOutlineUpload } from 'react-icons/hi';
+import { toast, ToastContainer } from 'react-toastify';
 
 // FileInput styled component
 const FileInput = styled.input`
@@ -28,9 +29,28 @@ const Label = styled.label`
   }
 `;
 
+
+interface FileUploadButtonProps {
+  loggedUserRole: string;
+}
+
 // FileUploadButton component
-const FileUploadButton: React.FC = () => {
+const FileUploadButton = ({ loggedUserRole }: FileUploadButtonProps) => {
+
+  const [loggedUser, setLoggedUser] = React.useState('');
+
+  useEffect(() => {
+    setLoggedUser(loggedUserRole);
+  }
+    , [loggedUserRole]);
+
+
+  console.log(loggedUserRole);
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+
+
+
     const file = event.target.files?.[0];
     if (file) {
       sendFileToBackend(file);
@@ -40,7 +60,7 @@ const FileUploadButton: React.FC = () => {
   const sendFileToBackend = (selectedFile: File) => {
     const formData = new FormData();
     formData.append('file', selectedFile);
-    fetch( String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) +'/template/upload', {
+    fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/template/upload', {
       method: 'POST',
       body: formData,
     })
@@ -56,15 +76,19 @@ const FileUploadButton: React.FC = () => {
         console.error(error);
       });
   };
-//insira um reac icon de arquivo ali depois do escolher arquivo
+  //insira um reac icon de arquivo ali depois do escolher arquivo
   return (
     <>
-      <Label htmlFor="fileUpload">
+      <ToastContainer />
+      <Label
+        onClick={() => { loggedUser == 'aluno' ? toast.error('Usuário sem permissão para upload de arquivos') : null }}
+        htmlFor="fileUpload">
         Escolher arquivo para upload
-          <HiOutlineUpload
+        <HiOutlineUpload
           size={25}
-          />
+        />
         <FileInput
+          disabled={loggedUser === 'aluno' ? true : false}
           id="fileUpload"
           type="file"
           onChange={handleFileChange}

@@ -36,6 +36,7 @@ export class AgendamentoController {
     }
 
     ids_grade.forEach(async (id_grade: any) => {
+      
       const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `
 
       const horariosImportadosGrade = await gradeRepositories.query(query)
@@ -289,14 +290,13 @@ export class AgendamentoController {
       AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)
       `
     } else {
-      console.log('full query when editing')
+
         console.log('full query when creating only')
         query = `
         SELECT * 
         FROM agendamento 
         WHERE id_laboratorio = ${laboratory_id}
         AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)`
-
       }
     
 

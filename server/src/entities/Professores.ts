@@ -44,6 +44,13 @@ export class Professores {
   disciplina: number
 
   @Column({
+    type: 'boolean',
+    nullable: true,
+    default: false
+  })
+  coordenador: number
+
+  @Column({
     nullable: true
   })
   created_at: Date
