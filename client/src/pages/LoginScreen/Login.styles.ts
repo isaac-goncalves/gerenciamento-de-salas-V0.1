@@ -27,6 +27,13 @@ export const SideContainer = styled.div`
   margin: 1.5%;
   border-radius: 8rem 0 0 8rem;
   position: relative;
+
+  @media screen and (max-width: 500px) {
+    
+    display:none
+  
+  }
+
 `
 export const BackgroundImage = styled.img`
   position: absolute;
