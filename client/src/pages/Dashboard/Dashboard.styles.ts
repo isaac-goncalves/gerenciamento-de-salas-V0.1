@@ -45,6 +45,8 @@ export const CoursesWrapper = styled.div`
 `
 
 export const ClassesContainer = styled.div`
+  min-width: 100%;
+  overflow-y: auto;
   z-index: 3;
   display: flex;
   flex-direction: row;
@@ -69,7 +71,6 @@ export const PageName = styled.h1`
   @media screen and (max-width: 1000px) {
     font-size: 1.2rem;
   }
-
 `
 
 export const CourseName = styled.h1`
@@ -80,10 +81,8 @@ export const CourseName = styled.h1`
   //hide when screen is small
 
   @media screen and (max-width: 1000px) {
-
     display: none;
   }
-
 `
 export const CourseSemester = styled.p`
   font-size: 1.5rem;
@@ -99,7 +98,6 @@ export const CourseSemester = styled.p`
 `
 
 export const FilterWrapper = styled.h2`
-  
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -110,7 +108,7 @@ export const FilterWrapper = styled.h2`
   select,
   option,
   span {
-    font-size: 1.0rem;
+    font-size: 1rem;
     font-weight: 400;
   }
 
@@ -125,16 +123,19 @@ export const FilterWrapper = styled.h2`
   } */
 `
 
-
 export const StyledSelect = styled.select`
-  font-size: 1.0rem;
+  font-size: 1rem;
   background-color: ${Colors.white};
   color: ${Colors.textcolor};
   z-index: 99;
   padding: 8px 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  
+
+  @media screen and (max-width: 500px) {
+    padding:0.5rem;
+  } 
+
   outline: none;
   transition: border-color 0.3s ease;
 
@@ -144,7 +145,6 @@ export const StyledSelect = styled.select`
 
   &:focus {
     border-color: ${Colors.mainpurple};
-   
   }
 `
 
@@ -156,9 +156,13 @@ export const DatePickWrapper = styled.div`
   gap: 1rem;
   background-color: ${Colors.white};
   border-radius: 12px;
-
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
+
+  @media screen and (max-width: 750px) {
+    width: 100%;
+    padding: 0.25rem 0.5rem;
+  }
 `
 
 export const DatepickContainer = styled.div`
@@ -171,9 +175,9 @@ export const DatepickContainer = styled.div`
 `
 
 export const ButtonConfimarAgendamento = styled.button`
-font-size: 1.0rem;
-white-space: nowrap;
-background-color: ${Colors.mainpurple};
+  font-size: 1rem;
+  white-space: nowrap;
+  background-color: ${Colors.mainpurple};
   color: #ffffff;
   border: none;
   padding: 8px 20px;
@@ -185,9 +189,7 @@ background-color: ${Colors.mainpurple};
 
   &:hover {
     background-color: #663399;
-  
   }
-
 `
 
 export const DatepickArrowsContainer = styled.div`
@@ -198,9 +200,7 @@ export const PularParaHojeText = styled.p`
   // hide when screen is small
 
   @media screen and (max-width: 715px) {
-    
     display: none;
-  
   }
 `
 
@@ -212,12 +212,10 @@ export const CurrentMonth = styled.p`
   justify-content: center;
   gap: 0.5rem;
 
-
   @media screen and (max-width: 925px) {
     display: none;
   }
 `
-
 
 export const CalendarWrapper = styled.div`
   display: flex;
@@ -229,7 +227,6 @@ export const CalendarWrapper = styled.div`
   @media screen and (max-width: 1640px) {
     display: none;
   }
-
 `
 export const StyledDatePicker = styled(DatePicker)`
   z-index: 99;
@@ -237,7 +234,6 @@ export const StyledDatePicker = styled(DatePicker)`
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
- 
 `
 
 export const DateIcon = styled.img`
@@ -324,10 +320,10 @@ export const WeekdayContainer = styled.div`
 // `;
 
 export const WeekDay = styled.p`
-font-size: 1rem;
-padding: 0.5rem 0;
-color: ${Colors.mainpurple};
-transition: color 0.3s ease-in-out; /* Add the transition property */
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  color: ${Colors.mainpurple};
+  transition: color 0.3s ease-in-out; /* Add the transition property */
 `
 
 export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
@@ -366,8 +362,6 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     }
   }
 
-
-  
   p {
     text-align: center;
     text-align-last: center;
@@ -376,8 +370,8 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
 `
 
 export const Disciplina = styled.p`
-font-weight: 500;
-color: ${Colors.textcolor};
+  font-weight: 500;
+  color: ${Colors.textcolor};
 `
 
 export const SemestreSalaWrapper = styled.p`
@@ -386,33 +380,34 @@ export const SemestreSalaWrapper = styled.p`
 `
 
 export const Professor = styled.p`
-font-style: italic;
-color: ${Colors.textcolor};
+  font-style: italic;
+  color: ${Colors.textcolor};
 `
 export const Semestre = styled.p`
   font-style: italic;
   color: ${Colors.mainpurple};
 `
 interface StyledComponentProps {
-  agendamento: boolean;
+  agendamento: boolean
 }
 
 export const SalaWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0.4rem;
-`;
+`
 
 export const Sala = styled.p<StyledComponentProps>`
-  color: ${props => props.agendamento ? Colors.textColorDisabled : Colors.lighterGreen};
+  color: ${props =>
+    props.agendamento ? Colors.textColorDisabled : Colors.lighterGreen};
   font-weight: 600;
-  font-weight: ${props => props.agendamento ? "500" : "600"};
-  text-decoration: ${props => props.agendamento ? "line-through" : "none"};
-  padding:0;
-`;
+  font-weight: ${props => (props.agendamento ? '500' : '600')};
+  text-decoration: ${props => (props.agendamento ? 'line-through' : 'none')};
+  padding: 0;
+`
 
 export const SalaAgendada = styled.p`
   color: ${Colors.lighterGreen};
   font-weight: 600;
-  padding:0;
-`;
+  padding: 0;
+`

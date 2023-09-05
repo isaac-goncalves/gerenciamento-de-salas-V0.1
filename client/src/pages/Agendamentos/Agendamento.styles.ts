@@ -93,7 +93,7 @@ export const DatepickContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-  background-color: ;
+  /* background-color: ; */
   white-space: nowrap;
   p {
   }

@@ -238,7 +238,7 @@ const Dashboard: React.FC = () => {
 
  
 
-  //FUNCTIONS -------------------------------------------------------------------------
+  //FUNCTIONS ---------------------------------------------------------------------
 
   function handleScheduleClick(dayData: any, item: any, dayDateObject: Date) {
     // console.clear()
