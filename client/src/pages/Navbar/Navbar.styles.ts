@@ -35,6 +35,10 @@ export const PrimaryNav = styled.nav`
   flex-direction: column;
   background: ${Colors.white};
 
+  @media screen and (max-width: 470px) {
+    width: ${({ menuOpen }: Props) => (menuOpen ? '10rem' : '3rem')};
+  }
+
   .purple-icon {
     color: ${Colors.mainpurple};
   }
@@ -46,7 +50,20 @@ export const AvatarWrapper = styled.div`
   flex-direction: row;
   margin: 1.5rem 1rem;
   align-items: center;
+
+  @media screen and (max-width: 470px) {
+    display: none;
+  }
 `
+
+export const HamburgerWrapper = styled.div`
+  display: block;
+  margin-top: 1.0rem;
+  @media screen and (min-width: 470px) {
+    display: none;
+  }
+`
+
 export const Avatar = styled.img`
   border-radius: 50%;
   border: 2px solid ${Colors.mainpurple};
@@ -106,6 +123,10 @@ export const Menu = styled.div`
   height: 100%;
   padding-left: 1rem;
   padding-bottom: 2rem;
+
+  @media screen and (max-width: 470px) {
+    padding-left: 0rem;
+  }
 
   a:nth-of-type(5) {
     margin-top: auto;

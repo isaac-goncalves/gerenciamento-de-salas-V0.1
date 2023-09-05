@@ -23,6 +23,12 @@ export const Container = styled.div`
       opacity: 1;
     }
   }
+
+  @media screen and (max-width: 470px) {
+  width: calc(100% - 3rem);
+  margin-left: 3rem;
+  }
+
 `
 
 export const Header = styled.div`
@@ -312,7 +318,6 @@ export const WeekContainer = styled.div`
 `
 
 export const WeekdayContainer = styled.div`
-  border: 1px solid red;
   min-width: 10rem;
   display: flex;
   width: 100%;

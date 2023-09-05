@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon } from './Navbar.styles'
+import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon, HamburgerWrapper } from './Navbar.styles'
 import styled from 'styled-components'
 
 import { Colors } from '../../colors';
@@ -9,6 +9,7 @@ import { CgProfile } from 'react-icons/cg'
 import { GrLogout } from 'react-icons/gr'
 import { TbFileUpload } from 'react-icons/tb'
 import { BiCog } from 'react-icons/bi'
+import { GiHamburgerMenu } from 'react-icons/gi'
 
 import { BsCalendarDate } from 'react-icons/bs'
 import { MdSchedule, MdPerson, MdExitToApp, MdOutlineDarkMode } from 'react-icons/md';
@@ -53,7 +54,7 @@ const Navbar = () => {
                     {menuOpen && <>
                         <UserWrapper>
                             {<UserName>{user.name}</UserName>}
-                            {<UserInfo>{user.role == "aluno" ? `${user.semestre}º ADS`: user.role == "professor" ? "professor": "guest"}</UserInfo>}
+                            {<UserInfo>{user.role == "aluno" ? `${user.semestre}º ADS` : user.role == "professor" ? "professor" : "guest"}</UserInfo>}
                             {<UserInfo>{user.role}</UserInfo>}
                         </UserWrapper>
                     </>
@@ -61,6 +62,14 @@ const Navbar = () => {
                 </AvatarWrapper >
                 {/* <Hamburger /> */}
                 <Menu>
+                    <RowWrapper >
+                        <HamburgerWrapper>
+                            <GiHamburgerMenu style={{
+                                color: Colors.mainpurple,
+                                fontSize: '1.4rem',
+                            }} />
+                        </HamburgerWrapper>
+                    </RowWrapper>
                     <MenuLink to="/dashboard" >
                         <RowWrapper >
                             <MdSchedule style={{
@@ -153,7 +162,7 @@ const Navbar = () => {
                         </RowWrapper>
                     </MenuLink>
                 </Menu>
-            </PrimaryNav>
+            </PrimaryNav >
         </>
     )
 }
