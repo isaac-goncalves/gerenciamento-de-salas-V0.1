@@ -16,7 +16,7 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento } from './Dashboard.styles'
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -156,7 +156,7 @@ const Dashboard: React.FC = () => {
   //USE EFFECTS -------------------------------------------------------------------------
   useLayoutEffect(() => {
     console.log('Starting to render stuff...');
-    
+
     if (userData.token === '' || userData.userData.id === 0) {
       console.log('userData is null');
 
@@ -176,9 +176,9 @@ const Dashboard: React.FC = () => {
       } else {
         // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
 
-      
+
         setSelectedSemesterValue(userDataJson.userData.semestre);
-   
+
         setUserData(userDataJson);
       }
     }
@@ -187,7 +187,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
 
     console.log('Starting to render stuff...');
-   
+
     console.log(startDate)
 
     if (userData.token !== '' && userData.userData.id !== 0) {
@@ -211,10 +211,10 @@ const Dashboard: React.FC = () => {
     }
 
   }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate, startDate]);
-  
+
   useEffect(() => {
 
-   
+
 
     const updateCurrentDayAndTime = () => {
       const now = new Date();
@@ -236,7 +236,7 @@ const Dashboard: React.FC = () => {
 
   }, []);
 
- 
+
 
   //FUNCTIONS ---------------------------------------------------------------------
 
@@ -369,22 +369,30 @@ const Dashboard: React.FC = () => {
       </WeekdayContainer>
     )
   };
+  
   const renderLoading = () => {
     return (
       <WeekContainer>
         <ToastContainer />
         {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
           <WeekdayContainer key={day}>
-            <WeekDay><PacmanLoader color={Colors.lightgrayInput} size={10} loading /></WeekDay>
+            <WeekDay>
+              <PacmanLoader
+                color={Colors.lightgrayInput}
+                size={10}
+                loading />
+            </WeekDay>
             <SchedulesContainer isCurrentDay={false}>
               <h2>{day}</h2>
-              {Array(6)
-                .fill(0)
-                .map((_, index) => (
-                  <Schedule isCurrentTime={false} key={index}>
-                    <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
-                  </Schedule>
-                ))}
+              {
+                Array(6)
+                  .fill(0)
+                  .map((_, index) => (
+                    <Schedule isCurrentTime={false} key={index}>
+                      <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
+                    </Schedule>
+                  ))
+              }
             </SchedulesContainer>
           </WeekdayContainer>
         ))}
@@ -640,7 +648,7 @@ const Dashboard: React.FC = () => {
               Análise e Desenv. de Sistemas
             </CourseName>
             <CourseSemester>
-              1º Semestre de 2023
+              2º Semestre de 2023
             </CourseSemester>
           </CoursesWrapper>
           <DatePickWrapper>
@@ -665,10 +673,11 @@ const Dashboard: React.FC = () => {
                 <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
               </CalendarWrapper>
             </DatepickContainer>
-
             <FilterWrapper>
-              <FiFilter
-                size={20} />
+              <FilterIconWrapper>
+                <FiFilter
+                  size={20} />
+              </FilterIconWrapper>
               <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
                 <option value="professor">
                   Professor
@@ -716,7 +725,7 @@ const Dashboard: React.FC = () => {
             <>
               {
                 userData.userData.professor_id == 0 || userData.userData.professor_id == undefined ?
-                  null 
+                  null
                   :
                   (
                     userIsScheduling ?

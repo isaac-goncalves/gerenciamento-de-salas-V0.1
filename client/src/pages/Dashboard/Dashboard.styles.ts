@@ -59,6 +59,10 @@ export const ClassesContainer = styled.div`
   width: 95%;
   height: 100%;
   gap: 0.5rem;
+
+  @media screen and (max-width: 470px) {
+    padding: 0.2rem;
+  }
 `
 
 export const PageName = styled.h1`
@@ -86,7 +90,7 @@ export const CourseName = styled.h1`
 `
 export const CourseSemester = styled.p`
   font-size: 1.5rem;
-  font-weight: 400
+  font-weight: 400;
   color: ${Colors.textcolor};
 
   //hide when screen is small
@@ -95,6 +99,9 @@ export const CourseSemester = styled.p`
     font-size: 1.2rem;
   }
 
+  @media screen and (max-width: 470px) {
+    display: none;
+  }
 `
 
 export const FilterWrapper = styled.h2`
@@ -111,8 +118,14 @@ export const FilterWrapper = styled.h2`
     font-size: 1rem;
     font-weight: 400;
   }
+`
+export const FilterIconWrapper = styled.div`
+  @media screen and (max-width: 470px) {
+    display: none;
+  }
+`
 
-  /* select {
+/* select {
     margin-right: 0.5rem;
     color: ${Colors.mainpurple};
     border: 1px solid ${Colors.lightgrayborder};
@@ -121,7 +134,6 @@ export const FilterWrapper = styled.h2`
   select:focus {
     border-color: #2980b9;
   } */
-`
 
 export const StyledSelect = styled.select`
   font-size: 1rem;
@@ -133,8 +145,8 @@ export const StyledSelect = styled.select`
   border-radius: 4px;
 
   @media screen and (max-width: 500px) {
-    padding:0.5rem;
-  } 
+    padding: 0.5rem;
+  }
 
   outline: none;
   transition: border-color 0.3s ease;
@@ -262,6 +274,10 @@ export const ClockContainer = styled.div`
   /* background-color: red; */
   width: 3rem;
 
+  @media screen and (max-width: 470px) {
+    display: none;
+  }
+
   p {
     font-size: 1.125rem;
     font-weight: 400;
@@ -280,6 +296,8 @@ export const WeekContainer = styled.div`
 `
 
 export const WeekdayContainer = styled.div`
+  border: 1px solid red;
+  min-width: 10rem;
   display: flex;
   width: 100%;
   height: 100%;
@@ -287,9 +305,15 @@ export const WeekdayContainer = styled.div`
   align-items: center;
   border-radius: 8px;
   /* background-color: cyan; //remove later */
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.1rem;
 
+  
   h2 {
+    
+      @media screen and (max-width: 470px) {
+    font-size: 1rem;
+       
+      }
     font-size: 1.5rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -324,6 +348,10 @@ export const WeekDay = styled.p`
   padding: 0.5rem 0;
   color: ${Colors.mainpurple};
   transition: color 0.3s ease-in-out; /* Add the transition property */
+  @media screen and (max-width: 470px) {
+    font-size: 0.6rem;
+       
+      }
 `
 
 export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
@@ -366,6 +394,10 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     text-align: center;
     text-align-last: center;
     font-size: 0.8rem;
+    @media screen and (max-width: 470px) {
+    font-size: 0.6rem;
+       
+      }
   }
 `
 
