@@ -61,6 +61,11 @@ bottom: 14%;
 left: 10%;
 object-fit: cover; */
   width: 500px;
+
+  @media screen and (max-width: 500px) {
+    width: 350px;
+  }
+
 `
 
 export const ContentWrapper = styled.div`
@@ -146,6 +151,7 @@ export const TitleWrapper = styled.div`
   div {
     display: flex;
     justify-content: center;
+   
   }
 `
 
