@@ -117,6 +117,9 @@ export const FilterWrapper = styled.h2`
   span {
     font-size: 1rem;
     font-weight: 400;
+    @media screen and (max-width: 470px) {
+      font-size: 0.8rem;
+    }
   }
 `
 export const FilterIconWrapper = styled.div`
@@ -136,7 +139,7 @@ export const FilterIconWrapper = styled.div`
   } */
 
 export const StyledSelect = styled.select`
-  font-size: 1rem;
+  font-size: 0.4rem;
   background-color: ${Colors.white};
   color: ${Colors.textcolor};
   z-index: 99;
@@ -146,6 +149,10 @@ export const StyledSelect = styled.select`
 
   @media screen and (max-width: 500px) {
     padding: 0.5rem;
+  }
+
+  option {
+    font-size: 1rem;
   }
 
   outline: none;
@@ -253,6 +260,11 @@ export const DateIcon = styled.img`
   width: 1.5rem;
   margin-right: 0.75rem;
   object-fit: cover;
+
+  @media screen and (max-width: 470px) {
+    height: 1rem;
+    width: 1rem;
+  }
 `
 
 export const ClockPaddingUp = styled.div`
@@ -293,6 +305,10 @@ export const WeekContainer = styled.div`
   /* background-color:red; */
   height: 100%;
   width: 100%;
+
+  @media screen and (max-width: 470px) {
+    gap: 0.5rem;
+  }
 `
 
 export const WeekdayContainer = styled.div`
@@ -307,13 +323,10 @@ export const WeekdayContainer = styled.div`
   /* background-color: cyan; //remove later */
   padding-bottom: 0.1rem;
 
-  
   h2 {
-    
-      @media screen and (max-width: 470px) {
-    font-size: 1rem;
-       
-      }
+    @media screen and (max-width: 470px) {
+      font-size: 1rem;
+    }
     font-size: 1.5rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -350,8 +363,7 @@ export const WeekDay = styled.p`
   transition: color 0.3s ease-in-out; /* Add the transition property */
   @media screen and (max-width: 470px) {
     font-size: 0.6rem;
-       
-      }
+  }
 `
 
 export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
@@ -395,9 +407,8 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     text-align-last: center;
     font-size: 0.8rem;
     @media screen and (max-width: 470px) {
-    font-size: 0.6rem;
-       
-      }
+      font-size: 0.6rem;
+    }
   }
 `
 
