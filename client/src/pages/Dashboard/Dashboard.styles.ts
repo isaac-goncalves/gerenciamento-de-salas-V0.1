@@ -56,7 +56,7 @@ export const CoursesWrapper = styled.div`
 `
 
 export const ClassesContainer = styled.div`
-  min-width: 100%;
+  min-width: 98%;
   overflow-y: auto;
   z-index: 3;
   display: flex;
@@ -322,7 +322,6 @@ export const WeekContainer = styled.div`
   /* background-color:red; */
   height: 100%;
   width: 100%;
-
 
   @media screen and (max-width: 570px) {
     gap: 0.5rem;
