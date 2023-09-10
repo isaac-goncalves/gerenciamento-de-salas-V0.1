@@ -29,14 +29,18 @@ export const PrimaryNav = styled.nav`
   width: ${({ menuOpen }: Props) => (menuOpen ? '15.5rem' : '5rem')};
   border-right: 2px solid #e8eaf6;
   transition: width 0.15s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  
+  justify-content: center;
   z-index: 14;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background: ${Colors.white};
 
-  @media screen and (max-width: 470px) {
-    width: ${({ menuOpen }: Props) => (menuOpen ? '10rem' : '3rem')};
+  @media screen and (max-width: 570px) {
+    width: ${({ menuOpen }: Props) => (menuOpen ? '12rem' : '3rem')};
   }
 
   .purple-icon {
@@ -48,10 +52,16 @@ export const AvatarWrapper = styled.div`
   display: flex;
   width: 100%;
   flex-direction: row;
-  margin: 1.5rem 1rem;
+  margin: 1rem 1rem;
   align-items: center;
 
-  @media screen and (max-width: 470px) {
+  @media screen and (max-width: 570px) {
+    display: none;
+  }
+`
+
+export const HamburgerDiv = styled.div`
+  @media screen and (min-width: 570px) {
     display: none;
   }
 `
@@ -59,9 +69,7 @@ export const AvatarWrapper = styled.div`
 export const HamburgerWrapper = styled.div`
   display: block;
   margin-top: 1.0rem;
-  @media screen and (min-width: 470px) {
-    display: none;
-  }
+
 `
 
 export const Avatar = styled.img`
@@ -124,7 +132,7 @@ export const Menu = styled.div`
   padding-left: 1rem;
   padding-bottom: 2rem;
 
-  @media screen and (max-width: 470px) {
+  @media screen and (max-width: 570px) {
     padding-left: 0rem;
   }
 
@@ -159,3 +167,4 @@ export const RowWrapper = styled.div`
     }
   }
 `
+

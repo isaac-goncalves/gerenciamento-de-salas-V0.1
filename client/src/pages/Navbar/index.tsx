@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon, HamburgerWrapper } from './Navbar.styles'
+import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon, HamburgerWrapper, HamburgerDiv } from './Navbar.styles'
 import styled from 'styled-components'
 
 import { Colors } from '../../colors';
@@ -62,14 +62,16 @@ const Navbar = () => {
                 </AvatarWrapper >
                 {/* <Hamburger /> */}
                 <Menu>
-                    <RowWrapper >
-                        <HamburgerWrapper>
-                            <GiHamburgerMenu style={{
-                                color: Colors.mainpurple,
-                                fontSize: '1.4rem',
-                            }} />
-                        </HamburgerWrapper>
-                    </RowWrapper>
+                    <HamburgerDiv>
+                        <RowWrapper >
+                            <HamburgerWrapper>
+                                <GiHamburgerMenu style={{
+                                    color: Colors.mainpurple,
+                                    fontSize: '1.4rem',
+                                }} />
+                            </HamburgerWrapper>
+                        </RowWrapper>
+                    </HamburgerDiv>
                     <MenuLink to="/dashboard" >
                         <RowWrapper >
                             <MdSchedule style={{

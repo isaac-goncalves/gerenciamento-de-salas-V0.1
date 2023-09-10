@@ -16,6 +16,7 @@
     "dotenv": "^16.0.3",
     "react-datepicker": "^4.11.0",
     "react-icons": "^4.8.0",
+    "react-particles": "^2.12.2",
     "react-spinners": "^0.13.8",
     "react-transition-group": "^4.4.5"
   }

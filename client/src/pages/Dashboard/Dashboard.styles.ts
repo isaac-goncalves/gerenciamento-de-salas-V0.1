@@ -24,11 +24,11 @@ export const Container = styled.div`
     }
   }
 
-  @media screen and (max-width: 470px) {
-  width: calc(100% - 3rem);
-  margin-left: 3rem;
-  }
 
+  @media screen and (max-width: 570px) {
+    width: calc(100% - 3rem);
+    margin-left: 3rem;
+  }
 `
 
 export const Header = styled.div`
@@ -47,7 +47,12 @@ export const CoursesWrapper = styled.div`
   align-items: center;
   width: 95%;
   height: 100%;
-  padding: 1rem 1rem;
+  padding: 0.2rem 1rem;
+
+
+  @media screen and (max-width: 570px) {
+    padding: 0.4rem 1rem;
+  }
 `
 
 export const ClassesContainer = styled.div`
@@ -66,7 +71,8 @@ export const ClassesContainer = styled.div`
   height: 100%;
   gap: 0.5rem;
 
-  @media screen and (max-width: 470px) {
+
+  @media screen and (max-width: 570px) {
     padding: 0.2rem;
   }
 `
@@ -105,7 +111,8 @@ export const CourseSemester = styled.p`
     font-size: 1.2rem;
   }
 
-  @media screen and (max-width: 470px) {
+
+  @media screen and (max-width: 570px) {
     display: none;
   }
 `
@@ -123,13 +130,15 @@ export const FilterWrapper = styled.h2`
   span {
     font-size: 1rem;
     font-weight: 400;
-    @media screen and (max-width: 470px) {
+    
+    @media screen and (max-width: 570px) {
       font-size: 0.8rem;
     }
   }
 `
 export const FilterIconWrapper = styled.div`
-  @media screen and (max-width: 470px) {
+
+  @media screen and (max-width: 570px) {
     display: none;
   }
 `
@@ -186,7 +195,7 @@ export const DatePickWrapper = styled.div`
 
   @media screen and (max-width: 750px) {
     width: 100%;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.rem;
   }
 `
 
@@ -267,7 +276,8 @@ export const DateIcon = styled.img`
   margin-right: 0.75rem;
   object-fit: cover;
 
-  @media screen and (max-width: 470px) {
+
+  @media screen and (max-width: 570px) {
     height: 1rem;
     width: 1rem;
   }
@@ -292,7 +302,8 @@ export const ClockContainer = styled.div`
   /* background-color: red; */
   width: 3rem;
 
-  @media screen and (max-width: 470px) {
+
+  @media screen and (max-width: 570px) {
     display: none;
   }
 
@@ -312,7 +323,8 @@ export const WeekContainer = styled.div`
   height: 100%;
   width: 100%;
 
-  @media screen and (max-width: 470px) {
+
+  @media screen and (max-width: 570px) {
     gap: 0.5rem;
   }
 `
@@ -329,7 +341,8 @@ export const WeekdayContainer = styled.div`
   padding-bottom: 0.1rem;
 
   h2 {
-    @media screen and (max-width: 470px) {
+  
+    @media screen and (max-width: 570px) {
       font-size: 1rem;
     }
     font-size: 1.5rem;
@@ -366,7 +379,8 @@ export const WeekDay = styled.p`
   padding: 0.5rem 0;
   color: ${Colors.mainpurple};
   transition: color 0.3s ease-in-out; /* Add the transition property */
-  @media screen and (max-width: 470px) {
+  
+  @media screen and (max-width: 570px) {
     font-size: 0.6rem;
   }
 `
@@ -382,6 +396,11 @@ export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
   background-color: ${Colors.lightgrayInput};
   border-radius: 8px;
   height: 100%;
+
+
+  @media screen and (max-width: 570px) {
+    /* min-width: ; */
+  }
 `
 
 export const Schedule = styled.div<{ isCurrentTime: boolean }>`
@@ -398,6 +417,10 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   padding: 0.4rem 0;
   gap: 0.1rem;
 
+
+  @media screen and (max-width: 570px) {
+  }
+
   &.hoverEffect:hover {
     background-color: ${Colors.hoverCard};
     transition: 0.5s;
@@ -411,7 +434,8 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     text-align: center;
     text-align-last: center;
     font-size: 0.8rem;
-    @media screen and (max-width: 470px) {
+    
+    @media screen and (max-width: 570px) {
       font-size: 0.6rem;
     }
   }

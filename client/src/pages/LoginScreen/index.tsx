@@ -239,6 +239,8 @@ const LoginScreen: React.FC = () => {
                                         </EyeIcon>
                                     </InputInternalWrapper>
                                 </InputColumnWrapper>
+
+                                
                             </InputWrapper>
                         </InputsWrapper>
                         <MantenhaMeConectadoWrapper>

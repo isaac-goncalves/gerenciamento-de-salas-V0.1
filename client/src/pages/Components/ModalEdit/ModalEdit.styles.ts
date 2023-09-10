@@ -14,6 +14,10 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
 
+  @media screen and (max-width: 570px) {
+    /* overflow: auto; */
+  }
+
   animation: appear 0.8s;
   @keyframes appear {
     from {
@@ -26,7 +30,7 @@ export const ModalOverlay = styled.div`
 `
 
 export const BackgroundImage = styled.img`
-   width: 100%;
+  width: 100%;
   height: auto;
   max-height: 100vh;
   object-fit: cover;
@@ -37,12 +41,31 @@ export const BackgroundImage = styled.img`
 `
 
 export const ModalContent = styled.div`
+
   background: white;
   padding: 2rem;
   border-radius: 8px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 70%;
   height: 80%;
+
+  @media screen and (max-width: 570px) {
+    flex-direction: column;
+    padding: 0rem;
+    
+    width: 90%;
+    height: 100vh;
+  }
+`
+
+export const ModalContentSize = styled.div`
+  /* display: flex;
+
+width: 100%;
+height: 100%;
+gap: 1rem; */
 `
 
 export const ImageWrapper = styled.div`
@@ -50,16 +73,30 @@ export const ImageWrapper = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+
+  @media screen and (max-width: 570px) {
+    height: 200px;
+   height: 100%;
+  display: none;
+  }
 `
 
 export const FormWrapper = styled.div`
-  width: 100%;
   height: 100%;
+  width: 100%;
   gap: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 0.8rem;
+
+
+  @media screen and (max-width: 570px) {
+  overflow-y: auto;
+  
+}
+
 `
 
 export const StyledTitle = styled.h1`
@@ -69,14 +106,20 @@ export const StyledTitle = styled.h1`
 `
 
 export const ProfessorWrapper = styled.div`
- background-color: ${Colors.lightwhitebackgroud};
+  background-color: ${Colors.lightwhitebackgroud};
   border-radius: 8px;
   padding: 0.8rem;
+  display: flex;
+  height: 100%;
+  
+  @media screen and (max-width: 570px) {
+    flex-direction: column;
+  }
+
 `
 
-
 interface StyledSelectProps {
-  value: any; // Add the value prop with the appropriate type
+  value: any // Add the value prop with the appropriate type
 }
 
 export const StyledSelect = styled.select<StyledSelectProps>`
@@ -89,17 +132,21 @@ export const StyledSelect = styled.select<StyledSelectProps>`
 
 export const DateTimeWrapper = styled.div`
   display: flex;
+
   padding: 0.8rem;
   gap: 1rem;
   background-color: ${Colors.lightwhitebackgroud};
   border-radius: 8px;
+
+  @media screen and (max-width: 570px) {
+    flex-direction: column;
+  }
 `
 
 export const DateTimeDiv = styled.div`
   display: flex;
   flex-direction: column;
 `
-
 
 export const DetailsWrapper = styled.div`
   display: flex;
@@ -109,61 +156,58 @@ export const DetailsWrapper = styled.div`
   padding: 2rem;
   background-color: ${Colors.lightwhitebackgroud};
   border-radius: 8px;
- 
 `
 export const DetailsText = styled.p`
-font-weight: 500;
-font-size: 1.0 rem;
-color: ${Colors.mainpurple};
+  font-weight: 500;
+  font-size: 1 rem;
+  color: ${Colors.mainpurple};
 
-span{
- 
-  font-weight: 400;
-  color: ${Colors.textcolor};
-  /* font-size: 0.8rem; */
-}
+  span {
+    font-weight: 400;
+    color: ${Colors.textcolor};
+    /* font-size: 0.8rem; */
+  }
 
-  div{
+  div {
     height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
-    
   }
 
-  p{
+  p {
     font-size: 2rem;
   }
-
-
 `
 
 export const StyledText = styled.span`
-margin-left: 0.3rem;
-white-space: nowrap;
-font-size: 1.0rem;
+  margin-left: 0.3rem;
+  white-space: nowrap;
+  font-size: 1rem;
 `
 
 export const StyledDates = styled.span`
-white-space: nowrap;
-font-size: 0.8rem;
+  white-space: nowrap;
+  font-size: 0.8rem;
 `
 
 export const ClockTimeWrapper = styled.div`
-display: flex;
-flex-direction: column;
-width: 100%;
-height: 100%;
-
-
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 `
 
 export const SideBysideContainer = styled.div`
-display: flex;
-width: 100%;
-height: 100%;
-gap: 1rem;
-border-radius: 8px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  border-radius: 8px;
+
+  @media screen and (max-width: 570px) {
+    flex-direction: column;
+  }
 `
 
 export const ButtonsWrapper = styled.div`
@@ -173,8 +217,8 @@ export const ButtonsWrapper = styled.div`
   justify-content: flex-end;
 `
 export const StyledButton = styled.button`
-font-size: 1.0rem;
-background-color: ${Colors.mainpurple};
+  font-size: 1rem;
+  background-color: ${Colors.mainpurple};
   color: #ffffff;
   border: none;
   height: 40px;
@@ -188,15 +232,13 @@ background-color: ${Colors.mainpurple};
 
   &:hover {
     background-color: #663399;
-  
   }
-
 `
 
 export const ClocktimeAndButoonsWrapper = styled.div`
-display: flex;
-flex-direction: column;
-height: 100%;
-width: 100%;
-gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 0.5rem;
 `

@@ -63,7 +63,7 @@ object-fit: cover; */
   width: 500px;
 
   @media screen and (max-width: 500px) {
-    width: 350px;
+    width: 300px;
   }
 
 `
@@ -238,6 +238,8 @@ export const MantenhaMeConectadoWrapper = styled.div`
       -moz-appearance: none;
       width: 1.25rem;
       height: 1.25rem;
+      min-width: 1.25rem;
+      min-height: 1.25rem;
       border-radius: 4px;
       background-color: ${Colors.lightgrayInput};
       border: none;
