@@ -21,6 +21,10 @@ export const Container = styled.div`
       opacity: 1;
     }
   }
+  @media screen and (max-width: 570px) {
+    width: calc(100% - 3rem);
+    margin-left: 3rem;
+  }
 `
 export const Wrapper = styled.div`
   width: 90%;
@@ -34,6 +38,13 @@ export const Wrapper = styled.div`
   align-items: center;
   gap: 1.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+  @media screen and (max-width: 570px) {
+    gap: 0.5rem;
+    height: 95%;
+    width: 95%;
+    padding: 1rem 2rem;
+    padding: 0.4rem;
+  }
 `
 
 export const Header = styled.div`
@@ -43,15 +54,13 @@ export const Header = styled.div`
 `
 
 export const PageTitle = styled.h1`
- font-size: 2rem;
+  font-size: 2rem;
   color: ${Colors.textcolor};
- 
 `
 
 export const TemplateImage = styled.img`
   width: 90%;
   margin: 1rem;
- 
 `
 
 export const CounterWrapper = styled.div`
@@ -66,11 +75,23 @@ export const CounterWrapper = styled.div`
   p {
     font-size: 1rem;
   }
+  @media screen and (max-width: 570px) {
+    h1 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 0.8rem;
+    }
+  }
 `
 
 export const Separator = styled.div`
   border-left: 1px solid ${Colors.lightgray};
   height: 100px;
+  @media screen and (max-width: 570px) {
+    height: 50px;
+    border-left: 3px solid ${Colors.lightgray};
+  }
 `
 
 export const MainContainer = styled.div`
@@ -88,8 +109,6 @@ export const MainContainer = styled.div`
     box-sizing: border-box;
     color: ${Colors.textcolor};
   }
-
- 
 `
 
 export const ButtonsWrapper = styled.td`

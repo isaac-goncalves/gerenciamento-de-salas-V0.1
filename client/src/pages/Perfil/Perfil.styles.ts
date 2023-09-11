@@ -21,7 +21,12 @@ export const Container = styled.div`
       opacity: 1;
     }
   }
+  @media screen and (max-width: 570px) {
+    width: calc(100% - 3rem);
+    margin-left: 3rem;
+  }
 `
+
 export const Wrapper = styled.div`
   width: 90%;
   height: 90%;
@@ -34,12 +39,20 @@ export const Wrapper = styled.div`
   align-items: center;
   gap: 1.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+  @media screen and (max-width: 570px) {
+    gap: 0.5rem;
+    height: 95%;
+    width: 95%;
+    padding: 1rem 2rem;
+    padding: 0.4rem;
+  }
 `
 
 export const Header = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `
 
 export const CounterWrapper = styled.div`
@@ -54,11 +67,25 @@ export const CounterWrapper = styled.div`
   p {
     font-size: 1rem;
   }
+
+  @media screen and (max-width: 570px) {
+    h1 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 0.8rem;
+    }
+  }
 `
 
 export const Separator = styled.div`
   border-left: 1px solid ${Colors.lightgray};
   height: 100px;
+
+  @media screen and (max-width: 570px) {
+    height: 50px;
+    border-left: 3px solid ${Colors.lightgray};
+  }
 `
 
 export const SearchBar = styled.div`
@@ -80,7 +107,7 @@ export const SearchBar = styled.div`
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding:  0.5rem;
+    padding: 0.5rem;
     height: 2.5rem;
     border: none;
     background-color: ${Colors.mainpurple};
@@ -126,6 +153,7 @@ export const EditButton = styled.button`
     background-color: #006f8f;
   }
 `
+
 export const DeleteButton = styled.button`
   background-color: #f47174;
   display: flex;
@@ -191,7 +219,6 @@ export const Table = styled.table`
 
   th {
     color: ${Colors.white};
-   
   }
 
   th:last-child {
@@ -253,7 +280,6 @@ export const TableRow = styled.tr`
   border: 1px solid #dddddd;
   background-color: ${Colors.hoverCard};
   text-align: left;
-  
 `
 export const CenteredNumber = styled.td`
   text-align: center;
@@ -261,4 +287,13 @@ export const CenteredNumber = styled.td`
 
 export const NowrapText = styled.td`
   white-space: nowrap;
+`
+
+export const Avatar = styled.img`
+  border-radius: 50%;
+  border: 2px solid ${Colors.mainpurple};
+  height: 8rem;
+  width: 8rem;
+  margin-right: 0.75rem;
+  object-fit: cover;
 `

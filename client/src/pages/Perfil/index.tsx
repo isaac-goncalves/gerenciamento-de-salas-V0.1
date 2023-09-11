@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import { Helmet } from 'react-helmet'
 
@@ -11,21 +11,36 @@ import { ptBR } from 'date-fns/locale';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
+    Avatar,
     Container, Header, Separator,
     SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
 
+import avatar from '../../../public/images/avatar.png';
+
 import ModalEdit from '../Components/ModalEdit';
 import ModalDelete from '../Components/ModalDelete'
 import FileUploadButton from '../Components/FileUploadButton/inde';
 import FileDownloadButton from '../Components/FileDownloadButton/inde';
 import { BsWhatsapp } from 'react-icons/bs';
+import { AvatarWrapper, UserInfo, UserName, UserWrapper } from '../Navbar/Navbar.styles';
 
 function Perfil() {
 
-    const [userData, setUserData] = React.useState<UserData[]>([])
+    //USERSESSIONDATA
+    const [userData, setUserData] = useState<any>(
+        {
+            userData: {
+                id: 0,
+                name: "Selecione um professor",
+            },
+            token: ""
+        }
+    );
+
+    const [fechedUserData, setFetchedUserData] = React.useState<UserData[]>([])
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
     const [alunosData, setAlunosData] = React.useState<AlunosData[]>([])
     const [professoresData, setProfessoresData] = React.useState<ProfessoresData[]>([])
@@ -41,6 +56,32 @@ function Perfil() {
 
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
+
+    useLayoutEffect(() => {
+        console.log('Starting to render stuff...');
+
+        if (userData.token === '' || userData.userData.id === 0) {
+            console.log('userData is null');
+
+            const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+            const userDataJson = JSON.parse(localUserData || '{}');
+            const { userData: storedUserData, token } = userDataJson;
+
+            console.log(JSON.stringify(storedUserData));
+            console.log('token' + token);
+
+            if (token == null || localUserData == null) {
+                toast.error('Você precisa estar logado para acessar essa página!');
+                localStorage.removeItem('gerenciamento-de-salas@v1.1');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            } else {
+                // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+                setUserData(userDataJson);
+            }
+        }
+    }, [userData]);
 
     useEffect(() => {
         fetchData();
@@ -69,7 +110,7 @@ function Perfil() {
                 }).then(res => res.json())
             ]);
 
-            setUserData(userDataResponse);
+            setFetchedUserData(userDataResponse);
             setAppointmentData(appointmentDataResponse);
             setAlunosData(alunosDataResponse);
 
@@ -312,11 +353,28 @@ function Perfil() {
     const renderTable = () => {
         return (
             <>
-                <image></image>
-                <select></select>
-                <select></select>
-
+                <Avatar src={avatar} />
+                <UserWrapper>
+                    {<UserName>{userData.userData.name}</UserName>}
+                    {<UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>}
+                    {<UserInfo>{userData.userData.role}</UserInfo>}
+                </UserWrapper>
+                <select>
+                    <option value="1">1º ADS</option>
+                    <option value="2">2º ADS</option>
+                    <option value="3">3º ADS</option>
+                    <option value="4">4º ADS</option>
+                    <option value="5">5º ADS</option>
+                    <option value="6">6º ADS</option>
+                </select>
                 <FileUploadButton />
+                <button>Salvar</button>
+                <SearchBar>
+                    <button onClick={handleClick}>
+                        <BsWhatsapp />
+                        Convidar pelo Whatsapp
+                    </button>
+                </SearchBar>
             </>
         )
     }
@@ -335,7 +393,6 @@ function Perfil() {
             </Helmet>
             <ToastContainer />
             {/* <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={[1,2,3,4]}/> */}
-            <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />
             <Wrapper>
                 <Header>
                     <CounterWrapper>
@@ -368,29 +425,6 @@ function Perfil() {
                         <p>Coordenadores</p>
                     </CounterWrapper>
                 </Header>
-                <SearchBar>
-                    <input type="text" placeholder="Pesquisar" />
-                    <button onClick={handleClick}>
-                        <BsWhatsapp />
-                        Convidar pelo Whatsapp
-                    </button>
-                </SearchBar>
-                <TableSelector>
-                    <select value={selectedTable} onChange={handleTableChange}>
-                        <option value="agendamentos">Agendamentos</option>
-                        <option value="usuarios">Usuários</option>
-                        <option value="alunos">Alunos</option>
-                        <option value="professores">Professores</option>
-                    </select>
-                    {
-                        selectedTable == "usuarios" &&
-                        <select name="table" id="table" value={selectedCategory} onChange={handleCategoryChange}>
-                            <option value="alunos">Alunos</option>
-                            <option value="professores">Professores</option>
-                            <option value="administradores">Administradores</option>
-                        </select>
-                    }
-                </TableSelector>
                 {
                     isLoading ?
                         renderTable()
