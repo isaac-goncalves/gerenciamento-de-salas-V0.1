@@ -95,7 +95,7 @@ export const Separator = styled.div`
 `
 
 export const ButtonWrapper = styled.div`
-  border: 1px solid red;
+  /* border: 1px solid red; */
   gap:2rem;
   width: 70%;
   display: flex;
@@ -112,15 +112,17 @@ export const ButtonWrapper = styled.div`
     color: ${Colors.textcolor};
   }
 
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 1394px) {
     flex-direction: column;
     gap: 1rem;
   }
+
+
 `
 
 export const ButtonsWrapper = styled.td`
   display: flex;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   gap: 0.2rem;
   align-items: center;
 `

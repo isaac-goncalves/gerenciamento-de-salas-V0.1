@@ -12,15 +12,13 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText
+    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRowHeader, CenteredNumber, TableContainer, NowrapText, TableWrapper
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
 
 import ModalEdit from '../Components/ModalEdit';
-import ModalDelete from '../Components/ModalDelete'
-import FileUploadButton from '../Components/FileUploadButton/inde';
-import FileDownloadButton from '../Components/FileDownloadButton/inde';
+import ModalDelete from '../Components/ModalDelete';
 import { BsWhatsapp } from 'react-icons/bs';
 
 function Gerenciamento() {
@@ -175,10 +173,11 @@ function Gerenciamento() {
 
     const AppointmentTable = ({ data }: any) => {
         return (
-            <TableContainer>
+
+            <TableWrapper>
                 <Table>
                     <TableHeader>
-                        <TableRow>
+                        <TableRowHeader>
                             <th>Professor</th>
                             <th>Data</th>
                             <th>início</th>
@@ -189,7 +188,7 @@ function Gerenciamento() {
                             <th>Criado</th>
                             <th>Atualizado</th>
                             <th>Ações</th>
-                        </TableRow>
+                        </TableRowHeader>
                     </TableHeader>
                     <TableBody>
                         {data.map((appointment: AppointmentData) => (
@@ -219,7 +218,7 @@ function Gerenciamento() {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </  TableWrapper>
         )
     }
 
@@ -236,30 +235,32 @@ function Gerenciamento() {
 
     const UsersTable = ({ data }: any) => {
         return (
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Tipo</th>
-                        <th>Criado</th>
-                        <th>Atualizado</th>
-                    </TableRow>
-                </TableHeader>
-                <tbody>
-                    {data.map((user: UsersData) => (
-                        <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
-                            <NowrapText>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</NowrapText>
-                            <NowrapText>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</NowrapText>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <TableWrapper>
+                <Table>
+                    <TableHeader>
+                        <TableRowHeader>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Tipo</th>
+                            <th>Criado</th>
+                            <th>Atualizado</th>
+                        </TableRowHeader>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map((user: UsersData) => (
+                            <tr key={user.id}>
+                                <td>{user.id}</td>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>{user.role}</td>
+                                <NowrapText>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</NowrapText>
+                                <NowrapText>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</NowrapText>
+                            </tr>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableWrapper>
         )
     }
 
@@ -276,34 +277,36 @@ function Gerenciamento() {
 
     const AlunosTable = ({ data }: any) => {
         return (
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Sobrenome</th>
-                        <th>Email</th>
-                        <th>Semestre</th>
-                        <th>Criado</th>
-                        <th>Atualizado</th>
-                    </TableRow>
-                </TableHeader>
-                <tbody>
-                    {data.map((aluno: AlunosData) => {
-                        return (
-                            <tr key={aluno.id}>
-                                <td>{aluno.id}</td>
-                                <td>{aluno.name}</td>
-                                <td>{aluno.surname}</td>
-                                <td>{aluno.email}</td>
-                                <CenteredNumber>{aluno.semester}1</CenteredNumber>
-                                <NowrapText>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</NowrapText>
-                                <NowrapText>{formatDistanceToNow(new Date(aluno.updated_at), { locale: ptBR })} atrás</NowrapText>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </Table>
+            <TableWrapper>
+                <Table>
+                    <TableHeader>
+                        <TableRowHeader>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Sobrenome</th>
+                            <th>Email</th>
+                            <th>Semestre</th>
+                            <th>Criado</th>
+                            <th>Atualizado</th>
+                        </TableRowHeader>
+                    </TableHeader>
+                    <tbody>
+                        {data.map((aluno: AlunosData) => {
+                            return (
+                                <tr key={aluno.id}>
+                                    <td>{aluno.id}</td>
+                                    <td>{aluno.name}</td>
+                                    <td>{aluno.surname}</td>
+                                    <td>{aluno.email}</td>
+                                    <CenteredNumber>{aluno.semester}1</CenteredNumber>
+                                    <NowrapText>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</NowrapText>
+                                    <NowrapText>{formatDistanceToNow(new Date(aluno.updated_at), { locale: ptBR })} atrás</NowrapText>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </Table>
+            </TableWrapper>
         );
     }
 
@@ -319,30 +322,32 @@ function Gerenciamento() {
 
     const ProfessoresTable = ({ data }: any) => {
         return (
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Sobrenome</th>
-                        <th>Email</th>
-                        <th>Disciplina</th>
-                        <th>Criado em</th>
-                    </TableRow>
-                </TableHeader>
-                <tbody>
-                    {data.map((professor: ProfessoresData) => (
-                        <tr key={professor.id}>
-                            <td>{professor.id}</td>
-                            <td>{professor.name}</td>
-                            <td>{professor.surname}</td>
-                            <td>{professor.email}</td>
-                            <td>{professor.disciplina}</td>
-                            <td>{formatDistanceToNow(new Date(professor.created_at), { locale: ptBR })} atrás</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <TableWrapper>
+                <Table>
+                    <TableHeader>
+                        <TableRowHeader>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Sobrenome</th>
+                            <th>Email</th>
+                            <th>Disciplina</th>
+                            <th>Criado em</th>
+                        </TableRowHeader>
+                    </TableHeader>
+                    <tbody>
+                        {data.map((professor: ProfessoresData) => (
+                            <tr key={professor.id}>
+                                <td>{professor.id}</td>
+                                <td>{professor.name}</td>
+                                <td>{professor.surname}</td>
+                                <td>{professor.email}</td>
+                                <td>{professor.disciplina}</td>
+                                <td>{formatDistanceToNow(new Date(professor.created_at), { locale: ptBR })} atrás</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </TableWrapper>
         )
     }
 
@@ -360,7 +365,7 @@ function Gerenciamento() {
             return <ProfessoresTable data={professoresData} />
         }
     }
-    
+
     const handleClick = () => {
         const whatsappLink =
             'whatsapp://send?text=Agende%20suas%20salas%20de%20aula%20e%20laborat%C3%B3rios%20de%20forma%20simples%20e%20eficiente%20com%20o%20Gerenciamento%20de%20Salas!%20%F0%9F%94%8D%F0%9F%92%A8%0AAcesse%20agora:%20gerenciamentodesalas.cloud%20%F0%9F%96%A5%F0%9F%94%92%0AFacilite%20sua%20vida%20acad%C3%AAmica!%20%F0%9F%93%9A%20%23FATEC';

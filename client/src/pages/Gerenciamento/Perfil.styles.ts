@@ -207,18 +207,22 @@ export const TableSelector = styled.div`
   }
 `
 
-export const Table = styled.table`
-  /* border: 1px solid red; */
-  border-collapse: collapse;
+export const TableWrapper = styled.div`
+  height: 100%; /* Set the maximum height for the scrollable area */
+  overflow: auto; /* Add scrollbars when the content overflows */
+  width: 100%;
+`
 
+export const Table = styled.table`
+
+  border-collapse: collapse;
   width: 100%;
   background-color: ${Colors.white};
   z-index: 1;
   font-size: 0.8em;
 
-  th {
-    color: ${Colors.white};
-   
+  th{
+    color : ${Colors.tableheadercolor};
   }
 
   th:last-child {
@@ -227,8 +231,6 @@ export const Table = styled.table`
 
   th,
   td {
-    /* border: 1px solid red; */
-
     padding: 8px 5px;
   }
 
@@ -239,7 +241,7 @@ export const Table = styled.table`
     border-bottom: 1px solid #dddddd;
   }
 
-  overflow: auto;
+  
 
   ::-webkit-scrollbar {
     width: 12px;
@@ -264,10 +266,11 @@ export const TableHeader = styled.thead`
   top: 0; /* Fix the header at the top of the container */
 `
 
-export const TableBody = styled.tbody``
+export const TableBody = styled.tbody`
 
-export const TableContainer = styled.tbody`
-  overflow-y: scroll;
+
+/* border: 1px solid red; */
+
 `
 
 export const TableData = styled.td`
@@ -275,7 +278,7 @@ export const TableData = styled.td`
   text-align: left;
 `
 
-export const TableRow = styled.tr`
+export const TableRowHeader = styled.tr`
   padding: 8px;
   border: 1px solid #dddddd;
   background-color: ${Colors.hoverCard};

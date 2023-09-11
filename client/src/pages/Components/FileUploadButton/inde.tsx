@@ -17,6 +17,7 @@ const Label = styled.label`
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
+  min-width: 12rem;
 
   color: white;
   background-color: ${Colors.mainpurple};

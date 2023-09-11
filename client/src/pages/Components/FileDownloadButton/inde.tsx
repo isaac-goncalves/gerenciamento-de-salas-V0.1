@@ -15,9 +15,10 @@ const Button = styled.button`
   font-size: 0.8rem;
   border-radius: 5px;
   transition: background-color 0.3s;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   max-width: 40rem;
   max-height: 3rem;
+  min-width: 12rem;
 
   cursor: pointer;
   &:hover {

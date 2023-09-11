@@ -18,6 +18,7 @@ export const Colors = {
   horariosCard: "rgba(99, 88, 220, 0.31)",
   hoverCard: "#A29EC7",
   EditModalWrapperBackgroudColor: "#F3E6F9",
+  tableheadercolor: "##494949",
 };
 
 export const HOSTIP = "192.168.0.53"
