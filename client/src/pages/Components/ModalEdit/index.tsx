@@ -17,6 +17,7 @@ interface ModalProps {
   onClose: Function
   initialData: any
   daysIds: any
+  userRole: string
 }
 
 interface InitialDataProps {
@@ -56,6 +57,7 @@ const ModalEdit = ({
   onClose,
   initialData,
   daysIds,
+  userRole
 }: ModalProps) => {
 
   if (!isVisible) return null
@@ -597,7 +599,7 @@ const ModalEdit = ({
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>
-                <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} />
+                <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} userRole={userRole} />
               </ClockTimeWrapper>
               <SecondImageWrapper>
                 <BackgroundImage src={background} />

@@ -16,7 +16,9 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper } from './Dashboard.styles'
+import { AiOutlinePlusCircle } from 'react-icons/ai';
+
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -369,7 +371,7 @@ const Dashboard: React.FC = () => {
       </WeekdayContainer>
     )
   };
-  
+
   const renderLoading = () => {
     return (
       <WeekContainer>
@@ -402,6 +404,12 @@ const Dashboard: React.FC = () => {
 
   //MODAL HANDLE FUNCTIONS
   function handleSchedulingButtonClick() {
+
+    if (userData.userData.role == "aluno" || userData.userData.role == "guest") {
+      toast.error('Você não tem permissão para agendar!');
+      return
+    }
+
     if (userIsScheduling == true) {
       toast.info('Modo de agendamento desativado!');
     }
@@ -633,9 +641,12 @@ const Dashboard: React.FC = () => {
   //RENDERS -------------------------------------------------------------------------
   return (
     <>
-      <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} />
+      <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ToastContainer />
       <Container>
+        <CalltoActionButton backgroundColor={userIsScheduling}  onClick={handleSchedulingButtonClick}>
+          <AiOutlinePlusCircle size={60}/>
+        </CalltoActionButton>
         <Helmet>
           <title>SGSA - Dashboard</title>
         </Helmet>

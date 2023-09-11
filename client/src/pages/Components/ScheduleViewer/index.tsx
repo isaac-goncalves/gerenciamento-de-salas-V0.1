@@ -99,7 +99,7 @@ function transformData(agendamentos: any) {
   return items;
 };
 
-function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action, professores, idUserLogado }: any) {
+function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action, professores, idUserLogado, userRole }: any) {
 
   const [form, setForm] = useState({} as any)
   const [schedule, setSchedule] = useState(array)
@@ -275,6 +275,12 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
                   onClick=
                   {
                     () => {
+                      if(action == 'CREATE') {
+                          //compara se o agendamento é do usuário logado
+                        if(item.agendamento.id_professor == idUserLogado || userRole == 'coordenador' || userRole == 'admin') {
+                          handleSelection(item.id, item.agendamento && item.agendamento ? item.agendamento.id : undefined)
+                        }
+                      }else
                       if(action !== 'OPEN') {
                         handleSelection(item.id, item.agendamento && item.agendamento ? item.agendamento.id : undefined)
                       }

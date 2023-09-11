@@ -68,8 +68,7 @@ export const HamburgerDiv = styled.div`
 
 export const HamburgerWrapper = styled.div`
   display: block;
-  margin-top: 1.0rem;
-
+  margin-top: 1rem;
 `
 
 export const Avatar = styled.img`
@@ -167,4 +166,3 @@ export const RowWrapper = styled.div`
     }
   }
 `
-

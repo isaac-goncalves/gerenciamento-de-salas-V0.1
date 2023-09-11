@@ -4,6 +4,28 @@ import DatePicker from 'react-datepicker'
 
 import { Colors } from '../../colors'
 
+interface CalltoActionButtonProps {
+  backgroundColor: boolean;
+}
+
+export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: ${Colors.white};
+  background-color: ${(props) => (props.backgroundColor ?  'gray' : Colors.mainpurple)}; 
+  border: none;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+` 
+
 export const Container = styled.div`
   z-index: 1;
   display: flex;
@@ -224,6 +246,11 @@ export const ButtonConfimarAgendamento = styled.button`
   &:hover {
     background-color: #663399;
   }
+
+   @media screen and (max-width: 570px) {
+    display: none;
+  }
+
 `
 
 export const DatepickArrowsContainer = styled.div`
