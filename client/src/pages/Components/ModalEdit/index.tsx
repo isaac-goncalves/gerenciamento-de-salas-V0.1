@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates, ModalContentSize } from './ModalEdit.styles'
+import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates, ModalContentSize, SecondImageWrapper } from './ModalEdit.styles'
 import background from '../../../../public/images/background.jpg';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ScheduleViewer from '../ScheduleViewer';
-import { Laboratorio } from '../../Agendamentos/Agendamento.styles';
 
 import Swal from 'sweetalert2'
 
@@ -494,57 +493,56 @@ const ModalEdit = ({
   return (
     <ModalOverlay onClick={() => onClose()}>
       <ModalContent onClick={e => e.stopPropagation()}>
-      
-          <ImageWrapper>
-            <BackgroundImage src={background} />
-          </ImageWrapper>
-          <FormWrapper>
-            <ProfessorWrapper>
-              <StyledTitle>
-                {
-                  getTitleBasedOnAction(action)
-                }
-              </StyledTitle>
-              <DetailsText>Professor:</DetailsText>
-              <StyledSelect
-                value={selectedProfessor || ''}
-                onChange={handleSelectProfessorChange}
+        <ImageWrapper>
+          <BackgroundImage src={background} />
+        </ImageWrapper>
+        <FormWrapper>
+          <StyledTitle>
+            {
+              getTitleBasedOnAction(action)
+            }
+          </StyledTitle>
+          <ProfessorWrapper>
+            <DetailsText>Professor:</DetailsText>
+            <StyledSelect
+              value={selectedProfessor || ''}
+              onChange={handleSelectProfessorChange}
+              disabled={action === 'OPEN'}
+            >
+              {professores.length > 0 ? (
+                professores.map((professor) => (
+                  <option key={professor.id} value={professor.id}>
+                    {professor.name}
+                  </option>
+                ))
+              ) : (
+                <option value="">No professors available</option>
+              )}
+            </StyledSelect>
+          </ProfessorWrapper>
+          <DateTimeWrapper>
+            <DateTimeDiv>
+              <DetailsText>Data de agendamento</DetailsText>
+              <DatePicker
+                selected={startDate}
                 disabled={action === 'OPEN'}
-              >
-                {professores.length > 0 ? (
-                  professores.map((professor) => (
-                    <option key={professor.id} value={professor.id}>
-                      {professor.name}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">No professors available</option>
-                )}
-              </StyledSelect>
-            </ProfessorWrapper>
-            <DateTimeWrapper>
-              <DateTimeDiv>
-                <DetailsText>Data de agendamento</DetailsText>
-                <DatePicker
-                  selected={startDate}
-                  disabled={action === 'OPEN'}
-                  onChange={(date) => {
-                    //estudar quem vai porder alterar esta funcionalidade
-                    //pois grade ids são linkados com a data de agendamento
-                    setStartDate(date || new Date())
-                    setFormData({ ...formData, date: startDate || new Date() })
-                  }} />
-              </DateTimeDiv>
-              <DateTimeDiv>
-                <DetailsText>Dia da Semana:</DetailsText>
-                <StyledText>{formData && formatDate(formData.date)}</StyledText>
-              </DateTimeDiv>
-            </DateTimeWrapper>
-            <SideBysideContainer>
-              <DetailsWrapper>
-                <div>
-                  <DetailsText>Semestre:</DetailsText>
-                  {/* <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
+                onChange={(date) => {
+                  //estudar quem vai porder alterar esta funcionalidade
+                  //pois grade ids são linkados com a data de agendamento
+                  setStartDate(date || new Date())
+                  setFormData({ ...formData, date: startDate || new Date() })
+                }} />
+            </DateTimeDiv>
+            <DateTimeDiv>
+              <DetailsText>Dia da Semana:</DetailsText>
+              <StyledText>{formData && formatDate(formData.date)}</StyledText>
+            </DateTimeDiv>
+          </DateTimeWrapper>
+          <SideBysideContainer>
+            <DetailsWrapper>
+              <div>
+                <DetailsText>Semestre:</DetailsText>
+                {/* <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
                   {laboratory.length > 0 ? (
                     laboratory.map((laboratory) => (
                       <option key={laboratory.id} value={laboratory.id}>
@@ -555,69 +553,68 @@ const ModalEdit = ({
                     <option value="">No professors available</option>
                   )}
                 </StyledSelect> */}
-                </div>
-                <div>
-                  <DetailsText>Laboratório:</DetailsText>
-                  <StyledSelect
-                    value={selectedLaboratory || ''}
-                    disabled={action === 'OPEN'}
-                    onChange={handleLaboratoryChange}>
-                    {laboratory.length > 0 ? (
-                      laboratory.map((laboratory) => (
-                        <option key={laboratory.id} value={laboratory.id}>
-                          {laboratory.descricao}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="">No professors available</option>
-                    )}
-                  </StyledSelect>
-                </div>
-                <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory)}</StyledText></DetailsText>
-                <DetailsText>Criado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
-                <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
-                <DetailsText>ID de agendamento: <br />
-
-                  {/* formData.uuid_agendamento */}
-
-                  <div>
-                    <p>
-                      {
-
-                        action === "CREATE"
-
-                          ?
-
-                          "-NOVO😂-"
-
-                          :
-
-                          formData.uuid_agendamento
-
-                      }
-                    </p>
-                  </div>
-
-                </DetailsText>
-              </DetailsWrapper>
-              <ClocktimeAndButoonsWrapper>
-                <ClockTimeWrapper>
-                  <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} />
-                </ClockTimeWrapper>
-                <ButtonsWrapper>
-                  {action !== 'OPEN' && (
-                    <StyledButton onClick={() => handleEdit()}>
-                      {action === 'CREATE' ? 'Criar' : 'Editar'}
-                    </StyledButton>
+              </div>
+              <div>
+                <DetailsText>Laboratório:</DetailsText>
+                <StyledSelect
+                  value={selectedLaboratory || ''}
+                  disabled={action === 'OPEN'}
+                  onChange={handleLaboratoryChange}>
+                  {laboratory.length > 0 ? (
+                    laboratory.map((laboratory) => (
+                      <option key={laboratory.id} value={laboratory.id}>
+                        {laboratory.descricao}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No professors available</option>
                   )}
-                  <StyledButton onClick={() => onClose()}>
-                    {action === 'CREATE' ? 'Cancelar' : 'Fechar'}
+                </StyledSelect>
+              </div>
+              <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory)}</StyledText></DetailsText>
+              <DetailsText>Criado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
+              <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
+              <DetailsText>ID de agendamento: <br />
+                {/* formData.uuid_agendamento */}
+                <div>
+                  <p>
+                    {
+
+                      action === "CREATE"
+
+                        ?
+
+                        "-NOVO😂-"
+
+                        :
+
+                        formData.uuid_agendamento
+
+                    }
+                  </p>
+                </div>
+              </DetailsText>
+            </DetailsWrapper>
+            <ClocktimeAndButoonsWrapper>
+              <ClockTimeWrapper>
+                <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} />
+              </ClockTimeWrapper>
+              <SecondImageWrapper>
+                <BackgroundImage src={background} />
+              </SecondImageWrapper>
+              <ButtonsWrapper>
+                {action !== 'OPEN' && (
+                  <StyledButton onClick={() => handleEdit()}>
+                    {action === 'CREATE' ? 'Criar' : 'Editar'}
                   </StyledButton>
-                </ButtonsWrapper>
-              </ClocktimeAndButoonsWrapper>
-            </SideBysideContainer>
-          </FormWrapper>
-    
+                )}
+                <StyledButton onClick={() => onClose()}>
+                  {action === 'CREATE' ? 'Cancelar' : 'Fechar'}
+                </StyledButton>
+              </ButtonsWrapper>
+            </ClocktimeAndButoonsWrapper>
+          </SideBysideContainer>
+        </FormWrapper>
       </ModalContent>
     </ModalOverlay >
   )

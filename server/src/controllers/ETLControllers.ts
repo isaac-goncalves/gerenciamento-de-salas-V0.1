@@ -90,10 +90,10 @@ export class ETLControllers {
   async download (request: Request, response: Response) {
     const filePath = path.join(
       __dirname,
-      '../../templates/TEMPLATE_BASE_DADOS1.2.xlsx'
+      '../../templates/TEMPLATE_BASE_DADOS1.6.xlsx'
     ) // Caminho para o arquivo no servidor
 
-    const fileName = 'TEMPLATE_BASE_DADOS1.2.xlsx'
+    const fileName = 'TEMPLATE_BASE_DADOS.xlsx'
 
     response.setHeader(
       'Content-Disposition',
