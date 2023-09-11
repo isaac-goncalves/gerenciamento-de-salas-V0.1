@@ -5,14 +5,21 @@ import styled from 'styled-components';
 import { Colors } from '../../../colors';
 
 const Button = styled.button`
-  padding: 10px 20px;
-  background-color: ${Colors.mainpurple};
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
+  background-color: ${Colors.mainpurple};
+  padding: 10px 20px;
   border : none;
-  cursor: pointer;
+  font-size: 0.8rem;
   border-radius: 5px;
   transition: background-color 0.3s;
-  
+  border: 1px solid red;
+  max-width: 40rem;
+  max-height: 3rem;
+
+  cursor: pointer;
   &:hover {
     background-color: ${Colors.horariosCard};
   }

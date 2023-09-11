@@ -94,10 +94,12 @@ export const Separator = styled.div`
   }
 `
 
-export const MainContainer = styled.div`
-  width: 90%;
+export const ButtonWrapper = styled.div`
+  border: 1px solid red;
+  gap:2rem;
+  width: 70%;
   display: flex;
-  width: 100%;
+
   justify-content: space-between;
   input {
     width: 80%;
@@ -109,10 +111,16 @@ export const MainContainer = styled.div`
     box-sizing: border-box;
     color: ${Colors.textcolor};
   }
+
+  @media screen and (max-width: 570px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `
 
 export const ButtonsWrapper = styled.td`
   display: flex;
+  border: 1px solid red;
   gap: 0.2rem;
   align-items: center;
 `

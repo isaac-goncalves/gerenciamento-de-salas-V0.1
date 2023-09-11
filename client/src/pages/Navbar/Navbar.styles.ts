@@ -31,13 +31,13 @@ export const PrimaryNav = styled.nav`
   transition: width 0.15s ease-in-out;
   display: flex;
   flex-direction: column;
-  
   justify-content: center;
   z-index: 14;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  background: ${Colors.white};
+  background: ${Colors.whiteNavbar};
+  /* border-right: 2px solid red; */
 
   @media screen and (max-width: 570px) {
     width: ${({ menuOpen }: Props) => (menuOpen ? '12rem' : '3rem')};

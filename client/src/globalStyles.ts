@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
   *, body {
     margin: 0;
     padding: 0;
+    
     box-sizing: border-box;
     font-family: 'Poppins', Helvetica, Sans-Serif;
     text-rendering: optimizeLegibility;
@@ -14,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
     text-rendering: optimizeLegibility;
   }
   
+  body {
+    height: 100vh;
+  }
+
   /* *:hover {
     display:none;
   } */

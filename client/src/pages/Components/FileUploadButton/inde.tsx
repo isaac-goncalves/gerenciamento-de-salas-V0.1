@@ -16,10 +16,15 @@ const Label = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 10px 20px;
-  background-color: ${Colors.mainpurple};
+  font-size: 0.8rem;
+
   color: white;
+  background-color: ${Colors.mainpurple};
+  padding: 10px 20px;
+  gap: 10px;
+  max-width: 40rem;
+  max-height: 3rem;
+  text-align: center;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s;
@@ -79,7 +84,6 @@ const FileUploadButton = ({ loggedUserRole }: FileUploadButtonProps) => {
   //insira um reac icon de arquivo ali depois do escolher arquivo
   return (
     <>
-      <ToastContainer />
       <Label
         onClick={() => { loggedUser == 'aluno' || loggedUser == 'guest' ? toast.error('Usuário sem permissão para upload de arquivos🧐') : null }}
         htmlFor="fileUpload">

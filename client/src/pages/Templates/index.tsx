@@ -17,7 +17,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle
+    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -59,7 +59,7 @@ function Templates() {
                     window.location.href = '/';
                 }, 2000);
             } else {
-                 console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+                console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
 
 
                 setUserData(userDataJson);
@@ -204,11 +204,11 @@ function Templates() {
                 </Header>
                 <PageTitle>Templates</PageTitle>
                 <TemplateImage src={templateImage} />
-                <MainContainer>
+                <ButtonWrapper>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />
                     <FileDownloadButton buttonText={"Download Template Atualizado"} fileName={templateFileName} fileUrl={templateFileUrl} />
                     <FileUploadButton loggedUserRole={userData.userData.role} />
-                </MainContainer>
+                </ButtonWrapper>
                 {
                     // isLoading ?
                     //     renderTable()
