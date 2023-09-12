@@ -10,6 +10,7 @@ import { GrLogout } from 'react-icons/gr'
 import { TbFileUpload } from 'react-icons/tb'
 import { BiCog } from 'react-icons/bi'
 import { GiHamburgerMenu } from 'react-icons/gi'
+import { IoMdNotificationsOutline } from 'react-icons/io'
 
 import { BsCalendarDate } from 'react-icons/bs'
 import { MdSchedule, MdPerson, MdExitToApp, MdOutlineDarkMode } from 'react-icons/md';
@@ -127,25 +128,27 @@ const Navbar = () => {
                     </MenuLink>
                     <MenuLink to="/notification" >
                         <RowWrapper>
-                            <TbFileUpload style={{
+                            <IoMdNotificationsOutline style={{
                                 color: Colors.mainpurple,
                                 fontSize: '1.4rem',
                             }} />{
-                                menuOpen && <p>Notificaçoes</p>
+                                menuOpen && <p>NOTIFICAÇÕES </p>
                             }
                         </RowWrapper>
                     </MenuLink>
-                    <MenuLink to="/"
-                        onClick={() => handleLogout()}
+                    <MenuLink
+                        to="https://darkreader.org/"
+                        target="_blank"
+                    // onClick={() => handleLogout()}
                     >
                         <RowWrapper>
                             <MdOutlineDarkMode style={{
-                                color: Colors.mainpurple,
+                                color: "black",
                                 fontSize: '1.2rem',
                             }}
                             />
                             {
-                                menuOpen && <p>Darkmode</p>
+                                menuOpen && <p>DARKMODE</p>
                             }
                         </RowWrapper>
                     </MenuLink>
@@ -159,7 +162,7 @@ const Navbar = () => {
                             }}
                             />
                             {
-                                menuOpen && <p>Logout</p>
+                                menuOpen && <p>LOGOUT</p>
                             }
                         </RowWrapper>
                     </MenuLink>

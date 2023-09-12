@@ -22,7 +22,7 @@ import { Container, Header, CourseName, ClassesContainer, ClockContainer, Weekda
 
 import ModalEdit from '../Components/ModalEdit';
 
-import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdSubdirectoryArrowRight } from 'react-icons/md';
+import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdOutlineModeEdit, MdSubdirectoryArrowRight } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
@@ -644,8 +644,8 @@ const Dashboard: React.FC = () => {
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ToastContainer />
       <Container>
-        <CalltoActionButton backgroundColor={userIsScheduling}  onClick={handleSchedulingButtonClick}>
-          <AiOutlinePlusCircle size={60}/>
+        <CalltoActionButton  className="bubbly-button" backgroundColor={userIsScheduling}  onClick={handleSchedulingButtonClick}>
+          <MdOutlineModeEdit size={40} color='white'/>
         </CalltoActionButton>
         <Helmet>
           <title>SGSA - Dashboard</title>

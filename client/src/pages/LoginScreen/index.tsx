@@ -45,14 +45,19 @@ const LoginScreen: React.FC = () => {
 
     const [error, setError] = useState(false);
 
+    const [firstLoad, setFirstLoad] = useState(false);
+
+
+
     useEffect(() => {
         const localStorageData = localStorage.getItem("gerenciamento-de-salas@v1.1");
 
         if (localStorageData) {
             const data = JSON.parse(localStorageData);
-            if (data.token) {
+            if (data.token && !firstLoad) {
                 console.log("token exists");
                 toast.success("Você já está logado!");
+                setFirstLoad(true);
                 setTimeout(() => {
                     window.location.href = "/dashboard";
                 }, 2000);

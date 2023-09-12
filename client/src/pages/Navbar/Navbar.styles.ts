@@ -31,7 +31,8 @@ export const PrimaryNav = styled.nav`
   transition: width 0.15s ease-in-out;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
+  
   z-index: 14;
   height: 100vh;
   display: flex;
@@ -108,6 +109,17 @@ export const MenuLink = styled(Link)`
   &.active {
     color: #000000;
   }
+
+
+  &:nth-child(7){
+    margin-left: 0.2rem;
+
+  }
+
+  &:last-child {
+    margin-left: 0.4rem;
+  }
+
 `
 // export const Hamburger = styled(FaBars)`
 //   display: none;

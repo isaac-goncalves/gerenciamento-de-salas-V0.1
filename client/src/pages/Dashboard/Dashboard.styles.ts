@@ -9,6 +9,7 @@ interface CalltoActionButtonProps {
 }
 
 export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
+
   position: fixed;
   bottom: 2rem;
   right: 2rem;
@@ -24,6 +25,10 @@ export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
   align-items: center;
   justify-content: center;
   z-index: 99;
+
+ transform: scale(1);
+  transition: 0.3s;
+
 ` 
 
 export const Container = styled.div`
@@ -95,7 +100,8 @@ export const ClassesContainer = styled.div`
 
 
   @media screen and (max-width: 570px) {
-    padding: 0.2rem;
+    margin-bottom: 1rem;
+
   }
 `
 
@@ -363,6 +369,7 @@ export const WeekdayContainer = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
+   user-select: none;
   /* background-color: cyan; //remove later */
   padding-bottom: 0.1rem;
 
@@ -442,7 +449,8 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   min-height: 4rem;
   padding: 0.4rem 0;
   gap: 0.1rem;
-
+  user-select: none;
+  
 
   @media screen and (max-width: 570px) {
   }
@@ -453,6 +461,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
 
     p {
       /* color: ${Colors.white}; */
+      user-select: none;
     }
   }
 
