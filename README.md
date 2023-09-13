@@ -2,7 +2,7 @@ Portuguese:
 <img width="1280" alt="image" src="https://github.com/isaac-goncalves/gerenciamento-de-salas-V0.1/assets/82903174/7940b3fb-c671-4e33-8829-810ea8d6a115">
 🔬📚 Sistema de Gerenciamento de Laboratórios e Salas de Aula - FT Taubaté 📚🔬
 
-Disponivel em 👉 https://nice-beach-060306510.3.azurestaticapps.net/
+Disponivel em 👉 gerenciamentodesalas.cloud
 
 Bem-vindo ao projeto de software desenvolvido como parte da disciplina de Engenharia de Software 3 na renomada Faculdade de Tecnologia de Taubaté! Este sistema inovador visa revolucionar a forma como os laboratórios e salas de aula são gerenciados e agendados dentro da faculdade.
 
