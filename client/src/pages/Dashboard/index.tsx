@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet';
 
+import './ButtonAnimation.scss'; // Import your SCSS file
+
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
 console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
@@ -104,6 +106,7 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
 //COMPONENTS -------------------------------------------------------------------------
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   //STORE FETCHED DATA
   const [grade, setgrade] = useState<any>();
@@ -403,7 +406,16 @@ const Dashboard: React.FC = () => {
   };
 
   //MODAL HANDLE FUNCTIONS
-  function handleSchedulingButtonClick() {
+  function handleSchedulingButtonClick(e: any) {
+
+    e.preventDefault();
+     // Start the animation by updating the state
+     setIsAnimating(true);
+
+     // Reset the animation after a delay
+     setTimeout(() => {
+       setIsAnimating(false);
+     }, 700);
 
     if (userData.userData.role == "aluno" || userData.userData.role == "guest") {
       toast.error('Você não tem permissão para agendar!');
@@ -644,8 +656,8 @@ const Dashboard: React.FC = () => {
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ToastContainer />
       <Container>
-        <CalltoActionButton  className="bubbly-button" backgroundColor={userIsScheduling}  onClick={handleSchedulingButtonClick}>
-          <MdOutlineModeEdit size={40} color='white'/>
+        <CalltoActionButton className={`bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleSchedulingButtonClick}>
+          <MdOutlineModeEdit size={40} color='white' />
         </CalltoActionButton>
         <Helmet>
           <title>SGSA - Dashboard</title>

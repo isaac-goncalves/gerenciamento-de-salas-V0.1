@@ -5,15 +5,56 @@ import { Helmet } from 'react-helmet'
 import { RiPencilLine, RiDeleteBinLine } from 'react-icons/ri';
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
-import { format, formatDistanceToNow } from 'date-fns';
+import { format, formatDistanceToNow, set } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
+const semestresOptions = [
+    { value: '1', label: '1º SEMESTRE ADS - 2023' },
+    { value: '2', label: '2º SEMESTRE ADS - 2023' },
+    { value: '3', label: '3º SEMESTRE ADS - 2023' },
+    { value: '4', label: '4º SEMESTRE ADS - 2023' },
+    { value: '5', label: '5º SEMESTRE ADS - 2023' },
+    { value: '6', label: '6º SEMESTRE ADS - 2023' },
+];
+
+const disciplinaOptions = [
+    { value: "1", label: "Administração Geral" },
+    { value: "2", label: "Algoritmos e Lógica de Programação" },
+    { value: "3", label: "Arquitetura e Organização de Computadores" },
+    { value: "4", label: "Banco de Dados" },
+    { value: "5", label: "Cálculo" },
+    { value: "6", label: "Comunicação e Expressão" },
+    { value: "7", label: "Contabilidade" },
+    { value: "8", label: "Economia e Finanças" },
+    { value: "9", label: "Eletiva - Programação para Dispositivos Móveis" },
+    { value: "10", label: "Engenharia de Software I" },
+    { value: "11", label: "Engenharia de Software II" },
+    { value: "12", label: "Engenharia de Software III" },
+    { value: "13", label: "Estatística Aplicada" },
+    { value: "14", label: "Estruturas de Dados" },
+    { value: "15", label: "Inglês I" },
+    { value: "16", label: "Inglês II" },
+    { value: "17", label: "Inglês III" },
+    { value: "18", label: "Inglês IV" },
+    { value: "19", label: "Interação Humano Computador" },
+    { value: "20", label: "Laboratório de Hardware" },
+    { value: "21", label: "Linguagem de Programação" },
+    { value: "22", label: "Matemática Discreta" },
+    { value: "23", label: "Metodologia da Pesquisa Científico-Tecnológica" },
+    { value: "24", label: "Programação em Microinformática" },
+    { value: "25", label: "Programação Orientada a Objetos" },
+    { value: "26", label: "Sistemas de Informação" },
+    { value: "27", label: "Sistemas Operacionais I" },
+    { value: "28", label: "Sistemas Operacionais II" },
+    { value: "29", label: "Sociedade e Tecnologia" }
+];
+
 import {
     Avatar,
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText
+    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, StyledButton, ContentWrapper, ButtonWrapper, ButtonWapper
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -26,6 +67,7 @@ import FileUploadButton from '../Components/FileUploadButton/inde';
 import FileDownloadButton from '../Components/FileDownloadButton/inde';
 import { BsWhatsapp } from 'react-icons/bs';
 import { AvatarWrapper, UserInfo, UserName, UserWrapper } from '../Navbar/Navbar.styles';
+import { InputWrapper, StyledSelect } from '../Register/Register.styles';
 
 function Perfil() {
 
@@ -44,6 +86,9 @@ function Perfil() {
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
     const [alunosData, setAlunosData] = React.useState<AlunosData[]>([])
     const [professoresData, setProfessoresData] = React.useState<ProfessoresData[]>([])
+
+    const [semestre, setSemestre] = useState("");
+    const [disciplina, setDisciplina] = useState("");
 
     const [editingModal, setEditingModal] = React.useState(false)
     const [deleteModal, setDeleteModal] = React.useState(false)
@@ -79,6 +124,7 @@ function Perfil() {
             } else {
                 // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
                 setUserData(userDataJson);
+                setSemestre(userDataJson.userData.semestre);
             }
         }
     }, [userData]);
@@ -150,6 +196,14 @@ function Perfil() {
     const handleEditClick = (editedData: any) => {
         setEditedData(editedData);
         setEditingModal(true);
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSemestre(event.target.value);
+    };
+
+    const handleChangeDisciplina = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setDisciplina(event.target.value);
     };
 
     const handleDeleteClick = (editedData: any) => {
@@ -350,31 +404,61 @@ function Perfil() {
         )
     }
 
-    const renderTable = () => {
+    const renderContent = () => {
         return (
             <>
-                <Avatar src={avatar} />
-                <UserWrapper>
-                    {<UserName>{userData.userData.name}</UserName>}
-                    {<UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>}
-                    {<UserInfo>{userData.userData.role}</UserInfo>}
-                </UserWrapper>
-                <select>
-                    <option value="1">1º ADS</option>
-                    <option value="2">2º ADS</option>
-                    <option value="3">3º ADS</option>
-                    <option value="4">4º ADS</option>
-                    <option value="5">5º ADS</option>
-                    <option value="6">6º ADS</option>
-                </select>
-                <FileUploadButton />
-                <button>Salvar</button>
-                <SearchBar>
-                    <button onClick={handleClick}>
-                        <BsWhatsapp />
-                        Convidar pelo Whatsapp
-                    </button>
-                </SearchBar>
+                <ContentWrapper>
+
+                    <Avatar src={avatar} />
+                    <UserWrapper>
+                        {<UserName>{userData.userData.name}</UserName>}
+                        {<UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>}
+                        {<UserInfo>{userData.userData.role}</UserInfo>}
+                    </UserWrapper>
+                    <ButtonWapper>
+                    <>
+                        {
+                            (userData.userData.role === "Aluno" || userData.userData.role === "guest") &&
+                            <InputWrapper>
+                                <label>Semestre:</label>
+                                <StyledSelect value={semestre} onChange={handleChange}>
+                                    <option disabled value="">
+                                        Selecione o semestre
+                                    </option>
+                                    {semestresOptions.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </StyledSelect>
+                            </InputWrapper>
+                        }
+                        {
+                            userData.userData.role === "professor" &&
+                            <InputWrapper>
+                                <label>Disciplina</label>
+                                <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
+                                    <option disabled value="">
+                                        Selecione a disciplina
+                                    </option>
+                                    {disciplinaOptions.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </StyledSelect>
+                            </InputWrapper>
+                        }
+                    </>
+                  
+                        <FileUploadButton action={"profilepic"} loggedUserRole={userData.userData.role} />
+                        <StyledButton>Salvar</StyledButton>
+                        <StyledButton onClick={handleClick}>
+                            <BsWhatsapp />
+                            Convidar pelo WhatsApp
+                        </StyledButton>
+                    </ButtonWapper>
+                </ContentWrapper>
             </>
         )
     }
@@ -427,7 +511,7 @@ function Perfil() {
                 </Header>
                 {
                     isLoading ?
-                        renderTable()
+                        renderContent()
                         :
                         (<PacmanLoader />)
                 }

@@ -14,7 +14,6 @@ export const Container = styled.div`
 `
 
 export const ImageContainer = styled.div`
-  
   width: 100%;
   display: flex;
   align-items: center;
@@ -45,7 +44,7 @@ export const LoginContainer = styled.div`
   background-color: #fff;
   border-radius: 8px;
   border-radius: 1rem;
-  height: 90%; 
+  height: 90%;
   width: 90%;
 `
 
@@ -59,14 +58,13 @@ export const InputWrapper = styled.div`
   width: 80%;
   gap: 1rem;
   flex-direction: column;
-
 `
 
 export const InputVisibleEye = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-`;
+`
 
 export const Input = styled.input`
   width: 100%;
@@ -81,7 +79,7 @@ export const Input = styled.input`
   :focus {
     outline: none;
   }
-`;
+`
 
 export const EyeIcon = styled.span`
   /* Add your eye icon styles here */
@@ -97,7 +95,7 @@ export const EyeIcon = styled.span`
   transform: translateY(-50%);
   transition: color 0.3s ease; /* Add transition for color */
   margin-right: 8px; /* Add margin-right to create space between icon and input */
-`;
+`
 
 export const NameWrapper = styled.div`
   display: flex;
@@ -116,8 +114,6 @@ export const RadioWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `
-
-
 
 export const ButtonsWrapper = styled.div`
   display: flex;
@@ -145,18 +141,17 @@ export const Form = styled.form`
   align-items: center;
   justify-content: center;
 
-  h1{
+  h1 {
     font-size: 2rem;
     padding: 2rem;
   }
-
 `
 
 export const PasswordContainer = styled.div`
-display: flex;
-width: 80%;
-flex-direction: row;
-gap: 1rem;
+  display: flex;
+  width: 80%;
+  flex-direction: row;
+  gap: 1rem;
 `
 
 export const AddressWrapper = styled.div`
@@ -168,8 +163,8 @@ export const ContactWrapper = styled.div`
 `
 
 export const StyledSelect = styled.select`
-    padding: 0.5rem;
-    padding-left: 1rem;
+  padding: 0.5rem;
+  padding-left: 1rem;
   border-radius: 9999999px;
   border: 1px solid #ccc;
   font-size: 1rem;
@@ -205,4 +200,4 @@ export const StyledSelect = styled.select`
     max-height: 200px; /* Set the desired max height */
     overflow-y: auto; /* Add scrollbar when options exceed max height */
   }
-`;
+`

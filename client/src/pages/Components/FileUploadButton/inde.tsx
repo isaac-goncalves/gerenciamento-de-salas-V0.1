@@ -18,13 +18,13 @@ const Label = styled.label`
   justify-content: center;
   font-size: 0.8rem;
   min-width: 12rem;
-
   color: white;
   background-color: ${Colors.mainpurple};
   padding: 10px 20px;
   gap: 10px;
-  max-width: 40rem;
-  max-height: 3rem;
+  max-width: 20rem;
+  width: 100%;
+  max-height: 2.5rem;
   text-align: center;
   cursor: pointer;
   border-radius: 5px;
@@ -38,10 +38,11 @@ const Label = styled.label`
 
 interface FileUploadButtonProps {
   loggedUserRole: string;
+  action: string;
 }
 
 // FileUploadButton component
-const FileUploadButton = ({ loggedUserRole }: FileUploadButtonProps) => {
+const FileUploadButton = ({ loggedUserRole, action }: FileUploadButtonProps) => {
 
   const [loggedUser, setLoggedUser] = React.useState('');
 
@@ -84,7 +85,6 @@ const FileUploadButton = ({ loggedUserRole }: FileUploadButtonProps) => {
   };
   //insira um reac icon de arquivo ali depois do escolher arquivo
   return (
-    <>
       <Label
         onClick={() => { loggedUser == 'aluno' || loggedUser == 'guest' ? toast.error('Usuário sem permissão para upload de arquivos🧐') : null }}
         htmlFor="fileUpload">
@@ -99,7 +99,6 @@ const FileUploadButton = ({ loggedUserRole }: FileUploadButtonProps) => {
           onChange={handleFileChange}
         />
       </Label>
-    </>
   );
 };
 

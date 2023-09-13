@@ -27,6 +27,7 @@ export const Container = styled.div`
   }
 `
 
+
 export const Wrapper = styled.div`
   width: 90%;
   height: 90%;
@@ -48,6 +49,17 @@ export const Wrapper = styled.div`
   }
 `
 
+
+export const ContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  `
+
+
 export const Header = styled.div`
   width: 80%;
   display: flex;
@@ -59,6 +71,7 @@ export const CounterWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
 
   h1 {
@@ -102,25 +115,38 @@ export const SearchBar = styled.div`
     color: ${Colors.white};
   }
 
-  button {
+  
+`
+
+export const ButtonWapper = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+gap: 1rem;
+`
+
+export const StyledButton = styled.button`
+
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: 0.5rem;
     height: 2.5rem;
+    max-width: 20rem;
     border: none;
+   
+   width:100%;
     background-color: ${Colors.mainpurple};
     color: ${Colors.realwhite};
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 1rem;
     cursor: pointer;
     white-space: nowrap;
-  }
-`
+  `
 
 export const ButtonsWrapper = styled.td`
   display: flex;
