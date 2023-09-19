@@ -6,8 +6,8 @@ import { Colors } from '../../colors'
 
 export const StyledSelect = styled.select`
   font-size: 1.0rem;
-  background-color: ${Colors.white};
-  color: ${Colors.textcolor};
+  background-color: ${props => props.theme.white};
+  color: ${props => props.theme.textcolor};
   z-index: 99;
   padding: 8px 20px;
   border: 1px solid #ccc;
@@ -17,11 +17,11 @@ export const StyledSelect = styled.select`
   transition: border-color 0.3s ease;
 
   &:hover {
-    border-color: ${Colors.mainpurple};
+    border-color: ${props => props.theme.mainpurple};
   }
 
   &:focus {
-    border-color: ${Colors.mainpurple};
+    border-color: ${props => props.theme.mainpurple};
    
   }
 `
@@ -31,7 +31,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${Colors.lightgray};
+  background-color: ${props => props.theme.lightgray};
   /* background-color: yellow; */
   height: 100%;
   width: calc(100% - 5rem);
@@ -71,7 +71,7 @@ export const CoursesWrapper = styled.div`
 export const CourseName = styled.h1`
   font-size: 1.6rem;
   font-weight: 600;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
 `
 
 export const DatePickWrapper = styled.div`
@@ -83,7 +83,7 @@ export const DatePickWrapper = styled.div`
 
   gap: 1rem;
   /* background-color: red; */
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   border-radius: 12px;
 
   padding: 0.5rem 1rem;
@@ -107,7 +107,7 @@ export const SelectingLaboratoryWrapper = styled.div`
 
 export const ButtonConfimarAgendamento = styled.button`
 font-size: 1.0rem;
-background-color: ${Colors.mainpurple};
+background-color: ${props => props.theme.mainpurple};
   color: #ffffff;
   border: none;
   padding: 8px 20px;
@@ -157,7 +157,7 @@ export const ClassesContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-bottom: 2rem;
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   /* background-color: blue  ; */ // alternate color
   padding: 1rem;
   border-radius: 12px;
@@ -172,7 +172,7 @@ export const Laboratorios = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-bottom: 2rem;
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   /* background-color: blue  ; */ // alternate color
   padding: 2rem;
   border-radius: 12px;
@@ -184,7 +184,7 @@ export const Laboratorios = styled.div`
 export const CourseSemester = styled.p`
   font-size: 1.5rem;
   font-weight: 400;
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
 `
 
 export const Semester = styled.div`
@@ -212,7 +212,7 @@ export const ClockContainer = styled.div`
     font-size: 1.125rem;
     font-weight: 400;
     margin-bottom: 0.5rem;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
     text-align: center;
   }
 `
@@ -227,7 +227,7 @@ export const WeekContainer = styled.div`
 export const WeekDay = styled.p`
   font-size: 1rem;
   padding: 0.5rem 0;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
   transition: color 0.3s ease-in-out; /* Add the transition property */
 `
 
@@ -245,7 +245,7 @@ export const WeekdayContainer = styled.div`
     font-size: 1.5rem;
     font-weight: 500;
     text-transform: uppercase;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
     white-space: nowrap;
   }
 
@@ -253,9 +253,9 @@ export const WeekdayContainer = styled.div`
     transform: scale(1.03);
     transition: 0.8s;
 
-    background-color: ${Colors.lightgrayInput};
+    background-color: ${props => props.theme.lightgrayInput};
     p {
-      /* color: ${Colors.white}; */
+      /* color: ${props => props.theme.white}; */
     }
   }
 
@@ -271,7 +271,7 @@ export const SchedulesContainer = styled.div`
   justify-content: center;
   width: 95%;
   height: 100%;
-  background-color: ${Colors.lightgrayInput};
+  background-color: ${props => props.theme.lightgrayInput};
   border-radius: 8px;
 `
 
@@ -280,7 +280,7 @@ export const Schedule = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${Colors.horariosCard};
+  background-color: ${props => props.theme.horariosCard};
 
   border-radius: 0px 0px 8px 8px;
   width: 95%;
@@ -290,10 +290,10 @@ export const Schedule = styled.div`
   gap: 0.1rem;
 
   :hover {
-    background-color: ${Colors.hoverCard};
+    background-color: ${props => props.theme.hoverCard};
     transition: 0.5s;
     /* p {
-      color: ${Colors.white};
+      color: ${props => props.theme.white};
     } */
   }
   p {
@@ -311,31 +311,31 @@ export const Schedule = styled.div`
 
 export const Professor = styled.p`
   font-style: italic;
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
 `
 
 export const Semestre = styled.p`
   font-style: italic;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
 `
 
 export const NenhumaAulaText = styled.p`
-  color: ${Colors.textColorDisabled};
+  color: ${props => props.theme.textColorDisabled};
 `
 
 export const LaboratorioText = styled.p`
-  color: ${Colors.lighterGreen};
+  color: ${props => props.theme.lighterGreen};
   font-weight: 600;
   padding: 0;
 `
 
 export const Disciplina = styled.p`
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
 `
 
 export const DisciplinaText = styled.p`
   font-weight: 500;
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
 `
 
 interface IProps {
@@ -357,15 +357,15 @@ export const Laboratorio = styled.div`
   gap: 0.3rem;
 
   :hover {
-    background-color: ${Colors.hoverCard};
+    background-color: ${props => props.theme.hoverCard};
     transition: 0.5s;
     p {
-      color: ${Colors.white};
+      color: ${props => props.theme.white};
     }
   }
   p {
     padding: 0 0.5rem;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
     text-align: center;
     text-align-last: center;
     font-size: 0.9rem;

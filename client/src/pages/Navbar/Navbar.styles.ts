@@ -15,7 +15,7 @@ import { Colors } from '../../colors'
 //     display: flex;
 //     flex-direction: column;
 //     padding-left: 1.5rem;
-//     background: ${Colors.white};
+//     background: ${props => props.theme.white};
 //     `
 
 interface Props {
@@ -27,7 +27,7 @@ export const PrimaryNav = styled.nav`
   top: 0;
   left: 0;
   width: ${({ menuOpen }: Props) => (menuOpen ? '15.5rem' : '5rem')};
-  border-right: 2px solid #e8eaf6;
+  border-right: 2px solid ${props => props.theme.navbarpurpleborder};
   transition: width 0.15s ease-in-out;
   display: flex;
   flex-direction: column;
@@ -37,7 +37,7 @@ export const PrimaryNav = styled.nav`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: ${Colors.whiteNavbar};
+  background: ${props => props.theme.whiteNavbar};
   /* border-right: 2px solid red; */
 
   @media screen and (max-width: 570px) {
@@ -45,7 +45,7 @@ export const PrimaryNav = styled.nav`
   }
 
   .purple-icon {
-    color: ${Colors.mainpurple};
+    color: ${props => props.theme.mainpurple};
   }
 `
 
@@ -74,7 +74,7 @@ export const HamburgerWrapper = styled.div`
 
 export const Avatar = styled.img`
   border-radius: 50%;
-  border: 2px solid ${Colors.mainpurple};
+  border: 2px solid ${props => props.theme.mainpurple};
   height: 3rem;
   width: 3rem;
   margin-right: 0.75rem;
@@ -88,14 +88,14 @@ export const CalendarIcon = styled.img`
 `
 
 export const UserName = styled.p`
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
   font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
 `
 
 export const UserInfo = styled.p`
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
   font-size: 0, 875rem;
 `
 
@@ -162,11 +162,11 @@ export const RowWrapper = styled.div`
   p {
     padding-left: 0.8rem;
     font-size: 1rem;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
   }
 
   &:hover {
-    color: ${Colors.mainpurple};
+    color: ${props => props.theme.mainpurple};
   }
 
   svg {
@@ -174,7 +174,7 @@ export const RowWrapper = styled.div`
     color: 'purple';
 
     :hover {
-      color: ${Colors.mainpurple};
+      color: ${props => props.theme.mainpurple};
     }
   }
 `

@@ -5,18 +5,18 @@ import DatePicker from 'react-datepicker'
 import { Colors } from '../../colors'
 
 interface CalltoActionButtonProps {
-  backgroundColor: boolean;
+  backgroundColor: boolean
 }
 
 export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
-
   position: fixed;
   bottom: 2rem;
   right: 2rem;
   font-size: 1.2rem;
   font-weight: 600;
-  color: ${Colors.white};
-  background-color: ${(props) => (props.backgroundColor ?  'gray' : Colors.mainpurple)}; 
+  color: ${props => props.theme.white};
+  background-color: ${props =>
+    props.backgroundColor ? 'gray' : Colors.mainpurple};
   border: none;
   height: 4rem;
   width: 4rem;
@@ -26,17 +26,16 @@ export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
   justify-content: center;
   z-index: 99;
 
- transform: scale(1);
+  transform: scale(1);
   transition: 0.3s;
-
-` 
+`
 
 export const Container = styled.div`
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${Colors.lightgray};
+  background-color: ${props => props.theme.lightgray};
   /* background-color: yellow; */
   height: 100%;
   width: calc(100% - 5rem);
@@ -50,7 +49,6 @@ export const Container = styled.div`
       opacity: 1;
     }
   }
-
 
   @media screen and (max-width: 570px) {
     width: calc(100% - 3rem);
@@ -76,7 +74,6 @@ export const CoursesWrapper = styled.div`
   height: 100%;
   padding: 0.2rem 1rem;
 
-
   @media screen and (max-width: 570px) {
     padding: 0.4rem 1rem;
   }
@@ -90,7 +87,7 @@ export const ClassesContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   margin-bottom: 2rem;
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   /* background-color: blue  ;// alternate color */
   padding: 1rem;
   border-radius: 12px;
@@ -98,17 +95,15 @@ export const ClassesContainer = styled.div`
   height: 100%;
   gap: 0.5rem;
 
-
   @media screen and (max-width: 570px) {
     margin-bottom: 1rem;
-
   }
 `
 
 export const PageName = styled.h1`
   font-size: 1.6rem;
   font-weight: 600;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
 
   //hide when screen is small
 
@@ -120,7 +115,7 @@ export const PageName = styled.h1`
 export const CourseName = styled.h1`
   font-size: 1.6rem;
   font-weight: 600;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
 
   //hide when screen is small
 
@@ -131,14 +126,13 @@ export const CourseName = styled.h1`
 export const CourseSemester = styled.p`
   font-size: 1.5rem;
   font-weight: 400;
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
 
   //hide when screen is small
 
   @media screen and (max-width: 1000px) {
     font-size: 1.2rem;
   }
-
 
   @media screen and (max-width: 570px) {
     display: none;
@@ -158,14 +152,13 @@ export const FilterWrapper = styled.h2`
   span {
     font-size: 1rem;
     font-weight: 400;
-    
+
     @media screen and (max-width: 570px) {
       font-size: 0.8rem;
     }
   }
 `
 export const FilterIconWrapper = styled.div`
-
   @media screen and (max-width: 570px) {
     display: none;
   }
@@ -173,8 +166,8 @@ export const FilterIconWrapper = styled.div`
 
 /* select {
     margin-right: 0.5rem;
-    color: ${Colors.mainpurple};
-    border: 1px solid ${Colors.lightgrayborder};
+    color: ${props => props.theme.mainpurple};
+    border: 1px solid ${props => props.theme.lightgrayborder};
     border-radius: 4px;
   }
   select:focus {
@@ -183,8 +176,8 @@ export const FilterIconWrapper = styled.div`
 
 export const StyledSelect = styled.select`
   font-size: 0.4rem;
-  background-color: ${Colors.white};
-  color: ${Colors.textcolor};
+  background-color: ${props => props.theme.white};
+  color: ${props => props.theme.textcolor};
   z-index: 99;
   padding: 8px 20px;
   border: 1px solid #ccc;
@@ -202,11 +195,11 @@ export const StyledSelect = styled.select`
   transition: border-color 0.3s ease;
 
   &:hover {
-    border-color: ${Colors.mainpurple};
+    border-color: ${props => props.theme.mainpurple};
   }
 
   &:focus {
-    border-color: ${Colors.mainpurple};
+    border-color: ${props => props.theme.mainpurple};
   }
 `
 
@@ -216,14 +209,14 @@ export const DatePickWrapper = styled.div`
   align-items: center;
   width: 90%;
   gap: 1rem;
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   border-radius: 12px;
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
 
   @media screen and (max-width: 750px) {
     width: 100%;
-    padding: 0.25rem 0.rem;
+    padding: 0.25rem 0rem;
   }
 `
 
@@ -239,7 +232,7 @@ export const DatepickContainer = styled.div`
 export const ButtonConfimarAgendamento = styled.button`
   font-size: 1rem;
   white-space: nowrap;
-  background-color: ${Colors.mainpurple};
+  background-color: ${props => props.theme.mainpurple};
   color: #ffffff;
   border: none;
   padding: 8px 20px;
@@ -253,10 +246,9 @@ export const ButtonConfimarAgendamento = styled.button`
     background-color: #663399;
   }
 
-   @media screen and (max-width: 570px) {
+  @media screen and (max-width: 570px) {
     display: none;
   }
-
 `
 
 export const DatepickArrowsContainer = styled.div`
@@ -266,6 +258,8 @@ export const DatepickArrowsContainer = styled.div`
 export const PularParaHojeText = styled.p`
   // hide when screen is small
 
+  color: ${props => props.theme.textcolor};
+
   @media screen and (max-width: 715px) {
     display: none;
   }
@@ -273,7 +267,7 @@ export const PularParaHojeText = styled.p`
 
 export const CurrentMonth = styled.p`
   //hide when screen is small
-
+  color: ${props => props.theme.textcolor};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -289,6 +283,8 @@ export const CalendarWrapper = styled.div`
   width: 15rem;
   align-items: center;
   gap: 1rem;
+
+  color: ${props => props.theme.textcolor};
 
   //hide when screen is small
   @media screen and (max-width: 1640px) {
@@ -308,7 +304,6 @@ export const DateIcon = styled.img`
   width: 1.5rem;
   margin-right: 0.75rem;
   object-fit: cover;
-
 
   @media screen and (max-width: 570px) {
     height: 1rem;
@@ -335,7 +330,6 @@ export const ClockContainer = styled.div`
   /* background-color: red; */
   width: 3rem;
 
-
   @media screen and (max-width: 570px) {
     display: none;
   }
@@ -344,7 +338,7 @@ export const ClockContainer = styled.div`
     font-size: 1.125rem;
     font-weight: 400;
     margin-bottom: 0.5rem;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
   }
 `
 
@@ -369,28 +363,27 @@ export const WeekdayContainer = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
-   user-select: none;
+  user-select: none;
   /* background-color: cyan; //remove later */
   padding-bottom: 0.1rem;
 
   h2 {
-  
     @media screen and (max-width: 570px) {
       font-size: 1rem;
     }
     font-size: 1.5rem;
     font-weight: 500;
     text-transform: uppercase;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
   }
 
   :hover {
     transform: scale(1.03);
     transition: 0.1s;
 
-    background-color: ${Colors.lightgrayInput};
+    background-color: ${props => props.theme.lightgrayInput};
     p {
-      /* color: ${Colors.white}; */
+      /* color: ${props => props.theme.white}; */
     }
   }
 
@@ -410,9 +403,9 @@ export const WeekdayContainer = styled.div`
 export const WeekDay = styled.p`
   font-size: 1rem;
   padding: 0.5rem 0;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
   transition: color 0.3s ease-in-out; /* Add the transition property */
-  
+
   @media screen and (max-width: 570px) {
     font-size: 0.6rem;
   }
@@ -426,10 +419,9 @@ export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
   align-items: center;
   justify-content: center;
   width: 95%;
-  background-color: ${Colors.lightgrayInput};
+  background-color: ${props => props.theme.lightgrayInput};
   border-radius: 8px;
   height: 100%;
-
 
   @media screen and (max-width: 570px) {
     /* min-width: ; */
@@ -450,17 +442,16 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   padding: 0.4rem 0;
   gap: 0.1rem;
   user-select: none;
-  
 
   @media screen and (max-width: 570px) {
   }
 
   &.hoverEffect:hover {
-    background-color: ${Colors.hoverCard};
+    background-color: ${props => props.theme.hoverCard};
     transition: 0.5s;
 
     p {
-      /* color: ${Colors.white}; */
+      /* color: ${props => props.theme.white}; */
       user-select: none;
     }
   }
@@ -469,7 +460,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     text-align: center;
     text-align-last: center;
     font-size: 0.8rem;
-    
+
     @media screen and (max-width: 570px) {
       font-size: 0.6rem;
     }
@@ -478,7 +469,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
 
 export const Disciplina = styled.p`
   font-weight: 500;
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
 `
 
 export const SemestreSalaWrapper = styled.p`
@@ -488,11 +479,11 @@ export const SemestreSalaWrapper = styled.p`
 
 export const Professor = styled.p`
   font-style: italic;
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
 `
 export const Semestre = styled.p`
   font-style: italic;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
 `
 interface StyledComponentProps {
   agendamento: boolean
@@ -514,7 +505,7 @@ export const Sala = styled.p<StyledComponentProps>`
 `
 
 export const SalaAgendada = styled.p`
-  color: ${Colors.lighterGreen};
+  color: ${props => props.theme.lighterGreen};
   font-weight: 600;
   padding: 0;
 `

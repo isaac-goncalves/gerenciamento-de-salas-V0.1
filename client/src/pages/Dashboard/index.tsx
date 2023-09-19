@@ -686,7 +686,8 @@ const Dashboard: React.FC = () => {
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>
                 <DateIcon src={arrowRight} />
               </DatepickArrowsContainer>
-              <CurrentMonth>{GetCurrentMonthAndYear(startDate)}
+              <CurrentMonth>
+                {GetCurrentMonthAndYear(startDate)}
                 <DateIcon src={arrowDown} />
               </CurrentMonth>
               <CalendarWrapper>

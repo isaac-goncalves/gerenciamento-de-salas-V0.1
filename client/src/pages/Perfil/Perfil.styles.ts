@@ -6,7 +6,7 @@ export const Container = styled.div`
   width: calc(100% - 5rem);
   height: 100vh;
   margin-left: 5rem;
-  background-color: ${Colors.lightgray};
+  background-color: ${props => props.theme.lightgray};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,7 +31,7 @@ export const Container = styled.div`
 export const Wrapper = styled.div`
   width: 90%;
   height: 90%;
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   z-index: 10;
   border-radius: 4px;
   padding: 2rem 8rem;
@@ -92,12 +92,12 @@ export const CounterWrapper = styled.div`
 `
 
 export const Separator = styled.div`
-  border-left: 1px solid ${Colors.lightgray};
+  border-left: 1px solid ${props => props.theme.lightgray};
   height: 100px;
 
   @media screen and (max-width: 570px) {
     height: 50px;
-    border-left: 3px solid ${Colors.lightgray};
+    border-left: 3px solid ${props => props.theme.lightgray};
   }
 `
 
@@ -108,11 +108,11 @@ export const SearchBar = styled.div`
     width: 80%;
     height: 2.5rem;
     border: none;
-    background-color: ${Colors.lightgray};
+    background-color: ${props => props.theme.lightgray};
     border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
-    color: ${Colors.white};
+    color: ${props => props.theme.white};
   }
 
   
@@ -138,8 +138,8 @@ export const StyledButton = styled.button`
     border: none;
    
    width:100%;
-    background-color: ${Colors.mainpurple};
-    color: ${Colors.realwhite};
+    background-color: ${props => props.theme.mainpurple};
+    color: ${props => props.theme.realwhite};
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -155,7 +155,7 @@ export const ButtonsWrapper = styled.td`
 `
 
 export const EditButton = styled.button`
-  background-color: ${Colors.hoverCard};
+  background-color: ${props => props.theme.hoverCard};
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -213,11 +213,11 @@ export const TableSelector = styled.div`
     width: 10rem;
     height: 2.5rem;
     border: none;
-    background-color: ${Colors.lightgray};
+    background-color: ${props => props.theme.lightgray};
     border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
     margin-right: 1rem;
   }
 
@@ -225,11 +225,11 @@ export const TableSelector = styled.div`
     width: 10rem;
     height: 2.5rem;
     border: none;
-    background-color: ${Colors.lightgray};
+    background-color: ${props => props.theme.lightgray};
     border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
     margin-left: 1rem;
   }
 `
@@ -239,12 +239,12 @@ export const Table = styled.table`
   border-collapse: collapse;
 
   width: 100%;
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   z-index: 1;
   font-size: 0.8em;
 
   th {
-    color: ${Colors.white};
+    color: ${props => props.theme.white};
   }
 
   th:last-child {
@@ -304,7 +304,7 @@ export const TableData = styled.td`
 export const TableRow = styled.tr`
   padding: 8px;
   border: 1px solid #dddddd;
-  background-color: ${Colors.hoverCard};
+  background-color: ${props => props.theme.hoverCard};
   text-align: left;
 `
 export const CenteredNumber = styled.td`
@@ -317,7 +317,7 @@ export const NowrapText = styled.td`
 
 export const Avatar = styled.img`
   border-radius: 50%;
-  border: 2px solid ${Colors.mainpurple};
+  border: 2px solid ${props => props.theme.mainpurple};
   height: 8rem;
   width: 8rem;
   margin-right: 0.75rem;

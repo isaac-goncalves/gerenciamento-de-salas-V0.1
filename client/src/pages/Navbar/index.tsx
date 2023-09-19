@@ -4,10 +4,9 @@ import styled from 'styled-components'
 
 import { Colors } from '../../colors';
 
-
 import { CgProfile } from 'react-icons/cg'
 import { GrLogout } from 'react-icons/gr'
-import { TbFileUpload } from 'react-icons/tb'
+import { TbFileUpload, TbLogout } from 'react-icons/tb'
 import { BiCog } from 'react-icons/bi'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoMdNotificationsOutline } from 'react-icons/io'
@@ -49,7 +48,7 @@ const disciplinaOptions = [
     { value: "29", label: "Sociedade e Tecnologia" }
 ];
 
-const Navbar = () => {
+const Navbar = ( {toggleTheme} : any ) => {
 
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const [user, setUser] = useState<any>({});
@@ -190,14 +189,12 @@ const Navbar = () => {
                             }
                         </RowWrapper>
                     </MenuLink>
-                    <MenuLink
-                        to="https://darkreader.org/"
-                        target="_blank"
-                    // onClick={() => handleLogout()}
+                    <MenuLink to="#"
+                    onClick={() => toggleTheme()}
                     >
                         <RowWrapper>
                             <MdOutlineDarkMode style={{
-                                color: "black",
+                                color: Colors.mainpurple,
                                 fontSize: '1.2rem',
                             }}
                             />
@@ -210,7 +207,7 @@ const Navbar = () => {
                         onClick={() => handleLogout()}
                     >
                         <RowWrapper>
-                            <GrLogout style={{
+                            <TbLogout style={{
                                 color: Colors.mainpurple,
                                 fontSize: '1.2rem',
                             }}

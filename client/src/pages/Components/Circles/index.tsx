@@ -24,7 +24,7 @@ const Circle = styled.div<CircleProps>`
   width: 400px;
   height: 400px;
   border-radius: 200px;
-  background-color: ${Colors.circleColor};
+  background-color: ${props => props.theme.circleColor};
 `;
 
 type Ball = {

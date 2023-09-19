@@ -6,7 +6,7 @@ export const Container = styled.div`
   width: calc(100% - 5rem);
   height: 100vh;
   margin-left: 5rem;
-  background-color: ${Colors.lightgray};
+  background-color: ${props => props.theme.lightgray};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,7 +25,7 @@ export const Container = styled.div`
 export const Wrapper = styled.div`
   width: 90%;
   height: 90%;
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   z-index: 10;
   border-radius: 4px;
   padding: 2rem 8rem;
@@ -44,7 +44,7 @@ export const Header = styled.div`
 
 export const PageTitle = styled.h1`
  font-size: 2rem;
-  color: ${Colors.textcolor};
+  color: ${props => props.theme.textcolor};
  
 `
 
@@ -69,7 +69,7 @@ export const CounterWrapper = styled.div`
 `
 
 export const Separator = styled.div`
-  border-left: 1px solid ${Colors.lightgray};
+  border-left: 1px solid ${props => props.theme.lightgray};
   height: 100px;
 `
 
@@ -82,11 +82,11 @@ export const MainContainer = styled.div`
     width: 80%;
     height: 2.5rem;
     border: none;
-    background-color: ${Colors.lightgray};
+    background-color: ${props => props.theme.lightgray};
     border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
   }
 
  
@@ -99,7 +99,7 @@ export const ButtonsWrapper = styled.td`
 `
 
 export const EditButton = styled.button`
-  background-color: ${Colors.hoverCard};
+  background-color: ${props => props.theme.hoverCard};
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -156,11 +156,11 @@ export const TableSelector = styled.div`
     width: 10rem;
     height: 2.5rem;
     border: none;
-    background-color: ${Colors.lightgray};
+    background-color: ${props => props.theme.lightgray};
     border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
     margin-right: 1rem;
   }
 
@@ -168,11 +168,11 @@ export const TableSelector = styled.div`
     width: 10rem;
     height: 2.5rem;
     border: none;
-    background-color: ${Colors.lightgray};
+    background-color: ${props => props.theme.lightgray};
     border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
     margin-left: 1rem;
   }
 `
@@ -182,12 +182,12 @@ export const Table = styled.table`
   border-collapse: collapse;
 
   width: 100%;
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   z-index: 1;
   font-size: 0.9em;
 
   th {
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
   }
 
   th:last-child {
@@ -248,7 +248,7 @@ export const TableData = styled.td`
 export const TableRow = styled.tr`
   padding: 8px;
   border: 1px solid #dddddd;
-  background-color: ${Colors.hoverCard};
+  background-color: ${props => props.theme.hoverCard};
   opacity: 0.8;
   text-align: left;
   font-weight: 400;

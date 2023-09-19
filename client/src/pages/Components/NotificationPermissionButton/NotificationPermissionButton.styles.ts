@@ -6,7 +6,7 @@ import { Colors } from '../../../colors'
 //   width: 100%;
 //   padding: 0.5rem;
 //   height: 100%;
-//   background-color: ${Colors.lightwhitebackgroud};
+//   background-color: ${props => props.theme.lightwhitebackgroud};
 //   display: flex;
 //   border-radius: 8px;
 //   flex-direction: row;
@@ -32,7 +32,7 @@ import { Colors } from '../../../colors'
 //     font-size: 0.8rem;
 //     font-weight: 400;
 //     margin-bottom: 0.5rem;
-//     color: ${Colors.textcolor};
+//     color: ${props => props.theme.textcolor};
 //   }
 // `
 
@@ -46,13 +46,13 @@ import { Colors } from '../../../colors'
 //   border-radius: 8px;
 //   /* background-color: cyan; //remove later */
 //   padding-bottom: 0.5rem;
-//   background-color: ${Colors.lightgrayInput};
+//   background-color: ${props => props.theme.lightgrayInput};
 
 //   h2 {
 //     font-size: 1.5rem;
 //     font-weight: 500;
 //     text-transform: uppercase;
-//     color: ${Colors.textcolor};
+//     color: ${props => props.theme.textcolor};
 //     white-space: nowrap;
 //   }
 
@@ -60,9 +60,9 @@ import { Colors } from '../../../colors'
 //     transform: scale(1.03);
 //     transition: 0.1s;
 
-//     background-color: ${Colors.lightgrayInput};
+//     background-color: ${props => props.theme.lightgrayInput};
 //     p {
-//       /* color: ${Colors.white}; */
+//       /* color: ${props => props.theme.white}; */
 //     }
 //   }
 
@@ -81,7 +81,7 @@ import { Colors } from '../../../colors'
 //   flex-direction: column;
 //   align-items: center;
 //   justify-content: center;
-//   /* background-color: ${Colors.horariosCard}; */
+//   /* background-color: ${props => props.theme.horariosCard}; */
 //   background-color: ${({ selected, ItemWasSelected }: IProps) =>{
 //     if(ItemWasSelected) return Colors.mainpurple
 //     return !selected ? Colors.mainpurple : Colors.horariosCard}
@@ -95,15 +95,15 @@ import { Colors } from '../../../colors'
 //   gap: 0.3rem;
 
 //   :hover {
-//     background-color: ${Colors.hoverCard};
+//     background-color: ${props => props.theme.hoverCard};
 //     transition: 0.1s;
 //     p {
-//       color: ${Colors.white};
+//       color: ${props => props.theme.white};
 //     }
 //   }
 //   p {
 //     padding: 0 0.5rem;
-//     color: ${Colors.textcolor};
+//     color: ${props => props.theme.textcolor};
 //     text-align: center;
 //     text-align-last: center;
 //     font-size: 0.9rem;

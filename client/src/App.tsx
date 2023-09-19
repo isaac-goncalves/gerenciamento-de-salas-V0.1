@@ -10,72 +10,86 @@ import { Circles } from './pages/Components/Circles'
 import NotificationConfig from './pages/NotificationConfig'
 import RegisterScreen from './pages/Register';
 
-import GlobalStyle from './globalStyles';
 import Gerenciamento from './pages/Gerenciamento';
+import { ThemeProvider } from 'styled-components';
+
+import { lightTheme, darkTheme } from './colors';
+import { useState } from 'react';
+
 
 function App() {
+
+  const [theme, setTheme] = useState('light'); // Default theme is 'light'
+
+  // Function to toggle the theme
+  const toggleTheme = () => {
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
   return (
     <>
-      <Router>
-        <Routes>
-          <Route path="/" element={
-            <>
-              <LoginScreen />
-              {/* <Circles ballCount={4} /> */}
-            </>
-          } />
-          <Route path="/register" element={
-            <>
-              <RegisterScreen />
-              {/* <Circles ballCount={4} /> */}
-            </>
-          } />
+      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+        <Router>
+          <Routes>
+            <Route path="/" element={
+              <>
+                <LoginScreen />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+            <Route path="/register" element={
+              <>
+                <RegisterScreen />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
 
-          <Route path="/dashboard" element={
-            <>
-              <Navbar />
-              <Dashboard />
-              {/* <Circles ballCount={4} /> */}
-            </>
-          } />
-          <Route path="/agendamentos" element={
-            <>
-              <Navbar />
-              <Agendamentos />
-              {/* <Circles ballCount={4} /> */}
-            </>
-          } />
-          <Route path="/perfil" element={
-            <>
-              <Navbar />
-              <Perfil />
-              {/* <Circles ballCount={4} /> */}
-            </>
-          } />
-           <Route path="/gerenciamento" element={
-            <>
-              <Navbar />
-              <Gerenciamento />
-              {/* <Circles ballCount={4} /> */}
-            </>
-          } />
-          <Route path="/templates" element={
-            <>
-              <Navbar />
-              <Templates />
-              {/* <Circles ballCount={4} /> */}
-            </>
-          } />
-          <Route path="/notification" element={
-            <>
-              <Navbar />
-              <NotificationConfig />
-              {/* <Circles ballCount={4} /> */}
-            </>
-          } />
-        </Routes>
-      </Router>
-      <GlobalStyle />
+            <Route path="/dashboard" element={
+              <>
+                <Navbar toggleTheme={toggleTheme}/>
+                <Dashboard />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+            <Route path="/agendamentos" element={
+              <>
+                <Navbar />
+                <Agendamentos />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+            <Route path="/perfil" element={
+              <>
+                <Navbar />
+                <Perfil />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+            <Route path="/gerenciamento" element={
+              <>
+                <Navbar />
+                <Gerenciamento />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+            <Route path="/templates" element={
+              <>
+                <Navbar />
+                <Templates />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+            <Route path="/notification" element={
+              <>
+                <Navbar />
+                <NotificationConfig />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+          </Routes>
+        </Router>
+      
+      </ThemeProvider>
     </>
   )
 }

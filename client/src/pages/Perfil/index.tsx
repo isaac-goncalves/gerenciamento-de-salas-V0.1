@@ -63,8 +63,8 @@ import avatar from '../../../public/images/avatar.png';
 
 import ModalEdit from '../Components/ModalEdit';
 import ModalDelete from '../Components/ModalDelete'
-import FileUploadButton from '../Components/FileUploadButton/inde';
-import FileDownloadButton from '../Components/FileDownloadButton/inde';
+import FileUploadButton from '../Components/FileUploadButton';
+import FileDownloadButton from '../Components/FileDownloadButton';
 import { BsWhatsapp } from 'react-icons/bs';
 import { AvatarWrapper, UserInfo, UserName, UserWrapper } from '../Navbar/Navbar.styles';
 import { InputWrapper, StyledSelect } from '../Register/Register.styles';

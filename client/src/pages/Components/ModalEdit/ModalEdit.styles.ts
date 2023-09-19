@@ -42,7 +42,7 @@ export const ModalContent = styled.div`
   /* justify-content: center; */
   align-items: center;
   width: 70%;
-  height: 80%;
+  height: 85%;
 
 
   @media screen and (max-width: 570px) {
@@ -130,21 +130,22 @@ export const FormWrapper = styled.div`
 export const StyledTitle = styled.h1`
   font-size: 1.5rem;
   font-weight: 500;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
   height: 100%;
   display: flex;
   width: 100%;
 `
 
 export const ProfessorWrapper = styled.div`
-  background-color: ${Colors.lightwhitebackgroud};
+  background-color: ${props => props.theme.lightwhitebackgroud};
   border-radius: 8px;
   padding: 0.8rem;
   display: flex;
   height: 100%;
   box-shadow: ${boxShadow};
+  flex-direction: column;
   @media screen and (max-width: 570px) {
-    flex-direction: column;
+    
   }
 `
 
@@ -165,9 +166,10 @@ export const DateTimeWrapper = styled.div`
 
   padding: 0.8rem;
   gap: 1rem;
-  background-color: ${Colors.lightwhitebackgroud};
+  background-color: ${props => props.theme.lightwhitebackgroud};
   border-radius: 8px;
   box-shadow: ${boxShadow};
+  
   @media screen and (max-width: 570px) {
     flex-direction: column;
   }
@@ -176,6 +178,13 @@ export const DateTimeWrapper = styled.div`
 export const DateTimeDiv = styled.div`
   display: flex;
   flex-direction: column;
+
+  input{
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+
+  }
 `
 
 export const DetailsWrapper = styled.div`
@@ -183,8 +192,8 @@ export const DetailsWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 1rem;
-  padding: 2rem;
-  background-color: ${Colors.lightwhitebackgroud};
+  padding: 1rem;
+  background-color: ${props => props.theme.lightwhitebackgroud};
   border-radius: 8px;
   box-shadow: ${boxShadow};
   @media screen and (max-width: 570px) {
@@ -194,11 +203,11 @@ export const DetailsWrapper = styled.div`
 export const DetailsText = styled.p`
   font-weight: 500;
   font-size: 1 rem;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
 
   span {
     font-weight: 400;
-    color: ${Colors.textcolor};
+    color: ${props => props.theme.textcolor};
     /* font-size: 0.8rem; */
   }
 
@@ -254,7 +263,7 @@ export const ButtonsWrapper = styled.div`
 `
 export const StyledButton = styled.button`
   font-size: 1rem;
-  background-color: ${Colors.mainpurple};
+  background-color: ${props => props.theme.mainpurple};
   color: #ffffff;
   border: none;
   height: 40px;

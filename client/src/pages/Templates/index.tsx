@@ -24,8 +24,8 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import ModalEdit from '../Components/ModalEdit';
 import ModalDelete from '../Components/ModalDelete'
-import FileUploadButton from '../Components/FileUploadButton/inde';
-import FileDownloadButton from '../Components/FileDownloadButton/inde';
+import FileUploadButton from '../Components/FileUploadButton';
+import FileDownloadButton from '../Components/FileDownloadButton';
 
 function Templates() {
 

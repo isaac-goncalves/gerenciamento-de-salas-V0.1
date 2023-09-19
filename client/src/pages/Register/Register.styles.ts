@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Colors } from '../../colors'
 
 export const Container = styled.div`
-  background-color: ${Colors.primary};
+  background-color: ${props => props.theme.primary};
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -73,7 +73,7 @@ export const Input = styled.input`
   padding-left: 20px;
   font-size: 1rem;
   border-radius: 9999999px;
-  border: 1px solid ${Colors.mainpurple};
+  border: 1px solid ${props => props.theme.mainpurple};
   position: relative; /* Add position relative */
   transition: border-color 0.3s ease; /* Add transition for border-color */
   :focus {
@@ -126,7 +126,7 @@ export const Button = styled.button`
   width: 90%;
   height: 4rem;
   margin: 1rem;
-  background-color: ${Colors.mainpurple};
+  background-color: ${props => props.theme.mainpurple};
   color: #fff;
   font-size: 16px;
   border: none;

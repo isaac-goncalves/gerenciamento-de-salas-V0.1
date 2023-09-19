@@ -1,12 +1,17 @@
-// globalStyles.js
 import { createGlobalStyle } from 'styled-components';
-
+ 
 const GlobalStyle = createGlobalStyle`
-
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    font-family: Open-Sans, Helvetica, Sans-Serif;
+    box-sizing: border-box;
+    z-index: 0;
+  }
   *, body {
     margin: 0;
     padding: 0;
-    
     box-sizing: border-box;
     font-family: 'Poppins', Helvetica, Sans-Serif;
     text-rendering: optimizeLegibility;
@@ -17,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
   
   body {
     height: 100vh;
+    text-align: left;
   }
 
   /* *:hover {
@@ -29,7 +35,5 @@ const GlobalStyle = createGlobalStyle`
   }
 
 `;
-
-//color variables 
-
+ 
 export default GlobalStyle;

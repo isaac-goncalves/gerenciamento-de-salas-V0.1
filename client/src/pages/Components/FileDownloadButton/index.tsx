@@ -9,7 +9,7 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   color: white;
-  background-color: ${Colors.mainpurple};
+  background-color: ${props => props.theme.mainpurple};
   padding: 10px 20px;
   border : none;
   font-size: 0.8rem;
@@ -22,7 +22,7 @@ const Button = styled.button`
 
   cursor: pointer;
   &:hover {
-    background-color: ${Colors.horariosCard};
+    background-color: ${props => props.theme.horariosCard};
   }
 `
 

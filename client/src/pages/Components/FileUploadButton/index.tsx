@@ -19,7 +19,7 @@ const Label = styled.label`
   font-size: 0.8rem;
   min-width: 12rem;
   color: white;
-  background-color: ${Colors.mainpurple};
+  background-color: ${props => props.theme.mainpurple};
   padding: 10px 20px;
   gap: 10px;
   max-width: 20rem;
@@ -31,7 +31,7 @@ const Label = styled.label`
   transition: background-color 0.3s;
   
   &:hover {
-    background-color: ${Colors.horariosCard};
+    background-color: ${props => props.theme.horariosCard};
   }
 `;
 

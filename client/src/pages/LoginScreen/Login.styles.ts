@@ -12,7 +12,7 @@ import { Colors } from '../../colors'
 // `;
 
 export const Container = styled.div`
-  background-color: ${Colors.white};
+  background-color: ${props => props.theme.white};
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -105,7 +105,7 @@ export const ButtonsWrapper = styled.div`
     margin-bottom: 2rem;
     P {
       span {
-        color: ${Colors.mainpurple};
+        color: ${props => props.theme.mainpurple};
         cursor: pointer;
       }
     }
@@ -115,7 +115,7 @@ export const ButtonsWrapper = styled.div`
 export const Button = styled.button`
   width: 100%;
   height: 5rem;
-  background-color: ${Colors.mainpurple};
+  background-color: ${props => props.theme.mainpurple};
   color: #fff;
   font-size: 1rem;
   border: none;
@@ -163,7 +163,7 @@ export const Separator = styled.div`
 
   div:nth-child(1),
   div:nth-child(3) {
-    background: ${Colors.separator};
+    background: ${props => props.theme.separator};
     width: 100%;
     height: 1px;
   }
@@ -190,15 +190,15 @@ export const Form = styled.form`
     height: 2.5rem;
     width: 100%;
     box-sizing: border-box;
-    color: ${Colors.textcolor};
-    background-color: ${Colors.lightgray};
+    color: ${props => props.theme.textcolor};
+    background-color: ${props => props.theme.lightgray};
     border: none;
   }
 
   h1 {
     font-size: 2.25rem;
     font-weight: 900;
-    color: ${Colors.mainpurple};
+    color: ${props => props.theme.mainpurple};
   }
 `
 
@@ -241,13 +241,13 @@ export const MantenhaMeConectadoWrapper = styled.div`
       min-width: 1.25rem;
       min-height: 1.25rem;
       border-radius: 4px;
-      background-color: ${Colors.lightgrayInput};
+      background-color: ${props => props.theme.lightgrayInput};
       border: none;
       margin-right: 1rem;
       cursor: pointer;
 
       :checked {
-        background-color: ${Colors.mainpurple};
+        background-color: ${props => props.theme.mainpurple};
       }
     }
 
@@ -260,7 +260,7 @@ export const MantenhaMeConectadoWrapper = styled.div`
 export const EsqueceuSenha = styled.p`
   font-size: 1rem;
   font-weight: 400;
-  color: ${Colors.mainpurple};
+  color: ${props => props.theme.mainpurple};
   cursor: pointer;
 `
 
@@ -270,7 +270,7 @@ export const InputWrapper = styled.div`
   height: 5rem;
   border-radius: 8px;
   align-items: center;
-  background-color: ${Colors.lightgray};
+  background-color: ${props => props.theme.lightgray};
 
   
   p {
