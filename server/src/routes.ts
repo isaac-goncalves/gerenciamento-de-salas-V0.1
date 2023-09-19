@@ -35,6 +35,8 @@ routes.post('/login', new UserController().login)
 routes.post('/register', new UserController().create)
 
 routes.post('/usuarios', new UserController().get)
+routes.post('/usuarios/edit', new UserController().edit)
+
 routes.post('/professores', new UserController().getProfessores)
 routes.post('/alunos', new UserController().getAlunos)
 

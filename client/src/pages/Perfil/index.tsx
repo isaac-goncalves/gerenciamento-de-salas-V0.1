@@ -68,6 +68,7 @@ import FileDownloadButton from '../Components/FileDownloadButton/inde';
 import { BsWhatsapp } from 'react-icons/bs';
 import { AvatarWrapper, UserInfo, UserName, UserWrapper } from '../Navbar/Navbar.styles';
 import { InputWrapper, StyledSelect } from '../Register/Register.styles';
+import Swal from 'sweetalert2';
 
 function Perfil() {
 
@@ -173,6 +174,71 @@ function Perfil() {
             toast.error('Erro ao carregar dados da tabela. Tente novamente mais tarde.')
             setError(true);
         }
+    }
+
+    async function handleEdit() {
+
+        //swal to ask user if he wants to edit the user
+
+        Swal.fire({
+
+            title: 'Você tem certeza?',
+            text: "Deseja mesmo editar o usuário?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+
+            confirmButtonText: 'Sim, editar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                const responseObject = editUserData();
+
+                Swal.fire(
+                    'Editado!',
+                    'O usuário foi editado com sucesso.',
+                    'success'
+                )
+            }
+
+        }
+        )
+
+
+
+        //grab parameters and send to post /user/edit
+
+
+        async function editUserData() {
+
+            console.log(semestre)
+
+            const params = {
+                email: userData.userData.email,
+                role: userData.userData.role,
+                semester: semestre,
+                disciplina: disciplina
+            }
+
+            const response = await fetch(`${apiUrl}/usuarios/edit`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(
+                    params
+                )
+            }).then(res => res.json()).then(data => {
+                console.log(data)
+            }
+            ).catch(err => console.log(err))
+
+            return response;
+
+        }
+
     }
 
     const handleCloseModalEdit = (resetParams: boolean) => {
@@ -416,43 +482,45 @@ function Perfil() {
                         {<UserInfo>{userData.userData.role}</UserInfo>}
                     </UserWrapper>
                     <ButtonWapper>
-                    <>
-                        {
-                            (userData.userData.role === "Aluno" || userData.userData.role === "guest") &&
-                            <InputWrapper>
-                                <label>Semestre:</label>
-                                <StyledSelect value={semestre} onChange={handleChange}>
-                                    <option disabled value="">
-                                        Selecione o semestre
-                                    </option>
-                                    {semestresOptions.map((option) => (
-                                        <option key={option.value} value={option.value}>
-                                            {option.label}
+                        <>
+                            {
+                                (userData.userData.role === "aluno" || userData.userData.role === "guest") &&
+                                <InputWrapper>
+                                    <label>Semestre:</label>
+                                    <StyledSelect value={semestre} onChange={handleChange}>
+                                        <option disabled value="">
+                                            Selecione o semestre
                                         </option>
-                                    ))}
-                                </StyledSelect>
-                            </InputWrapper>
-                        }
-                        {
-                            userData.userData.role === "professor" &&
-                            <InputWrapper>
-                                <label>Disciplina</label>
-                                <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
-                                    <option disabled value="">
-                                        Selecione a disciplina
-                                    </option>
-                                    {disciplinaOptions.map((option) => (
-                                        <option key={option.value} value={option.value}>
-                                            {option.label}
+                                        {semestresOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </StyledSelect>
+                                </InputWrapper>
+                            }
+                            {
+                                userData.userData.role === "professor" &&
+                                <InputWrapper>
+                                    <label>Disciplina</label>
+                                    <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
+                                        <option disabled value="">
+                                            Selecione a disciplina
                                         </option>
-                                    ))}
-                                </StyledSelect>
-                            </InputWrapper>
-                        }
-                    </>
-                  
+                                        {disciplinaOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </StyledSelect>
+                                </InputWrapper>
+                            }
+                        </>
+
                         <FileUploadButton action={"profilepic"} loggedUserRole={userData.userData.role} />
-                        <StyledButton>Salvar</StyledButton>
+                        <StyledButton
+                            onClick={handleEdit}
+                        >Salvar</StyledButton>
                         <StyledButton onClick={handleClick}>
                             <BsWhatsapp />
                             Convidar pelo WhatsApp

@@ -17,6 +17,38 @@ import { MdSchedule, MdPerson, MdExitToApp, MdOutlineDarkMode } from 'react-icon
 
 import avatar from '../../../public/images/avatar.png';
 
+const disciplinaOptions = [
+    { value: "1", label: "Administração Geral" },
+    { value: "2", label: "Algoritmos e Lógica de Programação" },
+    { value: "3", label: "Arquitetura e Organização de Computadores" },
+    { value: "4", label: "Banco de Dados" },
+    { value: "5", label: "Cálculo" },
+    { value: "6", label: "Comunicação e Expressão" },
+    { value: "7", label: "Contabilidade" },
+    { value: "8", label: "Economia e Finanças" },
+    { value: "9", label: "Eletiva - Programação para Dispositivos Móveis" },
+    { value: "10", label: "Engenharia de Software I" },
+    { value: "11", label: "Engenharia de Software II" },
+    { value: "12", label: "Engenharia de Software III" },
+    { value: "13", label: "Estatística Aplicada" },
+    { value: "14", label: "Estruturas de Dados" },
+    { value: "15", label: "Inglês I" },
+    { value: "16", label: "Inglês II" },
+    { value: "17", label: "Inglês III" },
+    { value: "18", label: "Inglês IV" },
+    { value: "19", label: "Interação Humano Computador" },
+    { value: "20", label: "Laboratório de Hardware" },
+    { value: "21", label: "Linguagem de Programação" },
+    { value: "22", label: "Matemática Discreta" },
+    { value: "23", label: "Metodologia da Pesquisa Científico-Tecnológica" },
+    { value: "24", label: "Programação em Microinformática" },
+    { value: "25", label: "Programação Orientada a Objetos" },
+    { value: "26", label: "Sistemas de Informação" },
+    { value: "27", label: "Sistemas Operacionais I" },
+    { value: "28", label: "Sistemas Operacionais II" },
+    { value: "29", label: "Sociedade e Tecnologia" }
+];
+
 const Navbar = () => {
 
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -47,6 +79,18 @@ const Navbar = () => {
         setMenuOpen(false);
     };
 
+    function getDescription() {
+
+        switch (user.role) {
+            case 'aluno':
+                return `${user.semestre}º ADS`;
+            case 'professor':
+                return `${user.disciplina ? disciplinaOptions[user.disciplina].label : 'Professor'}`;
+            default:
+                return 'guest';
+        }
+    }
+
     return (
         <>
             <PrimaryNav menuOpen={menuOpen} onClick={toggleMenu} onMouseEnter={toggleMenu} onMouseLeave={closeMenu}>
@@ -56,7 +100,7 @@ const Navbar = () => {
                         <UserWrapper>
                             {<UserName>{user.name}</UserName>}
                             {<UserInfo>{user.role == "aluno" ? `${user.semestre}º ADS` : user.role == "professor" ? "professor" : "guest"}</UserInfo>}
-                            {<UserInfo>{user.role}</UserInfo>}
+                            {<UserInfo>{getDescription()}</UserInfo>}
                         </UserWrapper>
                     </>
                     }

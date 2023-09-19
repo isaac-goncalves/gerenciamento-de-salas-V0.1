@@ -98,7 +98,24 @@ export class UserController {
           updated_at: new Date()
         }
 
-        const newProfessor = await professoresRepository.create(obj)
+        //verify if professor exists in professors table
+
+        const professorExists = await professoresRepository.findOneBy({
+          email
+        })
+
+        let newProfessor = {} as any
+
+        if (!professorExists) {
+          newProfessor = await professoresRepository.create(obj)
+        } else {
+          newProfessor = professorExists
+          //save user id on professor table as user_id search by email
+          professoresRepository.update(newProfessor.id, {
+            user_id: savedUser.id
+          })
+        }
+
         const savedProfessor = await professoresRepository.save(newProfessor)
 
         // console.log(savedProfessor)
@@ -110,6 +127,8 @@ export class UserController {
             expiresIn: '8h'
           }
         )
+
+        savedProfessor.role = role
 
         return response.status(201).json({
           message: 'Professor created',
@@ -130,9 +149,7 @@ export class UserController {
             discipline
           }
         })
-      }
-      else if (role === 'guest') {  
-      
+      } else if (role === 'guest') {
         const token = jwt.sign(
           { id: savedUser.id },
           process.env.JWT_PASS ?? '',
@@ -153,9 +170,7 @@ export class UserController {
           },
           token: token
         })
-      
-      }
-      else {
+      } else {
         return response.status(400).json({ error: 'Role is missing' })
       }
     } catch (error) {
@@ -379,6 +394,60 @@ export class UserController {
       return response.status(200).json(usuarios)
     } catch (error) {
       return response.status(500).json({ message: 'internal server error' })
+    }
+  }
+
+  async edit (request: Request, response: Response) {
+    const { name, surname, email, password, role, semester, disciplina } =
+      request.body
+
+    console.log(request.body)
+
+    console.log(email)
+
+    const userExists = await usuariosRepository.findOneBy({ email })
+
+    if (!userExists) {
+      return response.status(400).json({ error: 'User does not exist' })
+    }
+
+    if (role == 'aluno') {
+      const aluno = await alunosRepository.findOneBy({ user_id: userExists.id })
+
+      if (!aluno) {
+        return response.status(400).json({ error: 'Aluno does not exist' })
+      }
+
+      const updatedAluno = {
+        ...aluno,
+        name,
+        surname,
+        email,
+        semestre: semester,
+        updated_at: new Date()
+      }
+
+      await alunosRepository.update(aluno.id, updatedAluno)
+    } else if (role == 'professor') {
+      const professor = await professoresRepository.findOneBy({
+        user_id: userExists.id
+      })
+
+      if (!professor) {
+        return response.status(400).json({ error: 'Professor does not exist' })
+      }
+
+      const updatedProfessor = {
+        ...professor,
+        disciplina,
+        updated_at: new Date()
+      }
+
+     const updatedProfessorObject = await professoresRepository.update(professor.id, updatedProfessor)
+
+       console.log('updated professor')
+       console.log(updatedProfessorObject)
+
     }
   }
 
