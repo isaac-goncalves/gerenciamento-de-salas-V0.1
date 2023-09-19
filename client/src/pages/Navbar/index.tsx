@@ -85,10 +85,20 @@ const Navbar = () => {
             case 'aluno':
                 return `${user.semestre}º ADS`;
             case 'professor':
-                return `${user.disciplina ? disciplinaOptions[user.disciplina].label : 'Professor'}`;
+                return `${user.disciplina ? getDisciplina() : 'Professor'}`;
             default:
                 return 'guest';
         }
+    }
+
+    function getDisciplina() {
+
+        const disciplina = disciplinaOptions.filter((disciplina) => {
+            return disciplina.value == user.disciplina;
+        });
+
+        return disciplina[0].label;
+
     }
 
     return (

@@ -449,6 +449,9 @@ export class UserController {
        console.log(updatedProfessorObject)
 
     }
+
+    return response.status(200).json({ message: 'User updated' })
+
   }
 
   async getAlunos (request: Request, response: Response) {

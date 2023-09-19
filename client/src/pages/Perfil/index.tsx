@@ -126,6 +126,7 @@ function Perfil() {
                 // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
                 setUserData(userDataJson);
                 setSemestre(userDataJson.userData.semestre);
+                setDisciplina(userDataJson.userData.disciplina);
             }
         }
     }, [userData]);
@@ -193,22 +194,15 @@ function Perfil() {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-
-                const responseObject = editUserData();
-
-                Swal.fire(
-                    'Editado!',
-                    'O usuário foi editado com sucesso.',
-                    'success'
-                )
+                editUserData();
             }
-
         }
         )
 
 
-
         //grab parameters and send to post /user/edit
+
+
 
 
         async function editUserData() {
@@ -230,13 +224,51 @@ function Perfil() {
                 body: JSON.stringify(
                     params
                 )
-            }).then(res => res.json()).then(data => {
-                console.log(data)
+            }).then(res => res.json()).then(responseObject => {
+                console.log(responseObject)
+
+                if (responseObject.message = 'User updated') {
+                    updateToken();
+                    Swal.fire(
+                        'Editado!',
+                        'O usuário foi editado com sucesso.',
+                        'success'
+                    )
+                }
+
+                else {
+                    Swal.fire(
+                        'Erro!',
+                        'Ocorreu um erro ao editar o usuário.',
+                        'error'
+                    )
+                }
+
             }
             ).catch(err => console.log(err))
 
             return response;
 
+        }
+
+        async function updateToken() {
+
+            const token = localStorage.getItem('gerenciamento-de-salas@v1.1')
+
+            const userData = JSON.parse(token || '{}');
+
+            let newToken = {};
+
+            newToken = {
+                ...userData,
+                userData: {
+                    ...userData.userData,
+                    semestre: semestre,
+                    disciplina: disciplina
+                }
+            }
+
+            localStorage.setItem('gerenciamento-de-salas@v1.1', JSON.stringify(newToken));
         }
 
     }
