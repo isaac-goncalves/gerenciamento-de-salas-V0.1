@@ -53,35 +53,35 @@ function App() {
             } />
             <Route path="/agendamentos" element={
               <>
-                <Navbar />
+                <Navbar toggleTheme={toggleTheme} />
                 <Agendamentos />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
             <Route path="/perfil" element={
               <>
-                <Navbar />
+                <Navbar toggleTheme={toggleTheme} />
                 <Perfil />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
             <Route path="/gerenciamento" element={
               <>
-                <Navbar />
+                <Navbar toggleTheme={toggleTheme}/>
                 <Gerenciamento />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
             <Route path="/templates" element={
               <>
-                <Navbar />
+                <Navbar toggleTheme={toggleTheme}/>
                 <Templates />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
             <Route path="/notification" element={
               <>
-                <Navbar />
+                <Navbar toggleTheme={toggleTheme} />
                 <NotificationConfig />
                 {/* <Circles ballCount={4} /> */}
               </>

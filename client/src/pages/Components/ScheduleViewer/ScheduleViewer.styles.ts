@@ -85,7 +85,7 @@ interface IProps2 {
 
 export const ScheduleCell = styled.div`
   background-color: ${({selected}: IProps) =>{
-    return selected ? Colors.mainpurple : Colors.horariosCard}
+    return selected ? (props) => props.theme.mainpurple : (props) => props.theme.horariosCard}
   };
   box-shadow: ${({ selected }: IProps) =>{
     return selected ? "6px 4px 12px rgba(0, 0, 0, 0.2)" : "none"}
@@ -129,7 +129,7 @@ export const UidLabel = styled.p`
   font-weight: 400;
  
   color: ${({canceled}: IProps2) =>{
-    return canceled ? "red" : Colors.textcolor}
+    return canceled ? "red" : (props) => props.theme.textcolor}
   };
   text-decoration: ${({canceled}: IProps2) =>{
     return canceled ? "line-through" : "none"}

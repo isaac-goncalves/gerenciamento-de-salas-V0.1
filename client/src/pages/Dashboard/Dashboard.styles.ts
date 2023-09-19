@@ -16,7 +16,7 @@ export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
   font-weight: 600;
   color: ${props => props.theme.white};
   background-color: ${props =>
-    props.backgroundColor ? 'gray' : Colors.mainpurple};
+    props.backgroundColor ? 'gray' : props.theme.mainpurple};
   border: none;
   height: 4rem;
   width: 4rem;
@@ -434,7 +434,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   align-items: center;
   justify-content: center;
   background-color: ${({ isCurrentTime }) =>
-    isCurrentTime ? 'yellow' : Colors.horariosCard};
+    isCurrentTime ? 'yellow' : (props) => props.theme.horariosCard};
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;
@@ -497,7 +497,7 @@ export const SalaWrapper = styled.div`
 
 export const Sala = styled.p<StyledComponentProps>`
   color: ${props =>
-    props.agendamento ? Colors.textColorDisabled : Colors.lighterGreen};
+    props.agendamento ? (props) => props.theme.textColorDisabled : (props) => props.theme.lighterGreen};
   font-weight: 600;
   font-weight: ${props => (props.agendamento ? '500' : '600')};
   text-decoration: ${props => (props.agendamento ? 'line-through' : 'none')};
