@@ -356,6 +356,7 @@ export class UserController {
 
         const returnObj = {
           ...restUserData,
+          disciplina: disciplinaObj?.id,
           nomeDisciplina: disciplinaObj?.descricao,
           role: userExists.role
         }

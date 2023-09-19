@@ -108,7 +108,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
 
   useEffect(() => {
 
-   
+
     console.log("ScheduleViewer useEffect")
     // console.log(setSelectedIds)
     console.log(form)
@@ -142,7 +142,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
 
     const bodyParams = JSON.stringify(obj)
 
-    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) +'/agendamento/grouped', {
+    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/agendamento/grouped', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
@@ -275,15 +275,15 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
                   onClick=
                   {
                     () => {
-                      if(action == 'CREATE') {
-                          //compara se o agendamento é do usuário logado
-                        if(item.agendamento.id_professor == idUserLogado || userRole == 'coordenador' || userRole == 'admin') {
+                      if (action == 'CREATE') {
+                        //compara se o agendamento é do usuário logado
+                        if (userRole == 'professor' || item.agendamento.id_professor == idUserLogado || userRole == 'coordenador' || userRole == 'admin') {
                           handleSelection(item.id, item.agendamento && item.agendamento ? item.agendamento.id : undefined)
                         }
-                      }else
-                      if(action !== 'OPEN') {
-                        handleSelection(item.id, item.agendamento && item.agendamento ? item.agendamento.id : undefined)
-                      }
+                      } else
+                        if (action !== 'OPEN') {
+                          handleSelection(item.id, item.agendamento && item.agendamento ? item.agendamento.id : undefined)
+                        }
                     }
                   }
                 >
