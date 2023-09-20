@@ -136,7 +136,6 @@ const Dashboard: React.FC = () => {
     }
   );
 
-
   //STORE FILTER DATA
   const [selectedMethod, setSelectedMethod] = useState("semestre");
   const [selectedSemesterValue, setSelectedSemesterValue] = useState(1)
@@ -153,6 +152,7 @@ const Dashboard: React.FC = () => {
   const [date, setDate] = useState(new Date());
   const [currentDay, setCurrentDay] = useState('');
   const [currentTime, setCurrentTime] = useState('');
+
   // set to nearest Monday
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1));
   // set to nearest Friday
@@ -181,10 +181,8 @@ const Dashboard: React.FC = () => {
       } else {
         // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
 
-
-        setSelectedSemesterValue(userDataJson.userData.semestre);
-
         setUserData(userDataJson);
+        setSelectedSemesterValue(userDataJson.userData.semestre);
       }
     }
   }, [userData]);
@@ -219,8 +217,6 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
 
-
-
     const updateCurrentDayAndTime = () => {
       const now = new Date();
       const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -240,8 +236,6 @@ const Dashboard: React.FC = () => {
     };
 
   }, []);
-
-
 
   //FUNCTIONS ---------------------------------------------------------------------
 
@@ -725,7 +719,7 @@ const Dashboard: React.FC = () => {
                   )}
                 </StyledSelect>
                 :
-                <StyledSelect defaultValue={selectedSemesterValue} onChange={handleSemesterChange}>
+                <StyledSelect value={selectedSemesterValue} onChange={handleSemesterChange}>
                   <option value="1">
                     1º
                   </option>

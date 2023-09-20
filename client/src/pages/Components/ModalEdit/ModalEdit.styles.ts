@@ -233,6 +233,8 @@ export const StyledText = styled.span`
 
 export const StyledDates = styled.span`
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 0.8rem;
 `
 
