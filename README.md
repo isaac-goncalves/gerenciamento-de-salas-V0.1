@@ -1,8 +1,11 @@
 Portuguese:
 <img width="1280" alt="image" src="https://github.com/isaac-goncalves/gerenciamento-de-salas-V0.1/assets/82903174/7940b3fb-c671-4e33-8829-810ea8d6a115">
+
+![image](https://github.com/isaac-goncalves/gerenciamento-de-salas-V0.1/assets/82903174/bf4a4eed-030e-4a94-84b5-19f4ea6dbb97)
+
 🔬📚 Sistema de Gerenciamento de Laboratórios e Salas de Aula - FT Taubaté 📚🔬
 
-Disponivel em 👉 gerenciamentodesalas.cloud
+Disponivel em 👉 <a href="http://gerenciamentodesalas.cloud">gerenciamentodesalas.cloud</a>
 
 Bem-vindo ao projeto de software desenvolvido como parte da disciplina de Engenharia de Software 3 na renomada Faculdade de Tecnologia de Taubaté! Este sistema inovador visa revolucionar a forma como os laboratórios e salas de aula são gerenciados e agendados dentro da faculdade.
 
