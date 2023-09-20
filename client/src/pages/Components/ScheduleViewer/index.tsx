@@ -257,7 +257,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
       <Container>
         <ClockContainer>
           <p>18:45</p>
-          <p>20:25</p>
+          <p>19:35</p>
           <p>20:45</p>
           <p>21:25</p>
           <p>22:15</p>

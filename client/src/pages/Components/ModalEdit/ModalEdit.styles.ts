@@ -16,7 +16,7 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
 
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     /* overflow: auto; */
   }
 
@@ -45,7 +45,7 @@ export const ModalContent = styled.div`
   height: 85%;
 
 
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     flex-direction: column;
     padding: 0rem;
     overflow-y: auto;
@@ -66,7 +66,7 @@ gap: 1rem; */
 
 export const BackgroundImage = styled.img`
   height: auto;
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
    width: 100%;
   }
   /* max-height: 100vh; */
@@ -88,7 +88,7 @@ export const ImageWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     /* height: 200px;
     height: 100%; */
     display: none;
@@ -103,14 +103,15 @@ export const SecondImageWrapper = styled.div`
   align-items: center;
   display: none;
 
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     height: auto;
     width: 100%;
     display: block;
   }
 `
 export const FormWrapper = styled.div`
-  height: 100%;
+  height: auto;
+ 
   background-color: ${props => props.theme.lightgray};
   /* border: 1px solid red; */
   box-shadow: ${boxShadow};
@@ -122,7 +123,7 @@ export const FormWrapper = styled.div`
   justify-content: center;
   padding: 1rem;
 
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     gap: 0.5rem;
   }
 `
@@ -131,7 +132,6 @@ export const StyledTitle = styled.h1`
   font-size: 1.5rem;
   font-weight: 500;
   color: ${props => props.theme.mainpurple};
-  height: 100%;
   display: flex;
   width: 100%;
 `
@@ -141,10 +141,9 @@ export const ProfessorWrapper = styled.div`
   border-radius: 8px;
   padding: 0.8rem;
   display: flex;
-  height: 100%;
   box-shadow: ${boxShadow};
   flex-direction: column;
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     
   }
 `
@@ -170,7 +169,7 @@ export const DateTimeWrapper = styled.div`
   border-radius: 8px;
   box-shadow: ${boxShadow};
   
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     flex-direction: column;
   }
 `
@@ -196,7 +195,7 @@ export const DetailsWrapper = styled.div`
   background-color: ${props => props.theme.lightwhitebackgroud};
   border-radius: 8px;
   box-shadow: ${boxShadow};
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     padding: 1rem;
   }
 `
@@ -225,7 +224,10 @@ export const DetailsText = styled.p`
 
 export const StyledText = styled.span`
   margin-left: 0.3rem;
+  color: ${props => props.theme.textcolor};
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 1rem;
 `
 
@@ -248,9 +250,8 @@ export const SideBysideContainer = styled.div`
   width: 100%;
   height: 100%;
   gap: 1rem;
-  border-radius: 8px;
 
-  @media screen and (max-width: 570px) {
+  @media screen and (max-width: 875px) {
     flex-direction: column;
   }
 `
@@ -285,5 +286,5 @@ export const ClocktimeAndButoonsWrapper = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  gap: 0.5rem;
+  gap: 1rem;
 `

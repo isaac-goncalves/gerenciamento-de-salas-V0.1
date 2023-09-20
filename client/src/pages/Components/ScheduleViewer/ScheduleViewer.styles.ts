@@ -21,9 +21,9 @@ export const ClockContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  gap: 0.5rem;
+  gap: 2.6rem;
   width: 30%;
-  height: 100%;
+  /* height: 100%; */
 
   padding-top: 3rem;
   padding-bottom: 0.6rem;
