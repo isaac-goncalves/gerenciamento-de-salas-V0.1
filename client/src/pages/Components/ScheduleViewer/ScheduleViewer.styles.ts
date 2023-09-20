@@ -46,7 +46,7 @@ export const WeekdayContainer = styled.div`
   border-radius: 8px;
   /* background-color: cyan; //remove later */
   padding-bottom: 0.5rem;
-  background-color: ${props => props.theme.lightgrayInput};
+  background-color: ${props => props.theme.editmodalweekdaycontainer};
 
   h2 {
     font-size: 1.5rem;
@@ -60,7 +60,7 @@ export const WeekdayContainer = styled.div`
     transform: scale(1.03);
     transition: 0.1s;
 
-    background-color: ${props => props.theme.lightgrayInput};
+    background-color: ${props => props.theme.editmodalweekdaycontainer};
     p {
       /* color: ${props => props.theme.white}; */
     }

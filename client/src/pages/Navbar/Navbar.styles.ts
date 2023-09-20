@@ -44,7 +44,7 @@ export const PrimaryNav = styled.nav`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: ${props => props.theme.whiteNavbar};
+  background: ${props => props.theme.whiteBackgroundNavbar};
   /* border-right: 2px solid red; */
 
   @media screen and (max-width: 570px) {

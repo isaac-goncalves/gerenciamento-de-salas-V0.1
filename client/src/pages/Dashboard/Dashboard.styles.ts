@@ -244,7 +244,7 @@ export const ButtonConfimarAgendamento = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #663399;
+    background-color: ${props => props.theme.hoverbuttonColor};
   }
 
   @media screen and (max-width: 570px) {

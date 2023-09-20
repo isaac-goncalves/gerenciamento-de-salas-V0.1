@@ -34,7 +34,7 @@ export const ModalOverlay = styled.div`
 
 
 export const ModalContent = styled.div`
-  background: white;
+  background: ${props => props.theme.lightgrayInput};
   padding: 1rem;
   border-radius: 8px;
   display: flex;
@@ -111,7 +111,7 @@ export const SecondImageWrapper = styled.div`
 `
 export const FormWrapper = styled.div`
   height: 100%;
-  
+  background-color: ${props => props.theme.lightgray};
   /* border: 1px solid red; */
   box-shadow: ${boxShadow};
   border-radius: 8px;
@@ -276,7 +276,7 @@ export const StyledButton = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #663399;
+    background-color: ${props => props.theme.hoverbuttonColor};
   }
 `
 
