@@ -13,22 +13,34 @@ import RegisterScreen from './pages/Register';
 import Gerenciamento from './pages/Gerenciamento';
 import { ThemeProvider } from 'styled-components';
 
-import { lightTheme, darkTheme } from './colors';
+import { lightTheme, lightThemeRed ,darkTheme, vancedTheme } from './colors';
 import { useState } from 'react';
 
 
 function App() {
 
-  const [theme, setTheme] = useState('light'); // Default theme is 'light'
+  const [theme, setTheme] = useState(0); // Default theme is 'light'
 
   // Function to toggle the theme
   const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+
+    if (theme > 2) {
+      setTheme(0);
+    }else {
+      setTheme(theme + 1);
+    }
   };
+
+  const themeArray = [
+    lightTheme,
+    lightThemeRed,
+    darkTheme,
+    vancedTheme
+  ]
 
   return (
     <>
-      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+      <ThemeProvider theme={themeArray[theme]}>
         <Router>
           <Routes>
             <Route path="/" element={
@@ -46,7 +58,7 @@ function App() {
 
             <Route path="/dashboard" element={
               <>
-                <Navbar toggleTheme={toggleTheme}/>
+                <Navbar toggleTheme={toggleTheme} />
                 <Dashboard />
                 {/* <Circles ballCount={4} /> */}
               </>
@@ -67,14 +79,14 @@ function App() {
             } />
             <Route path="/gerenciamento" element={
               <>
-                <Navbar toggleTheme={toggleTheme}/>
+                <Navbar toggleTheme={toggleTheme} />
                 <Gerenciamento />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
             <Route path="/templates" element={
               <>
-                <Navbar toggleTheme={toggleTheme}/>
+                <Navbar toggleTheme={toggleTheme} />
                 <Templates />
                 {/* <Circles ballCount={4} /> */}
               </>
@@ -88,7 +100,7 @@ function App() {
             } />
           </Routes>
         </Router>
-      
+
       </ThemeProvider>
     </>
   )

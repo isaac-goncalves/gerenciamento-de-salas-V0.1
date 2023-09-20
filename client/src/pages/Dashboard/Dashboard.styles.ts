@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 
 import { Colors } from '../../colors'
+import PacmanLoader from 'react-spinners/PacmanLoader'
 
 interface CalltoActionButtonProps {
   backgroundColor: boolean
@@ -326,7 +327,7 @@ export const ClockContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   margin-top: 5.5rem;
-  margin-bottom: 1rem;
+
   /* background-color: red; */
   width: 3rem;
 
@@ -466,6 +467,10 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     }
   }
 `
+
+// export const PacmanWrapper = styled(PacmanLoader){
+
+// }
 
 export const Disciplina = styled.p`
   font-weight: 500;

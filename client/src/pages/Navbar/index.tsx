@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon, HamburgerWrapper, HamburgerDiv } from './Navbar.styles'
+import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon, HamburgerWrapper, HamburgerDiv, SchedulesWrapper, ProfileWrapper, GerenciamentoWrapper, TemplateWrapper, NotificationWrapper, DarmodeWrapper, LogoutWrapper } from './Navbar.styles'
 import styled from 'styled-components'
 
 import { Colors } from '../../colors';
 
 import { CgProfile } from 'react-icons/cg'
-import { GrLogout } from 'react-icons/gr'
+import { GrLogout, GrSchedules } from 'react-icons/gr'
 import { TbFileUpload, TbLogout } from 'react-icons/tb'
 import { BiCog } from 'react-icons/bi'
 import { GiHamburgerMenu } from 'react-icons/gi'
@@ -118,21 +118,13 @@ const Navbar = ( {toggleTheme} : any ) => {
                 <Menu>
                     <HamburgerDiv>
                         <RowWrapper >
-                            <HamburgerWrapper>
-                                <GiHamburgerMenu style={{
-                                    color: Colors.mainpurple,
-                                    fontSize: '1.4rem',
-                                }} />
-                            </HamburgerWrapper>
+                            <HamburgerWrapper/>
+                            
                         </RowWrapper>
                     </HamburgerDiv>
                     <MenuLink to="/dashboard" >
                         <RowWrapper >
-                            <MdSchedule style={{
-                                color: Colors.mainpurple,
-                                fontSize: '1.4rem',
-                            }} />
-
+                            <SchedulesWrapper/>
                             {
                                 menuOpen && <p>HORÁRIOS</p>
                             }
@@ -151,40 +143,29 @@ const Navbar = ( {toggleTheme} : any ) => {
                     </MenuLink> */}
                     <MenuLink to="/perfil" >
                         <RowWrapper>
-                            <CgProfile style={{
-                                color: Colors.mainpurple,
-                                fontSize: '1.4rem',
-                            }} />{
+                            <ProfileWrapper/>
+                            {
                                 menuOpen && <p>PERFIL</p>
                             }
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="/gerenciamento" >
                         <RowWrapper>
-                            <BiCog style={{
-                                color: Colors.mainpurple,
-                                fontSize: '1.4rem',
-                            }} />{
+                            <GerenciamentoWrapper/>{
                                 menuOpen && <p>GERENCIAMENTO</p>
                             }
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="/templates" >
                         <RowWrapper>
-                            <TbFileUpload style={{
-                                color: Colors.mainpurple,
-                                fontSize: '1.4rem',
-                            }} />{
+                            <TemplateWrapper/>{
                                 menuOpen && <p>TEMPLATES</p>
                             }
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="/notification" >
                         <RowWrapper>
-                            <IoMdNotificationsOutline style={{
-                                color: Colors.mainpurple,
-                                fontSize: '1.4rem',
-                            }} />{
+                            <NotificationWrapper/>{
                                 menuOpen && <p>NOTIFICAÇÕES </p>
                             }
                         </RowWrapper>
@@ -193,11 +174,7 @@ const Navbar = ( {toggleTheme} : any ) => {
                     onClick={() => toggleTheme()}
                     >
                         <RowWrapper>
-                            <MdOutlineDarkMode style={{
-                                color: Colors.mainpurple,
-                                fontSize: '1.2rem',
-                            }}
-                            />
+                            <DarmodeWrapper/>
                             {
                                 menuOpen && <p>DARKMODE</p>
                             }
@@ -207,11 +184,7 @@ const Navbar = ( {toggleTheme} : any ) => {
                         onClick={() => handleLogout()}
                     >
                         <RowWrapper>
-                            <TbLogout style={{
-                                color: Colors.mainpurple,
-                                fontSize: '1.2rem',
-                            }}
-                            />
+                            <LogoutWrapper/>
                             {
                                 menuOpen && <p>LOGOUT</p>
                             }

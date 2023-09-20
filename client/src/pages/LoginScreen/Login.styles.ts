@@ -12,7 +12,7 @@ import { Colors } from '../../colors'
 // `;
 
 export const Container = styled.div`
-  background-color: ${props => props.theme.white};
+  background-color: ${props => props.theme.lightgrayInput};
   height: 100vh;
   width: 100vw;
   overflow: hidden;

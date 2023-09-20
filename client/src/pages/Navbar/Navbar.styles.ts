@@ -1,8 +1,15 @@
-import { FaBars } from 'react-icons/fa'
+import { FaBars, FaRegClock } from 'react-icons/fa'
 import styled from 'styled-components'
 import { NavLink as Link } from 'react-router-dom'
 
 import { Colors } from '../../colors'
+import { GiHamburgerMenu } from 'react-icons/gi'
+import { GrSchedules } from 'react-icons/gr'
+import { CgProfile } from 'react-icons/cg'
+import { BiCog } from 'react-icons/bi'
+import { TbFileUpload, TbLogout } from 'react-icons/tb'
+import { IoMdNotificationsOutline } from 'react-icons/io'
+import { MdNotificationsNone, MdOutlineDarkMode } from 'react-icons/md'
 
 // export const PrimaryNav = styled.nav`
 //     position: fixed;
@@ -32,7 +39,7 @@ export const PrimaryNav = styled.nav`
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
-  
+
   z-index: 14;
   height: 100vh;
   display: flex;
@@ -65,11 +72,52 @@ export const HamburgerDiv = styled.div`
   @media screen and (min-width: 570px) {
     display: none;
   }
+  
+  
+  `
+
+export const HamburgerWrapper = styled(GiHamburgerMenu)`
+display: flex;
+justify-content: center;
+align-items: center;
+  color: ${props => props.theme.mainpurple};
+  font-size: 2rem;
+  margin-left: -0.2rem;
+  margin-top: 1rem;
 `
 
-export const HamburgerWrapper = styled.div`
-  display: block;
-  margin-top: 1rem;
+export const SchedulesWrapper = styled(FaRegClock)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
+`
+
+export const ProfileWrapper = styled(CgProfile)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
+`
+
+export const GerenciamentoWrapper = styled(BiCog)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
+`
+
+export const NotificationWrapper = styled(MdNotificationsNone)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
+`
+
+export const TemplateWrapper = styled(TbFileUpload)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
+`
+export const DarmodeWrapper = styled(MdOutlineDarkMode)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
+`
+
+export const LogoutWrapper = styled(TbLogout)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
 `
 
 export const Avatar = styled.img`
@@ -110,16 +158,13 @@ export const MenuLink = styled(Link)`
     color: #000000;
   }
 
-
-  &:nth-child(7){
-    margin-left: 0.2rem;
-
+  &:nth-child(7) {
+    margin-left: 0.1rem;
   }
 
   &:last-child {
-    margin-left: 0.4rem;
+    margin-left: 0.2rem;
   }
-
 `
 // export const Hamburger = styled(FaBars)`
 //   display: none;

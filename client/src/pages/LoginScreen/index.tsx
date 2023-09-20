@@ -204,7 +204,7 @@ const LoginScreen: React.FC = () => {
                         </div>
                     </TitleWrapper>
                     <ContentWrapper>
-                        <TeamsWrapper onClick={() => toast.info("Em breve disponivel 😓💻")}>
+                        <TeamsWrapper onClick={() => toast.info("Em breve disponivel 😅💻")}>
                             <TeamsLogo src={teamsLogo} />
                             <p>Entrar com o Teams</p>
                         </TeamsWrapper>
