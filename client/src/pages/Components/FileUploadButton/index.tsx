@@ -88,10 +88,10 @@ const FileUploadButton = ({ loggedUserRole, action }: FileUploadButtonProps) => 
       <Label
         onClick={() => { loggedUser == 'aluno' || loggedUser == 'guest' ? toast.error('Usuário sem permissão para upload de arquivos🧐') : null }}
         htmlFor="fileUpload">
-        Escolher arquivo para upload
         <HiOutlineUpload
           size={25}
         />
+        Escolher arquivo para upload
         <FileInput
           disabled={loggedUser === 'aluno' || loggedUser == 'guest' ? true : false}
           id="fileUpload"

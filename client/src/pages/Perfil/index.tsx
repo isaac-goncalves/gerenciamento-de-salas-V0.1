@@ -54,7 +54,7 @@ const disciplinaOptions = [
 import {
     Avatar,
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, StyledButton, ContentWrapper, ButtonWrapper, ButtonWapper
+    SearchBar, TableSelector, Wrapper, UserName, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, StyledButton, ContentWrapper, ButtonWrapper, ButtonWapper, InputWrapper, StyledSelect, StyledButtonWhatsApp, UserWrapper, UserInfo
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -66,9 +66,9 @@ import ModalDelete from '../Components/ModalDelete'
 import FileUploadButton from '../Components/FileUploadButton';
 import FileDownloadButton from '../Components/FileDownloadButton';
 import { BsWhatsapp } from 'react-icons/bs';
-import { AvatarWrapper, UserInfo, UserName, UserWrapper } from '../Navbar/Navbar.styles';
-import { InputWrapper, StyledSelect } from '../Register/Register.styles';
+import { AvatarWrapper, } from '../Navbar/Navbar.styles';
 import Swal from 'sweetalert2';
+import { AiOutlineSave } from 'react-icons/ai';
 
 function Perfil() {
 
@@ -390,35 +390,6 @@ function Perfil() {
         updated_at: string
     }
 
-    const UsersTable = ({ data }: any) => {
-        return (
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Tipo</th>
-                        <th>Criado</th>
-                        <th>Atualizado</th>
-                    </TableRow>
-                </TableHeader>
-                <tbody>
-                    {data.map((user: UserData) => (
-                        <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
-                            <NowrapText>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</NowrapText>
-                            <NowrapText>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</NowrapText>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
-        )
-    }
-
     interface AlunosData {
         id: number
         name: string
@@ -428,39 +399,6 @@ function Perfil() {
         semester: number
         created_at: Date
         updated_at: Date
-    }
-
-    const AlunosTable = ({ data }: any) => {
-        return (
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Sobrenome</th>
-                        <th>Email</th>
-                        <th>Semestre</th>
-                        <th>Criado</th>
-                        <th>Atualizado</th>
-                    </TableRow>
-                </TableHeader>
-                <tbody>
-                    {data.map((aluno: AlunosData) => {
-                        return (
-                            <tr key={aluno.id}>
-                                <td>{aluno.id}</td>
-                                <td>{aluno.name}</td>
-                                <td>{aluno.surname}</td>
-                                <td>{aluno.email}</td>
-                                <CenteredNumber>{aluno.semester}1</CenteredNumber>
-                                <NowrapText>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</NowrapText>
-                                <NowrapText>{formatDistanceToNow(new Date(aluno.updated_at), { locale: ptBR })} atrás</NowrapText>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </Table>
-        );
     }
 
     interface ProfessoresData {
@@ -506,58 +444,63 @@ function Perfil() {
         return (
             <>
                 <ContentWrapper>
-
                     <Avatar src={avatar} />
                     <UserWrapper>
                         {<UserName>{userData.userData.name}</UserName>}
                         {<UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>}
                         {<UserInfo>{userData.userData.role}</UserInfo>}
                     </UserWrapper>
-                    <ButtonWapper>
-                        <>
-                            {
-                                (userData.userData.role === "aluno" || userData.userData.role === "guest") &&
-                                <InputWrapper>
-                                    <label>Semestre:</label>
-                                    <StyledSelect value={semestre} onChange={handleChange}>
-                                        <option disabled value="">
-                                            Selecione o semestre
+                    <ButtonWrapper>
+                        {
+                            (userData.userData.role === "aluno" || userData.userData.role === "guest") &&
+                            <InputWrapper>
+                                <label>Semestre:</label>
+                                <StyledSelect value={semestre} onChange={handleChange}>
+                                    <option disabled value="">
+                                        Selecione o semestre
+                                    </option>
+                                    {semestresOptions.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
                                         </option>
-                                        {semestresOptions.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </StyledSelect>
-                                </InputWrapper>
-                            }
-                            {
-                                userData.userData.role === "professor" &&
-                                <InputWrapper>
-                                    <label>Disciplina</label>
-                                    <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
-                                        <option disabled value="">
-                                            Selecione a disciplina
+                                    ))}
+                                </StyledSelect>
+                            </InputWrapper>
+                        }
+                        {
+                            userData.userData.role === "professor" &&
+                            <InputWrapper>
+                                <label>Disciplina</label>
+                                <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
+                                    <option disabled value="">
+                                        Selecione a disciplina
+                                    </option>
+                                    {disciplinaOptions.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
                                         </option>
-                                        {disciplinaOptions.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </StyledSelect>
-                                </InputWrapper>
-                            }
-                        </>
-
+                                    ))}
+                                </StyledSelect>
+                            </InputWrapper>
+                        }
                         <FileUploadButton action={"profilepic"} loggedUserRole={userData.userData.role} />
                         <StyledButton
                             onClick={handleEdit}
-                        >Salvar</StyledButton>
-                        <StyledButton onClick={handleClick}>
-                            <BsWhatsapp />
-                            Convidar pelo WhatsApp
+                        >
+
+                            <AiOutlineSave
+                                size={25}
+                            />
+
+                            Salvar
                         </StyledButton>
-                    </ButtonWapper>
+                        <StyledButtonWhatsApp onClick={handleClick}>
+                            <BsWhatsapp
+                                size={25}
+                            />
+                            Convidar pelo WhatsApp
+                        </StyledButtonWhatsApp>
+                    </ButtonWrapper>
                 </ContentWrapper>
             </>
         )
@@ -597,16 +540,6 @@ function Perfil() {
                                 (<PacmanLoader />)
                         }
                         <p>Professores</p>
-                    </CounterWrapper>
-                    <Separator></Separator>
-                    <CounterWrapper>
-                        {
-                            isLoading ?
-                                (<h1>{professoresData.length}</h1>)
-                                :
-                                (<PacmanLoader />)
-                        }
-                        <p>Coordenadores</p>
                     </CounterWrapper>
                 </Header>
                 {

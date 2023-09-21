@@ -21,26 +21,22 @@ import { addDays, nextFriday, setDay, startOfWeek } from 'date-fns'
 //     updated_at: Date;
 // }
 
-function getNearestMonday(date: Date) {
- 
+function getNearestMonday (date: Date) {
   date = new Date(date)
 
   // console.log (date.getUTCDay())
-  
-//if is sunday return next monday
+
+  //if is sunday return next monday
   if (date.getUTCDay() === 0) {
     const nextMonday = addDays(date, 1)
     return nextMonday
   }
   const nearestMonday = setDay(startOfWeek(date), 1)
   return nearestMonday
-
 }
 
-function formatDateForSQL(date: Date) {
-  
-    return date.toISOString()
-
+function formatDateForSQL (date: Date) {
+  return date.toISOString()
 }
 
 export class GradeController {
@@ -57,7 +53,6 @@ export class GradeController {
     // console.log(nearestMonday)
 
     const nextFriday = addDays(nearestMonday, 4)
-
 
     try {
       //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
@@ -120,9 +115,23 @@ export class GradeController {
             WHERE
             id_grade = '${id_grade}'
             AND 
-            date BETWEEN '${formatDateForSQL(nearestMonday)}' AND '${formatDateForSQL(nextFriday)}'
+            date BETWEEN '${formatDateForSQL(
+              nearestMonday
+            )}' AND '${formatDateForSQL(nextFriday)}'
           `
           const agendamentos = await gradeRepositories.query(queryAgendamento)
+
+          //remove 3 hours from date to match the timezone
+
+          if (agendamentos[0] && agendamentos[0].date) {
+
+            const newDate = new Date(agendamentos[0].date)
+
+            newDate.setHours(newDate.getHours() - 3)
+
+            agendamentos[0].date = newDate
+
+          }
 
           grade.agendamentos = agendamentos || []
 

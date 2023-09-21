@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import DatePicker from 'react-datepicker'
 
@@ -214,10 +214,11 @@ export const DatePickWrapper = styled.div`
   border-radius: 12px;
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
+  /* padding: 1rem 1rem; */
 
   @media screen and (max-width: 750px) {
-    width: 100%;
-    padding: 0.25rem 0rem;
+    width: 98%;
+    padding: 0.25rem 0.8rem;
   }
 `
 
@@ -307,10 +308,46 @@ export const DateIcon = styled.img`
   object-fit: cover;
 
   @media screen and (max-width: 570px) {
-    height: 1rem;
-    width: 1rem;
+    height: 2rem;
+    width: 2rem;
+    margin-right: 0.2rem;
   }
+
 `
+
+const bounceAnimation = keyframes`
+0%, 20%, 50%, 80%, 100% {
+  transform: translateY(0);
+}
+40% {
+  transform: translateY(-20px);
+}
+60% {
+  transform: translateY(-10px);
+}
+`;
+
+  export const StyledImageButton = styled.button`
+   background: transparent;
+  cursor: pointer;
+  border: none;
+ /* Define the bounce animation */
+ &:active {
+    animation: ${bounceAnimation} 0.5s; /* Apply the bounce animation */
+    transform-origin: center bottom;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+
+/* Apply the bounce animation when the button is clicked */
+&:active {
+  animation: bounce 0.5s;
+  transform-origin: center bottom;
+}
+  `
 
 export const ClockPaddingUp = styled.div`
   display: flex;

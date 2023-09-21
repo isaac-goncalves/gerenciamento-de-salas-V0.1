@@ -27,7 +27,6 @@ export const Container = styled.div`
   }
 `
 
-
 export const Wrapper = styled.div`
   width: 90%;
   height: 90%;
@@ -38,6 +37,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
   gap: 1.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
   @media screen and (max-width: 570px) {
@@ -49,25 +49,46 @@ export const Wrapper = styled.div`
   }
 `
 
-
 export const ContentWrapper = styled.div`
+  margin-top: 2rem;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-flow: column;
   gap: 1rem;
   justify-content: center;
   align-items: center;
-  `
+`
 
+export const UserWrapper = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+gap: 1rem;
+`
+
+export const UserName = styled.p`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.3rem;
+  font-weight: 500;
+  white-space: nowrap;
+`
+
+export const UserInfo = styled.p`
+  color: ${props => props.theme.textcolor};
+  font-size: 1rem;
+`
 
 export const Header = styled.div`
-  width: 80%;
+  width: 60%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `
 
 export const CounterWrapper = styled.div`
+  color: ${props => props.theme.textcolor};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,39 +135,108 @@ export const SearchBar = styled.div`
     box-sizing: border-box;
     color: ${props => props.theme.white};
   }
-
-  
 `
 
-export const ButtonWapper = styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
-gap: 1rem;
+export const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 4rem;
+  margin-top: auto;
+`
+
+export const InputWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 0.2rem;
+  flex-direction: column;
+  color: ${props => props.theme.textcolor};
+`
+
+export const StyledSelect = styled.select`
+  display: flex;
+  width: 100%;
+  padding: 0.5rem;
+  padding-left: 1rem;
+  border-radius: 9999999px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+
+  cursor: pointer;
+  background-color: #f2f2f2;
+  color: #333;
+  appearance: none;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border-color: #999;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px ${props => props.theme.mainpurple};
+    border-color: ${props => props.theme.mainpurple};
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+
+  /* Dropdown styles */
+  option {
+    /* Add any additional styles for options here */
+  }
+
+  /* Dropdown container styles */
+  select {
+    max-height: 200px; /* Set the desired max height */
+    overflow-y: auto; /* Add scrollbar when options exceed max height */
+  }
 `
 
 export const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  padding: 0.5rem;
+  height: 2.5rem;
+  max-width: 20rem;
+  border: none;
+  gap: 0.5rem;
+  width: 100%;
+  background-color: ${props => props.theme.mainpurple};
+  color: ${props => props.theme.realwhite};
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  white-space: nowrap;
+`
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    height: 2.5rem;
-    max-width: 20rem;
-    border: none;
-   
-   width:100%;
-    background-color: ${props => props.theme.mainpurple};
-    color: ${props => props.theme.realwhite};
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    white-space: nowrap;
-  `
+export const StyledButtonWhatsApp = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.5rem;
+  height: 2.5rem;
+  max-width: 20rem;
+  border: none;
+  gap: 0.5rem;
+  width: 100%;
+  background-color: green;
+  color: ${props => props.theme.realwhite};
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  white-space: nowrap;
+`
 
 export const ButtonsWrapper = styled.td`
   display: flex;

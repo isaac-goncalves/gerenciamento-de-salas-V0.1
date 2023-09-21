@@ -55,9 +55,11 @@ export const Title = styled.h1`
 
 export const InputWrapper = styled.div`
   display: flex;
-  width: 80%;
-  gap: 1rem;
+  width: 100%;
+  gap: 0.2rem;
   flex-direction: column;
+  color : ${props => props.theme.textcolor};
+
 `
 
 export const InputVisibleEye = styled.div`
@@ -163,13 +165,15 @@ export const ContactWrapper = styled.div`
 `
 
 export const StyledSelect = styled.select`
+  display: flex;
+  width: 100%;
   padding: 0.5rem;
   padding-left: 1rem;
   border-radius: 9999999px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  margin-bottom: 1rem;
-  width: 100%;
+
+ 
   cursor: pointer;
   background-color: #f2f2f2;
   color: #333;
@@ -182,8 +186,8 @@ export const StyledSelect = styled.select`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
-    border-color: #007bff;
+    box-shadow: 0 0 0 2px ${props => props.theme.mainpurple};
+    border-color: ${props => props.theme.mainpurple};
   }
 
   &::placeholder {

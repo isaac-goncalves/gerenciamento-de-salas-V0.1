@@ -11,20 +11,6 @@ import { TbFileUpload, TbLogout } from 'react-icons/tb'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { MdNotificationsNone, MdOutlineDarkMode } from 'react-icons/md'
 
-// export const PrimaryNav = styled.nav`
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     width: 15.5rem;
-
-//     z-index: 14;
-//     height: 100vh;
-//     display: flex;
-//     flex-direction: column;
-//     padding-left: 1.5rem;
-//     background: ${props => props.theme.white};
-//     `
-
 interface Props {
   menuOpen: boolean
 }
@@ -41,7 +27,7 @@ export const PrimaryNav = styled.nav`
   /* justify-content: center; */
 
   z-index: 14;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background: ${props => props.theme.whiteBackgroundNavbar};
@@ -72,52 +58,78 @@ export const HamburgerDiv = styled.div`
   @media screen and (min-width: 570px) {
     display: none;
   }
-  
-  
-  `
+`
 
 export const HamburgerWrapper = styled(GiHamburgerMenu)`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: ${props => props.theme.mainpurple};
   font-size: 2rem;
-  margin-left: -0.2rem;
+  margin-left: -0.23rem;
   margin-top: 1rem;
 `
 
 export const SchedulesWrapper = styled(FaRegClock)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
 `
 
 export const ProfileWrapper = styled(CgProfile)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
 `
 
 export const GerenciamentoWrapper = styled(BiCog)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
 `
 
 export const NotificationWrapper = styled(MdNotificationsNone)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
 `
 
 export const TemplateWrapper = styled(TbFileUpload)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
 `
 export const DarmodeWrapper = styled(MdOutlineDarkMode)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
 `
 
 export const LogoutWrapper = styled(TbLogout)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
 `
 
 export const Avatar = styled.img`
@@ -158,9 +170,6 @@ export const MenuLink = styled(Link)`
     color: #000000;
   }
 
-  &:nth-child(7) {
-    margin-left: 0.1rem;
-  }
 
   &:last-child {
     margin-left: 0.2rem;
@@ -186,7 +195,7 @@ export const Menu = styled.div`
   width: 100%;
   height: 100%;
   padding-left: 1rem;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 
   @media screen and (max-width: 570px) {
     padding-left: 0rem;
@@ -194,7 +203,6 @@ export const Menu = styled.div`
 
   a:nth-of-type(5) {
     margin-top: auto;
-    margin-bottom: 1rem;
   }
 `
 

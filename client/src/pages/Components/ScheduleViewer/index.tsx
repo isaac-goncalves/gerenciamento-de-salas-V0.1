@@ -142,6 +142,8 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
 
     const bodyParams = JSON.stringify(obj)
 
+    console.log(bodyParams)
+
     await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/agendamento/grouped', {
       method: 'POST',
       headers: {

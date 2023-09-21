@@ -4,15 +4,6 @@ import styled from 'styled-components'
 
 import { Colors } from '../../colors';
 
-import { CgProfile } from 'react-icons/cg'
-import { GrLogout, GrSchedules } from 'react-icons/gr'
-import { TbFileUpload, TbLogout } from 'react-icons/tb'
-import { BiCog } from 'react-icons/bi'
-import { GiHamburgerMenu } from 'react-icons/gi'
-import { IoMdNotificationsOutline } from 'react-icons/io'
-
-import { BsCalendarDate } from 'react-icons/bs'
-import { MdSchedule, MdPerson, MdExitToApp, MdOutlineDarkMode } from 'react-icons/md';
 
 import avatar from '../../../public/images/avatar.png';
 

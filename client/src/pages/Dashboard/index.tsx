@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton } from './Dashboard.styles'
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -31,6 +31,7 @@ import dateIcon from '../../../public/images/dia_de_hoje.png';
 import arrowLeft from '../../../public/images/pickDateicons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateicons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
+import { StyledButton } from '../Perfil/Perfil.styles';
 
 interface ScheduleItem {
   id: number;
@@ -403,13 +404,13 @@ const Dashboard: React.FC = () => {
   function handleSchedulingButtonClick(e: any) {
 
     e.preventDefault();
-     // Start the animation by updating the state
-     setIsAnimating(true);
+    // Start the animation by updating the state
+    setIsAnimating(true);
 
-     // Reset the animation after a delay
-     setTimeout(() => {
-       setIsAnimating(false);
-     }, 700);
+    // Reset the animation after a delay
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 700);
 
     if (userData.userData.role == "aluno" || userData.userData.role == "guest") {
       toast.error('Você não tem permissão para agendar!');
@@ -671,14 +672,20 @@ const Dashboard: React.FC = () => {
           <DatePickWrapper>
             <DatepickContainer>
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
-                <DateIcon src={dateIcon} />
+                <StyledImageButton>
+                  <DateIcon src={dateIcon} />
+                </StyledImageButton>
                 <PularParaHojeText>Pular para hoje</PularParaHojeText>
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
-                <DateIcon src={arrowLeft} />
+                <StyledImageButton>
+                  <DateIcon src={arrowLeft} />
+                </StyledImageButton>
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>
-                <DateIcon src={arrowRight} />
+                <StyledImageButton>
+                  <DateIcon src={arrowRight} />
+                </StyledImageButton>
               </DatepickArrowsContainer>
               <CurrentMonth>
                 {GetCurrentMonthAndYear(startDate)}
