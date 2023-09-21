@@ -238,12 +238,17 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
     //mostrar indisponível se o agendamento for de outro usuário
 
     if (idUserAgendamento) {
-      if (idUserAgendamento == idUserLogado && itemIsSelected == true) {
-        return "Selecionado"
-      } else
+      if(action == 'CREATE' ) {
+        if (idUserAgendamento == idUserLogado && itemIsSelected == true) {
+          return "Selecionado"
+        } else
         if (idUserAgendamento != idUserLogado && itemIsSelected == true) {
           return "Indisponivel"
         }
+      } else 
+      if(action == 'OPEN' ) {
+        return "Agendado"
+      }
     }
     if (itemIsSelected == false) {
       return "Disponivel"
