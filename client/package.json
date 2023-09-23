@@ -23,6 +23,7 @@
     "firebase": "^10.0.0",
     "node-sass": "^9.0.0",
     "react": "^18.2.0",
+    "react-avatar-edit": "^1.2.0",
     "react-calendar": "^4.0.0",
     "react-confetti": "^6.1.0",
     "react-datepicker": "^4.10.0",

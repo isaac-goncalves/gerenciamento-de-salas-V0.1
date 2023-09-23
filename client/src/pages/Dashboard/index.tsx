@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton } from './Dashboard.styles'
+import { Container, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -377,8 +377,8 @@ const Dashboard: React.FC = () => {
         {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
           <WeekdayContainer key={day}>
             <WeekDay>
-              <PacmanLoader
-                color={Colors.lightgrayInput}
+           <PacmanLoader
+                color='#D9D9D9'
                 size={10}
                 loading />
             </WeekDay>
@@ -389,7 +389,7 @@ const Dashboard: React.FC = () => {
                   .fill(0)
                   .map((_, index) => (
                     <Schedule isCurrentTime={false} key={index}>
-                      <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
+                      <PacmanLoader color='#D9D9D9' size={25} loading />
                     </Schedule>
                   ))
               }

@@ -11,7 +11,7 @@ export const lightTheme = {
   editmodalweekdaycontainer: '#D9D9D9',
 
   //navbar
-  navbarpurpleborder: "#8f76b8df",
+  navbarpurpleborder: "#a89cbc78",
   whiteBackgroundNavbar: 'rgba(255, 255, 255, 0.98);',
 
   primary: '#F4F4F4',

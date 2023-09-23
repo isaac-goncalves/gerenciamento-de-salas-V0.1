@@ -15,7 +15,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { lightTheme, lightThemeRed ,darkTheme, vancedTheme } from './colors';
 import { useState } from 'react';
-
+import GlobalStyle from './theme/globalStyle'
 
 function App() {
 
@@ -100,7 +100,7 @@ function App() {
             } />
           </Routes>
         </Router>
-
+        <GlobalStyle />
       </ThemeProvider>
     </>
   )

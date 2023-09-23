@@ -449,6 +449,10 @@ export const WeekDay = styled.p`
   }
 `
 
+export const PacmanLoaderWrapper = styled(PacmanLoader)`
+color: red;
+`
+
 export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
   display: flex;
   padding: 0.5rem 0;
