@@ -4,7 +4,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    background-color: black;
+    /* background-color: black; */
     font-family: Open-Sans, Helvetica, Sans-Serif;
     box-sizing: border-box;
     z-index: 0;
@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
   }
   
   body {
-    background-color: ${(props) => props.theme.mainpurple};
+    /* background-color: ${(props) => props.theme.mainpurple}; */
     height: 100vh;
     text-align: left;
   }

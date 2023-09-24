@@ -31,7 +31,7 @@ export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
   transition: 0.3s;
 `
 
-export const Container = styled.div`
+export const MainContainer = styled.div`
   z-index: 1;
   display: flex;
   flex-direction: column;
