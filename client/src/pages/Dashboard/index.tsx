@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -34,7 +34,7 @@ import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim"; // if you are going to use `loadSlim`, install the "tsparticles-slim" package too.
 //
 
-import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdOutlineModeEdit, MdSubdirectoryArrowRight } from 'react-icons/md';
+import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdOutlineModeEdit, MdSubdirectoryArrowRight, MdToday } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
@@ -773,7 +773,10 @@ const Dashboard: React.FC = () => {
             <DatepickContainer>
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
                 <StyledImageButton>
-                  <DateIcon src={dateIcon} />
+                <TodayContainer
+                  size={25}
+                />
+                  
                 </StyledImageButton>
                 <PularParaHojeText>Pular para hoje</PularParaHojeText>
               </DatepickArrowsContainer>

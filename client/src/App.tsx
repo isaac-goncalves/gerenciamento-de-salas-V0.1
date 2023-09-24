@@ -19,7 +19,7 @@ import GlobalStyle from './theme/globalStyle'
 
 function App() {
 
-  const [theme, setTheme] = useState(0); // Default theme is 'light'
+  const [theme, setTheme] = useState(3); // Default theme is 'light'
 
   // Function to toggle the theme
   const toggleTheme = () => {

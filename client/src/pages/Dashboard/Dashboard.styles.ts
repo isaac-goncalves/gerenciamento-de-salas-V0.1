@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker'
 
 import { Colors } from '../../colors'
 import PacmanLoader from 'react-spinners/PacmanLoader'
+import { MdToday } from 'react-icons/md'
 
 interface CalltoActionButtonProps {
   backgroundColor: boolean
@@ -259,6 +260,8 @@ export const DatepickArrowsContainer = styled.div`
 
 export const PularParaHojeText = styled.p`
   // hide when screen is small
+  //pointer click 
+  cursor: pointer;
 
   color: ${props => props.theme.textcolor};
 
@@ -300,6 +303,13 @@ export const StyledDatePicker = styled(DatePicker)`
   border: 1px solid #ccc;
   border-radius: 4px;
 `
+
+export const TodayContainer = styled(MdToday)`
+margin-right: 0.5rem;
+color: ${props => props.theme.mainpurple};
+` 
+
+
 
 export const DateIcon = styled.img`
   height: 1.5rem;
