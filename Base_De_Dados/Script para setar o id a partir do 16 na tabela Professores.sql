@@ -1,1 +1,0 @@
-SELECT setval('professores_id_seq', (SELECT MAX(id) FROM professores));

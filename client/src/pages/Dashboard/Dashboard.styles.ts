@@ -4,7 +4,9 @@ import DatePicker from 'react-datepicker'
 
 import { Colors } from '../../colors'
 import PacmanLoader from 'react-spinners/PacmanLoader'
-import { MdToday } from 'react-icons/md'
+import { MdChevronLeft, MdChevronRight, MdToday } from 'react-icons/md'
+import { TbChevronDown } from 'react-icons/tb'
+import { FaFilter } from 'react-icons/fa'
 
 interface CalltoActionButtonProps {
   backgroundColor: boolean
@@ -161,6 +163,11 @@ export const FilterWrapper = styled.h2`
   }
 `
 export const FilterIconWrapper = styled.div`
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   @media screen and (max-width: 570px) {
     display: none;
   }
@@ -225,6 +232,8 @@ export const DatePickWrapper = styled.div`
 
 export const DatepickContainer = styled.div`
   display: flex;
+  flex-direction: row;
+  /* border: 1px solid ${props => props.theme.lightgrayborder}; */
   gap: 1rem;
   align-items: center;
   white-space: nowrap;
@@ -260,7 +269,7 @@ export const DatepickArrowsContainer = styled.div`
 
 export const PularParaHojeText = styled.p`
   // hide when screen is small
-  //pointer click 
+  //pointer click
   cursor: pointer;
 
   color: ${props => props.theme.textcolor};
@@ -297,19 +306,42 @@ export const CalendarWrapper = styled.div`
   }
 `
 export const StyledDatePicker = styled(DatePicker)`
-  z-index: 99;
-  width: 6rem;
+  background-color: ${props => props.theme.white};
+  color: ${props => props.theme.textcolor};
+  font-size: 1rem;
+  
+  width: 7rem;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 `
 
 export const TodayContainer = styled(MdToday)`
-margin-right: 0.5rem;
-color: ${props => props.theme.mainpurple};
-` 
+  margin-right: 0.5rem;
+  color: ${props => props.theme.mainpurple};
+`
 
+export const LeftArrow = styled(MdChevronLeft)`
+  margin-right: 0.5rem;
+  color: ${props => props.theme.mainpurple};
+`
 
+export const RightArrow = styled(MdChevronRight)`
+  margin-right: 0.5rem;
+  color: ${props => props.theme.mainpurple};
+`
+
+export const DownArrow = styled(TbChevronDown)`
+  margin-right: 0.5rem;
+  color: ${props => props.theme.mainpurple};
+`
+
+export const FilterIcon = styled(FaFilter)`
+  margin-right: 0.5rem;
+  color: white;
+
+  color: ${props => props.theme.mainpurple};
+`
 
 export const DateIcon = styled.img`
   height: 1.5rem;
@@ -322,7 +354,6 @@ export const DateIcon = styled.img`
     width: 2rem;
     margin-right: 0.2rem;
   }
-
 `
 
 const bounceAnimation = keyframes`
@@ -335,14 +366,17 @@ const bounceAnimation = keyframes`
 60% {
   transform: translateY(-10px);
 }
-`;
+`
 
-  export const StyledImageButton = styled.button`
-   background: transparent;
+export const StyledImageButton = styled.button`
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   border: none;
- /* Define the bounce animation */
- &:active {
+  /* Define the bounce animation */
+  &:active {
     animation: ${bounceAnimation} 0.5s; /* Apply the bounce animation */
     transform-origin: center bottom;
   }
@@ -351,13 +385,12 @@ const bounceAnimation = keyframes`
     transform: scale(1.05);
   }
 
-
-/* Apply the bounce animation when the button is clicked */
-&:active {
-  animation: bounce 0.5s;
-  transform-origin: center bottom;
-}
-  `
+  /* Apply the bounce animation when the button is clicked */
+  &:active {
+    animation: bounce 0.5s;
+    transform-origin: center bottom;
+  }
+`
 
 export const ClockPaddingUp = styled.div`
   display: flex;
@@ -460,7 +493,7 @@ export const WeekDay = styled.p`
 `
 
 export const PacmanLoaderWrapper = styled(PacmanLoader)`
-color: red;
+  color: red;
 `
 
 export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
@@ -486,7 +519,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   align-items: center;
   justify-content: center;
   background-color: ${({ isCurrentTime }) =>
-    isCurrentTime ? 'yellow' : (props) => props.theme.horariosCard};
+    isCurrentTime ? 'yellow' : props => props.theme.horariosCard};
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;
@@ -553,7 +586,9 @@ export const SalaWrapper = styled.div`
 
 export const Sala = styled.p<StyledComponentProps>`
   color: ${props =>
-    props.agendamento ? (props) => props.theme.textColorDisabled : (props) => props.theme.lighterGreen};
+    props.agendamento
+      ? props => props.theme.textColorDisabled
+      : props => props.theme.lighterGreen};
   font-weight: 600;
   font-weight: ${props => (props.agendamento ? '500' : '600')};
   text-decoration: ${props => (props.agendamento ? 'line-through' : 'none')};

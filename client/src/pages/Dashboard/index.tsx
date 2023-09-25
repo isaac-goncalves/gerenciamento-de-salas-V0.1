@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -42,6 +42,7 @@ import arrowLeft from '../../../public/images/pickDateicons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateicons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
 import { StyledButton } from '../Perfil/Perfil.styles';
+import { FaFilter } from 'react-icons/fa';
 
 //import PArticles 
 
@@ -413,7 +414,9 @@ const Dashboard: React.FC = () => {
   };
 
   //MODAL HANDLE FUNCTIONS
-  function handleSchedulingButtonClick(e: any) {
+  function handleActionButtonClick(e: any) {
+
+    console.log("Clicked")
 
     e.preventDefault();
     // Start the animation by updating the state
@@ -423,23 +426,33 @@ const Dashboard: React.FC = () => {
     setTimeout(() => {
       setIsAnimating(false);
     }, 700);
+    console.log(userData.userData.role)
 
-    if (userData.userData.role == "aluno" || userData.userData.role == "guest") {
-      toast.error('Você não tem permissão para agendar!');
-      return
-    }
+    if (userData.userData.role == "professor") {
 
-    if (userIsScheduling == true) {
-      toast.info('Modo de agendamento desativado!');
+      if (userIsScheduling == true) {
+        toast.info('Modo de agendamento desativado!');
+      }
+      else {
+        toast.info('Selecione um dia para agendar!');
+      }e
     }
     else {
-      toast.info('Selecione um dia para agendar!');
-    }
+      toast.info('Aperte no filtro!');
+      //click on select filter 
+      const select = document.getElementById("selectFilter") as HTMLSelectElement;
+      toast.info('Filtrando por ' + select.options[select.selectedIndex].text);
 
+      select.click();
+      return
+    }
     setUserIsScheduling(!userIsScheduling)
+
+
     console.log(userIsScheduling)
     //habilitar oarametro que fd-diz que esta em modo agendamento
   }
+
   const handleCloseModalEdit = (resetParams: boolean) => {
     setSchedulingModalIsVisible(false);
     if (resetParams) {
@@ -751,8 +764,16 @@ const Dashboard: React.FC = () => {
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ToastContainer />
       <MainContainer>
-        <CalltoActionButton className={`bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleSchedulingButtonClick}>
-          <MdOutlineModeEdit size={40} color='white' />
+        <CalltoActionButton className={`bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
+          {
+            userData.userData.role = "aluno" || userData.userData.role == "guest" ?
+              <>
+
+                <FaFilter size={35} color='white' />
+              </>
+              :
+              <MdOutlineModeEdit size={40} color='white' />
+          }
         </CalltoActionButton>
         <Helmet>
           <title>SGSA - Dashboard</title>
@@ -773,38 +794,42 @@ const Dashboard: React.FC = () => {
             <DatepickContainer>
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
                 <StyledImageButton>
-                <TodayContainer
-                  size={25}
-                />
-                  
+                  <TodayContainer
+                    size={25}
+                  />
                 </StyledImageButton>
                 <PularParaHojeText>Pular para hoje</PularParaHojeText>
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
-                <StyledImageButton>
-                  <DateIcon src={arrowLeft} />
-                </StyledImageButton>
+                <LeftArrow
+                  size={45}
+                />
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>
-                <StyledImageButton>
-                  <DateIcon src={arrowRight} />
-                </StyledImageButton>
+
+                <RightArrow
+                  size={45}
+                />
               </DatepickArrowsContainer>
               <CurrentMonth>
                 {GetCurrentMonthAndYear(startDate)}
-                <DateIcon src={arrowDown} />
+                <DownArrow
+                  size={45}
+                />
               </CurrentMonth>
               <CalendarWrapper>
                 Semana do dia
-                <StyledDatePicker selected={startDate} onChange={handleStartDateChange} />
+                <StyledDatePicker
+                  selected={startDate} onChange={handleStartDateChange} />
                 ao dia
                 <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
               </CalendarWrapper>
             </DatepickContainer>
             <FilterWrapper>
               <FilterIconWrapper>
-                <FiFilter
-                  size={20} />
+                <FilterIcon
+                  size={20}
+                />
               </FilterIconWrapper>
               <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
                 <option value="professor">
@@ -829,7 +854,7 @@ const Dashboard: React.FC = () => {
                   )}
                 </StyledSelect>
                 :
-                <StyledSelect value={selectedSemesterValue} onChange={handleSemesterChange}>
+                <StyledSelect id={'selectFilter'} value={selectedSemesterValue} onChange={handleSemesterChange}>
                   <option value="1">
                     1º
                   </option>
