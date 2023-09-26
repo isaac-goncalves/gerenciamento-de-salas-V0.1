@@ -56,9 +56,9 @@ const Navbar = ( {toggleTheme} : any ) => {
 
     const toggleMenu = (isClick: boolean, e : any) => {
 
-    const itemID = e.target.id;
+        console.log("I RAN");
 
-    console.log(itemID);
+    const itemID = e.target;
 
     if (itemID == "DARKMODE") {
         return;
@@ -110,8 +110,8 @@ const Navbar = ( {toggleTheme} : any ) => {
 
     return (
         <>
-            <PrimaryNav menuOpen={menuOpen} onClick={(e) => toggleMenu(true, e)} onMouseEnter={() =>toggleMenu(false)} onMouseLeave={closeMenu}>
-                <AvatarWrapper >
+            <PrimaryNav menuOpen={menuOpen} onMouseEnter={() => toggleMenu(false, "")} onMouseLeave={closeMenu}>
+                <AvatarWrapper onClick={(e) => toggleMenu(true, e)} >
                     <Avatar src={avatar} />
                     {menuOpen && <>
                         <UserWrapper>
@@ -124,13 +124,12 @@ const Navbar = ( {toggleTheme} : any ) => {
                 </AvatarWrapper >
                 {/* <Hamburger /> */}
                 <Menu>
-                    <HamburgerDiv>
+                    <HamburgerDiv onClick={(e) => toggleMenu(true, e)}>
                         <RowWrapper >
                             <HamburgerWrapper/>
-                            
                         </RowWrapper>
                     </HamburgerDiv>
-                    <MenuLink to="/dashboard" >
+                    <MenuLink to="/dashboard"  >
                         <RowWrapper >
                             <SchedulesWrapper/>
                             {
@@ -179,6 +178,7 @@ const Navbar = ( {toggleTheme} : any ) => {
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="#"
+                    id="DARKMODE"
                     onClick={() => toggleTheme()}
                     >
                         <RowWrapper>
