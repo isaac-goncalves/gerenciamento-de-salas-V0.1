@@ -129,7 +129,7 @@ function App() {
             <Route path="/dashboard" element={
               <>
                 <Navbar toggleTheme={toggleTheme} />
-                <Dashboard />
+                <Dashboard theme={themeArray[theme]}/>
                 {/* <Circles ballCount={4} /> */}
               </>
             } />

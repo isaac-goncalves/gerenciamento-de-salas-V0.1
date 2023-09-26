@@ -28,7 +28,7 @@ import { ParticleOptions } from '../Components/ParticlesOptions';
 
 //
 import { useCallback } from "react";
-import type { Container, Engine } from "tsparticles-engine";
+import { Theme, type Container, type Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "tsparticles-slim"; // if you are going to use `loadSlim`, install the "tsparticles-slim" package too.
@@ -118,7 +118,7 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
   return groupedData;
 }
 //COMPONENTS -------------------------------------------------------------------------
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC = ({ theme }: any) => {
   const [loading, setLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -435,7 +435,7 @@ const Dashboard: React.FC = () => {
       }
       else {
         toast.info('Selecione um dia para agendar!');
-      }e
+      } e
     }
     else {
       toast.info('Aperte no filtro!');
@@ -722,10 +722,10 @@ const Dashboard: React.FC = () => {
           },
           particles: {
             color: {
-              value: "#dc1f1f",
+              value: theme.mainpurple,
             },
             links: {
-              color: "#ec0000",
+              color: theme.mainpurple,
               distance: 150,
               enable: true,
               opacity: 0.5,

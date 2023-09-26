@@ -54,7 +54,24 @@ const Navbar = ( {toggleTheme} : any ) => {
     }, []);
 
 
-    const toggleMenu = () => {
+    const toggleMenu = (isClick: boolean, e : any) => {
+
+    const itemID = e.target.id;
+
+    console.log(itemID);
+
+    if (itemID == "DARKMODE") {
+        return;
+    }
+
+    const viewWidth = window.innerWidth;
+
+    const viewWidthIsMobile = viewWidth <= 768;
+
+        if (viewWidthIsMobile && !isClick) {
+            return;
+        }
+
         setTimeout(() => {
             setMenuOpen(!menuOpen);
         }, 0);
@@ -93,7 +110,7 @@ const Navbar = ( {toggleTheme} : any ) => {
 
     return (
         <>
-            <PrimaryNav menuOpen={menuOpen} onClick={toggleMenu} onMouseEnter={toggleMenu} onMouseLeave={closeMenu}>
+            <PrimaryNav menuOpen={menuOpen} onClick={(e) => toggleMenu(true, e)} onMouseEnter={() =>toggleMenu(false)} onMouseLeave={closeMenu}>
                 <AvatarWrapper >
                     <Avatar src={avatar} />
                     {menuOpen && <>
