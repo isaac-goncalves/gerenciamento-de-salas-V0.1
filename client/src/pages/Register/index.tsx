@@ -217,7 +217,7 @@ const RegisterScreen: React.FC = () => {
                 console.log(JSON.stringify(obj));
 
 
-                localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(obj));
+                localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(obj));
                 toast.success("Registro realizado com sucesso!");
                 setConfetti(true);
                 setTimeout(() => {

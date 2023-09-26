@@ -272,7 +272,7 @@ const Agendamentos: React.FC = () => {
     if (userData.token === '' || userData.userData.id === 0) {
       console.log('userData is null');
 
-      const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+      const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.2');
       const userDataJson = JSON.parse(localUserData || '{}');
       const { userData: storedUserData, token } = userDataJson;
 
@@ -281,7 +281,7 @@ const Agendamentos: React.FC = () => {
 
       if (token == null || localUserData == null) {
         toast.error('Você precisa estar logado para acessar essa página!');
-        localStorage.removeItem('gerenciamento-de-salas@v1.1');
+        localStorage.removeItem('gerenciamento-de-salas@v1.2');
         setTimeout(() => {
           window.location.href = '/';
         }, 2000);

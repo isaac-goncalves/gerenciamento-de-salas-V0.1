@@ -34,6 +34,8 @@ routes.post('/agendamento/grouped', new AgendamentoController().getGroupedById) 
 routes.post('/login', new UserController().login)
 routes.post('/register', new UserController().create)
 
+routes.post('/theme', new UserController().setTheme)
+
 routes.post('/usuarios', new UserController().get)
 routes.post('/usuarios/edit', new UserController().edit)
 

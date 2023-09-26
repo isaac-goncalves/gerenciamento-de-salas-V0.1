@@ -89,7 +89,7 @@ sys.stdout.write("\b" * (toolbar_width+1)) # return to start of line, after '['
 
 for i in range(toolbar_width):
 
-    time.sleep(0.02) # do real work here
+    time.sleep(0.1) # do real work here
 
     # update the bar
 
@@ -100,6 +100,7 @@ for i in range(toolbar_width):
 sys.stdout.write("\n")
 
 # Open the web browser at the specified URL
+
 webbrowser.open(url_to_open)
 
 os.system('color 0a')

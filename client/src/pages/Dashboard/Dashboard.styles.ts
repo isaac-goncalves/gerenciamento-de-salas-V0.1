@@ -163,7 +163,6 @@ export const FilterWrapper = styled.h2`
   }
 `
 export const FilterIconWrapper = styled.div`
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,16 +187,63 @@ export const StyledSelect = styled.select`
   background-color: ${props => props.theme.white};
   color: ${props => props.theme.textcolor};
   z-index: 99;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  
+  max-width: 10rem;
   padding: 8px 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
 
   @media screen and (max-width: 500px) {
     padding: 0.5rem;
+    
+    option {
+      font-size: 0.8rem;
+    }
   }
 
   option {
-    font-size: 1rem;
+    font-size: 0.8rem;
+  }
+
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: ${props => props.theme.mainpurple};
+  }
+
+  &:focus {
+    border-color: ${props => props.theme.mainpurple};
+  }
+`
+
+export const StyledSelectValue = styled.select`
+  font-size: 0.4rem;
+  background-color: ${props => props.theme.white};
+  color: ${props => props.theme.textcolor};
+  z-index: 99;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  text-overflow: ellipsis;
+  max-width: 3.5rem;
+  padding: 8px 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  @media screen and (max-width: 500px) {
+    padding: 0.5rem;
+    
+    option {
+      font-size: 0.8rem;
+    }
+  }
+
+  option {
+    font-size: 0.8rem;
   }
 
   outline: none;
@@ -217,7 +263,9 @@ export const DatePickWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   width: 90%;
-  gap: 1rem;
+  @media screen and (max-width: 570px) {
+    gap: 0rem;
+  }
   background-color: ${props => props.theme.white};
   border-radius: 12px;
   padding: 0.5rem 1rem;
@@ -237,6 +285,11 @@ export const DatepickContainer = styled.div`
   gap: 1rem;
   align-items: center;
   white-space: nowrap;
+
+  @media screen and (max-width: 570px) {
+    gap: 0rem;
+  }
+
   p {
   }
 `
@@ -309,7 +362,7 @@ export const StyledDatePicker = styled(DatePicker)`
   background-color: ${props => props.theme.white};
   color: ${props => props.theme.textcolor};
   font-size: 1rem;
-  
+
   width: 7rem;
   padding: 8px;
   border: 1px solid #ccc;

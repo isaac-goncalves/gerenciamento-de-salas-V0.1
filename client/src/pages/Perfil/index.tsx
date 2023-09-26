@@ -109,7 +109,7 @@ function Perfil() {
         if (userData.token === '' || userData.userData.id === 0) {
             console.log('userData is null');
 
-            const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+            const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.2');
             const userDataJson = JSON.parse(localUserData || '{}');
             const { userData: storedUserData, token } = userDataJson;
 
@@ -118,7 +118,7 @@ function Perfil() {
 
             if (token == null || localUserData == null) {
                 toast.error('Você precisa estar logado para acessar essa página!');
-                localStorage.removeItem('gerenciamento-de-salas@v1.1');
+                localStorage.removeItem('gerenciamento-de-salas@v1.2');
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 2000);
@@ -253,7 +253,7 @@ function Perfil() {
 
         async function updateToken() {
 
-            const token = localStorage.getItem('gerenciamento-de-salas@v1.1')
+            const token = localStorage.getItem('gerenciamento-de-salas@v1.2')
 
             const userData = JSON.parse(token || '{}');
 
@@ -268,7 +268,7 @@ function Perfil() {
                 }
             }
 
-            localStorage.setItem('gerenciamento-de-salas@v1.1', JSON.stringify(newToken));
+            localStorage.setItem('gerenciamento-de-salas@v1.2', JSON.stringify(newToken));
         }
 
     }

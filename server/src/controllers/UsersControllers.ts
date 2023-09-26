@@ -166,7 +166,8 @@ export class UserController {
             email,
             password,
             role,
-            semester
+            semester,
+            theme: 0
           },
           token: token
         })
@@ -358,7 +359,8 @@ export class UserController {
           ...restUserData,
           disciplina: disciplinaObj?.id,
           nomeDisciplina: disciplinaObj?.descricao,
-          role: userExists.role
+          role: userExists.role,
+          theme: userExists.theme
         }
 
         return response.status(201).json({
@@ -373,6 +375,7 @@ export class UserController {
       }
 
       userData.role = userExists.role
+      userData.theme = userExists.theme
 
       return response.status(201).json({
         userData: userData,
@@ -482,4 +485,31 @@ export class UserController {
       return response.status(500).json({ message: 'internal server error' })
     }
   }
+
+  async setTheme (request: Request, response: Response) {
+  
+    const { email, theme } = request.body
+
+    console.log(request.body)
+
+    const userExists = await usuariosRepository.findOneBy({ email })
+
+    if (!userExists) {
+      return response.status(400).json({ error: 'User does not exist' })
+    }
+
+    const updatedUser = {
+      ...userExists,
+      theme
+    }
+
+    const updatedUserObject = await usuariosRepository.update(userExists.id, updatedUser)
+
+    console.log('updated user')
+    console.log(updatedUserObject)
+
+    return response.status(200).json({ message: 'User updated' })
+
+  }
+
 }

@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -179,7 +179,7 @@ const Dashboard: React.FC = () => {
     if (userData.token === '' || userData.userData.id === 0) {
       console.log('userData is null');
 
-      const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.1');
+      const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.2');
       const userDataJson = JSON.parse(localUserData || '{}');
       const { userData: storedUserData, token } = userDataJson;
 
@@ -188,7 +188,7 @@ const Dashboard: React.FC = () => {
 
       if (token == null || localUserData == null) {
         toast.error('Você precisa estar logado para acessar essa página!');
-        localStorage.removeItem('gerenciamento-de-salas@v1.1');
+        localStorage.removeItem('gerenciamento-de-salas@v1.2');
         setTimeout(() => {
           window.location.href = '/';
         }, 2000);
@@ -854,7 +854,7 @@ const Dashboard: React.FC = () => {
                   )}
                 </StyledSelect>
                 :
-                <StyledSelect id={'selectFilter'} value={selectedSemesterValue} onChange={handleSemesterChange}>
+                <StyledSelectValue id={'selectFilter'} value={selectedSemesterValue} onChange={handleSemesterChange}>
                   <option value="1">
                     1º
                   </option>
@@ -873,7 +873,7 @@ const Dashboard: React.FC = () => {
                   <option value="6">
                     6º
                   </option>
-                </StyledSelect>}
+                </StyledSelectValue>}
             </FilterWrapper>
             <>
               {

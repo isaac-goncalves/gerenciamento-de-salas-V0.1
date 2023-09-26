@@ -50,7 +50,7 @@ const LoginScreen: React.FC = () => {
 
 
     useEffect(() => {
-        const localStorageData = localStorage.getItem("gerenciamento-de-salas@v1.1");
+        const localStorageData = localStorage.getItem("gerenciamento-de-salas@v1.2");
 
         if (localStorageData) {
             const data = JSON.parse(localStorageData);
@@ -103,7 +103,7 @@ const LoginScreen: React.FC = () => {
                     }
                     console.log(JSON.stringify(obj));
 
-                    localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(obj));
+                    localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(obj));
 
                     setConfetti(true);
                     toast.success("Login realizado com sucesso!");
@@ -161,7 +161,7 @@ const LoginScreen: React.FC = () => {
             }
             console.log(JSON.stringify(obj));
 
-            localStorage.setItem("gerenciamento-de-salas@v1.1", JSON.stringify(obj));
+            localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(obj));
 
             setConfetti(true);
             toast.success("Usuário guest criado com sucesso!");

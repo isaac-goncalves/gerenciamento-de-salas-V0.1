@@ -15,6 +15,9 @@ export class Usuarios  {
     @Column()
     role: string;
 
+    @Column({ default: 0})
+    theme: number;
+
     @CreateDateColumn()
     created_at: Date;
 

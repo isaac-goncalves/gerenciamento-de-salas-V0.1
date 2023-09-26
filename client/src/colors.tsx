@@ -98,7 +98,7 @@ export const vancedTheme = {
   textcolor: 'rgb(255, 255, 254);', //textcolor
   white: 'rgba(75, 75, 75, 0.4);', //white
   mainpurple: '#d83c58',
-  lighterGreen: 'rgb(252, 42, 0);',//color inside schedule
+  lighterGreen: 'rgb(255, 107, 62)',//color inside schedule
 
   //editModal
   lightwhitebackgroud: 'rgb(60, 63, 61);', //editmodal card color

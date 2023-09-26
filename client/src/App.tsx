@@ -13,22 +13,92 @@ import RegisterScreen from './pages/Register';
 import Gerenciamento from './pages/Gerenciamento';
 import { ThemeProvider } from 'styled-components';
 
-import { lightTheme, lightThemeRed ,darkTheme, vancedTheme } from './colors';
-import { useState } from 'react';
+import { lightTheme, lightThemeRed, darkTheme, vancedTheme } from './colors';
+import { useEffect, useState } from 'react';
 import GlobalStyle from './theme/globalStyle'
+import { toast } from 'react-toastify';
+
+const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
 function App() {
 
-  const [theme, setTheme] = useState(3); // Default theme is 'light'
+  const [theme, setTheme] = useState(0); // Default theme is 'light'
+
+  useEffect(() => {
+
+    const token = localStorage.getItem('gerenciamento-de-salas@v1.2');
+
+    if(token){
+
+      const userDataJson = JSON.parse(token || '{}');
+      
+      const { userData } = userDataJson;
+      
+      console.log(userData.theme)
+      
+      // const themeResult = userData.theme;
+      
+      setTheme(userData.theme);
+    }
+  } 
+  , [])
 
   // Function to toggle the theme
   const toggleTheme = () => {
 
-    if (theme > 2) {
-      setTheme(0);
-    }else {
-      setTheme(theme + 1);
-    }
+    //VARIABLES
+    const url = apiUrl + "/theme"
+
+    
+
+    let ThemeValue = theme
+
+    if (theme >= 3) {
+      ThemeValue = 0
+    } else
+      ThemeValue = theme + 1
+
+    setTheme(ThemeValue);
+
+
+    //STORAGE THEME CHANGE 
+    const storedToken = localStorage.getItem('gerenciamento-de-salas@v1.2');
+
+    const userDataJson = JSON.parse(storedToken || '{}');
+
+    const { userData, token } = userDataJson;
+
+    console.log(userData, token)
+
+    userData.theme = ThemeValue;
+
+    localStorage.setItem('gerenciamento-de-salas@v1.2', JSON.stringify({ userData, token }));
+
+
+    const ThemeNames = [
+      "LightTheme",
+      "Cookie de Morango",
+      "standart darkTheme",
+      "VancedTheme"
+    ]
+    //REQUEST
+
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        email: userData.email,
+        theme: theme
+      }),
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        toast.info('Tema alterado para ' + ThemeNames[ThemeValue] + ' com sucesso!')
+      }
+      )
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
   };
 
   const themeArray = [

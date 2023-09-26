@@ -47,7 +47,7 @@ const Navbar = ( {toggleTheme} : any ) => {
     //cretae useffect the get the user data from local storage and store the data on a state 
 
     useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem('gerenciamento-de-salas@v1.1') || '{}');
+        const userData = JSON.parse(localStorage.getItem('gerenciamento-de-salas@v1.2') || '{}');
         console.clear();
         console.log(userData);
         setUser(userData.userData);
@@ -61,7 +61,7 @@ const Navbar = ( {toggleTheme} : any ) => {
     };
 
     const handleLogout = async () => {
-        await localStorage.removeItem('gerenciamento-de-salas@v1.1');
+        await localStorage.removeItem('gerenciamento-de-salas@v1.2');
         window.location.href = '/';
     }
 
