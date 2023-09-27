@@ -766,13 +766,12 @@ const Dashboard: React.FC = ({ theme }: any) => {
       <MainContainer>
         <CalltoActionButton className={`bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
-            userData.userData.role = "aluno" || userData.userData.role == "guest" ?
-              <>
-
-                <FaFilter size={35} color='white' />
-              </>
-              :
-              <MdOutlineModeEdit size={40} color='white' />
+            userData.userData.role == "aluno" &&
+            <FaFilter size={35} color='white' />
+          }
+          {
+            userData.userData.role == "professor" &&
+            <MdOutlineModeEdit size={40} color='white' />
           }
         </CalltoActionButton>
         <Helmet>
@@ -874,21 +873,21 @@ const Dashboard: React.FC = ({ theme }: any) => {
                     6º
                   </option>
                 </StyledSelectValue>}
-            </FilterWrapper>
-            <>
-              {
-                userData.userData.professor_id == 0 || userData.userData.professor_id == undefined ?
-                  null
-                  :
-                  (
-                    userIsScheduling ?
-                      <ButtonConfimarAgendamento onClick={handleSchedulingButtonClick}>Cancelar</ButtonConfimarAgendamento>
-                      :
-                      <ButtonConfimarAgendamento onClick={handleSchedulingButtonClick}>Novo agendamento</ButtonConfimarAgendamento>
-                  )
-              }
 
-            </>
+              <>
+                {
+                  userData.userData.professor_id == 0 || userData.userData.professor_id == undefined ?
+                    null
+                    :
+                    (
+                      userIsScheduling ?
+                        <ButtonConfimarAgendamento onClick={handleActionButtonClick}>Cancelar</ButtonConfimarAgendamento>
+                        :
+                        <ButtonConfimarAgendamento onClick={handleActionButtonClick}>Novo agendamento</ButtonConfimarAgendamento>
+                    )
+                }
+              </>
+            </FilterWrapper>
           </DatePickWrapper>
         </Header>
         <ClassesContainer>
