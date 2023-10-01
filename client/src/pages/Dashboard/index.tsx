@@ -42,6 +42,7 @@ import arrowRight from '../../../public/images/pickDateicons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
 import { StyledButton } from '../Perfil/Perfil.styles';
 import { FaFilter } from 'react-icons/fa';
+import { on } from 'events';
 
 
 interface ScheduleItem {
@@ -75,6 +76,8 @@ interface Professor {
 type GroupedData = {
   [key: string]: Array<ScheduleItem | IntervalItem>;
 }
+
+export var themetest = null;
 
 function groupByWeekday(data: ScheduleItem[]): GroupedData {
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
@@ -116,7 +119,7 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
   return groupedData;
 }
 //COMPONENTS -------------------------------------------------------------------------
-const Dashboard: any = ({ theme }: any) => {
+const Dashboard: any = ({ theme, themeName }: any) => {
   const [loading, setLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -128,7 +131,6 @@ const Dashboard: any = ({ theme }: any) => {
       name: "Selecione um professor",
     },
   ]);
-
 
   //MODALPROPS
   const [userIsScheduling, setUserIsScheduling] = useState<boolean>(false);
@@ -173,6 +175,7 @@ const Dashboard: any = ({ theme }: any) => {
   //USE EFFECTS -------------------------------------------------------------------------
   useLayoutEffect(() => {
     console.log('Starting to render stuff...');
+    themetest = theme;
 
     if (userData.token === '' || userData.userData.id === 0) {
       console.log('userData is null');
@@ -430,7 +433,9 @@ const Dashboard: any = ({ theme }: any) => {
     if (userData.userData.role == "professor") {
 
       if (userIsScheduling == true) {
-        toast.info('Modo de agendamento desativado!');
+        toast.info('Modo de agendamento desativado!', {
+          theme: "dark"
+        });
       }
       else {
         toast.info('Selecione um dia para agendar!');
@@ -439,15 +444,16 @@ const Dashboard: any = ({ theme }: any) => {
     }
     else {
 
-      toast.info('Selecione um filtro', {
-
-      });
+      toast.info('Selecione um filtro',
+        {
+          theme: (themeName == "LightTheme" || themeName == "Cookie de Morango") ? "light" : "dark"
+        }
+      );
 
     }
     console.log(userIsScheduling)
     //habilitar oarametro que fd-diz que esta em modo agendamento
   }
-
 
   const handleCloseModalEdit = (resetParams: boolean) => {
     setSchedulingModalIsVisible(false);
@@ -681,6 +687,28 @@ const Dashboard: any = ({ theme }: any) => {
     await console.log(container);
   }, []);
 
+  //THEME FUNCTIONS
+
+  function getThemeBasedClass(theme: string) {
+
+    console.log(theme)
+
+    switch (theme) {
+      case 'LightTheme':
+        return 'bubbly-button-shadow-white'
+      case 'Cookie de Morango':
+        return 'bubbly-button-cookie-de-morango'
+      case 'standart darkTheme':
+        return 'bubbly-button-darkmode'
+      case 'VancedTheme':
+        return 'bubbly-button-vanced-theme'
+      default:
+        return 'bubbly-button-shadow-white'
+    }
+
+
+  }
+
   //RENDERS -------------------------------------------------------------------------
   return (
     <>
@@ -761,7 +789,7 @@ const Dashboard: any = ({ theme }: any) => {
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ToastContainer />
       <MainContainer>
-        <CalltoActionButton className={`bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
+        <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
             userData.userData.role == "aluno" || userData.userData.role == "guest" &&
             <FaFilter size={35} color='white' />

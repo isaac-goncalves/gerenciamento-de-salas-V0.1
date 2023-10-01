@@ -140,8 +140,9 @@ display: flex;
 width: 100%;
 justify-content: center;
 gap:1rem;
-border: 1px solid ${props => props.theme.mainpurple};
+/* border: 1px solid ${props => props.theme.mainpurple}; */
   font-size: 1rem;
+  
   color: ${props => props.theme.textcolor};
   margin-bottom: 1rem;
 `

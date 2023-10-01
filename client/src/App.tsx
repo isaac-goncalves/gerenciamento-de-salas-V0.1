@@ -24,32 +24,33 @@ function App() {
 
   const [theme, setTheme] = useState(0); // Default theme is 'light'
 
+  const [ThemeName, setThemeName] = useState("LightTheme")
+
+
   useEffect(() => {
 
     const token = localStorage.getItem('gerenciamento-de-salas@v1.2');
 
-    if(token){
+    if (token) {
 
       const userDataJson = JSON.parse(token || '{}');
-      
+
       const { userData } = userDataJson;
-      
+
       console.log(userData.theme)
-      
+
       // const themeResult = userData.theme;
-      
+
       setTheme(userData.theme);
     }
-  } 
-  , [])
+  }
+    , [])
 
   // Function to toggle the theme
   const toggleTheme = () => {
 
     //VARIABLES
     const url = apiUrl + "/theme"
-
-    
 
     let ThemeValue = theme
 
@@ -60,6 +61,7 @@ function App() {
 
     setTheme(ThemeValue);
 
+    setThemeName(ThemeNames[ThemeValue])
 
     //STORAGE THEME CHANGE 
     const storedToken = localStorage.getItem('gerenciamento-de-salas@v1.2');
@@ -74,13 +76,6 @@ function App() {
 
     localStorage.setItem('gerenciamento-de-salas@v1.2', JSON.stringify({ userData, token }));
 
-
-    const ThemeNames = [
-      "LightTheme",
-      "Cookie de Morango",
-      "standart darkTheme",
-      "VancedTheme"
-    ]
     //REQUEST
 
     fetch(url, {
@@ -92,7 +87,11 @@ function App() {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
-        toast.info('Tema alterado para ' + ThemeNames[ThemeValue] + ' com sucesso!')
+        toast.info('Tema alterado para ' + ThemeNames[ThemeValue] + ' com sucesso!',
+          {
+            theme: (theme == 0 || theme == 3) ? "light" : "dark"
+          }
+        )
       }
       )
       .catch((error) => {
@@ -101,6 +100,13 @@ function App() {
 
   };
 
+  const ThemeNames = [
+    "LightTheme",
+    "Cookie de Morango",
+    "standart darkTheme",
+    "VancedTheme"
+  ]
+
   const themeArray = [
     lightTheme,
     lightThemeRed,
@@ -108,15 +114,17 @@ function App() {
     vancedTheme
   ]
 
+
+
   return (
     <>
-      <ThemeProvider theme={themeArray[theme]}>
+      <ThemeProvider theme={themeArray[theme]} >
         <Router>
           <Routes>
             <Route path="/" element={
               <>
-                <LoginScreen 
-                theme={themeArray[theme]}
+                <LoginScreen
+                  theme={themeArray[theme]}
                 />
                 {/* <Circles ballCount={4} /> */}
               </>
@@ -131,7 +139,10 @@ function App() {
             <Route path="/dashboard" element={
               <>
                 <Navbar toggleTheme={toggleTheme} />
-                <Dashboard theme={themeArray[theme]}/>
+                <Dashboard
+                  theme={themeArray[theme]}
+                  themeName={ThemeName}
+                />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
@@ -177,5 +188,7 @@ function App() {
     </>
   )
 }
+
+
 
 export default App

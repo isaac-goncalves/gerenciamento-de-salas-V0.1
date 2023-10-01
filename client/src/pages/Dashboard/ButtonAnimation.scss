@@ -4,6 +4,8 @@ $button-bg: $fuschia;
 $button-text-color: #fff;
 $baby-blue: #f8faff;
 
+
+
 body{
   font-size: 16px;
   font-family: 'Helvetica', 'Arial', sans-serif;
@@ -26,7 +28,7 @@ body{
   cursor: pointer;
   position: relative;
   transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
-  box-shadow: 0 2px 25px#6358DC;
+ 
   
   &:focus {
     outline: 0;
@@ -94,6 +96,21 @@ body{
   }
 }
 
+.bubbly-button-shadow-white{
+  box-shadow: 0 2px 25px #6358DC;
+}
+
+.bubbly-button-cookie-de-morango{
+  box-shadow: 0 2px 25px #d83c58;
+}
+
+.bubbly-button-darkmode{
+  box-shadow: 0 2px 25px rgb(153,189,255);
+}
+
+.bubbly-button-vanced-theme{
+  box-shadow: 0 2px 25px #d83c58;
+}
 
 @keyframes topBubbles {
   0%{
