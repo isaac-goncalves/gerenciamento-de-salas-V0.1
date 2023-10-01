@@ -43,7 +43,6 @@ import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
 import { StyledButton } from '../Perfil/Perfil.styles';
 import { FaFilter } from 'react-icons/fa';
 
-//import PArticles 
 
 interface ScheduleItem {
   id: number;
@@ -667,6 +666,7 @@ const Dashboard: any = ({ theme }: any) => {
     )
   }
 
+  //PARTICLES FUNCTIONS
   const particlesInit = useCallback(async (engine: Engine) => {
     console.log(engine);
 

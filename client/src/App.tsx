@@ -115,7 +115,9 @@ function App() {
           <Routes>
             <Route path="/" element={
               <>
-                <LoginScreen />
+                <LoginScreen 
+                theme={themeArray[theme]}
+                />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
