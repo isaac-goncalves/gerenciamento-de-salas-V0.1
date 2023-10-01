@@ -22,7 +22,7 @@ const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
 function App() {
 
-  const [theme, setTheme] = useState(3); // Default theme is 'light'
+  const [theme, setTheme] = useState(0); // Default theme is 'light'
 
   useEffect(() => {
 

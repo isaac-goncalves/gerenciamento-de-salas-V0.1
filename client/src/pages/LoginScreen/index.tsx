@@ -41,7 +41,7 @@ interface props {
     theme: Theme;
 }
 
-const LoginScreen: any = ({ theme }: any) : props => {
+const LoginScreen: any = ({ theme }: any) : any => {
     const [email, setEmail] = useState(""); //isaac@gmail.com
     const [password, setPassword] = useState(""); //Password123$
     const [form, setForm] = useState("login");
@@ -200,8 +200,6 @@ const LoginScreen: any = ({ theme }: any) : props => {
             )
 
     }
-
-
     return (
         <>
             <Particles
@@ -358,19 +356,18 @@ const LoginScreen: any = ({ theme }: any) : props => {
                                     <Button onClick={handleGuestLogin} >Guest</Button>
                                     <Button onClick={handleSubmit}>Login</Button>
                                 </ButtonWrapper>
-                                <div>
                                     <NãoPossuiContaText>
+                              
                                         Não possui uma conta?
                                         <Link to="/register" >
                                             <span> Registre-se</span>
                                         </Link>
+                               
                                     </NãoPossuiContaText>
-                                </div>
                             </ButtonsWrapper>
                         </FormInputsWrapper>
                     </Form>
                 </LoginContainer>
-
             </ContainerElement>
         </>
     );

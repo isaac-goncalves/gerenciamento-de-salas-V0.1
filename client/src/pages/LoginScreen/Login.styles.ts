@@ -50,6 +50,7 @@ export const SGSALogo = styled.img`
 bottom: 14%;
 left: 10%;
 object-fit: cover; */
+border-radius: 8px;
   width: 500px;
 
   @media screen and (max-width: 500px) {
@@ -87,12 +88,11 @@ export const ButtonsWrapper = styled.div`
   justify-content: center;
   width: 100%;
 
-
   div {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     P {
       span {
         color: ${props => props.theme.mainpurple};
@@ -135,7 +135,12 @@ gap:1rem;
 font-size: 1rem;
 `
 
-export const NãoPossuiContaText = styled.p`
+export const NãoPossuiContaText = styled.div`
+display: flex;
+width: 100%;
+justify-content: center;
+gap:1rem;
+border: 1px solid ${props => props.theme.mainpurple};
   font-size: 1rem;
   color: ${props => props.theme.textcolor};
   margin-bottom: 1rem;
@@ -336,7 +341,7 @@ export const EyePassword = styled.img`
 
 export const EyeIcon = styled.div`
   display: flex;
-  width: 10%;
+  width: 3rem;
   /* width: 10px; */
   background-color: ${props => props.theme.white};
   align-items: center;
