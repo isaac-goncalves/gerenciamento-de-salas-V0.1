@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import express, { Router } from 'express'
 
 import { ETLControllers } from './controllers/ETLControllers'
 
@@ -38,6 +38,9 @@ routes.post('/theme', new UserController().setTheme)
 
 routes.post('/usuarios', new UserController().get)
 routes.post('/usuarios/edit', new UserController().edit)
+routes.post('/usuarios/upload', new UserController().uploadFile)
+routes.get('/usuarios/:userId', new UserController().profilePicture)
+routes.get('/server/uploads', express.static('uploads/user/profilepics'));
 
 routes.post('/professores', new UserController().getProfessores)
 routes.post('/alunos', new UserController().getAlunos)

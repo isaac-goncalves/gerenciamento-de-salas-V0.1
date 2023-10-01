@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo, EyeIcon, InputInternalWrapper, InputColumnWrapper, ButtonWrapper } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Container, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo, EyeIcon, InputInternalWrapper, InputColumnWrapper, ButtonWrapper, NãoPossuiContaText, EmailWrapper } from "./Login.styles"
 
 import background from '../../../public/images/background.jpg';
 import fatec from '../../../public/images/fatec.svg';
@@ -136,12 +136,12 @@ const LoginScreen: React.FC = () => {
 
         const guestCreationObject =
         {
-        name: "Guest",
-        surname: "guest",
-        email: `${guestRandomNumber}_guest@mail.com`,
-        password: "Password123$",
-        role: "guest",
-        semestre: 1
+            name: "Guest",
+            surname: "guest",
+            email: `${guestRandomNumber}_guest@mail.com`,
+            password: "Password123$",
+            role: "guest",
+            semestre: 1
         }
 
         fetch(`${apiUrl}/register`, {
@@ -152,27 +152,27 @@ const LoginScreen: React.FC = () => {
             body: JSON.stringify(guestCreationObject),
         })
 
-        .then((response) => response.json())
-        .then((data) => {
+            .then((response) => response.json())
+            .then((data) => {
 
-            const obj = {
-                userData: data.userData,
-                token: data.token
+                const obj = {
+                    userData: data.userData,
+                    token: data.token
+                }
+                console.log(JSON.stringify(obj));
+
+                localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(obj));
+
+                setConfetti(true);
+                toast.success("Usuário guest criado com sucesso!");
+
+                setTimeout(() => {
+                    console.log("redirecting")
+                    window.location.href = "/dashboard";
+                }
+                    , 4000);
             }
-            console.log(JSON.stringify(obj));
-
-            localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(obj));
-
-            setConfetti(true);
-            toast.success("Usuário guest criado com sucesso!");
-
-            setTimeout(() => {
-                console.log("redirecting")
-                window.location.href = "/dashboard";
-            }
-                , 4000);
-        }
-        )
+            )
 
     }
 
@@ -218,7 +218,7 @@ const LoginScreen: React.FC = () => {
                         <InputsWrapper>
                             <InputWrapper>
                                 <MailIcon src={mailIcon} />
-                                <div>
+                                <EmailWrapper>
                                     <p>Email</p>
                                     <Input
                                         type="text"
@@ -226,7 +226,7 @@ const LoginScreen: React.FC = () => {
                                         value={email}
                                         onChange={(event: any) => setEmail(event.target.value)}
                                     />
-                                </div>
+                                </EmailWrapper>
                             </InputWrapper>
                             <InputWrapper>
                                 <PasswordIcon src={passwordIcon} />
@@ -244,8 +244,6 @@ const LoginScreen: React.FC = () => {
                                         </EyeIcon>
                                     </InputInternalWrapper>
                                 </InputColumnWrapper>
-
-                                
                             </InputWrapper>
                         </InputsWrapper>
                         <MantenhaMeConectadoWrapper>
@@ -257,16 +255,16 @@ const LoginScreen: React.FC = () => {
                         </MantenhaMeConectadoWrapper>
                         <ButtonsWrapper>
                             <ButtonWrapper>
-                                <Button onClick={handleSubmit}>Login</Button>
                                 <Button onClick={handleGuestLogin} >Guest</Button>
+                                <Button onClick={handleSubmit}>Login</Button>
                             </ButtonWrapper>
                             <div>
-                                <p>
+                                <NãoPossuiContaText>
                                     Não possui uma conta?
                                     <Link to="/register" >
                                         <span> Registre-se</span>
                                     </Link>
-                                </p>
+                                </NãoPossuiContaText>
                             </div>
                         </ButtonsWrapper>
                     </FormInputsWrapper>

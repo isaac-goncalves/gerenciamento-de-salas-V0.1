@@ -1,15 +1,5 @@
 import styled from 'styled-components'
 
-import { Colors } from '../../colors'
-
-// export const Container = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   height: 100vh;
-//   background-color: #f8f8f8;
-// `;
 
 export const Container = styled.div`
   background-color: ${props => props.theme.lightgrayInput};
@@ -52,7 +42,7 @@ export const FatecImage = styled.img`
   bottom: 10%;
   left: 10%;
   width: 300px;
-  object-fit: scale-down;
+  object-fit: cover;
 `
 
 export const SGSALogo = styled.img`
@@ -116,7 +106,7 @@ export const Button = styled.button`
   width: 100%;
   height: 5rem;
   background-color: ${props => props.theme.mainpurple};
-  color: #fff;
+  color: ${props => props.theme.realwhite};
   font-size: 1rem;
   border: none;
   font-weight: 500;
@@ -129,13 +119,26 @@ export const Button = styled.button`
     transform: translateY(-2px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
+
+  @media screen and (max-width: 500px) {
+    font-size: 1.4rem;
+
+  }
+
 `
 
 export const ButtonWrapper = styled.div`
 display: flex;
 justify-content: center;
 width: 100%;
-gap:1rem
+gap:1rem;
+font-size: 1rem;
+`
+
+export const NãoPossuiContaText = styled.p`
+  font-size: 1rem;
+  color: ${props => props.theme.textcolor};
+  margin-bottom: 1rem;
 `
 
 export const TitleWrapper = styled.div`
@@ -147,6 +150,13 @@ export const TitleWrapper = styled.div`
   margin-top: 2.75rem;
   max-width: 45rem;
   margin: 1rem;
+
+  p {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: ${props => props.theme.textcolor};
+    margin-bottom: 1rem;
+  }
 
   div {
     display: flex;
@@ -172,6 +182,8 @@ export const Separator = styled.div`
     color: var(--grey-blue);
     font-family: 'Poppins', sans-serif;
     padding: 0 rem;
+    color: ${props => props.theme.textcolor};
+    margin: 0 1rem;
   }
 `
 
@@ -179,7 +191,7 @@ export const Form = styled.form`
   display: flex;
   height: 95%;
   width: 90%;
-  background-color: #fff;
+  background-color: ${props => props.theme.lightgray};
   
   flex-direction: column;
   align-items: center;
@@ -191,7 +203,6 @@ export const Form = styled.form`
     width: 100%;
     box-sizing: border-box;
     color: ${props => props.theme.textcolor};
-    background-color: ${props => props.theme.lightgray};
     border: none;
   }
 
@@ -230,6 +241,7 @@ export const MantenhaMeConectadoWrapper = styled.div`
 
     p {
       font-size: 1rem;
+      color: ${props => props.theme.textcolor};
     }
 
     input {
@@ -270,32 +282,43 @@ export const InputWrapper = styled.div`
   height: 5rem;
   border-radius: 8px;
   align-items: center;
-  background-color: ${props => props.theme.lightgray};
+  padding-right: 1rem;
+  background-color: ${props => props.theme.white};
 
-  
   p {
     font-size: 0.85rem;
+    color: ${props => props.theme.textcolor};
+
   }
+
+  
+
 `
 
 export const InputColumnWrapper = styled.div `
   display: flex;
   flex-direction: column;
   width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
   `
 
 export const InputInternalWrapper = styled.div`
  display: flex;
   justify-content: space-between;
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
+  background-color: ${props => props.theme.white};
 `
 
 export const Input = styled.input`
+  display: flex;
   width: 90%;
   height: 30px;
-  border: none;
+  border: none; 
+  padding: 0 1rem;
   outline: none;
+  background-color: ${props => props.theme.white};
   font-weight: 700;
   font-size: 1.25rem;
   border-radius: 4px;
@@ -314,6 +337,10 @@ export const EyePassword = styled.img`
 export const EyeIcon = styled.div`
   display: flex;
   width: 10%;
+  /* width: 10px; */
+  background-color: ${props => props.theme.white};
+  align-items: center;
+  justify-content: center;
 `
 
 export const TeamsWrapper = styled.div`
@@ -336,6 +363,13 @@ export const MailIcon = styled.img`
   width: 30px;
   height: 24px;
   margin: 1rem;
+`
+
+export const EmailWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 8px;
 `
 
 export const PasswordIcon = styled.img`

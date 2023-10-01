@@ -37,12 +37,13 @@ const Label = styled.label`
 
 
 interface FileUploadButtonProps {
+  userId: string;
   loggedUserRole: string;
   action: string;
 }
 
 // FileUploadButton component
-const FileUploadButton = ({ loggedUserRole, action }: FileUploadButtonProps) => {
+const FileUploadButton = ({ userId, loggedUserRole, action }: FileUploadButtonProps) => {
 
   const [loggedUser, setLoggedUser] = React.useState('');
 
@@ -56,8 +57,6 @@ const FileUploadButton = ({ loggedUserRole, action }: FileUploadButtonProps) => 
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 
-
-
     const file = event.target.files?.[0];
     if (file) {
       sendFileToBackend(file);
@@ -65,9 +64,22 @@ const FileUploadButton = ({ loggedUserRole, action }: FileUploadButtonProps) => 
   };
 
   const sendFileToBackend = (selectedFile: File) => {
+
+    let url = '';
+
+    if (action === 'profilepic') {
+      url = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/usuarios/upload/';
+    }
+    else {
+      url = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/template/upload';
+    }
+
     const formData = new FormData();
+    
     formData.append('file', selectedFile);
-    fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/template/upload', {
+    formData.append('userId', userId);
+
+    fetch(url, {
       method: 'POST',
       body: formData,
     })

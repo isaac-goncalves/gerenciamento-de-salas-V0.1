@@ -26,7 +26,6 @@ import ModalEdit from '../Components/ModalEdit';
 
 import { ParticleOptions } from '../Components/ParticlesOptions';
 
-//
 import { useCallback } from "react";
 import { Theme, type Container, type Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
@@ -34,7 +33,7 @@ import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim"; // if you are going to use `loadSlim`, install the "tsparticles-slim" package too.
 //
 
-import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdOutlineModeEdit, MdSubdirectoryArrowRight, MdToday } from 'react-icons/md';
+import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdOutlineModeEdit, MdOutlineModeEditOutline, MdSubdirectoryArrowRight, MdToday } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
 
 import dateIcon from '../../../public/images/dia_de_hoje.png';
@@ -118,7 +117,7 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
   return groupedData;
 }
 //COMPONENTS -------------------------------------------------------------------------
-const Dashboard: React.FC = ({ theme }: any) => {
+const Dashboard: any = ({ theme }: any) => {
   const [loading, setLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -426,6 +425,7 @@ const Dashboard: React.FC = ({ theme }: any) => {
     setTimeout(() => {
       setIsAnimating(false);
     }, 700);
+
     console.log(userData.userData.role)
 
     if (userData.userData.role == "professor") {
@@ -436,22 +436,19 @@ const Dashboard: React.FC = ({ theme }: any) => {
       else {
         toast.info('Selecione um dia para agendar!');
       } e
+      setUserIsScheduling(!userIsScheduling)
     }
     else {
-      toast.info('Aperte no filtro!');
-      //click on select filter 
-      const select = document.getElementById("selectFilter") as HTMLSelectElement;
-      toast.info('Filtrando por ' + select.options[select.selectedIndex].text);
 
-      select.click();
-      return
+      toast.info('Selecione um filtro', {
+
+      });
+
     }
-    setUserIsScheduling(!userIsScheduling)
-
-
     console.log(userIsScheduling)
     //habilitar oarametro que fd-diz que esta em modo agendamento
   }
+
 
   const handleCloseModalEdit = (resetParams: boolean) => {
     setSchedulingModalIsVisible(false);
@@ -766,7 +763,7 @@ const Dashboard: React.FC = ({ theme }: any) => {
       <MainContainer>
         <CalltoActionButton className={`bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
-            userData.userData.role == "aluno" &&
+            userData.userData.role == "aluno" || userData.userData.role == "guest" &&
             <FaFilter size={35} color='white' />
           }
           {

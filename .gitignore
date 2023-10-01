@@ -11,3 +11,5 @@ server/dist
 client/.env
 client/.env
 client/.env
+StartupAutomationScripts/ngrok_log.txt
+*.jpg

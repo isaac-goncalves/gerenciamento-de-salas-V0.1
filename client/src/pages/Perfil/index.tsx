@@ -103,6 +103,8 @@ function Perfil() {
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
 
+    const [userImage, setUserImage] = useState<any>(null);
+
     useLayoutEffect(() => {
         console.log('Starting to render stuff...');
 
@@ -127,13 +129,31 @@ function Perfil() {
                 setUserData(userDataJson);
                 setSemestre(userDataJson.userData.semestre);
                 setDisciplina(userDataJson.userData.disciplina);
+                fetchUserImage(userDataJson.userData.userId);
             }
         }
+
+
     }, [userData]);
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    const fetchUserImage = async (userId: any) => {
+        try {
+            const response = await fetch( "http://localhost:8080" +`/usuarios/12`);
+            if (response.ok) {
+                const blob = await response.blob();
+                const imageUrl = URL.createObjectURL(blob);
+                setUserImage(imageUrl);
+            } else {
+                console.error('Failed to fetch user image');
+            }
+        } catch (error) {
+            console.error('Error fetching user image:', error);
+        }
+    };
 
     async function fetchData() {
         setIsLoading(false);
@@ -444,7 +464,7 @@ function Perfil() {
         return (
             <>
                 <ContentWrapper>
-                    <Avatar src={avatar} />
+                    <Avatar src={userImage} />
                     <UserWrapper>
                         {<UserName>{userData.userData.name}</UserName>}
                         {<UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>}
@@ -483,7 +503,7 @@ function Perfil() {
                                 </StyledSelect>
                             </InputWrapper>
                         }
-                        <FileUploadButton action={"profilepic"} loggedUserRole={userData.userData.role} />
+                        <FileUploadButton userId={userData.userData.user_id} action={"profilepic"} loggedUserRole={userData.userData.role} />
                         <StyledButton
                             onClick={handleEdit}
                         >

@@ -8,6 +8,7 @@ import { alunosRepository } from '../repositories/alunosRepository'
 
 import { professoresRepository } from '../repositories/professoresRepositories'
 
+import fs from 'fs'
 // import { employeesRepository } from "../repositories/employeesRepository";
 
 interface DecodedPayload {
@@ -15,11 +16,34 @@ interface DecodedPayload {
   // add other properties from the payload here
 }
 
+import multer, { FileFilterCallback } from 'multer'
+import path from 'path'
+
 import bcrypt from 'bcrypt'
 
 import jwt from 'jsonwebtoken'
 
 import { disciplinasRepository } from '../repositories/disciplinasRepositories'
+
+// Define storage for uploaded files
+
+
+// Define file filter for image files
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback
+) => {
+  const allowedMimes = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif']
+
+  if (allowedMimes.includes(file.mimetype)) {
+    cb(null, true)
+  } else {
+    cb(new Error('Invalid file type'))
+  }
+}
+// Create multer instance with the storage configuration
+
 
 export class UserController {
   async create (request: Request, response: Response) {
@@ -447,15 +471,16 @@ export class UserController {
         updated_at: new Date()
       }
 
-     const updatedProfessorObject = await professoresRepository.update(professor.id, updatedProfessor)
+      const updatedProfessorObject = await professoresRepository.update(
+        professor.id,
+        updatedProfessor
+      )
 
-       console.log('updated professor')
-       console.log(updatedProfessorObject)
-
+      console.log('updated professor')
+      console.log(updatedProfessorObject)
     }
 
     return response.status(200).json({ message: 'User updated' })
-
   }
 
   async getAlunos (request: Request, response: Response) {
@@ -487,7 +512,6 @@ export class UserController {
   }
 
   async setTheme (request: Request, response: Response) {
-  
     const { email, theme } = request.body
 
     console.log(request.body)
@@ -503,13 +527,116 @@ export class UserController {
       theme
     }
 
-    const updatedUserObject = await usuariosRepository.update(userExists.id, updatedUser)
+    const updatedUserObject = await usuariosRepository.update(
+      userExists.id,
+      updatedUser
+    )
 
     console.log('updated user')
     console.log(updatedUserObject)
 
     return response.status(200).json({ message: 'User updated' })
-
   }
 
+  async uploadFile (req: Request, res: Response) {
+    console.log('req.file')
+    console.log(req.file)
+
+    const userId = 12
+
+    const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, path.resolve('uploads/user/profilepics'))
+      },
+      filename: (req, file, cb) => {
+        const fileName = `${Date.now()}-${userId}-${file.originalname}`
+        cb(null, fileName)
+      }
+    })
+
+
+    const upload = multer({ storage, fileFilter })
+    
+    //grab userId
+
+    try {
+      // Use multer middleware to handle file upload
+
+      await upload.single('file')(req, res, error => {
+        console.log('req.file')
+        if (error) {
+          return res.status(400).json({ error: error.message })
+        }
+
+        // The uploaded file information is available in req.file
+        if (!req.file) {
+          console.error('No file uploaded')
+          return res.status(400).json({ message: 'No file uploaded' })
+        }
+
+        const { filename } = req.file
+        console.log('Uploaded filename:', filename)
+
+        return res.status(200).json({ message: 'File uploaded', filename })
+      })
+    } catch (error) {
+      console.error('Error during upload:', error)
+      return res.status(500).json({ message: 'Internal server error' })
+    }
+  }
+
+  async profilePicture (req: Request, res: Response) {
+    const { userId } = req.params
+
+    const user = await usuariosRepository.findOneBy({ id: parseInt(userId) })
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+
+    console.log('user')
+    console.log(user)
+
+    //grab userId and search on C:\Users\Isaac\Documents\GitHub\gerenciamento-de-salas-V0.1\server\uploads\user\profilepics for a file name like 000-01-file.jpg
+
+    const filesNames = await fs.promises.readdir(
+      path.resolve('uploads/user/profilepics')
+    )
+
+    let fileName = ''
+
+    filesNames.forEach(file => {
+      const userIdFile = file.split('-')[1]
+
+      if (userIdFile === userId) {
+        console.log('file found')
+        fileName = file
+      }
+      console.log(file)
+    })
+
+    if (fileName === '') {
+      return res.status(404).json({ error: 'File not found' })
+    }
+
+    console.log('fileName')
+
+    console.log(fileName)
+
+    //send file to frontend 
+
+    const file = path.resolve(
+      'uploads/user/profilepics',
+      fileName
+    )
+
+    console.log('file')
+
+    console.log(file)
+
+    res.setHeader('Content-Type', 'image/jpeg')
+      
+    res.sendFile(file)
+
+  }
 }

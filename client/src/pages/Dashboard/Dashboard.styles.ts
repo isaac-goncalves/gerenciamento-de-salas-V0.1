@@ -41,10 +41,13 @@ export const MainContainer = styled.div`
   align-items: center;
   background-color: ${props => props.theme.lightgray};
   /* background-color: yellow; */
-  height: 100%;
+  height: 100vh;
   width: calc(100% - 5rem);
   margin-left: 5rem;
   animation: appear 1s;
+  overflow: hidden;
+  height: 100%;
+
   @keyframes appear {
     from {
       opacity: 0;
@@ -85,8 +88,9 @@ export const CoursesWrapper = styled.div`
 
 export const ClassesContainer = styled.div`
   min-width: 98%;
-  overflow-y: auto;
-  z-index: 3;
+  /* overflow-y: auto;
+  overflow: auto; */
+  z-index: 2;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -101,6 +105,7 @@ export const ClassesContainer = styled.div`
 
   @media screen and (max-width: 570px) {
     margin-bottom: 1rem;
+    padding: 0.4rem;
   }
 `
 
@@ -367,6 +372,8 @@ export const StyledDatePicker = styled(DatePicker)`
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  
 `
 
 export const TodayContainer = styled(MdToday)`
@@ -483,9 +490,12 @@ export const WeekContainer = styled.div`
   /* background-color:red; */
   height: 100%;
   width: 100%;
-
+  overflow-x: auto;
+  overflow-y: hidden; 
+  
   @media screen and (max-width: 570px) {
     gap: 0.5rem;
+    /* min-width: 80rem; */
   }
 `
 
@@ -500,20 +510,26 @@ export const WeekdayContainer = styled.div`
   user-select: none;
   /* background-color: cyan; //remove later */
   padding-bottom: 0.1rem;
-
+  @media screen and (max-width: 570px) {
+    min-width: 20rem;
+    }
   h2 {
     @media screen and (max-width: 570px) {
       font-size: 1rem;
     }
-    font-size: 1.5rem;
+    
     font-weight: 500;
     text-transform: uppercase;
     color: ${props => props.theme.textcolor};
   }
 
   :hover {
-    transform: scale(1.03);
-    transition: 0.1s;
+    /* transform: scale(1.01);
+    transition: 0.1s; */
+
+    // add soft shadow 
+
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 
     background-color: ${props => props.theme.lightgrayInput};
     p {
@@ -524,24 +540,14 @@ export const WeekdayContainer = styled.div`
   //css for when i stop hovering
 `
 
-// const StyledWeekdayContainer = styled.div<{ isCurrentDay: boolean }>`
-//   background-color: ${({ isCurrentDay }) => (isCurrentDay ? 'lightblue' : 'white')};
-//   // Add other styles as required
-// `;
-
-// const StyledSchedule = styled.div<{ isCurrentTime: boolean }>`
-//   background-color: ${({ isCurrentTime }) => (isCurrentTime ? 'yellow' : 'white')};
-//   // Add other styles as required
-// `;
-
 export const WeekDay = styled.p`
   font-size: 1rem;
   padding: 0.5rem 0;
   color: ${props => props.theme.mainpurple};
   transition: color 0.3s ease-in-out; /* Add the transition property */
-
+  
   @media screen and (max-width: 570px) {
-    font-size: 0.6rem;
+    font-size: 1.1rem;
   }
 `
 
@@ -560,9 +566,14 @@ export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
   background-color: ${props => props.theme.lightgrayInput};
   border-radius: 8px;
   height: 100%;
+  font-size: 0.7rem;
 
   @media screen and (max-width: 570px) {
-    /* min-width: ; */
+    
+    h2{
+      font-size: 1.2rem;
+    }
+
   }
 `
 
@@ -600,7 +611,8 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     font-size: 0.8rem;
 
     @media screen and (max-width: 570px) {
-      font-size: 0.6rem;
+      font-size: 0.9rem;
+      min-width: 2rem;
     }
   }
 `

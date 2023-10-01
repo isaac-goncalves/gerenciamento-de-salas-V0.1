@@ -158,6 +158,19 @@ export const StyledSelect = styled.select<StyledSelectProps>`
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
+  color: ${props => props.theme.textcolor};
+ 
+
+  &:disabled {
+    background-color: ${props => props.theme.white};
+  color: ${props => props.theme.textcolor};
+    background-color: none;
+  }
+
+  @media screen and (max-width: 875px) {
+    font-size: 1rem;
+  }
+
 `
 
 export const DateTimeWrapper = styled.div`
@@ -199,6 +212,7 @@ export const DetailsWrapper = styled.div`
     padding: 1rem;
   }
 `
+
 export const DetailsText = styled.p`
   font-weight: 500;
   font-size: 1 rem;
