@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
 
@@ -18,8 +18,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
-import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Container, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye } from "./Register.styles"
+import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye, ContainerElement } from "./Register.styles"
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
+import Particles from "react-tsparticles";
+
+import { loadSlim } from "tsparticles-slim";
+
+import { Theme, type Container, type Engine } from "tsparticles-engine";
 
 const semestresOptions = [
     { value: '1', label: '1º SEMESTRE ADS - 2023' },
@@ -62,7 +67,7 @@ const disciplinaOptions = [
     { value: "29", label: "Sociedade e Tecnologia" }
 ];
 
-const RegisterScreen: React.FC = () => {
+const RegisterScreen:any = ({ theme }: any) : any  => {
 
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
@@ -101,7 +106,6 @@ const RegisterScreen: React.FC = () => {
     const handleChangeDisciplina = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setDisciplina(event.target.value);
     };
-
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -173,7 +177,7 @@ const RegisterScreen: React.FC = () => {
             toast.error("O campo Disciplina não pode estar vazio!");
             return;
         }
-        
+
 
 
         const IsProfessor = (role === "professor") ? true : false;
@@ -187,7 +191,7 @@ const RegisterScreen: React.FC = () => {
                 password: password,
                 role: role,
                 semester: IsProfessor ? "" : semestre,
-                discipline: IsProfessor ? disciplina : "" 
+                discipline: IsProfessor ? disciplina : ""
             }
 
             console.log(params);
@@ -237,69 +241,159 @@ const RegisterScreen: React.FC = () => {
         console.log("submit");
     }
 
-    return (<>
-        <ToastContainer />
-        <Container>
-            <Helmet>
-                <title>SGSA - Registrar</title>
-            </Helmet>
-            {
-                confetti &&
-                <Confetti
-                    width={width}
-                    height={height}
-                    colors={["#A29EC7", "#6358DC", "#6c38e7"]}
+    //PARTICLES FUNCTIONS
+    const particlesInit = useCallback(async (engine: Engine) => {
+        console.log(engine);
 
-                />
-            }
+        // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
+        // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+        // starting from v2 you can add only the features you need reducing the bundle size
+        //await loadFull(engine);
+        await loadSlim(engine);
+    }, []);
+
+    const particlesLoaded = useCallback(async (container: Container | undefined) => {
+        await console.log(container);
+    }, []);
+
+    return (
+        <>
+            <Particles
+                id="tsparticles"
+                init={particlesInit}
+                loaded={particlesLoaded}
+                options={{
+                    // background: {
+                    //   color: {
+                    //     // value: "#ffffff",
+                    //   },
+                    // },
+                    fpsLimit: 120,
+                    interactivity: {
+                        events: {
+                            onClick: {
+                                enable: true,
+                                mode: "push",
+                            },
+                            onHover: {
+                                enable: true,
+                                mode: "repulse",
+                            },
+                            resize: true,
+                        },
+                        modes: {
+                            push: {
+                                quantity: 4,
+                            },
+                            repulse: {
+                                distance: 200,
+                                duration: 0.4,
+                            },
+                        },
+                    },
+                    particles: {
+                        color: {
+                            value: theme.mainpurple,
+                        },
+                        links: {
+                            color: theme.mainpurple,
+                            distance: 150,
+                            enable: true,
+                            opacity: 0.5,
+                            width: 1,
+                        },
+                        move: {
+                            direction: "none",
+                            enable: true,
+                            outModes: {
+                                default: "bounce",
+                            },
+                            random: false,
+                            speed: 6,
+                            straight: false,
+                        },
+                        number: {
+                            density: {
+                                enable: true,
+                                area: 800,
+                            },
+                            value: 80,
+                        },
+                        opacity: {
+                            value: 0.5,
+                        },
+                        shape: {
+                            type: "circle",
+                        },
+                        size: {
+                            value: { min: 1, max: 5 },
+                        },
+                    },
+                    detectRetina: true,
+                }}
+            />
             <ToastContainer />
-            <ImageContainer>
-                <RegisterLogo src={registerLogo} />
-            </ImageContainer>
-            <ContentContainer>
-                <LoginContainer>
-                    <Form onSubmit={handleSubmit}>
-                        <h1>Preencha o Formulário para se Registrar!</h1>
-                        <NameWrapper>
-                            <div>
-                                <label>Nome</label>
-                                <Input
-                                    type="text"
-                                    placeholder=""
-                                    value={name}
-                                    onChange={(event: any) => setName(event.target.value)}
+            <ContainerElement>
+                <Helmet>
+                    <title>SGSA - Registrar</title>
+                </Helmet>
+                {
+                    confetti &&
+                    <Confetti
+                        width={width}
+                        height={height}
+                        colors={["#A29EC7", "#6358DC", "#6c38e7"]}
+
+                    />
+                }
+                <ToastContainer />
+                <ImageContainer>
+                    <RegisterLogo src={registerLogo} />
+                </ImageContainer>
+                <ContentContainer>
+                    <LoginContainer>
+                        <Form onSubmit={handleSubmit}>
+                            <h1>Preencha o Formulário para se Registrar!</h1>
+                            <NameWrapper>
+                                <div>
+                                    <label>Nome</label>
+                                    <Input
+                                        type="text"
+                                        placeholder=""
+                                        value={name}
+                                        onChange={(event: any) => setName(event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label>Sobrenome</label>
+                                    <Input
+                                        type="text"
+                                        placeholder=""
+                                        value={surname}
+                                        onChange={(event: any) => setSurname(event.target.value)}
+                                    />
+                                </div>
+                            </NameWrapper>
+                            <RadioWrapper>
+                                <input
+                                    type="radio"
+                                    id="aluno"
+                                    name="role"
+                                    value="aluno"
+                                    checked={role === 'aluno'}
+                                    onChange={handleRoleChange}
                                 />
-                            </div>
-                            <div>
-                                <label>Sobrenome</label>
-                                <Input
-                                    type="text"
-                                    placeholder=""
-                                    value={surname}
-                                    onChange={(event: any) => setSurname(event.target.value)}
+                                <p>Aluno</p>
+                                <input
+                                    type="radio"
+                                    id="professor"
+                                    name="role"
+                                    value="professor"
+                                    checked={role === 'professor'}
+                                    onChange={handleRoleChange}
                                 />
-                            </div>
-                        </NameWrapper>
-                        <RadioWrapper>
-                            <input
-                                type="radio"
-                                id="aluno"
-                                name="role"
-                                value="aluno"
-                                checked={role === 'aluno'}
-                                onChange={handleRoleChange}
-                            />
-                            <p>Aluno</p>
-                            <input
-                                type="radio"
-                                id="professor"
-                                name="role"
-                                value="professor"
-                                checked={role === 'professor'}
-                                onChange={handleRoleChange}
-                            />
-                            <label>Professor</label>
-                            {/* <input
+                                <label>Professor</label>
+                                {/* <input
                                 type="radio"
                                 id="professor"
                                 name="role"
@@ -308,87 +402,87 @@ const RegisterScreen: React.FC = () => {
                                 onChange={handleRoleChange}
                             />
                             <label>Coordenador</label> */}
-                        </RadioWrapper>
-                        <>
-                            {role === "aluno" &&
-                                <InputWrapper>
-                                    <label>Semestre:</label>
-                                    <StyledSelect value={semestre} onChange={handleChange}>
-                                        <option disabled value="">
-                                            Selecione o semestre
-                                        </option>
-                                        {semestresOptions.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
+                            </RadioWrapper>
+                            <>
+                                {role === "aluno" &&
+                                    <InputWrapper>
+                                        <label>Semestre:</label>
+                                        <StyledSelect value={semestre} onChange={handleChange}>
+                                            <option disabled value="">
+                                                Selecione o semestre
                                             </option>
-                                        ))}
-                                    </StyledSelect>
-                                </InputWrapper>
-                            }
-                            {role === "professor" &&
-                                <InputWrapper>
-                                    <label>Disciplina</label>
-                                    <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
-                                        <option disabled value="">
-                                            Selecione a disciplina
-                                        </option>
-                                        {disciplinaOptions.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
+                                            {semestresOptions.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </StyledSelect>
+                                    </InputWrapper>
+                                }
+                                {role === "professor" &&
+                                    <InputWrapper>
+                                        <label>Disciplina</label>
+                                        <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
+                                            <option disabled value="">
+                                                Selecione a disciplina
                                             </option>
-                                        ))}
-                                    </StyledSelect>
-                                </InputWrapper>
-                            }
-                        </>
-                        <InputWrapper>
-                            <label>Email</label>
-                            <Input
-                                type="text"
-                                placeholder=""
-                                value={email}
-                                onChange={(event: any) => setEmail(event.target.value)}
-                            />
-                        </InputWrapper>
+                                            {disciplinaOptions.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </StyledSelect>
+                                    </InputWrapper>
+                                }
+                            </>
+                            <InputWrapper>
+                                <label>Email</label>
+                                <Input
+                                    type="text"
+                                    placeholder=""
+                                    value={email}
+                                    onChange={(event: any) => setEmail(event.target.value)}
+                                />
+                            </InputWrapper>
 
-                        <PasswordContainer>
-                            <InputWrapper>
-                                <label>Password</label>
-                                <InputVisibleEye>
-                                    <Input
-                                        type={showPassword ? 'text' : 'password'}
-                                        placeholder="Password"
-                                        value={password}
-                                        onChange={(event) => setPassword(event.target.value)}
-                                    />
-                                    <EyeIcon onClick={toggleShowPassword}>
-                                        {showPassword ? <BsEyeSlashFill size={20} /> : <BsEyeFill size={20} />}
-                                    </EyeIcon>
-                                </InputVisibleEye>
-                            </InputWrapper>
-                            <InputWrapper>
-                                <label>Confirmar senha</label>
-                                <InputVisibleEye>
-                                    <Input
-                                        type={showConfirmPassword ? 'text' : 'password'}
-                                        placeholder="Password"
-                                        value={confirmPassword}
-                                        onChange={(event) => setConfirmPassword(event.target.value)}
-                                    />
-                                    <EyeIcon onClick={toggleShowConfirmPassword}>
-                                        {showConfirmPassword ? <BsEyeSlashFill size={220} /> : <BsEyeFill size={20} />}
-                                    </EyeIcon>
-                                </InputVisibleEye>
-                            </InputWrapper>
-                        </PasswordContainer>
-                        <ButtonsWrapper>
-                            <Button type="submit">Registrar</Button>
-                        </ButtonsWrapper>
-                    </Form>
-                </LoginContainer>
-            </ContentContainer>
-        </Container>
-    </>
+                            <PasswordContainer>
+                                <InputWrapper>
+                                    <label>Password</label>
+                                    <InputVisibleEye>
+                                        <Input
+                                            type={showPassword ? 'text' : 'password'}
+                                            placeholder="Password"
+                                            value={password}
+                                            onChange={(event) => setPassword(event.target.value)}
+                                        />
+                                        <EyeIcon onClick={toggleShowPassword}>
+                                            {showPassword ? <BsEyeSlashFill size={20} /> : <BsEyeFill size={20} />}
+                                        </EyeIcon>
+                                    </InputVisibleEye>
+                                </InputWrapper>
+                                <InputWrapper>
+                                    <label>Confirmar senha</label>
+                                    <InputVisibleEye>
+                                        <Input
+                                            type={showConfirmPassword ? 'text' : 'password'}
+                                            placeholder="Password"
+                                            value={confirmPassword}
+                                            onChange={(event) => setConfirmPassword(event.target.value)}
+                                        />
+                                        <EyeIcon onClick={toggleShowConfirmPassword}>
+                                            {showConfirmPassword ? <BsEyeSlashFill size={220} /> : <BsEyeFill size={20} />}
+                                        </EyeIcon>
+                                    </InputVisibleEye>
+                                </InputWrapper>
+                            </PasswordContainer>
+                            <ButtonsWrapper>
+                                <Button type="submit">Registrar</Button>
+                            </ButtonsWrapper>
+                        </Form>
+                    </LoginContainer>
+                </ContentContainer>
+            </ContainerElement>
+        </>
     )
 }
 

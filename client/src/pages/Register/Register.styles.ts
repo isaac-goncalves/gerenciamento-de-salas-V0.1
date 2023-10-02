@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { Colors } from '../../colors'
 
-export const Container = styled.div`
+export const ContainerElement = styled.div`
   background-color: ${props => props.theme.primary};
   height: 100vh;
   width: 100vw;

@@ -131,7 +131,9 @@ function App() {
             } />
             <Route path="/register" element={
               <>
-                <RegisterScreen />
+                <RegisterScreen 
+                theme={themeArray[theme]}
+                />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
