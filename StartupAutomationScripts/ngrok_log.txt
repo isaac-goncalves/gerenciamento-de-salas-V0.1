@@ -1,13 +1,13 @@
-t=2023-10-01T17:26:51-0300 lvl=info msg="no configuration paths supplied"
-t=2023-10-01T17:26:51-0300 lvl=info msg="using configuration at default config path" path=C:\\Users\\Isaac\\AppData\\Local/ngrok/ngrok.yml
-t=2023-10-01T17:26:51-0300 lvl=info msg="open config file" path=C:\\Users\\Isaac\\AppData\\Local\\ngrok\\ngrok.yml err=nil
-t=2023-10-01T17:26:51-0300 lvl=info msg="starting web service" obj=web addr=127.0.0.1:4040 allow_hosts=[]
-t=2023-10-01T17:26:51-0300 lvl=info msg="update available" obj=updater
-t=2023-10-01T17:26:52-0300 lvl=info msg="client session established" obj=tunnels.session obj=csess id=f057739ef194
-t=2023-10-01T17:26:52-0300 lvl=info msg="tunnel session started" obj=tunnels.session
-t=2023-10-01T17:26:52-0300 lvl=info msg="started tunnel" obj=tunnels name=custom addr=http://localhost:8080 url=https://def5-201-26-162-3.ngrok-free.app
-t=2023-10-01T17:26:52-0300 lvl=info msg="started tunnel" obj=tunnels name=web addr=http://localhost:80 url=https://guiding-impala-capital.ngrok-free.app
-t=2023-10-01T17:27:12-0300 lvl=info msg="received stop request" obj=app stopReq="{err:<nil> restart:false}"
-t=2023-10-01T17:27:12-0300 lvl=info msg="session closing" obj=tunnels.session err=nil
-t=2023-10-01T17:27:12-0300 lvl=info msg="accept failed" obj=tunnels.session obj=csess id=f057739ef194 err="reconnecting session closed"
-t=2023-10-01T17:27:12-0300 lvl=info msg="no more state changes" obj=tunnels.session
+t=2023-10-02T20:11:11-0300 lvl=info msg="no configuration paths supplied"
+t=2023-10-02T20:11:11-0300 lvl=info msg="using configuration at default config path" path=C:\\Users\\Isaac\\AppData\\Local/ngrok/ngrok.yml
+t=2023-10-02T20:11:11-0300 lvl=info msg="open config file" path=C:\\Users\\Isaac\\AppData\\Local\\ngrok\\ngrok.yml err=nil
+t=2023-10-02T20:11:11-0300 lvl=info msg="starting web service" obj=web addr=127.0.0.1:4040 allow_hosts=[]
+t=2023-10-02T20:11:11-0300 lvl=info msg="client session established" obj=tunnels.session obj=csess id=ae0bf6c9b5f5
+t=2023-10-02T20:11:11-0300 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2023-10-02T20:11:11-0300 lvl=info msg="started tunnel" obj=tunnels name=custom addr=http://localhost:8080 url=https://6ab8-201-26-162-3.ngrok-free.app
+t=2023-10-02T20:11:11-0300 lvl=info msg="started tunnel" obj=tunnels name=web addr=http://localhost:80 url=https://guiding-impala-capital.ngrok-free.app
+t=2023-10-02T20:11:12-0300 lvl=info msg="update available" obj=updater
+t=2023-10-02T20:11:25-0300 lvl=warn msg="failed to open private leg" id=c389adfa8601 privaddr=localhost:80 err="dial tcp [::1]:80: connectex: No connection could be made because the target machine actively refused it."
+t=2023-10-02T20:11:28-0300 lvl=warn msg="failed to open private leg" id=b5310e1fecf3 privaddr=localhost:80 err="dial tcp [::1]:80: connectex: No connection could be made because the target machine actively refused it."
+t=2023-10-02T20:11:35-0300 lvl=warn msg="failed to open private leg" id=cd2017a82ca4 privaddr=localhost:80 err="dial tcp [::1]:80: connectex: No connection could be made because the target machine actively refused it."
+t=2023-10-02T20:11:38-0300 lvl=warn msg="failed to open private leg" id=8c8d1528c2b0 privaddr=localhost:80 err="dial tcp [::1]:80: connectex: No connection could be made because the target machine actively refused it."

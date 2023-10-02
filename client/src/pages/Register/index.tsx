@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
-import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye, ContainerElement } from "./Register.styles"
+import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye, ContainerElement, InitialName, SecondName } from "./Register.styles"
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import Particles from "react-tsparticles";
 
@@ -67,7 +67,7 @@ const disciplinaOptions = [
     { value: "29", label: "Sociedade e Tecnologia" }
 ];
 
-const RegisterScreen:any = ({ theme }: any) : any  => {
+const RegisterScreen: any = ({ theme }: any): any => {
 
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
@@ -333,20 +333,19 @@ const RegisterScreen:any = ({ theme }: any) : any  => {
                 }}
             />
             <ToastContainer />
-            <ContainerElement>
-                <Helmet>
-                    <title>SGSA - Registrar</title>
-                </Helmet>
-                {
-                    confetti &&
-                    <Confetti
-                        width={width}
-                        height={height}
-                        colors={["#A29EC7", "#6358DC", "#6c38e7"]}
+            <Helmet>
+                <title>SGSA - Registrar</title>
+            </Helmet>
+            {
+                confetti &&
+                <Confetti
+                    width={width}
+                    height={height}
+                    colors={["#A29EC7", "#6358DC", "#6c38e7"]}
 
-                    />
-                }
-                <ToastContainer />
+                />
+            }
+            <ContainerElement>
                 <ImageContainer>
                     <RegisterLogo src={registerLogo} />
                 </ImageContainer>
@@ -355,7 +354,7 @@ const RegisterScreen:any = ({ theme }: any) : any  => {
                         <Form onSubmit={handleSubmit}>
                             <h1>Preencha o Formulário para se Registrar!</h1>
                             <NameWrapper>
-                                <div>
+                                <InitialName>
                                     <label>Nome</label>
                                     <Input
                                         type="text"
@@ -363,8 +362,8 @@ const RegisterScreen:any = ({ theme }: any) : any  => {
                                         value={name}
                                         onChange={(event: any) => setName(event.target.value)}
                                     />
-                                </div>
-                                <div>
+                                </InitialName>
+                                <SecondName>
                                     <label>Sobrenome</label>
                                     <Input
                                         type="text"
@@ -372,7 +371,7 @@ const RegisterScreen:any = ({ theme }: any) : any  => {
                                         value={surname}
                                         onChange={(event: any) => setSurname(event.target.value)}
                                     />
-                                </div>
+                                </SecondName>
                             </NameWrapper>
                             <RadioWrapper>
                                 <input

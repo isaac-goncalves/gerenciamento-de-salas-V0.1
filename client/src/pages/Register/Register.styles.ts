@@ -20,6 +20,10 @@ export const ImageContainer = styled.div`
   justify-content: center;
   z-index: 99;
   /* background-color: red; */
+
+  @media screen and (max-width: 875px) {
+    display: none;
+  }
 `
 
 export const RegisterLogo = styled.img`
@@ -36,12 +40,14 @@ export const ContentContainer = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 99;
+  /* border: 1px solid yellow; */
 `
 export const LoginContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #fff;
+  /* border: 1px solid yellow; */
   border-radius: 8px;
   border-radius: 1rem;
   height: 90%;
@@ -58,8 +64,7 @@ export const InputWrapper = styled.div`
   width: 100%;
   gap: 0.2rem;
   flex-direction: column;
-  color : ${props => props.theme.textcolor};
-
+  color: ${props => props.theme.textcolor};
 `
 
 export const InputVisibleEye = styled.div`
@@ -70,9 +75,9 @@ export const InputVisibleEye = styled.div`
 
 export const Input = styled.input`
   width: 100%;
-  height: 2rem;
-  padding: 10px;
-  padding-left: 20px;
+  height: 2.2rem;
+  /* /* padding: 10px; */
+  padding-left: 20px; 
   font-size: 1rem;
   border-radius: 9999999px;
   border: 1px solid ${props => props.theme.mainpurple};
@@ -101,16 +106,35 @@ export const EyeIcon = styled.span`
 
 export const NameWrapper = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
+  
+  /* border: 1px solid red; */
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 1rem;
 `
 
+export const InitialName = styled.div`
+display: flex;
+flex-direction: column;
+gap: 0.4rem;
+width: 100%;
+height: 100%;
+
+`
+
+export const SecondName = styled.div`
+display: flex;
+flex-direction: column;
+gap: 0.4rem;
+width: 100%;
+height: 100%;
+`
+
 export const RadioWrapper = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
   flex-direction: row;
   gap: 1rem;
   justify-content: center;
@@ -120,17 +144,19 @@ export const RadioWrapper = styled.div`
 export const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: center;
+  height: 100%;
   width: 100%;
+  /* border: 1px solid red; */
   flex-direction: row;
 `
 
 export const Button = styled.button`
-  width: 90%;
-  height: 4rem;
-  margin: 1rem;
+  width: 100%;
   background-color: ${props => props.theme.mainpurple};
+  max-height: 7rem;
   color: #fff;
   font-size: 16px;
+  min-height: 2rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -138,22 +164,34 @@ export const Button = styled.button`
 
 export const Form = styled.form`
   display: flex;
-  gap: 0.5rem;
+  height: 100%;
+  width: 100%;
+  gap: 1.6rem;
+  padding: 2rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* border: 1px solid blue; */
 
   h1 {
-    font-size: 2rem;
+    font-size: rem;
     padding: 2rem;
+  }
+  @media screen and (max-width: 875px) {
+    padding: 1rem;
+    h1 {
+      font-size: 1.3rem;
+      padding: .5rem;
+    }
   }
 `
 
 export const PasswordContainer = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
   flex-direction: row;
   gap: 1rem;
+  /* border: 1px solid red; */
 `
 
 export const AddressWrapper = styled.div`
@@ -173,7 +211,6 @@ export const StyledSelect = styled.select`
   border: 1px solid #ccc;
   font-size: 1rem;
 
- 
   cursor: pointer;
   background-color: #f2f2f2;
   color: #333;
