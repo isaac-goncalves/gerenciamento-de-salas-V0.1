@@ -12,7 +12,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRowHeader, CenteredNumber, TableContainer, NowrapText, TableWrapper
+    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRowHeader, CenteredTableData, TableContainer, NowrapText, TableWrapper, SearchIcon
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -161,6 +161,7 @@ function Gerenciamento() {
         id: number;
         date: Date;
         nome: string;
+        nome_professor: string;
         horario_inicio: string;
         horario_fim: string;
         id_professor: string;
@@ -173,16 +174,16 @@ function Gerenciamento() {
 
     const AppointmentTable = ({ data }: any) => {
         return (
-
             <TableWrapper>
                 <Table>
                     <TableHeader>
                         <TableRowHeader>
+                            <th>ID</th>
                             <th>Professor</th>
                             <th>Data</th>
                             <th>início</th>
                             <th>fim</th>
-                            <th>ID</th>
+                            <th>UUID</th>
                             <th>Grade</th>
                             <th>Laboratório</th>
                             <th>Criado</th>
@@ -193,27 +194,30 @@ function Gerenciamento() {
                     <TableBody>
                         {data.map((appointment: AppointmentData) => (
                             <tr key={appointment.id}>
-                                <CenteredNumber>{appointment.id_professor}</CenteredNumber>
-                                <CenteredNumber>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</CenteredNumber>
-                                <CenteredNumber>{appointment.horario_inicio}</CenteredNumber>
-                                <CenteredNumber>{appointment.horario_fim}</CenteredNumber>
-                                <CenteredNumber>{appointment.uuid_agendamento}</CenteredNumber>
-                                <CenteredNumber>{appointment.id_grade}</CenteredNumber>
-                                <CenteredNumber>{appointment.id_laboratorio}</CenteredNumber>
-                                <NowrapText>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</NowrapText>
-                                <NowrapText>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</NowrapText>
-                                <ButtonsWrapper>
-                                    <EditButton type="button" onClick={() => handleEditClick(appointment)}><RiPencilLine />
-                                        <p>
-                                            Editar
-                                        </p>
-                                    </EditButton>
-                                    <DeleteButton type="button" onClick={() => handleDeleteClick(appointment)}><RiDeleteBinLine />
-                                        <p>
-                                            Excluir
-                                        </p>
-                                    </DeleteButton>
-                                </ButtonsWrapper>
+                                <CenteredTableData>{appointment.id_professor}</CenteredTableData>
+                                <CenteredTableData>{appointment.nome_professor}</CenteredTableData>
+                                <CenteredTableData>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</CenteredTableData>
+                                <CenteredTableData>{appointment.horario_inicio}</CenteredTableData>
+                                <CenteredTableData>{appointment.horario_fim}</CenteredTableData>
+                                <CenteredTableData>{appointment.uuid_agendamento}</CenteredTableData>
+                                <CenteredTableData>{appointment.id_grade}</CenteredTableData>
+                                <CenteredTableData>{appointment.id_laboratorio}</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</CenteredTableData>
+                                <td>
+                                    <ButtonsWrapper>
+                                        <EditButton type="button" onClick={() => handleEditClick(appointment)}><RiPencilLine />
+                                            <p>
+                                                Editar
+                                            </p>
+                                        </EditButton>
+                                        <DeleteButton type="button" onClick={() => handleDeleteClick(appointment)}><RiDeleteBinLine />
+                                            <p>
+                                                Excluir
+                                            </p>
+                                        </DeleteButton>
+                                    </ButtonsWrapper>
+                                </td>
                             </tr>
                         ))}
                     </TableBody>
@@ -240,7 +244,6 @@ function Gerenciamento() {
                     <TableHeader>
                         <TableRowHeader>
                             <th>ID</th>
-                            <th>Nome</th>
                             <th>Email</th>
                             <th>Tipo</th>
                             <th>Criado</th>
@@ -250,12 +253,11 @@ function Gerenciamento() {
                     <TableBody>
                         {data.map((user: UsersData) => (
                             <tr key={user.id}>
-                                <td>{user.id}</td>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>{user.role}</td>
-                                <NowrapText>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</NowrapText>
-                                <NowrapText>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</NowrapText>
+                                <CenteredTableData>{user.id}</CenteredTableData>
+                                <CenteredTableData>{user.email}</CenteredTableData>
+                                <CenteredTableData>{user.role}</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</CenteredTableData>
                             </tr>
                         ))}
                     </TableBody>
@@ -290,21 +292,21 @@ function Gerenciamento() {
                             <th>Atualizado</th>
                         </TableRowHeader>
                     </TableHeader>
-                    <tbody>
+                    <TableBody>
                         {data.map((aluno: AlunosData) => {
                             return (
                                 <tr key={aluno.id}>
-                                    <td>{aluno.id}</td>
-                                    <td>{aluno.name}</td>
-                                    <td>{aluno.surname}</td>
-                                    <td>{aluno.email}</td>
-                                    <CenteredNumber>{aluno.semester}1</CenteredNumber>
+                                    <CenteredTableData>{aluno.id}</CenteredTableData>
+                                    <CenteredTableData>{aluno.name}</CenteredTableData>
+                                    <CenteredTableData>{aluno.surname}</CenteredTableData>
+                                    <CenteredTableData>{aluno.email}</CenteredTableData>
+                                    <CenteredTableData>{aluno.semester}1</CenteredTableData>
                                     <NowrapText>{formatDistanceToNow(new Date(aluno.created_at), { locale: ptBR })} atrás</NowrapText>
                                     <NowrapText>{formatDistanceToNow(new Date(aluno.updated_at), { locale: ptBR })} atrás</NowrapText>
                                 </tr>
                             );
                         })}
-                    </tbody>
+                    </TableBody>
                 </Table>
             </TableWrapper>
         );
@@ -334,18 +336,18 @@ function Gerenciamento() {
                             <th>Criado em</th>
                         </TableRowHeader>
                     </TableHeader>
-                    <tbody>
+                    <TableBody>
                         {data.map((professor: ProfessoresData) => (
                             <tr key={professor.id}>
-                                <td>{professor.id}</td>
-                                <td>{professor.name}</td>
-                                <td>{professor.surname}</td>
-                                <td>{professor.email}</td>
-                                <td>{professor.disciplina}</td>
-                                <td>{formatDistanceToNow(new Date(professor.created_at), { locale: ptBR })} atrás</td>
+                                <CenteredTableData>{professor.id}</CenteredTableData>
+                                <CenteredTableData>{professor.name}</CenteredTableData>
+                                <CenteredTableData>{professor.surname}</CenteredTableData>
+                                <CenteredTableData>{professor.email}</CenteredTableData>
+                                <CenteredTableData>{professor.disciplina}</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(professor.created_at), { locale: ptBR })} atrás</CenteredTableData>
                             </tr>
                         ))}
-                    </tbody>
+                    </TableBody>
                 </Table>
             </TableWrapper>
         )
@@ -414,6 +416,9 @@ function Gerenciamento() {
                     </CounterWrapper>
                 </Header>
                 <SearchBar>
+                    <SearchIcon
+                        size={25}
+                    />
                     <input type="text" placeholder="Pesquisar" />
                     <button onClick={handleClick}>
                         <BsWhatsapp />

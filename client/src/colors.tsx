@@ -14,6 +14,11 @@ export const lightTheme = {
   navbarpurpleborder: "#a89cbc78",
   whiteBackgroundNavbar: 'rgba(255, 255, 255, 0.98);',
 
+  //gerenciamentoTable
+  border_bottom_color: '#dddddd',
+  tableHover: 'rgba(109, 99, 221, 0.118)',
+
+
   primary: '#F4F4F4',
   realwhite: 'rgba(255, 255, 255, 1);',
   textcolor: '#2F2F2F',
@@ -48,6 +53,10 @@ export const lightThemeRed = {
   navbarpurpleborder: "#b96a6a",
   whiteBackgroundNavbar: 'rgba(255, 255, 255, 0.98);',
 
+  //gerenciamentoTable
+  border_bottom_color: '#dddddd',
+  tableHover: 'rgba(220, 88, 99, 0.181)',
+
   mainpurple: '#d83c58',
   separator: '#BFBFBF',
   lightgrayInput: '#D9D9D9',
@@ -78,6 +87,10 @@ export const darkTheme = {
   navbarpurpleborder: "rgb(51, 61, 126)", //navbarborder
   whiteBackgroundNavbar: 'rgba(29, 30, 30, 0.9);',
 
+  //gerenciamentoTable
+  border_bottom_color: 'rgb(79, 81, 80)',
+  tableHover: 'rgba(109, 99, 221, 0.118)',
+
   circleColor: 'rgba(220, 213, 242, 0.51);',
   primary: '#F4F4F4',
   realwhite: 'rgba(255, 255, 255, 1);',
@@ -107,6 +120,11 @@ export const vancedTheme = {
   //navbar
   navbarpurpleborder: "rgb(236, 32, 32)", //navbarborder
   whiteBackgroundNavbar: 'rgba(29, 30, 30, 0.9);',
+
+  //gerenciamentoTable
+  border_bottom_color: 'rgb(79, 81, 80)',
+  tableHover: 'rgba(220, 88, 99, 0.181)',
+
 
   circleColor: 'rgba(220, 213, 242, 0.51);',
   primary: '#F4F4F4',

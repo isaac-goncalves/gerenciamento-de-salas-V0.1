@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import { Colors } from '../../colors'
+import { HiOutlineSearch } from 'react-icons/hi'
 
 export const Container = styled.div`
   width: calc(100% - 5rem);
@@ -64,9 +65,12 @@ export const CounterWrapper = styled.div`
 
   h1 {
     font-size: 3rem;
+    color: ${props => props.theme.textcolor};
   }
   p {
     font-size: 1rem;
+    color: ${props => props.theme.textcolor};
+
   }
   @media screen and (max-width: 570px) {
     h1 {
@@ -88,9 +92,16 @@ export const Separator = styled.div`
   }
 `
 
+export const SearchIcon = styled(HiOutlineSearch)`
+  margin-right: 0.5rem;
+  color: ${props => props.theme.mainpurple};
+`
+
 export const SearchBar = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
+  justify-content: center;
   input {
     width: 80%;
     height: 2.5rem;
@@ -99,7 +110,7 @@ export const SearchBar = styled.div`
     border-radius: 4px;
     padding: 0 1rem;
     box-sizing: border-box;
-    color: ${props => props.theme.white};
+    color: ${props => props.theme.textcolor};
   }
 
   button {
@@ -122,9 +133,11 @@ export const SearchBar = styled.div`
   }
 `
 
-export const ButtonsWrapper = styled.td`
+export const ButtonsWrapper = styled.div`
   display: flex;
-  gap: 0.2rem;
+  gap: 0.5rem;
+  /* width: 8rem; */
+  justify-content: center;
   align-items: center;
 `
 
@@ -214,10 +227,9 @@ export const TableWrapper = styled.div`
 `
 
 export const Table = styled.table`
-
   border-collapse: collapse;
   width: 100%;
-  background-color: ${props => props.theme.white};
+  background-color: ${props => props.theme.lightgray};
   z-index: 1;
   font-size: 0.8em;
 
@@ -232,13 +244,14 @@ export const Table = styled.table`
   th,
   td {
     padding: 8px 5px;
+    color: ${props => props.theme.textcolor};
   }
 
   tbody {
   }
 
   tbody tr {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid ${props => props.theme.hoverCard};
   }
 
   
@@ -268,6 +281,22 @@ export const TableHeader = styled.thead`
 
 export const TableBody = styled.tbody`
 
+tr {
+  height: 3rem;
+  /* background-color: ${props => props.theme.hoverCard}; */
+  
+}
+
+tr:hover {
+  background-color: ${props => props.theme.tableHover};
+  cursor: pointer;
+}
+
+td{
+
+  /* color: ${props => props.theme.textcolor}; */
+
+}
 
 /* border: 1px solid red; */
 
@@ -280,12 +309,17 @@ export const TableData = styled.td`
 
 export const TableRowHeader = styled.tr`
   padding: 8px;
-  border: 1px solid #dddddd;
+  border: 1px solid ${props => props.theme.border_bottom_color};
   background-color: ${props => props.theme.hoverCard};
   text-align: left;
   
+  th {
+    text-align: center;
+    color: ${props => props.theme.textcolor};
+  }
+
 `
-export const CenteredNumber = styled.td`
+export const CenteredTableData = styled.td`
   text-align: center;
 `
 
