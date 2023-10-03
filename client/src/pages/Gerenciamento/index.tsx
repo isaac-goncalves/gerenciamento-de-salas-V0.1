@@ -12,7 +12,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRowHeader, CenteredTableData, TableContainer, NowrapText, TableWrapper, SearchIcon
+    SearchBar, TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRowHeader, CenteredTableData, TableContainer, NowrapText, TableWrapper, SearchIcon, FilterIcon
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -426,6 +426,9 @@ function Gerenciamento() {
                     </button>
                 </SearchBar>
                 <TableSelector>
+                    <FilterIcon
+                        size={20}
+                    />
                     <select value={selectedTable} onChange={handleTableChange}>
                         <option value="agendamentos">Agendamentos</option>
                         <option value="usuarios">Usuários</option>
@@ -445,7 +448,11 @@ function Gerenciamento() {
                     isLoading ?
                         renderTable()
                         :
-                        (<PacmanLoader />)
+                        (
+                            <TableContainer>
+                                <PacmanLoader />
+                            </TableContainer>
+                        )
                 }
             </Wrapper>
         </Container>

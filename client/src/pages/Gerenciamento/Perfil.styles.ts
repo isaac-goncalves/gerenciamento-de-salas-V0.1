@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import { Colors } from '../../colors'
 import { HiOutlineSearch } from 'react-icons/hi'
+import { FaFilter } from 'react-icons/fa'
+import PacmanLoader from 'react-spinners/PacmanLoader'
 
 export const Container = styled.div`
   width: calc(100% - 5rem);
@@ -21,14 +23,12 @@ export const Container = styled.div`
     to {
       opacity: 1;
     }
-    
   }
 
   @media screen and (max-width: 570px) {
     width: calc(100% - 3rem);
     margin-left: 3rem;
   }
-
 `
 export const Wrapper = styled.div`
   width: 90%;
@@ -70,7 +70,6 @@ export const CounterWrapper = styled.div`
   p {
     font-size: 1rem;
     color: ${props => props.theme.textcolor};
-
   }
   @media screen and (max-width: 570px) {
     h1 {
@@ -96,6 +95,11 @@ export const SearchIcon = styled(HiOutlineSearch)`
   margin-right: 0.5rem;
   color: ${props => props.theme.mainpurple};
 `
+export const FilterIcon = styled(FaFilter)`
+  margin-right: 0.5rem;
+  color: white;
+  color: ${props => props.theme.mainpurple};
+`
 
 export const SearchBar = styled.div`
   width: 100%;
@@ -118,7 +122,7 @@ export const SearchBar = styled.div`
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding:  0.5rem;
+    padding: 0.5rem;
     height: 2.5rem;
     border: none;
     background-color: ${props => props.theme.mainpurple};
@@ -195,6 +199,8 @@ export const TableSelector = styled.div`
   display: flex;
   width: 100%;
 
+  align-items: center;
+
   select {
     width: 10rem;
     height: 2.5rem;
@@ -220,10 +226,24 @@ export const TableSelector = styled.div`
   }
 `
 
+export const PacmanLoaderWrapper = styled(PacmanLoader)`
+  color: red;
+`
+
+export const TableContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
 export const TableWrapper = styled.div`
   height: 100%; /* Set the maximum height for the scrollable area */
   overflow: auto; /* Add scrollbars when the content overflows */
   width: 100%;
+  border-bottom: 2px solid ${props => props.theme.hoverCard};
 `
 
 export const Table = styled.table`
@@ -232,9 +252,10 @@ export const Table = styled.table`
   background-color: ${props => props.theme.lightgray};
   z-index: 1;
   font-size: 0.8em;
+  /* margin-bottom: 2px solid ${props => props.theme.mainpurple}; */
 
-  th{
-    color : ${props => props.theme.tableheadercolor};
+  th {
+    color: ${props => props.theme.tableheadercolor};
   }
 
   th:last-child {
@@ -253,8 +274,6 @@ export const Table = styled.table`
   tbody tr {
     border-bottom: 1px solid ${props => props.theme.hoverCard};
   }
-
-  
 
   ::-webkit-scrollbar {
     width: 12px;
@@ -280,26 +299,21 @@ export const TableHeader = styled.thead`
 `
 
 export const TableBody = styled.tbody`
+  tr {
+    height: 3rem;
+    /* background-color: ${props => props.theme.hoverCard}; */
+  }
 
-tr {
-  height: 3rem;
-  /* background-color: ${props => props.theme.hoverCard}; */
-  
-}
+  tr:hover {
+    background-color: ${props => props.theme.tableHover};
+    cursor: pointer;
+  }
 
-tr:hover {
-  background-color: ${props => props.theme.tableHover};
-  cursor: pointer;
-}
+  td {
+    /* color: ${props => props.theme.textcolor}; */
+  }
 
-td{
-
-  /* color: ${props => props.theme.textcolor}; */
-
-}
-
-/* border: 1px solid red; */
-
+  /* border: 1px solid red; */
 `
 
 export const TableData = styled.td`
@@ -312,12 +326,11 @@ export const TableRowHeader = styled.tr`
   border: 1px solid ${props => props.theme.border_bottom_color};
   background-color: ${props => props.theme.hoverCard};
   text-align: left;
-  
+
   th {
     text-align: center;
     color: ${props => props.theme.textcolor};
   }
-
 `
 export const CenteredTableData = styled.td`
   text-align: center;

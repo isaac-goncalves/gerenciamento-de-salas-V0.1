@@ -195,7 +195,7 @@ export const StyledSelect = styled.select`
   display: flex;
   width: 100%;
   height: 100%;
-  
+
   max-width: 10rem;
   padding: 8px 20px;
   border: 1px solid #ccc;
@@ -203,7 +203,7 @@ export const StyledSelect = styled.select`
 
   @media screen and (max-width: 500px) {
     padding: 0.5rem;
-    
+
     option {
       font-size: 0.8rem;
     }
@@ -241,7 +241,7 @@ export const StyledSelectValue = styled.select`
 
   @media screen and (max-width: 500px) {
     padding: 0.5rem;
-    
+
     option {
       font-size: 0.8rem;
     }
@@ -372,8 +372,6 @@ export const StyledDatePicker = styled(DatePicker)`
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-
-  
 `
 
 export const TodayContainer = styled(MdToday)`
@@ -491,8 +489,8 @@ export const WeekContainer = styled.div`
   height: 100%;
   width: 100%;
   overflow-x: auto;
-  overflow-y: hidden; 
-  
+  overflow-y: hidden;
+
   @media screen and (max-width: 570px) {
     gap: 0.5rem;
     /* min-width: 80rem; */
@@ -512,12 +510,12 @@ export const WeekdayContainer = styled.div`
   padding-bottom: 0.1rem;
   @media screen and (max-width: 570px) {
     min-width: 20rem;
-    }
+  }
   h2 {
     @media screen and (max-width: 570px) {
       font-size: 1rem;
     }
-    
+
     font-weight: 500;
     text-transform: uppercase;
     color: ${props => props.theme.textcolor};
@@ -527,7 +525,7 @@ export const WeekdayContainer = styled.div`
     /* transform: scale(1.01);
     transition: 0.1s; */
 
-    // add soft shadow 
+    // add soft shadow
 
     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 
@@ -545,7 +543,7 @@ export const WeekDay = styled.p`
   padding: 0.5rem 0;
   color: ${props => props.theme.mainpurple};
   transition: color 0.3s ease-in-out; /* Add the transition property */
-  
+
   @media screen and (max-width: 570px) {
     font-size: 1.1rem;
   }
@@ -569,11 +567,9 @@ export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
   font-size: 0.7rem;
 
   @media screen and (max-width: 570px) {
-    
-    h2{
+    h2 {
       font-size: 1.2rem;
     }
-
   }
 `
 
