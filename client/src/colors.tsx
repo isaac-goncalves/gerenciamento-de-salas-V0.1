@@ -2,8 +2,9 @@ export const Colors = {}
 
 export const lightTheme = {
   lightgrayInput: '#D9D9D9',
-  lightgray: '#ECECEC',
+  lightgray: '#ececec',
   white: 'rgba(255, 255, 255, 0.4);',
+  whiteNoTransparency: 'rgb(252, 252, 252)',
   circleColor: 'rgba(220, 213, 242, 0.51);',
 
   //editModal
@@ -40,6 +41,7 @@ export const lightThemeRed = {
   circleColor: 'rgba(220, 213, 242, 0.51);',
   primary: '#F4F4F4',
   white: 'rgba(255, 255, 255, 0.4);',
+  whiteNoTransparency: 'rgb(252, 252, 252)',
   realwhite: 'rgba(255, 255, 255, 1);',
   textcolor: '#2F2F2F',
   textColorDisabled: '#757575',
@@ -76,6 +78,7 @@ export const darkTheme = {
   lightgray: 'rgb(38, 40, 39);', //SchedulesContainer
   textcolor: 'rgb(255, 255, 254);', //textcolor
   white: 'rgba(75, 75, 75, 0.4);', //main background 
+  whiteNoTransparency: 'rgba(75, 75, 75, 1);', //main background
   lighterGreen: 'rgb(153, 189, 255);', //color inside schedule
   mainpurple: 'rgb(153,189,255)', //color inside schedule
 
@@ -110,6 +113,7 @@ export const vancedTheme = {
   lightgray: 'rgb(38, 40, 39);', //SchedulesContainer
   textcolor: 'rgb(255, 255, 254);', //textcolor
   white: 'rgba(75, 75, 75, 0.4);', //white
+  whiteNoTransparency: 'rgba(75, 75, 75, 1);', //white
   mainpurple: '#d83c58',
   lighterGreen: 'rgb(255, 107, 62)',//color inside schedule
 

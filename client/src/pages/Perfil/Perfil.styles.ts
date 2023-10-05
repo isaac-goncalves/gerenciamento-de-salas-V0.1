@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { Colors } from '../../colors'
 
-export const Container = styled.div`
+export const ContainerElement = styled.div`
   width: calc(100% - 5rem);
   height: 100vh;
   margin-left: 5rem;
@@ -28,10 +28,10 @@ export const Container = styled.div`
 `
 
 export const Wrapper = styled.div`
-  width: 90%;
+  width: 80%;
   height: 90%;
-  background-color: ${props => props.theme.white};
-  z-index: 10;
+  background-color: ${props => props.theme.whiteNoTransparency};
+  z-index: 1;
   border-radius: 4px;
   padding: 2rem 8rem;
   display: flex;

@@ -131,8 +131,8 @@ function App() {
             } />
             <Route path="/register" element={
               <>
-                <RegisterScreen 
-                theme={themeArray[theme]}
+                <RegisterScreen
+                  theme={themeArray[theme]}
                 />
                 {/* <Circles ballCount={4} /> */}
               </>
@@ -158,21 +158,21 @@ function App() {
             <Route path="/perfil" element={
               <>
                 <Navbar toggleTheme={toggleTheme} />
-                <Perfil />
+                <Perfil theme={themeArray[theme]} />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
             <Route path="/gerenciamento" element={
               <>
                 <Navbar toggleTheme={toggleTheme} />
-                <Gerenciamento />
+                <Gerenciamento theme={themeArray[theme]} />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
             <Route path="/templates" element={
               <>
                 <Navbar toggleTheme={toggleTheme} />
-                <Templates />
+                <Templates theme={themeArray[theme]} />
                 {/* <Circles ballCount={4} /> */}
               </>
             } />

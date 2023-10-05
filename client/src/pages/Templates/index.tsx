@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import { Helmet } from 'react-helmet'
 
@@ -11,13 +11,18 @@ const templateFileUrl = apiUrl + '/template/download/';
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+//PARTICLES IMPORTS
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import { Theme, type Container, type Engine } from "tsparticles-engine";
+
 import templateImage from '../../../public/images/template.png';
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
-    Container, Header, Separator,
-    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper
+    Header, Separator,
+    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper, ContainerElement
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -27,7 +32,18 @@ import ModalDelete from '../Components/ModalDelete'
 import FileUploadButton from '../Components/FileUploadButton';
 import FileDownloadButton from '../Components/FileDownloadButton';
 
-function Templates() {
+const Templates: any = ({ theme }: any): any => {
+
+    //PARTICLES FUNCTIONS
+    const particlesInit = useCallback(async (engine: Engine) => {
+        console.log(engine);
+
+        await loadSlim(engine);
+    }, []);
+
+    const particlesLoaded = useCallback(async (container: Container | undefined) => {
+        await console.log(container);
+    }, []);
 
     //USERSESSIONDATA
     const [userData, setUserData] = useState<any>(
@@ -164,8 +180,82 @@ function Templates() {
     }
 
 
-    return (
-        <Container>
+    return (<>
+        <Particles
+            id="tsparticles"
+            init={particlesInit}
+            loaded={particlesLoaded}
+            options={{
+                // background: {
+                //   color: {
+                //     // value: "#ffffff",
+                //   },
+                // },
+                fpsLimit: 120,
+                interactivity: {
+                    events: {
+                        onClick: {
+                            enable: true,
+                            mode: "push",
+                        },
+                        onHover: {
+                            enable: true,
+                            mode: "repulse",
+                        },
+                        resize: true,
+                    },
+                    modes: {
+                        push: {
+                            quantity: 4,
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4,
+                        },
+                    },
+                },
+                particles: {
+                    color: {
+                        value: theme.mainpurple,
+                    },
+                    links: {
+                        color: theme.mainpurple,
+                        distance: 150,
+                        enable: true,
+                        opacity: 0.5,
+                        width: 1,
+                    },
+                    move: {
+                        direction: "none",
+                        enable: true,
+                        outModes: {
+                            default: "bounce",
+                        },
+                        random: false,
+                        speed: 6,
+                        straight: false,
+                    },
+                    number: {
+                        density: {
+                            enable: true,
+                            area: 800,
+                        },
+                        value: 80,
+                    },
+                    opacity: {
+                        value: 0.5,
+                    },
+                    shape: {
+                        type: "circle",
+                    },
+                    size: {
+                        value: { min: 1, max: 5 },
+                    },
+                },
+                detectRetina: true,
+            }}
+        />
+        <ContainerElement>
             <Helmet>
                 <title>SGSA - Templates</title>
             </Helmet>
@@ -216,7 +306,8 @@ function Templates() {
                     //     (<PacmanLoader />)
                 }
             </Wrapper>
-        </Container>
+        </ContainerElement>
+    </>
     );
 }
 

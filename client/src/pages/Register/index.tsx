@@ -94,7 +94,6 @@ const RegisterScreen: any = ({ theme }: any): any => {
         setShowConfirmPassword(!showConfirmPassword);
     };
 
-
     const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRole(event.target.value);
     };

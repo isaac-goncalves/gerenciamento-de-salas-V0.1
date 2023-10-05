@@ -24,7 +24,10 @@ const GlobalStyle = createGlobalStyle`
     /* background-color: ${(props) => props.theme.mainpurple}; */
     height: 100vh;
     text-align: left;
+
   }
+
+
 
   /* *:hover {
     display:none;

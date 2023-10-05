@@ -469,16 +469,19 @@ export const ClockContainer = styled.div`
   /* background-color: red; */
   width: 3rem;
 
-  @media screen and (max-width: 570px) {
-    display: none;
-  }
-
   p {
     font-size: 1.125rem;
     font-weight: 400;
     margin-bottom: 0.5rem;
     color: ${props => props.theme.textcolor};
   }
+  @media screen and (max-width: 570px) {
+    width: 2rem;
+    background-color: ${props => props.theme.white};  
+/* border-right: 1px solid ${props => props.theme.lightgrayborder}; */
+  p {font-size: 0.8rem;}
+  }
+
 `
 
 export const WeekContainer = styled.div`
@@ -490,6 +493,10 @@ export const WeekContainer = styled.div`
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   @media screen and (max-width: 570px) {
     gap: 0.5rem;

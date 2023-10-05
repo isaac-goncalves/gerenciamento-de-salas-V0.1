@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-
 export const ContainerElement = styled.div`
-  background-color: ${props => props.theme.lightgrayInput};
+  background-color: ${props => props.theme.primary};
+  /* background-color: ${props => props.theme.lightgrayInput}; */
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -19,11 +19,8 @@ export const SideContainer = styled.div`
   position: relative;
 
   @media screen and (max-width: 500px) {
-    
-    display:none
-  
+    display: none;
   }
-
 `
 export const BackgroundImage = styled.img`
   position: absolute;
@@ -50,13 +47,12 @@ export const SGSALogo = styled.img`
 bottom: 14%;
 left: 10%;
 object-fit: cover; */
-border-radius: 8px;
+  border-radius: 8px;
   width: 500px;
 
   @media screen and (max-width: 500px) {
     width: 300px;
   }
-
 `
 
 export const ContentWrapper = styled.div`
@@ -122,27 +118,25 @@ export const Button = styled.button`
 
   @media screen and (max-width: 500px) {
     font-size: 1.4rem;
-
   }
-
 `
 
 export const ButtonWrapper = styled.div`
-display: flex;
-justify-content: center;
-width: 100%;
-gap:1rem;
-font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+  font-size: 1rem;
 `
 
 export const NãoPossuiContaText = styled.div`
-display: flex;
-width: 100%;
-justify-content: center;
-gap:1rem;
-/* border: 1px solid ${props => props.theme.mainpurple}; */
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 1rem;
+  /* border: 1px solid ${props => props.theme.mainpurple}; */
   font-size: 1rem;
-  
+
   color: ${props => props.theme.textcolor};
   margin-bottom: 1rem;
 `
@@ -167,7 +161,6 @@ export const TitleWrapper = styled.div`
   div {
     display: flex;
     justify-content: center;
-   
   }
 `
 
@@ -197,8 +190,8 @@ export const Form = styled.form`
   display: flex;
   height: 95%;
   width: 90%;
-  background-color: ${props => props.theme.lightgray};
-  
+  background-color: ${props => props.theme.whiteNoTransparency};
+
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
@@ -228,6 +221,7 @@ export const FormInputsWrapper = styled.div`
 export const InputsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  border: 1px solid ${props => props.theme.lightgray};
   width: 100%;
   gap: 1rem;
   margin-bottom: 1rem;
@@ -289,42 +283,47 @@ export const InputWrapper = styled.div`
   border-radius: 8px;
   align-items: center;
   padding-right: 1rem;
-  background-color: ${props => props.theme.white};
+  /* border: 1px solid red; */
+  background-color: ${props => props.theme.lightgray};
 
   p {
     font-size: 0.85rem;
     color: ${props => props.theme.textcolor};
-
   }
-
-  
-
 `
 
-export const InputColumnWrapper = styled.div `
+export const InputColumnWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   overflow: hidden;
   border-radius: 8px;
-  `
+`
 
 export const InputInternalWrapper = styled.div`
- display: flex;
+  display: flex;
   justify-content: space-between;
   height: 100%;
+  width: 100%;
   /* width: 100%; */
+  /* border: 1px solid red; */
+
   background-color: ${props => props.theme.white};
+`
+
+export const InputAndEyeIconWrapper = styled.div`
+  display: flex;
+
 `
 
 export const Input = styled.input`
   display: flex;
   width: 90%;
   height: 30px;
-  border: none; 
-  padding: 0 1rem;
+  border: none;
+  padding: 0 0rem;
   outline: none;
-  background-color: ${props => props.theme.white};
+  background-color: ${props => props.theme.lightgray};
   font-weight: 700;
   font-size: 1.25rem;
   border-radius: 4px;
@@ -344,7 +343,9 @@ export const EyeIcon = styled.div`
   display: flex;
   width: 3rem;
   /* width: 10px; */
-  background-color: ${props => props.theme.white};
+  /* border: 1px solid red; */
+
+  background-color: ${props => props.theme.lightgray};
   align-items: center;
   justify-content: center;
 `

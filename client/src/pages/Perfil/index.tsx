@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import { Helmet } from 'react-helmet'
 
@@ -9,6 +9,11 @@ import { format, formatDistanceToNow, set } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
+
+//PARTICLES IMPORTS
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+import { Theme, type Container, type Engine } from "tsparticles-engine";
 
 const semestresOptions = [
     { value: '1', label: '1º SEMESTRE ADS - 2023' },
@@ -53,8 +58,31 @@ const disciplinaOptions = [
 
 import {
     Avatar,
-    Container, Header, Separator,
-    SearchBar, TableSelector, Wrapper, UserName, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, StyledButton, ContentWrapper, ButtonWrapper, ButtonWapper, InputWrapper, StyledSelect, StyledButtonWhatsApp, UserWrapper, UserInfo
+    Header, Separator,
+    SearchBar,
+    TableSelector,
+    Wrapper, UserName,
+    CounterWrapper,
+    EditButton,
+    DeleteButton,
+    ButtonsWrapper,
+    TableHeader,
+    Table,
+    TableData,
+    TableBody,
+    TableRow,
+    CenteredNumber,
+    TableContainer,
+    NowrapText,
+    StyledButton,
+    ContentWrapper,
+    ButtonWrapper,
+    InputWrapper,
+    StyledSelect,
+    StyledButtonWhatsApp,
+    UserWrapper,
+    UserInfo,
+    ContainerElement
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -70,7 +98,7 @@ import { AvatarWrapper, } from '../Navbar/Navbar.styles';
 import Swal from 'sweetalert2';
 import { AiOutlineSave } from 'react-icons/ai';
 
-function Perfil() {
+const Perfil: any = ({ theme }: any): any => {
 
     //USERSESSIONDATA
     const [userData, setUserData] = useState<any>(
@@ -104,6 +132,17 @@ function Perfil() {
     const [editedData, setEditedData] = useState<any>({});
 
     const [userImage, setUserImage] = useState<any>(null);
+
+    //PARTICLES FUNCTIONS
+    const particlesInit = useCallback(async (engine: Engine) => {
+        console.log(engine);
+
+        await loadSlim(engine);
+    }, []);
+
+    const particlesLoaded = useCallback(async (container: Container | undefined) => {
+        await console.log(container);
+    }, []);
 
     useLayoutEffect(() => {
         console.log('Starting to render stuff...');
@@ -142,7 +181,7 @@ function Perfil() {
 
     const fetchUserImage = async (userId: any) => {
         try {
-            const response = await fetch( "http://localhost:8080" +`/usuarios/12`);
+            const response = await fetch("http://localhost:8080" + `/usuarios/12`);
             if (response.ok) {
                 const blob = await response.blob();
                 const imageUrl = URL.createObjectURL(blob);
@@ -534,42 +573,118 @@ function Perfil() {
     };
 
     return (
-        <Container>
+        <>
+            <Particles
+                id="tsparticles"
+                init={particlesInit}
+                loaded={particlesLoaded}
+                options={{
+                    // background: {
+                    //   color: {
+                    //     // value: "#ffffff",
+                    //   },
+                    // },
+                    fpsLimit: 120,
+                    interactivity: {
+                        events: {
+                            onClick: {
+                                enable: true,
+                                mode: "push",
+                            },
+                            onHover: {
+                                enable: true,
+                                mode: "repulse",
+                            },
+                            resize: true,
+                        },
+                        modes: {
+                            push: {
+                                quantity: 4,
+                            },
+                            repulse: {
+                                distance: 200,
+                                duration: 0.4,
+                            },
+                        },
+                    },
+                    particles: {
+                        color: {
+                            value: theme.mainpurple,
+                        },
+                        links: {
+                            color: theme.mainpurple,
+                            distance: 150,
+                            enable: true,
+                            opacity: 0.5,
+                            width: 1,
+                        },
+                        move: {
+                            direction: "none",
+                            enable: true,
+                            outModes: {
+                                default: "bounce",
+                            },
+                            random: false,
+                            speed: 6,
+                            straight: false,
+                        },
+                        number: {
+                            density: {
+                                enable: true,
+                                area: 800,
+                            },
+                            value: 80,
+                        },
+                        opacity: {
+                            value: 0.5,
+                        },
+                        shape: {
+                            type: "circle",
+                        },
+                        size: {
+                            value: { min: 1, max: 5 },
+                        },
+                    },
+                    detectRetina: true,
+                }}
+            />
+            <ToastContainer />
             <Helmet>
                 <title>SGSA - Perfil</title>
             </Helmet>
-            <ToastContainer />
-            {/* <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={[1,2,3,4]}/> */}
-            <Wrapper>
-                <Header>
-                    <CounterWrapper>
-                        {
-                            isLoading ?
-                                (<h1>{alunosData.length}</h1>)
-                                :
-                                (<PacmanLoader />)
-                        }
-                        <p>Alunos</p>
-                    </CounterWrapper>
-                    <Separator></Separator>
-                    <CounterWrapper>
-                        {
-                            isLoading ?
-                                (<h1>{professoresData.length}</h1>)
-                                :
-                                (<PacmanLoader />)
-                        }
-                        <p>Professores</p>
-                    </CounterWrapper>
-                </Header>
-                {
-                    isLoading ?
-                        renderContent()
-                        :
-                        (<PacmanLoader />)
-                }
-            </Wrapper>
-        </Container>
+            <ContainerElement>
+                {/* <ModalEdit isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={[1,2,3,4]}/> */}
+                <Wrapper>
+                    <Header>
+                        <CounterWrapper>
+                            {
+                                isLoading ?
+                                    (<h1>{alunosData.length}</h1>)
+                                    :
+                                    (<PacmanLoader />)
+                            }
+                            <p>Alunos</p>
+                        </CounterWrapper>
+                        <Separator></Separator>
+                        <CounterWrapper>
+                            {
+                                isLoading ?
+                                    (<h1>{professoresData.length}</h1>)
+                                    :
+                                    (<PacmanLoader />)
+                            }
+                            <p>Professores</p>
+                        </CounterWrapper>
+                    </Header>
+                    {
+                        isLoading ?
+                            renderContent()
+                            :
+                            (<PacmanLoader />)
+                    }
+                </Wrapper>
+            </ContainerElement>
+        </>
     );
 }
 

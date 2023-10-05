@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SideContainer, Button, ButtonsWrapper, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo, EyeIcon, InputInternalWrapper, InputColumnWrapper, ButtonWrapper, NãoPossuiContaText, EmailWrapper, ContainerElement } from "./Login.styles"
+import { SideContainer, Button, ButtonsWrapper, Form, Input, LoginContainer, BackgroundImage, InputWrapper, FatecImage, ContentWrapper, TitleWrapper, TeamsLogo, TeamsWrapper, InputsWrapper, MailIcon, PasswordIcon, Separator, FormInputsWrapper, MantenhaMeConectadoWrapper, EsqueceuSenha, EyePassword, SGSALogo, EyeIcon, InputInternalWrapper, InputColumnWrapper, ButtonWrapper, NãoPossuiContaText, EmailWrapper, ContainerElement, InputAndEyeIconWrapper } from "./Login.styles"
 
 import background from '../../../public/images/background.jpg';
 import fatec from '../../../public/images/fatec.svg';
@@ -27,11 +27,12 @@ import eyePassword from '../../../public/images/eyepassword.svg';
 import { Link, Navigate } from "react-router-dom";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { InteractionManager, Particle } from "tsparticles-engine";
+
+//PARTICLES IMPORTS
 import Particles from "react-tsparticles";
-
 import { loadSlim } from "tsparticles-slim";
-
 import { Theme, type Container, type Engine } from "tsparticles-engine";
+
 
 interface InputProps {
     hasError: boolean;
@@ -41,7 +42,7 @@ interface props {
     theme: Theme;
 }
 
-const LoginScreen: any = ({ theme }: any) : any => {
+const LoginScreen: any = ({ theme }: any): any => {
     const [email, setEmail] = useState(""); //isaac@gmail.com
     const [password, setPassword] = useState(""); //Password123$
     const [form, setForm] = useState("login");
@@ -330,17 +331,19 @@ const LoginScreen: any = ({ theme }: any) : any => {
                                     <PasswordIcon src={passwordIcon} />
                                     <InputColumnWrapper>
                                         <p>Password</p>
-                                        <InputInternalWrapper>
-                                            <Input
-                                                type={showPassword ? 'text' : 'password'}
-                                                placeholder="**********"
-                                                value={password}
-                                                onChange={(event: any) => setPassword(event.target.value)}
-                                            />
+                                        <InputAndEyeIconWrapper>
+                                            <InputInternalWrapper>
+                                                <Input
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    placeholder="**********"
+                                                    value={password}
+                                                    onChange={(event: any) => setPassword(event.target.value)}
+                                                />
+                                            </InputInternalWrapper>
                                             <EyeIcon onClick={toggleShowPassword}>
                                                 {showPassword ? <BsEyeSlashFill size={20} /> : <BsEyeFill size={20} />}
                                             </EyeIcon>
-                                        </InputInternalWrapper>
+                                        </InputAndEyeIconWrapper>
                                     </InputColumnWrapper>
                                 </InputWrapper>
                             </InputsWrapper>
@@ -356,14 +359,14 @@ const LoginScreen: any = ({ theme }: any) : any => {
                                     <Button onClick={handleGuestLogin} >Guest</Button>
                                     <Button onClick={handleSubmit}>Login</Button>
                                 </ButtonWrapper>
-                                    <NãoPossuiContaText>
-                              
-                                        Não possui uma conta?
-                                        <Link to="/register" >
-                                            <span> Registre-se</span>
-                                        </Link>
-                               
-                                    </NãoPossuiContaText>
+                                <NãoPossuiContaText>
+
+                                    Não possui uma conta?
+                                    <Link to="/register" >
+                                        <span> Registre-se</span>
+                                    </Link>
+
+                                </NãoPossuiContaText>
                             </ButtonsWrapper>
                         </FormInputsWrapper>
                     </Form>
