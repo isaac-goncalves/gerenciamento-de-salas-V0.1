@@ -72,11 +72,10 @@ const disciplinaOptions = [
 ];
 
 const RegisterScreen: any = ({ theme }: any): any => {
-
     const [name, setName] = useState("");
 
     const [selectedValues, setSelectedValues] = useState([]);
-    const [options, setOptions] = useState(disciplinaOptions);
+    const [disciplinas, setDisciplinas] = useState(disciplinaOptions);
 
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
@@ -94,6 +93,31 @@ const RegisterScreen: any = ({ theme }: any): any => {
 
     const [role, setRole] = useState("aluno");
 
+    //FUNCTIONS
+
+    useEffect(() => {
+
+        console.log('Starting to render Register...');
+
+        fetchDisciplinas()
+
+    }, [])
+
+    //FETCH FUNCTION
+    async function fetchDisciplinas() {
+        console.log("Fetching fetchProfessors...")
+        // console.log(process.env.REACT_APP_API_KEY)
+        await fetch(`${apiUrl}/disciplinas`, {
+            method: 'POST'
+        }).then((response) => response.json()).then((data) => {
+
+            setDisciplinas(data);
+
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+    //AUXILIARY FUNCTIONS
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
