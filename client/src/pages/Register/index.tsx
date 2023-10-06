@@ -26,6 +26,10 @@ import { loadSlim } from "tsparticles-slim";
 
 import { Theme, type Container, type Engine } from "tsparticles-engine";
 
+import "react-widgets/styles.css";
+
+import Multiselect from "react-widgets/Multiselect";
+
 const semestresOptions = [
     { value: '1', label: '1º SEMESTRE ADS - 2023' },
     { value: '2', label: '2º SEMESTRE ADS - 2023' },
@@ -36,40 +40,44 @@ const semestresOptions = [
 ];
 
 const disciplinaOptions = [
-    { value: "1", label: "Administração Geral" },
-    { value: "2", label: "Algoritmos e Lógica de Programação" },
-    { value: "3", label: "Arquitetura e Organização de Computadores" },
-    { value: "4", label: "Banco de Dados" },
-    { value: "5", label: "Cálculo" },
-    { value: "6", label: "Comunicação e Expressão" },
-    { value: "7", label: "Contabilidade" },
-    { value: "8", label: "Economia e Finanças" },
-    { value: "9", label: "Eletiva - Programação para Dispositivos Móveis" },
-    { value: "10", label: "Engenharia de Software I" },
-    { value: "11", label: "Engenharia de Software II" },
-    { value: "12", label: "Engenharia de Software III" },
-    { value: "13", label: "Estatística Aplicada" },
-    { value: "14", label: "Estruturas de Dados" },
-    { value: "15", label: "Inglês I" },
-    { value: "16", label: "Inglês II" },
-    { value: "17", label: "Inglês III" },
-    { value: "18", label: "Inglês IV" },
-    { value: "19", label: "Interação Humano Computador" },
-    { value: "20", label: "Laboratório de Hardware" },
-    { value: "21", label: "Linguagem de Programação" },
-    { value: "22", label: "Matemática Discreta" },
-    { value: "23", label: "Metodologia da Pesquisa Científico-Tecnológica" },
-    { value: "24", label: "Programação em Microinformática" },
-    { value: "25", label: "Programação Orientada a Objetos" },
-    { value: "26", label: "Sistemas de Informação" },
-    { value: "27", label: "Sistemas Operacionais I" },
-    { value: "28", label: "Sistemas Operacionais II" },
-    { value: "29", label: "Sociedade e Tecnologia" }
+    "Administração Geral",
+    "Algoritmos e Lógica de Programação",
+    "Arquitetura e Organização de Computadores",
+    "Banco de Dados",
+    "Cálculo",
+    "Comunicação e Expressão",
+    "Contabilidade",
+    "Economia e Finanças",
+    "Eletiva - Programação para Dispositivos Móveis",
+    "Engenharia de Software I",
+    "Engenharia de Software II",
+    "Engenharia de Software III",
+    "Estatística Aplicada",
+    "Estruturas de Dados",
+    "Inglês I",
+    "Inglês II",
+    "Inglês III",
+    "Inglês IV",
+    "Interação Humano Computador",
+    "Laboratório de Hardware",
+    "Linguagem de Programação",
+    "Matemática Discreta",
+    "Metodologia da Pesquisa Científico-Tecnológica",
+    "Programação em Microinformática",
+    "Programação Orientada a Objetos",
+    "Sistemas de Informação",
+    "Sistemas Operacionais I",
+    "Sistemas Operacionais II",
+    "Sociedade e Tecnologia"
 ];
 
 const RegisterScreen: any = ({ theme }: any): any => {
 
     const [name, setName] = useState("");
+
+    const [selectedValues, setSelectedValues] = useState([]);
+    const [options, setOptions] = useState(disciplinaOptions);
+
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -418,19 +426,32 @@ const RegisterScreen: any = ({ theme }: any): any => {
                                     </InputWrapper>
                                 }
                                 {role === "professor" &&
-                                    <InputWrapper>
-                                        <label>Disciplina</label>
-                                        <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
-                                            <option disabled value="">
-                                                Selecione a disciplina
-                                            </option>
-                                            {disciplinaOptions.map((option) => (
-                                                <option key={option.value} value={option.value}>
-                                                    {option.label}
+                                    <>
+
+                                        <InputWrapper>
+                                            <label>Disciplina</label>
+                                            <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
+                                                <option disabled value="">
+                                                    Selecione a disciplina
                                                 </option>
-                                            ))}
-                                        </StyledSelect>
-                                    </InputWrapper>
+                                                {disciplinaOptions.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </StyledSelect>
+                                        </InputWrapper>
+                                        <InputWrapper>
+                                            {/* //styled muyltiselect */}
+                                            <Multiselect
+                                                dataKey="id"
+                                                textField="color"
+                                                defaultValue={[1]}
+                                                data={disciplinaOptions}
+                                            />
+                                        </InputWrapper>
+                                    </>
+
                                 }
                             </>
                             <InputWrapper>
@@ -442,7 +463,6 @@ const RegisterScreen: any = ({ theme }: any): any => {
                                     onChange={(event: any) => setEmail(event.target.value)}
                                 />
                             </InputWrapper>
-
                             <PasswordContainer>
                                 <InputWrapper>
                                     <label>Password</label>
