@@ -36,7 +36,6 @@ export class AgendamentoController {
     }
 
     ids_grade.forEach(async (id_grade: any) => {
-      
       const query = ` SELECT horario_inicio, horario_fim FROM grade WHERE id = ${id_grade} `
 
       const horariosImportadosGrade = await gradeRepositories.query(query)
@@ -281,8 +280,8 @@ export class AgendamentoController {
     //   WHERE DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)
     //   AND id_laboratorio = ${laboratory_id}
     //   `
-    // } 
-     if (laboratory_id == undefined) {
+    // }
+    if (laboratory_id == undefined) {
       console.log('laboratory_id == undefined')
       query = `
       SELECT * 
@@ -290,15 +289,13 @@ export class AgendamentoController {
       AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)
       `
     } else {
-
-        console.log('full query when creating only')
-        query = `
+      console.log('full query when creating only')
+      query = `
         SELECT * 
         FROM agendamento 
         WHERE id_laboratorio = ${laboratory_id}
         AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)`
-      }
-    
+    }
 
     try {
       // Retrieve grade data for the specified professor and semester

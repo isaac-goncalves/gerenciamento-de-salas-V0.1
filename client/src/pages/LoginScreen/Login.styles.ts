@@ -221,7 +221,7 @@ export const FormInputsWrapper = styled.div`
 export const InputsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid ${props => props.theme.lightgray};
+  /* border: 1px solid ${props => props.theme.lightgray}; */
   width: 100%;
   gap: 1rem;
   margin-bottom: 1rem;

@@ -48,12 +48,6 @@ export class GradeController {
 
     // console.log(date)
 
-    const nearestMonday = getNearestMonday(date)
-
-    // console.log(nearestMonday)
-
-    const nextFriday = addDays(nearestMonday, 4)
-
     try {
       //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
       //pegar o semestre da pessoa e filtrar tambem
@@ -92,6 +86,14 @@ export class GradeController {
         gradeWithProfessor.map(async (grade: any) => {
           const id_grade = grade.id
 
+          const nearestMonday = getNearestMonday(date)
+
+          console.log(nearestMonday)
+      
+          const nextSaturnDay = addDays(nearestMonday, 5)
+      
+        console.log(nextSaturnDay)
+
           const queryAgendamento = `
             SELECT
             agendamento.id as id,
@@ -104,6 +106,7 @@ export class GradeController {
             id_laboratorio,
             professores.name as professor,
             laboratorios.descricao as laboratorio,
+            laboratorios.capacidade as capacidade,
             agendamento.updated_at,
             agendamento.created_at
             FROM
@@ -115,9 +118,9 @@ export class GradeController {
             WHERE
             id_grade = '${id_grade}'
             AND 
-            date BETWEEN '${formatDateForSQL(
+            agendamento.date BETWEEN '${formatDateForSQL(
               nearestMonday
-            )}' AND '${formatDateForSQL(nextFriday)}'
+            )}' AND '${formatDateForSQL(nextSaturnDay)}'
           `
           const agendamentos = await gradeRepositories.query(queryAgendamento)
 

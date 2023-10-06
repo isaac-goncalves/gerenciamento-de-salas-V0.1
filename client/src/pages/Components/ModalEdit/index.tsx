@@ -29,6 +29,7 @@ interface InitialDataProps {
   id_grade: number;
   uuid_agendamento: string;
   id_laboratorio: number;
+  capacidade: number;
   created_at: string;
   updated_at: string;
 }
@@ -110,6 +111,7 @@ const ModalEdit = ({
   }, [initialData])
 
   useEffect(() => {
+    console.clear()
     console.log("selectedLaboratory useEffect")
     console.log(selectedLaboratory)
   }, [selectedLaboratory])
@@ -131,7 +133,9 @@ const ModalEdit = ({
       // console.log(selectedProfessor)
 
     } catch (error) {
+
       // console.log(error); // Handle the error appropriately
+
     }
   }
   const fetchLaboratoryData = async () => {
@@ -141,9 +145,7 @@ const ModalEdit = ({
       // console.log("editedData.laboratory")
       // console.log(editedData.id_laboratorio)
 
-      if (initialData.id_laboratorio) {
-        setSelectedLaboratory(initialData.id_laboratorio);
-      }
+
       console.log("selectedLaboratory")
       console.log(selectedLaboratory)
 
@@ -182,7 +184,14 @@ const ModalEdit = ({
 
       data.push(newLabsWithPlaceholder)
 
-      return setLaboratory(data.reverse())
+      setLaboratory(data.reverse())
+
+      if (initialData.id_laboratorio) {
+        const lab = data.find((lab) => lab.id === formData.id_laboratorio);
+        setSelectedLaboratory(lab);
+      }
+
+      return data
     });
   }
 
@@ -240,7 +249,7 @@ const ModalEdit = ({
       const finalData: any = {
         ids_grade: newAgendamentos,
         date: startDate,
-        id_laboratorio: selectedLaboratory,
+        id_laboratorio: selectedLaboratory.id,
         id_professor: selectedProfessor,
         uuid_agendamento: uuidAgendamento?.toString(),
       }
@@ -437,7 +446,10 @@ const ModalEdit = ({
     // console.log(selectedLab)
 
     if (selectedLab) {
-      setSelectedLaboratory(selectedLab);
+      const labs = laboratory.find((lab) => lab.id == selectedLab);
+
+      setSelectedLaboratory(labs);
+
       // Update the selectedProfessorId state instead of formData
     }
   }
@@ -559,7 +571,7 @@ const ModalEdit = ({
               <div>
                 <DetailsText>Laboratório:</DetailsText>
                 <StyledSelect
-                  value={selectedLaboratory || ''}
+                  value={selectedLaboratory && selectedLaboratory.id}
                   disabled={action === 'OPEN'}
                   onChange={handleLaboratoryChange}>
                   {laboratory.length > 0 ? (
@@ -569,13 +581,14 @@ const ModalEdit = ({
                       </option>
                     ))
                   ) : (
-                    <option value="">No professors available</option>
+                    <option value="">No laboratory available</option>
                   )}
                 </StyledSelect>
               </div>
               <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory)}</StyledText></DetailsText>
               <DetailsText>Criado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
               <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
+              <DetailsText>Capacidade: <StyledDates>{selectedLaboratory ? selectedLaboratory.capacidade : null} alunos</StyledDates></DetailsText>
               <DetailsText>ID de agendamento: <br />
                 {/* formData.uuid_agendamento */}
                 <div>
@@ -599,7 +612,7 @@ const ModalEdit = ({
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>
-                <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} userRole={userRole} />
+                <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory && selectedLaboratory.id} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} userRole={userRole} />
               </ClockTimeWrapper>
               <SecondImageWrapper>
                 <BackgroundImage src={background} />
