@@ -6,6 +6,7 @@ import { UserController } from './controllers/UsersControllers'
 import { GradeController } from './controllers/GradeControllers'
 import { AgendamentoController } from './controllers/AgendamentoControllers'
 import { ProfessorsController } from './controllers/ProfessorsController'
+import { DisciplinasController } from './controllers/DisciplinasController'
 // import { TransactionsController } from "./controllers/TransactionsControllers";
 
 import multer, { Multer } from 'multer';
@@ -16,6 +17,10 @@ const userController = new UserController()
 routes.post('/verify', new UserController().verify)
 
 routes.post('/professors', new ProfessorsController().get)
+
+//GET DISCIPLINAS
+routes.post('/disciplinas', new DisciplinasController().get)
+
 
 routes.post('/laboratory', new ProfessorsController().getLaboratory)
 

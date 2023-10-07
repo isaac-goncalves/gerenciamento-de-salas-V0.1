@@ -24,9 +24,9 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import { disciplinasRepository } from '../repositories/disciplinasRepositories'
+import { professorDisciplinaRepositories } from '../repositories/professorDisciplinaRepositories'
 
 // Define storage for uploaded files
-
 
 // Define file filter for image files
 const fileFilter = (
@@ -44,20 +44,40 @@ const fileFilter = (
 }
 // Create multer instance with the storage configuration
 
-
 export class UserController {
   async create (request: Request, response: Response) {
     const { name, surname, email, password, role, semester, discipline } =
       request.body
 
-    console.log(name, surname, email, password, role, semester, discipline)
+    //CONSOLE
+    console.log(name, surname, email, password)
+    console.log('role=' + role)
+    console.log('semester=' + semester)
+    console.log('discipline=' + discipline)
 
+    //CHECK IF PARAMS ARE MISSING
+    if (!name || !surname || !email || !password || !role) {
+      return response.status(400).json({ error: 'Missing params' })
+    }
+
+    //CHECK IF ROLE AND SEMESTER OR DISCIPLINE IS PRESENT
+
+    if (role === 'aluno' && !semester) {
+      return response.status(400).json({ error: 'Semester is missing' })
+    } else if (role === 'professor' && !discipline) {
+      return response.status(400).json({ error: 'Discipline is missing' })
+    } else if (role != 'aluno' && role != 'professor' && role != 'guest') {
+      return response.status(400).json({ error: 'Role is invalid' })
+    }
+
+    //CHECK IF EMAIL AND PASSOWRD IS PRESENT
     if (!email || !password) {
       return response
         .status(400)
         .json({ error: 'Email or password is missing' })
     }
 
+    //START TO CREATE USER ============================================================
     try {
       const userExists = await usuariosRepository.findOneBy({ email })
 
@@ -67,20 +87,22 @@ export class UserController {
         return response.status(400).json({ error: 'User already exists' })
       }
 
+      //ENCRYPT PASSWORD
       const encriptedPassword = await bcrypt.hash(password, 8)
 
+      //CREATE USER
       const newUser = usuariosRepository.create({
         email,
         password: encriptedPassword,
         role: role
       })
 
+      // SAVE USER ON DATABASE
       const savedUser = await usuariosRepository.save(newUser) //essa parte me preocupa
-      // console.log(savedUser)
 
+      //CASE USER IS ALUNO
       if (role === 'aluno') {
-        // console.log('aluno selected')
-
+        //CREATE ALUNO
         const newAluno = await alunosRepository.create({
           name,
           surname,
@@ -90,11 +112,9 @@ export class UserController {
           created_at: new Date(),
           updated_at: new Date()
         })
-
         await alunosRepository.save(newAluno)
 
-        // console.log(newAluno)
-
+        //CREATE TOKEN
         const token = jwt.sign(
           { id: savedUser.id },
           process.env.JWT_PASS ?? '',
@@ -103,35 +123,38 @@ export class UserController {
           }
         )
 
+        //RETURN USER DATA
         return response.status(201).json({
           message: 'Aluno created',
           userData: newAluno,
           token: token
         })
-      } else if (role === 'professor') {
-        // console.log('professor selected')
 
-        const obj = {
+        //CASE USER IS PROFESSOR
+      } else if (role === 'professor') {
+        //CREATE PROFESSOR
+        const NewProfessorObj = {
           name,
           surname,
           email,
           semestre: semester,
-          disciplina: discipline,
           user_id: savedUser.id,
           created_at: new Date(),
           updated_at: new Date()
         }
 
-        //verify if professor exists in professors table
-
+        //VERIFY IF PROFESSOR ALREADY EXISTS
         const professorExists = await professoresRepository.findOneBy({
           email
         })
 
         let newProfessor = {} as any
 
+        //IF PROFESSOR DOESNT EXISTS, CREATE A NEW ONE
         if (!professorExists) {
-          newProfessor = await professoresRepository.create(obj)
+          newProfessor = await professoresRepository.create(NewProfessorObj)
+
+          //IF PROFESSOR ALREADY EXISTS, UPDATE IT
         } else {
           newProfessor = professorExists
           //save user id on professor table as user_id search by email
@@ -140,10 +163,39 @@ export class UserController {
           })
         }
 
+        // SAVE PROFESSOR ON DATABASE
         const savedProfessor = await professoresRepository.save(newProfessor)
+
+        //SAVE DISCIPLINA ON DATABASE PROFESSOR DISCIPLINA RELATION
+        discipline.forEach(async (item: any) => {
+          const DicsiplinasObj = {
+            id_disciplina: item,
+            id_professor: savedProfessor.id
+          }
+
+          const createdDisciplineProfessorItem =
+            await professorDisciplinaRepositories.create(DicsiplinasObj)
+
+          await professorDisciplinaRepositories.save(
+            createdDisciplineProfessorItem
+          )
+
+          console.log('created user ')
+          console.log(createdDisciplineProfessorItem)
+        })
+
+        professorDisciplinaRepositories
+
+        //ADD DISCIPLINA TO PROFESSOR TOKEN
+        const professorWithDisciplinas = {
+          ...savedProfessor,
+          disciplina: discipline,
+          theme: 1
+        }
 
         // console.log(savedProfessor)
 
+        //CREATE TOKEN
         const token = jwt.sign(
           { id: savedUser.id },
           process.env.JWT_PASS ?? '',
@@ -156,24 +208,13 @@ export class UserController {
 
         return response.status(201).json({
           message: 'Professor created',
-          userData: savedProfessor,
+          userData: professorWithDisciplinas,
           token: token
         })
-      } else if (role === 'coordenador') {
-        console.log('coordenador selected')
+      }
 
-        return response.status(201).json({
-          message: 'Coordenador created',
-          userData: {
-            name,
-            surname,
-            email,
-            password,
-            role,
-            discipline
-          }
-        })
-      } else if (role === 'guest') {
+      //CASE USER IS GUEST
+      else if (role === 'guest') {
         const token = jwt.sign(
           { id: savedUser.id },
           process.env.JWT_PASS ?? '',
@@ -191,13 +232,28 @@ export class UserController {
             password,
             role,
             semester,
-            theme: 0
+            theme: 1
           },
           token: token
         })
       } else {
         return response.status(400).json({ error: 'Role is missing' })
       }
+      // else if (role === 'coordenador') {
+      //   console.log('coordenador selected')
+
+      //   return response.status(201).json({
+      //     message: 'Coordenador created',
+      //     userData: {
+      //       name,
+      //       surname,
+      //       email,
+      //       password,
+      //       role,
+      //       discipline
+      //     }
+      //   })
+      // }
     } catch (error) {
       // console.log(error)
 
@@ -309,24 +365,28 @@ export class UserController {
     console.log('----------------------------')
     console.log('LOGIN ATTEMPT')
 
+    //CHECK IF EMAIL AND PASSOWRD IS PRESENT
     if (!email || !password) {
       return response
         .status(400)
         .json({ error: 'email or password is missing' })
     }
-    try {
-      const userExists = await usuariosRepository.findOneBy({ email })
 
+    //START TO VALIDADE AND RETURN USER TOKEN ============================================================
+    try {
+      //CHECK IF USER EXISTS
+      const userExists = await usuariosRepository.findOneBy({ email })
       if (!userExists) {
         return response.status(400).json({ error: 'E-mail ou senha inválidos' })
       }
 
+      //CHECK IF PASSWORD MATCH
       const passwordMatch = await bcrypt.compare(password, userExists.password)
-
       if (!passwordMatch) {
         return response.status(400).json({ error: 'E-mail ou senha inválidos' })
       }
 
+      //CREATE TOKEN
       const token = jwt.sign(
         { id: userExists.id },
         process.env.JWT_PASS ?? '',
@@ -335,18 +395,14 @@ export class UserController {
         }
       )
 
-      // console.log(userExists.email)
-      // console.log(userExists.role)
-
       let userData = {} as any
 
+      //CASE USER IS ALUNO
       if (userExists.role === 'aluno') {
         const aluno = await alunosRepository.findOneBy({
           //caso o usuario seja um aluno, busca o aluno no banco de dados
           user_id: userExists.id
         })
-        // console.log('aluno=')
-        // console.log(aluno)
 
         const AlunoWithRole = {
           ...aluno,
@@ -354,9 +410,19 @@ export class UserController {
         }
 
         userData = AlunoWithRole
-      } else if (userExists.role === 'professor') {
+
+        return response.status(201).json({
+          userData: userData,
+          token: token
+        })
+
+        //CASE USER IS PROFESSOR
+      }
+
+      //CASE USER IS PROFESSOR
+      else if (userExists.role === 'professor') {
+        //FINDBY USER ID
         let professor: any = await professoresRepository.findOneBy({
-          //caso o usuario seja um professor, busca o professor no banco de dados
           user_id: userExists.id
         })
 
@@ -369,44 +435,62 @@ export class UserController {
 
         console.log('professor=')
         console.log(professor)
+
         userData = professor
 
-        const { disciplina, ...restUserData } = userData
-
-        const disciplinaObj = await disciplinasRepository.findOneBy({
-          id: disciplina
+        //GET DISCIPLINAS
+        const disciplinasArray = await professorDisciplinaRepositories.find({
+          where: { id_professor: professorId }
         })
 
-        // console.log(disciplinaObj)
+        const disciplinasIds = disciplinasArray.map(
+          (item: any) => item.id_disciplina
+        )
 
-        const returnObj = {
-          ...restUserData,
-          disciplina: disciplinaObj?.id,
-          nomeDisciplina: disciplinaObj?.descricao,
-          role: userExists.role,
-          theme: userExists.theme
-        }
+        console.log('disciplinasArray=')
+        console.log(disciplinasArray)
 
-        return response.status(201).json({
-          userData: returnObj,
-          token: token
+        const promises = disciplinasIds.map(async (element: any) => {
+          const disciplineObj: any = await disciplinasRepository.findOne({
+            where: { id: element }
+          })
+
+          console.log('disciplineObj=')
+          console.log(disciplineObj.descricao)
+
+          return disciplineObj ? disciplineObj.descricao : '' // Return the description or an empty string if not found
         })
+
+        Promise.all(promises)
+          .then(disciplinasNamesArray => {
+            console.log('disciplinasNamesArray=')
+            console.log(disciplinasNamesArray)
+
+            const returnObj = {
+              ...userData,
+              disciplina: disciplinasIds,
+              nomeDisciplina: disciplinasNamesArray,
+              role: userExists.role,
+              theme: userExists.theme
+            }
+
+            return response.status(201).json({
+              userData: returnObj,
+              token: token
+            })
+          })
+          .catch(error => {
+            return response
+              .status(500)
+              .json({ message: 'internal server error' })
+          })
       } else if (userExists.role === 'coordenador') {
         console.log('coordenador selected')
       } else {
         // console.log('role nao encontrado')
         return response.status(400).json({ error: 'Role nao encontrado' }) //caso o usuario nao seja nem professor nem aluno, retorna erro
       }
-
-      userData.role = userExists.role
-      userData.theme = userExists.theme
-
-      return response.status(201).json({
-        userData: userData,
-        token: token
-      })
     } catch (error) {
-      // console.log(error)
       return response.status(500).json({ message: 'internal server error' })
     }
   }
@@ -554,9 +638,8 @@ export class UserController {
       }
     })
 
-
     const upload = multer({ storage, fileFilter })
-    
+
     //grab userId
 
     try {
@@ -623,20 +706,16 @@ export class UserController {
 
     console.log(fileName)
 
-    //send file to frontend 
+    //send file to frontend
 
-    const file = path.resolve(
-      'uploads/user/profilepics',
-      fileName
-    )
+    const file = path.resolve('uploads/user/profilepics', fileName)
 
     console.log('file')
 
     console.log(file)
 
     res.setHeader('Content-Type', 'image/jpeg')
-      
-    res.sendFile(file)
 
+    res.sendFile(file)
   }
 }

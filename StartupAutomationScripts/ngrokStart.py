@@ -15,6 +15,14 @@ subprocess.Popen(f'start cmd /k "cd /d {software_dir} && npm start"', shell=True
 subprocess.Popen('powershell -command "(new-object -com shell.application).minimizeall()"', shell=True)
 # Start ngrok in a new window
 ngrok_dir = r'.\ngrok-executable'
+
+# if os.path.exists('ngrok_log.txt'):
+#     # Use a função os.remove() para excluir o arquivo
+#     os.remove('ngrok_log.txt')
+#     print(f"O arquivo ngrok_log.txt foi excluído com sucesso.")
+# else:
+#     print(f"O arquivo ngrok_log.txt não existe.")
+
 ngrok_process = subprocess.Popen(f'start cmd /wait /c "{ngrok_dir}\\ngrok start --all --log=stdout > ngrok_log.txt"', shell=True)
 
 # Wait for a moment to

@@ -18,7 +18,7 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue } from './Dashboard.styles'
 
@@ -787,12 +787,16 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }}
       />
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
-      <ToastContainer />
+      <ToastContainer 
+      limit={4}
+      autoClose={1000}
+      />
       <MainContainer>
         <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
             userData.userData.role == "aluno" || userData.userData.role == "guest" &&
-            <FaFilter size={35} color='white' />
+            // <FaFilter size={35} color='white' />
+            <AiFillHeart size={35} color='white' />
           }
           {
             userData.userData.role == "professor" &&

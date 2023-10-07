@@ -39,43 +39,13 @@ const semestresOptions = [
     { value: '6', label: '6º SEMESTRE ADS - 2023' },
 ];
 
-const disciplinaOptions = [
-    "Administração Geral",
-    "Algoritmos e Lógica de Programação",
-    "Arquitetura e Organização de Computadores",
-    "Banco de Dados",
-    "Cálculo",
-    "Comunicação e Expressão",
-    "Contabilidade",
-    "Economia e Finanças",
-    "Eletiva - Programação para Dispositivos Móveis",
-    "Engenharia de Software I",
-    "Engenharia de Software II",
-    "Engenharia de Software III",
-    "Estatística Aplicada",
-    "Estruturas de Dados",
-    "Inglês I",
-    "Inglês II",
-    "Inglês III",
-    "Inglês IV",
-    "Interação Humano Computador",
-    "Laboratório de Hardware",
-    "Linguagem de Programação",
-    "Matemática Discreta",
-    "Metodologia da Pesquisa Científico-Tecnológica",
-    "Programação em Microinformática",
-    "Programação Orientada a Objetos",
-    "Sistemas de Informação",
-    "Sistemas Operacionais I",
-    "Sistemas Operacionais II",
-    "Sociedade e Tecnologia"
-];
+
 
 const RegisterScreen: any = ({ theme }: any): any => {
     const [name, setName] = useState("");
 
     const [selectedValues, setSelectedValues] = useState([]);
-    const [disciplinas, setDisciplinas] = useState(disciplinaOptions);
+    const [disciplinas, setDisciplinas] = useState([]);
 
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
@@ -98,25 +68,47 @@ const RegisterScreen: any = ({ theme }: any): any => {
     useEffect(() => {
 
         console.log('Starting to render Register...');
-
         fetchDisciplinas()
 
     }, [])
 
     //FETCH FUNCTION
+
     async function fetchDisciplinas() {
-        console.log("Fetching fetchProfessors...")
+        console.log("Fetching fetchDisciplinas...")
         // console.log(process.env.REACT_APP_API_KEY)
         await fetch(`${apiUrl}/disciplinas`, {
             method: 'POST'
-        }).then((response) => response.json()).then((data) => {
 
-            setDisciplinas(data);
+        }).then((response) => response.json()).then((data) => {
+            console.log(data)
+
+            let transformedData: any = []
+
+            data.forEach((elemento: any) => {
+                if (elemento.descricao !== "-") {
+
+
+                    let dataObject = {
+                        id: elemento.id,
+                        disciplina: elemento.descricao
+                    }
+
+                    return transformedData.push(dataObject)
+                }
+            });
+
+            transformedData.sort()
+
+            console.log(transformedData)
+
+            setDisciplinas(transformedData);
 
         }).catch((error) => {
             console.log(error)
         })
     }
+
     //AUXILIARY FUNCTIONS
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -155,6 +147,16 @@ const RegisterScreen: any = ({ theme }: any): any => {
 
         if (surname === "") {
             toast.error("O campo sobrenome não pode estar vazio!");
+            return;
+        }
+
+        if (semestre === "" && role === "aluno") {
+            toast.error("O campo Semestre não pode estar vazio!");
+            return;
+        }
+
+        if (selectedValues.length < 1  && role === "professor") {
+            toast.error("O campo Disciplina não pode estar vazio!");
             return;
         }
 
@@ -199,21 +201,15 @@ const RegisterScreen: any = ({ theme }: any): any => {
             return;
         }
 
-        if (semestre === "" && role === "aluno") {
-            toast.error("O campo Semestre não pode estar vazio!");
-            return;
-        }
-
-        if (disciplina === "" && role === "professor") {
-            toast.error("O campo Disciplina não pode estar vazio!");
-            return;
-        }
+       
 
 
 
         const IsProfessor = (role === "professor") ? true : false;
 
         try {
+
+            const arrayOfDisciplineIds = selectedValues.map((item:any ) => item.id)
 
             const params = {
                 name: name,
@@ -222,7 +218,7 @@ const RegisterScreen: any = ({ theme }: any): any => {
                 password: password,
                 role: role,
                 semester: IsProfessor ? "" : semestre,
-                discipline: IsProfessor ? disciplina : ""
+                discipline: IsProfessor ? arrayOfDisciplineIds : ""
             }
 
             console.log(params);
@@ -255,9 +251,9 @@ const RegisterScreen: any = ({ theme }: any): any => {
                 localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(obj));
                 toast.success("Registro realizado com sucesso!");
                 setConfetti(true);
-                setTimeout(() => {
-                    window.location.href = "/dashboard";
-                }, 4000);
+                // setTimeout(() => {
+                //     window.location.href = "/dashboard";
+                // }, 4000);
 
             }
             else {
@@ -453,27 +449,22 @@ const RegisterScreen: any = ({ theme }: any): any => {
                                     <>
 
                                         <InputWrapper>
-                                            <label>Disciplina</label>
-                                            <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
-                                                <option disabled value="">
-                                                    Selecione a disciplina
-                                                </option>
-                                                {disciplinaOptions.map((option) => (
-                                                    <option key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </StyledSelect>
-                                        </InputWrapper>
-                                        <InputWrapper>
                                             {/* //styled muyltiselect */}
                                             <Multiselect
                                                 dataKey="id"
-                                                textField="color"
-                                                defaultValue={[1]}
-                                                data={disciplinaOptions}
+                                                textField="disciplina"
+                                                placeholder='Selecione a disciplinas'
+                                                data={disciplinas}
+                                                value={selectedValues}
+                                                onChange={value => {
+                                                    console.log(value)
+                                                    setSelectedValues(value)
+                                                }
+                                                }
+
                                             />
                                         </InputWrapper>
+
                                     </>
 
                                 }

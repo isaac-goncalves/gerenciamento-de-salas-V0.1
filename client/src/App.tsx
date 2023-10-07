@@ -22,10 +22,9 @@ const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
 function App() {
 
-  const [theme, setTheme] = useState(0); // Default theme is 'light'
+  const [theme, setTheme] = useState(1); // Default theme is 'red-light'
 
   const [ThemeName, setThemeName] = useState("LightTheme")
-
 
   useEffect(() => {
 
@@ -41,8 +40,10 @@ function App() {
 
       // const themeResult = userData.theme;
 
+   
       setTheme(userData.theme);
     }
+
   }
     , [])
 

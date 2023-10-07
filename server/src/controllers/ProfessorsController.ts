@@ -5,9 +5,8 @@ import { professoresRepository } from '../repositories/professoresRepositories'
 import { laboratoriosRepository } from '../repositories/laboratoriosRepository'
 
 export class ProfessorsController {
-  
   async get (request: Request, response: Response) {
-     console.log('get professores')
+    console.log('get professores')
 
     //grab token
 
@@ -30,9 +29,9 @@ export class ProfessorsController {
 
         // console.log(id, name)
 
-        const obj = { 
-            id: id, 
-            name: name 
+        const obj = {
+          id: id,
+          name: name
         }
         return obj
       })
@@ -62,7 +61,7 @@ export class ProfessorsController {
       const laboratory = await laboratoriosRepository.find()
 
       // console.log(JSON.stringify(laboratory, null, 2))
-     
+
       return response.status(200).json(laboratory)
     } catch (error) {
       return response.status(500).json({ message: 'internal server error' })

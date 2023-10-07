@@ -12,6 +12,8 @@ interface CalltoActionButtonProps {
   backgroundColor: boolean
 }
 
+
+
 export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
   position: fixed;
   bottom: 2rem;
@@ -32,6 +34,33 @@ export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
 
   transform: scale(1);
   transition: 0.3s;
+  
+    //mobile 
+
+    //move left and up
+
+    //animation
+/*     
+  &:hover {
+    transform: scale(9999);
+    transition: 30000.3s;
+  } */
+
+
+    
+    
+
+
+  @media screen and (max-width: 570px) {
+    bottom: 1rem;
+    right: 2rem;
+  
+  }
+                                                    
+  /* &:hover {
+    transform: scale(3);
+  } */
+  
 `
 
 export const MainContainer = styled.div`
@@ -477,9 +506,14 @@ export const ClockContainer = styled.div`
   }
   @media screen and (max-width: 570px) {
     width: 2rem;
-    background-color: ${props => props.theme.white};  
+   
 /* border-right: 1px solid ${props => props.theme.lightgrayborder}; */
-  p {font-size: 0.8rem;}
+  p {
+    font-size: 0.8rem;
+    padding: 0.3rem;
+    background-color: ${props => props.theme.white};  
+    border-radius: 4px;
+  }
   }
 
 `
@@ -506,6 +540,10 @@ export const WeekContainer = styled.div`
 
 export const WeekdayContainer = styled.div`
   min-width: 10rem;
+
+
+  /* border: solid 1px red; */
+
   display: flex;
   width: 100%;
   height: 100%;
@@ -516,7 +554,7 @@ export const WeekdayContainer = styled.div`
   /* background-color: cyan; //remove later */
   padding-bottom: 0.1rem;
   @media screen and (max-width: 570px) {
-    min-width: 20rem;
+    min-width: 16rem;
   }
   h2 {
     @media screen and (max-width: 570px) {
@@ -561,12 +599,14 @@ export const PacmanLoaderWrapper = styled(PacmanLoader)`
 `
 
 export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
+  max-width: 20rem;
   display: flex;
   padding: 0.5rem 0;
   flex-direction: column;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
+  /* border: solid 1px red; */
   width: 95%;
   background-color: ${props => props.theme.lightgrayInput};
   border-radius: 8px;
@@ -585,6 +625,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* border: solid 1px red; */
   background-color: ${({ isCurrentTime }) =>
     isCurrentTime ? 'yellow' : props => props.theme.horariosCard};
   border-radius: 0px 0px 8px 8px;
@@ -614,7 +655,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     font-size: 0.8rem;
 
     @media screen and (max-width: 570px) {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       min-width: 2rem;
     }
   }
