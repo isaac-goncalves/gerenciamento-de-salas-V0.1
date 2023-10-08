@@ -3,7 +3,7 @@ import time
 import webbrowser
 import os
 import sys
-
+import psutil
 
 # Change to color yellow
 os.system('color 0e')
@@ -16,12 +16,29 @@ subprocess.Popen('powershell -command "(new-object -com shell.application).minim
 # Start ngrok in a new window
 ngrok_dir = r'.\ngrok-executable'
 
-# if os.path.exists('ngrok_log.txt'):
-#     # Use a função os.remove() para excluir o arquivo
-#     os.remove('ngrok_log.txt')
-#     print(f"O arquivo ngrok_log.txt foi excluído com sucesso.")
-# else:
-#     print(f"O arquivo ngrok_log.txt não existe.")
+ngrok_log_dir = 'ngrok_log.txt'
+# Check if the log file exists
+if os.path.exists(ngrok_log_dir):
+    # Find and terminate the process using the log file
+    for process in psutil.process_iter(attrs=['pid', 'name']):
+        try:
+            process_info = process.info  # Remove the ()
+            if process_info['name'] == 'python' and ngrok_log_dir in ' '.join(process.cmdline()):
+                # Terminate the process
+                process.terminate()
+                print(f"Terminated the process using {ngrok_log_dir}.")
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+
+    # Check if the log file still exists after termination
+    if os.path.exists(ngrok_log_dir):
+        os.remove(ngrok_log_dir)
+        print(f"O arquivo {ngrok_log_dir} foi excluído com sucesso.")
+    else:
+        print(f"O arquivo {ngrok_log_dir} foi excluído após a terminação do processo.")
+else:
+    print(f"O arquivo {ngrok_log_dir} não existe.")
+    sys.exit(1)  # Stop the script with a non-zero exit code indicating failure
 
 ngrok_process = subprocess.Popen(f'start cmd /wait /c "{ngrok_dir}\\ngrok start --all --log=stdout > ngrok_log.txt"', shell=True)
 
@@ -55,7 +72,7 @@ sys.stdout.write("\n")
 
 
 # Read the output file and print the URL on the screen
-with open('ngrok_log.txt', 'r') as ngrok_log:
+with open(ngrok_log_dir, 'r') as ngrok_log:
     for line in ngrok_log:
         if 'started tunnel' and 'addr=http://localhost:8080'  in line and 'url=' in line:
             parts = line.split(' ')

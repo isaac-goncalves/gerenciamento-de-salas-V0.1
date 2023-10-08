@@ -97,6 +97,7 @@ import { BsWhatsapp } from 'react-icons/bs';
 import { AvatarWrapper, } from '../Navbar/Navbar.styles';
 import Swal from 'sweetalert2';
 import { AiOutlineSave } from 'react-icons/ai';
+import Multiselect from 'react-widgets/esm/Multiselect';
 
 const Perfil: any = ({ theme }: any): any => {
 
@@ -132,6 +133,11 @@ const Perfil: any = ({ theme }: any): any => {
     const [editedData, setEditedData] = useState<any>({});
 
     const [userImage, setUserImage] = useState<any>(null);
+
+    //MULTISELECT OPTIONS
+    const [selectedValues, setSelectedValues] = useState([]);
+    const [disciplinas, setDisciplinas] = useState([]);
+
 
     //PARTICLES FUNCTIONS
     const particlesInit = useCallback(async (engine: Engine) => {
@@ -201,7 +207,8 @@ const Perfil: any = ({ theme }: any): any => {
                 appointmentDataResponse,
                 userDataResponse,
                 alunosDataResponse,
-                professoresDataResponse
+                professoresDataResponse,
+                disciplinasDataResponse
             ] = await Promise.all([
                 fetch(`${apiUrl}/agendamento`, {
                     method: 'post',
@@ -214,12 +221,30 @@ const Perfil: any = ({ theme }: any): any => {
                 }).then(res => res.json()),
                 fetch(`${apiUrl}/professores`, {
                     method: 'post',
+                }).then(res => res.json()),
+                fetch(`${apiUrl}/disciplinas`, {
+                    method: 'post',
                 }).then(res => res.json())
             ]);
 
             setFetchedUserData(userDataResponse);
             setAppointmentData(appointmentDataResponse);
             setAlunosData(alunosDataResponse);
+
+            console.log(disciplinasDataResponse)
+
+            const transformedDisciplinas = disciplinasDataResponse.map((disciplina: any) => {
+                if (disciplina.id != 1)
+                    return {
+                        id: disciplina.id,
+                        disciplina: disciplina.descricao
+                    }
+            })
+
+            console.log(transformedDisciplinas)
+
+            setDisciplinas(transformedDisciplinas)
+
 
             const ProfessorWithOutFirstElement = professoresDataResponse.slice(1);
 
@@ -272,8 +297,10 @@ const Perfil: any = ({ theme }: any): any => {
                 email: userData.userData.email,
                 role: userData.userData.role,
                 semester: semestre,
-                disciplina: disciplina
+                disciplina: selectedValues
             }
+
+            console.log(params)
 
             const response = await fetch(`${apiUrl}/usuarios/edit`, {
                 method: 'POST',
@@ -285,23 +312,23 @@ const Perfil: any = ({ theme }: any): any => {
                 )
             }).then(res => res.json()).then(responseObject => {
                 console.log(responseObject)
-
-                if (responseObject.message = 'User updated') {
-                    updateToken();
-                    Swal.fire(
-                        'Editado!',
-                        'O usuário foi editado com sucesso.',
-                        'success'
-                    )
-                }
-
-                else {
+                if (responseObject.error) {
                     Swal.fire(
                         'Erro!',
                         'Ocorreu um erro ao editar o usuário.',
                         'error'
                     )
                 }
+                else
+                    if (responseObject.message = 'User updated') {
+                        updateToken();
+                        Swal.fire(
+                            'Editado!',
+                            'O usuário foi editado com sucesso.',
+                            'success'
+                        )
+                    }
+
 
             }
             ).catch(err => console.log(err))
@@ -528,7 +555,9 @@ const Perfil: any = ({ theme }: any): any => {
                         }
                         {
                             userData.userData.role === "professor" &&
-                            <InputWrapper>
+                            <>
+
+                                {/* <InputWrapper>
                                 <label>Disciplina</label>
                                 <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
                                     <option disabled value="">
@@ -540,7 +569,24 @@ const Perfil: any = ({ theme }: any): any => {
                                         </option>
                                     ))}
                                 </StyledSelect>
-                            </InputWrapper>
+                            </InputWrapper> */}
+                                <InputWrapper>
+                                    {/* //styled muyltiselect */}
+                                    <Multiselect
+                                        dataKey="id"
+                                        textField="disciplina"
+                                        placeholder='Selecione a disciplinas'
+                                        data={disciplinas}
+                                        value={selectedValues}
+                                        onChange={value => {
+                                            console.log(value)
+                                            setSelectedValues(value)
+                                        }
+                                        }
+
+                                    />
+                                </InputWrapper>
+                            </>
                         }
                         <FileUploadButton userId={userData.userData.user_id} action={"profilepic"} loggedUserRole={userData.userData.role} />
                         <StyledButton

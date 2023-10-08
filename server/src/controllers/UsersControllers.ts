@@ -25,6 +25,7 @@ import jwt from 'jsonwebtoken'
 
 import { disciplinasRepository } from '../repositories/disciplinasRepositories'
 import { professorDisciplinaRepositories } from '../repositories/professorDisciplinaRepositories'
+import { tr } from 'date-fns/locale'
 
 // Define storage for uploaded files
 
@@ -510,61 +511,137 @@ export class UserController {
   }
 
   async edit (request: Request, response: Response) {
-    const { name, surname, email, password, role, semester, disciplina } =
-      request.body
+    const { email, role, semester, disciplina } = request.body
 
-    console.log(request.body)
+    //COO00000000000LOCAR name, surname, tmb depois
 
-    console.log(email)
+    //PRINTS TO CONSOLE FOR DEBUG
 
-    const userExists = await usuariosRepository.findOneBy({ email })
+    // console.log(request.body)
+    // console.log(email)
 
-    if (!userExists) {
-      return response.status(400).json({ error: 'User does not exist' })
+    //CHECK IF PARAMS ARE MISSING
+
+    if (!email || !role) {
+      return response.status(400).json({ error: 'Missing params' })
     }
 
-    if (role == 'aluno') {
-      const aluno = await alunosRepository.findOneBy({ user_id: userExists.id })
+    //CHECK IF ROLE AND SEMESTER OR DISCIPLINE IS PRESENT
 
-      if (!aluno) {
-        return response.status(400).json({ error: 'Aluno does not exist' })
-      }
-
-      const updatedAluno = {
-        ...aluno,
-        name,
-        surname,
-        email,
-        semestre: semester,
-        updated_at: new Date()
-      }
-
-      await alunosRepository.update(aluno.id, updatedAluno)
-    } else if (role == 'professor') {
-      const professor = await professoresRepository.findOneBy({
-        user_id: userExists.id
-      })
-
-      if (!professor) {
-        return response.status(400).json({ error: 'Professor does not exist' })
-      }
-
-      const updatedProfessor = {
-        ...professor,
-        disciplina,
-        updated_at: new Date()
-      }
-
-      const updatedProfessorObject = await professoresRepository.update(
-        professor.id,
-        updatedProfessor
-      )
-
-      console.log('updated professor')
-      console.log(updatedProfessorObject)
+    if (role == 'aluno' && !semester) {
+      return response.status(400).json({ error: 'Semester is missing' })
+    } else if (role == 'professor' && !disciplina) {
+      return response.status(400).json({ error: 'Discipline is missing' })
     }
+    try {
+      const userExists = await usuariosRepository.findOneBy({ email })
+      if (!userExists) {
+        return response.status(400).json({ error: 'User does not exist' })
+      }
 
-    return response.status(200).json({ message: 'User updated' })
+      //ID USER IS ALUNO
+      if (role == 'aluno') {
+        //FIND USER ON ALUNO TABLE
+        const aluno = await alunosRepository.findOneBy({
+          user_id: userExists.id
+        })
+        if (!aluno) {
+          return response.status(400).json({ error: 'Aluno does not exist' })
+        }
+
+        //UPDATE USER
+        const updatedAluno = {
+          ...aluno,
+          // name,
+          // surname,
+          email,
+          semestre: semester,
+          updated_at: new Date()
+        }
+
+        //UPDATE USER ON DATABASE
+        await alunosRepository.update(aluno.id, updatedAluno)
+      }
+
+      //IF USER IS PROFESSOR
+      else if (role == 'professor') {
+        const professor = await professoresRepository.findOneBy({
+          user_id: userExists.id
+        })
+
+        if (!professor) {
+          return response
+            .status(400)
+            .json({ error: 'Professor does not exist' })
+        }
+
+        const updatedProfessor = {
+          ...professor,
+          // name,
+          // surname,
+          updated_at: new Date()
+        }
+
+        const updatedProfessorObject = await professoresRepository.update(
+          professor.id,
+          updatedProfessor
+        )
+
+        // console.log('disciplinasArray=')
+        // console.log(disciplina)
+
+        const idArray = disciplina.map((item: any) => item.id)
+
+        // console.log('idArray=')
+        // console.log(idArray)
+
+        let changed = false
+
+        //GETS ALL DISCIPLINAS FROM PROFESSOR AND DELETE THE ONES THAT ARE NOT IN THE NEW ARRAY
+        const allDisciplines = await professorDisciplinaRepositories.find({
+          where: { id_professor: professor.id }
+        })
+
+        allDisciplines.forEach(async (item: any) => {
+          if (!idArray.includes(item.id_disciplina)) {
+            await professorDisciplinaRepositories.delete(item.id)
+            console.log('-- deleting disciplina ' + item.id)
+            changed = true
+          }
+        })
+
+        //ADD DISCIPLINA TO PROFESSOR TOKEN AND SAVE IT ON DATABASE
+        await idArray.forEach(async (item: any) => {
+          //update professor disciplina
+          const professorDisciplina =
+            await professorDisciplinaRepositories.findOneBy({
+              id_disciplina: item,
+              id_professor: professor.id
+            })
+
+          if (!professorDisciplina) {
+            const DicsiplinasObj = {
+              id_disciplina: item,
+              id_professor: professor.id
+            }
+
+            const createdDisciplineProfessorItem =
+              await professorDisciplinaRepositories.create(DicsiplinasObj)
+
+            await professorDisciplinaRepositories.save(
+              createdDisciplineProfessorItem
+            )
+            changed = true
+            console.log('++ created disciplina ' + item)
+          }
+        })
+        console.log('User updated!')
+
+        return response.status(200).json({ message: 'User updated' })
+      }
+    } catch (error) {
+      return response.status(500).json({ message: 'internal server error' })
+    }
   }
 
   async getAlunos (request: Request, response: Response) {

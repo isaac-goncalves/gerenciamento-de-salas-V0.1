@@ -92,7 +92,7 @@ const Navbar = ( {toggleTheme} : any ) => {
             case 'aluno':
                 return `${user.semestre}º ADS`;
             case 'professor':
-                return `${user.disciplina ? getDisciplina() : 'Professor'}`;
+                return user.nomeDisciplina[0] || "Não encontrado";
             default:
                 return 'guest';
         }

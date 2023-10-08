@@ -73,7 +73,6 @@ const RegisterScreen: any = ({ theme }: any): any => {
     }, [])
 
     //FETCH FUNCTION
-
     async function fetchDisciplinas() {
         console.log("Fetching fetchDisciplinas...")
         // console.log(process.env.REACT_APP_API_KEY)
