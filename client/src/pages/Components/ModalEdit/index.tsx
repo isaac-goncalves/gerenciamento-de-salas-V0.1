@@ -3,12 +3,16 @@ import { toast } from 'react-toastify'
 import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates, ModalContentSize, SecondImageWrapper } from './ModalEdit.styles'
 import background from '../../../../public/images/background.jpg';
 import { format } from 'date-fns';
+const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
+console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
 import { ptBR } from 'date-fns/locale';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ScheduleViewer from '../ScheduleViewer';
 
 import Swal from 'sweetalert2'
+import Multiselect from 'react-widgets/esm/Multiselect';
+
 
 interface ModalProps {
   idUserLogado: number
@@ -71,6 +75,13 @@ const ModalEdit = ({
   const [selectedLaboratory, setSelectedLaboratory] = useState<any>();
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
   const [selectedData, setSelectedData] = useState<any>();
+
+  //MULTISELECT PARAMS
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [disciplinas, setDisciplinas] = useState([]);
+
+
+
   // const [initialDate, setInitialDate] = useState<any>();
 
   //USEFECCTS
@@ -89,6 +100,7 @@ const ModalEdit = ({
 
     fetchProfessorData();
     fetchLaboratoryData();
+    fetchDisciplinas();
 
     //CREATE
     if (action == "CREATE") {
@@ -193,6 +205,39 @@ const ModalEdit = ({
 
       return data
     });
+  }
+  //FETCH FUNCTION MULTISELECT
+  async function fetchDisciplinas() {
+    console.log("Fetching fetchDisciplinas...")
+    // console.log(process.env.REACT_APP_API_KEY)
+    await fetch(`${apiUrl}/disciplinas`, {
+      method: 'POST'
+
+    }).then((response) => response.json()).then((data) => {
+      console.log(data)
+
+      let transformedData: any = []
+
+      data.forEach((elemento: any) => {
+        if (elemento.descricao !== "-") {
+
+
+          let dataObject = {
+            id: elemento.id,
+            disciplina: elemento.descricao
+          }
+
+          return transformedData.push(dataObject)
+        }
+      });
+
+      transformedData.sort()
+      console.log(transformedData)
+      setDisciplinas(transformedData);
+
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 
   //HANDLE CLICKS
@@ -555,18 +600,20 @@ const ModalEdit = ({
           <SideBysideContainer>
             <DetailsWrapper>
               <div>
-                <DetailsText>Semestre:</DetailsText>
-                {/* <StyledSelect value={selectedLaboratory || ''} onChange={handleLaboratoryChange}>
-                  {laboratory.length > 0 ? (
-                    laboratory.map((laboratory) => (
-                      <option key={laboratory.id} value={laboratory.id}>
-                        {laboratory.descricao}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="">No professors available</option>
-                  )}
-                </StyledSelect> */}
+                <DetailsText>Disciplinas:</DetailsText>
+                <Multiselect
+                  dataKey="id"
+                  textField="disciplina"
+                  placeholder='Selecione a disciplinas'
+                  data={disciplinas}
+                  value={selectedValues}
+                  onChange={value => {
+                    console.log(value)
+                    setSelectedValues(value)
+                  }
+                  }
+                />
+
               </div>
               <div>
                 <DetailsText>Laboratório:</DetailsText>
