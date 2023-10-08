@@ -118,6 +118,8 @@ const Perfil: any = ({ theme }: any): any => {
     const [professoresData, setProfessoresData] = React.useState<ProfessoresData[]>([])
 
     const [semestre, setSemestre] = useState("");
+
+    //  
     const [disciplina, setDisciplina] = useState("");
 
     const [editingModal, setEditingModal] = React.useState(false)
@@ -173,13 +175,44 @@ const Perfil: any = ({ theme }: any): any => {
                 // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
                 setUserData(userDataJson);
                 setSemestre(userDataJson.userData.semestre);
-                setDisciplina(userDataJson.userData.disciplina);
+                // setDisciplina(userDataJson.userData.disciplina);
                 fetchUserImage(userDataJson.userData.userId);
+
             }
         }
 
+        const disciplinasFromToken = userData.userData.disciplina;
 
-    }, [userData]);
+        if (disciplinasFromToken && disciplinas && disciplinas.length > 0) {
+            console.log(disciplinasFromToken);
+            console.log(disciplinas);
+
+            let finalDisciplinasArray: any = [];
+
+            // Use map instead of forEach for creating an array
+            const multiSelectDefaultValues = disciplinasFromToken.map((element: any) => {
+                // Use find to search for a matching element in disciplinas
+                const disciplinaEncontrada = disciplinas.find((disciplinaItem: any) => {
+                    return disciplinaItem.id === element;
+                });
+
+                // If disciplinaEncontrada is found, add it to finalDisciplinasArray
+                if (disciplinaEncontrada) {
+                    finalDisciplinasArray.push(disciplinaEncontrada);
+                }
+
+                // Return disciplinaEncontrada for multiSelectDefaultValues
+                return disciplinaEncontrada;
+            });
+
+            console.log(multiSelectDefaultValues);
+
+            // Assuming setSelectedValues is a function that sets state
+            setSelectedValues(finalDisciplinasArray);
+        }
+
+    }, [userData, disciplinas]);
+
 
     useEffect(() => {
         fetchData();
@@ -233,18 +266,19 @@ const Perfil: any = ({ theme }: any): any => {
 
             console.log(disciplinasDataResponse)
 
-            const transformedDisciplinas = disciplinasDataResponse.map((disciplina: any) => {
-                if (disciplina.id != 1)
-                    return {
+            let transformedDisciplinas: any = []
+
+            disciplinasDataResponse.forEach((disciplina: any) => {
+                if (disciplina.id !== 1)
+                    transformedDisciplinas.push({
                         id: disciplina.id,
                         disciplina: disciplina.descricao
-                    }
+                    })
             })
 
             console.log(transformedDisciplinas)
 
             setDisciplinas(transformedDisciplinas)
-
 
             const ProfessorWithOutFirstElement = professoresDataResponse.slice(1);
 
@@ -345,12 +379,58 @@ const Perfil: any = ({ theme }: any): any => {
 
             let newToken = {};
 
-            newToken = {
-                ...userData,
-                userData: {
-                    ...userData.userData,
-                    semestre: semestre,
-                    disciplina: disciplina
+            if (userData.userData.token == 'aluno') {
+
+                newToken = {
+                    ...userData,
+                    userData: {
+                        ...userData.userData,
+                        semestre: semestre,
+                        disciplina: disciplina
+                    }
+                }
+            }
+
+            //             coordenador
+            // : 
+            // false
+            // created_at
+            // : 
+            // "2023-09-03T20:15:29.554Z"
+            // disciplina
+            // : 
+            // [4, 7]
+            // email
+            // : 
+            // "professor1@gmail.com"
+            // id
+            // : 
+            // 22
+            // name
+            // : 
+            // "professor1"
+            // nomeDisciplina
+            // : 
+            // ["Arquitetura e Organização de Computadores", "Comunicação e Expressão"]
+            // professor_id
+            // : 
+            // 22
+            // role
+            // : 
+            // "professor"
+            else if (userData.userData.role == 'professor') {
+
+                const newDisciplinasArray = selectedValues.map((disciplina: any) => disciplina.id)
+
+                const newDisciplinasNames = selectedValues.map((disciplina: any) => disciplina.disciplina)
+
+                newToken = {
+                    ...userData,
+                    userData: {
+                        ...userData.userData,
+                        disciplina: newDisciplinasArray,
+                        nomeDisciplina: newDisciplinasNames
+                    }
                 }
             }
 
