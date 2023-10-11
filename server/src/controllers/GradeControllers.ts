@@ -89,10 +89,10 @@ export class GradeController {
           const nearestMonday = getNearestMonday(date)
 
           console.log(nearestMonday)
-      
+
           const nextSaturnDay = addDays(nearestMonday, 5)
-      
-        console.log(nextSaturnDay)
+
+          console.log(nextSaturnDay)
 
           const queryAgendamento = `
             SELECT
@@ -127,13 +127,11 @@ export class GradeController {
           //remove 3 hours from date to match the timezone
 
           if (agendamentos[0] && agendamentos[0].date) {
-
             const newDate = new Date(agendamentos[0].date)
 
             newDate.setHours(newDate.getHours() - 3)
 
             agendamentos[0].date = newDate
-
           }
 
           grade.agendamentos = agendamentos || []
@@ -205,6 +203,7 @@ export class GradeController {
               id_grade,
               id_laboratorio,
               professores.name as professor,
+              agendamento.created_at,
               laboratorios.descricao as laboratorio
             FROM
               agendamento
@@ -226,6 +225,35 @@ export class GradeController {
       // console.log(gradeWithAgendamento);
 
       return response.status(200).json(gradeWithAgendamento)
+    } catch (error) {
+      console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
+    }
+  }
+
+  async getDisciplinasByGradesIds (request: Request, response: Response) {
+    //grab id from json
+    const { ids } = request.body
+
+    console.log('RECEIVED REQUEST ----------------------------')
+    console.log(ids)
+
+    try {
+      const disciplinaGradeArray = await Promise.all(
+        ids.map(async (gradeId: any) => {
+          const disciplinaGrade = await gradeRepositories.findOne({
+            where: {
+              id: gradeId
+            }
+          })
+
+          return disciplinaGrade? disciplinaGrade?.id_disciplina : null
+        })
+      )
+
+      // console.log(disciplinaGradeArray)
+
+      return response.status(200).json(disciplinaGradeArray)
     } catch (error) {
       console.log(error)
       return response.status(500).json({ message: 'internal server error' })

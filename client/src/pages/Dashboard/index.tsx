@@ -10,8 +10,6 @@ console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
-import { Colors } from '../../colors';
-
 import { toast, ToastContainer } from 'react-toastify';
 
 import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
@@ -261,8 +259,12 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
     const daysIds: any = []
 
+    console.log(dayData)
+
     dayData.forEach((item: any) => {
-      item.id ? daysIds.push(item.id) : null
+      if (item.disciplina != 'Intervalo') {
+        item.id ? daysIds.push(item.id) : daysIds.push(0)
+      }
     })
 
     console.log(daysIds)
@@ -292,7 +294,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       //   "created_at": "2023-08-27T00:23:37.849Z"
       // }
 
-      const newAgedamentoData = {
+      const newAgendamentoData = {
         date: dayDateObject?.toISOString(),
         uuid_agendamento: "-",
         id_professor: userData.userData.professor_id,
@@ -301,10 +303,12 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         created_at: new Date()?.toISOString()
       }
 
+      console.log(newAgendamentoData)
+
       //ABRE MODAL DE NOVO AGENDAMNTO CASO USUARIO ESTEJA NO MODO DE CRIAÇÂO 
       userIsScheduling
         ?
-        openEditModal(newAgedamentoData, daysIds)
+        openEditModal(newAgendamentoData, daysIds)
         :
         console.log("Is not agendating")
     }
@@ -436,11 +440,15 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         toast.info('Modo de agendamento desativado!', {
           theme: "dark"
         });
+        setSelectedMethod("semestre")
       }
       else {
+
         toast.info('Selecione um dia para agendar!');
-      } e
+        setSelectedMethod("professor")
+      }
       setUserIsScheduling(!userIsScheduling)
+
     }
     else {
 
@@ -465,7 +473,15 @@ const Dashboard: any = ({ theme, themeName }: any) => {
   const openEditModal = (editedData: any, daysIds: any) => {
     console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
     console.log("daysIds: " + JSON.stringify(daysIds, null, 2))
-    setEditedData(editedData);
+
+    const newDate = new Date(editedData.date)
+
+    const alteredObject = {
+      ...editedData,
+      date: newDate
+    }
+
+    setEditedData(alteredObject);
     setDaysIds(daysIds)
     setSchedulingModalIsVisible(true);
   };
@@ -787,16 +803,16 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }}
       />
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
-      <ToastContainer 
-      limit={4}
-      autoClose={1000}
+      <ToastContainer
+        limit={4}
+        autoClose={1000}
       />
       <MainContainer>
         <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
             userData.userData.role == "aluno" || userData.userData.role == "guest" &&
-            // <FaFilter size={35} color='white' />
-            <AiFillHeart size={35} color='white' />
+            <FaFilter size={35} color='white' />
+            // <AiFillHeart size={35} color='white' />
           }
           {
             userData.userData.role == "professor" &&

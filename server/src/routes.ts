@@ -26,6 +26,9 @@ routes.post('/laboratory', new ProfessorsController().getLaboratory)
 
 routes.post('/grade/dashboard', new GradeController().getDashboardData)
 
+//GET DISCIPLINAS BY GRADE IDs
+routes.post('/disciplinas/gradeIds', new GradeController().getDisciplinasByGradesIds)
+
 routes.post('/agendamento', new AgendamentoController().get)
 
 routes.get('/grade/agendamentos', new AgendamentoController().getGroupedById) // GroupByID

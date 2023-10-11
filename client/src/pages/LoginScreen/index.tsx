@@ -356,8 +356,8 @@ const LoginScreen: any = ({ theme }: any): any => {
                             </MantenhaMeConectadoWrapper>
                             <ButtonsWrapper>
                                 <ButtonWrapper>
-                                    <Button onClick={handleGuestLogin} >Guest</Button>
                                     <Button onClick={handleSubmit}>Login</Button>
+                                    <Button onClick={handleGuestLogin} >Guest</Button>
                                 </ButtonWrapper>
                                 <NãoPossuiContaText>
 

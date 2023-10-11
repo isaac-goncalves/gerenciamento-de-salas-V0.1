@@ -82,8 +82,8 @@ function transformData(agendamentos: any) {
 
     // console.log(agendamentoExisteNesteHorario)
 
-    console.log("================================")
-    console.log("Agendamento Existe: " + (agendamentoExisteNesteHorario != "" ? true : false))
+    // console.log("================================")
+    // console.log("Agendamento Existe: " + (agendamentoExisteNesteHorario != "" ? true : false))
 
     const item = {
       id: i,
@@ -91,7 +91,7 @@ function transformData(agendamentos: any) {
       agendamento: agendamentoExisteNesteHorario != "" ? agendamentoExisteNesteHorario : {},
     }
 
-    console.log(item)
+    // console.log(item)
 
     items.push(item)
 
@@ -142,7 +142,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
 
     const bodyParams = JSON.stringify(obj)
 
-    console.log(bodyParams)
+    // console.log(bodyParams)
 
     await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/agendamento/grouped', {
       method: 'POST',
@@ -153,13 +153,13 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
       body: bodyParams
     }).then((response) => response.json()).then(async (data) => {
 
-      console.log("ReturnedData")
-      console.log(data)
+      // console.log("ReturnedData")
+      // console.log(data)
 
       const transformedData = await transformData(data)
 
-      console.log("transformedData")
-      console.log(transformedData)
+      // console.log("transformedData")
+      // console.log(transformedData)
 
       return setScheduleData(transformedData)
 
@@ -170,8 +170,8 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
   }
 
   const handleSelection = (id: number, idAgendamento: number) => {
-    console.log("idAgendamento: " + idAgendamento);
-    console.log("ID: " + id);
+    // console.log("idAgendamento: " + idAgendamento);
+    // console.log("ID: " + id);
 
     const NewArray = scheduleData.map((item, index) => {
 
@@ -186,7 +186,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
       return item;
     });
 
-    console.log(NewArray);
+    // console.log(NewArray);
 
     setScheduleData(NewArray);
     handleDataSelection(NewArray);
@@ -232,23 +232,23 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
     idUserAgendamento: number,
     idUserLogado: number) {
 
-    console.log("idUserAgendamento: " + idUserAgendamento)
-    console.log("idUserLogado: " + idUserLogado)
+    // console.log("idUserAgendamento: " + idUserAgendamento)
+    // console.log("idUserLogado: " + idUserLogado)
 
     //mostrar indisponível se o agendamento for de outro usuário
 
     if (idUserAgendamento) {
-      if(action == 'CREATE' ) {
+      if (action == 'CREATE') {
         if (idUserAgendamento == idUserLogado && itemIsSelected == true) {
           return "Selecionado"
         } else
-        if (idUserAgendamento != idUserLogado && itemIsSelected == true) {
-          return "Indisponivel"
+          if (idUserAgendamento != idUserLogado && itemIsSelected == true) {
+            return "Indisponivel"
+          }
+      } else
+        if (action == 'OPEN') {
+          return "Agendado"
         }
-      } else 
-      if(action == 'OPEN' ) {
-        return "Agendado"
-      }
     }
     if (itemIsSelected == false) {
       return "Disponivel"

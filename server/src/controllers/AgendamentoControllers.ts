@@ -265,7 +265,7 @@ export class AgendamentoController {
   }
 
   async getGroupedById (request: Request, response: Response) {
-    console.log('getGroupedById')
+    // console.log('getGroupedById')
     const { uuid_agendamento, date, laboratory_id, action } = request.body
 
     console.log(uuid_agendamento, date, laboratory_id, action)
@@ -282,14 +282,14 @@ export class AgendamentoController {
     //   `
     // }
     if (laboratory_id == undefined) {
-      console.log('laboratory_id == undefined')
+      // console.log('laboratory_id == undefined')
       query = `
       SELECT * 
       FROM agendamento 
       AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)
       `
     } else {
-      console.log('full query when creating only')
+      // console.log('full query when creating only')
       query = `
         SELECT * 
         FROM agendamento 
@@ -308,7 +308,7 @@ export class AgendamentoController {
       }
       const gradeGroupedById = await agendamentosRepository.query(query)
 
-      console.log(gradeGroupedById)
+      // console.log(gradeGroupedById)
 
       return response.status(200).json(gradeGroupedById)
     } catch (error) {
