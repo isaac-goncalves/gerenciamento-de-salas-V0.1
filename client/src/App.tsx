@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Dashboard from './pages/Dashboard'
+import Laboratorio from './pages/Laboratorio'
 import Agendamentos from './pages/Agendamentos'
 import LoginScreen from './pages/LoginScreen'
 import Navbar from './pages/Navbar'
@@ -17,6 +18,7 @@ import { lightTheme, lightThemeRed, darkTheme, vancedTheme } from './colors';
 import { useEffect, useState } from 'react';
 import GlobalStyle from './theme/globalStyle'
 import { toast } from 'react-toastify';
+
 
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
@@ -143,6 +145,16 @@ function App() {
               <>
                 <Navbar toggleTheme={toggleTheme} />
                 <Dashboard
+                  theme={themeArray[theme]}
+                  themeName={ThemeName}
+                />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+             <Route path="/laboratorio" element={
+              <>
+                <Navbar toggleTheme={toggleTheme} />
+                <Laboratorio
                   theme={themeArray[theme]}
                   themeName={ThemeName}
                 />

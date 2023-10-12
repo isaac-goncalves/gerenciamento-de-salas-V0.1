@@ -21,7 +21,7 @@ routes.post('/professors', new ProfessorsController().get)
 //GET DISCIPLINAS
 routes.post('/disciplinas', new DisciplinasController().get)
 
-
+//GET LABORATORY
 routes.post('/laboratory', new ProfessorsController().getLaboratory)
 
 routes.post('/grade/dashboard', new GradeController().getDashboardData)

@@ -10,6 +10,7 @@ import { BiCog } from 'react-icons/bi'
 import { TbFileUpload, TbLogout } from 'react-icons/tb'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { MdNotificationsNone, MdOutlineDarkMode } from 'react-icons/md'
+import { HiOutlineDesktopComputer } from 'react-icons/hi'
 
 interface Props {
   menuOpen: boolean
@@ -71,6 +72,14 @@ export const HamburgerWrapper = styled(GiHamburgerMenu)`
 `
 
 export const SchedulesWrapper = styled(FaRegClock)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
+`
+export const LaboratoriosWrapper = styled(HiOutlineDesktopComputer)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
 
