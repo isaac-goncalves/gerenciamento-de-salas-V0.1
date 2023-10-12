@@ -118,6 +118,47 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
   }
   return groupedData;
 }
+
+function groupByWeekdayLaboratorios(data: ScheduleItem[]): GroupedData {
+  const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
+  const totalItemsPerDay = 6;
+
+  // Initialize groupedData with each day of the week and an empty array
+  const groupedData: GroupedData = {
+    segunda: [],
+    terca: [],
+    quarta: [],
+    quinta: [],
+    sexta: [],
+  };
+
+  for (const item of data) {
+    const dayIndex = parseInt(item.dia_da_semana) - 1;
+    const day = daysOfWeek[dayIndex];
+
+    groupedData[day].push(item);
+  }
+
+  for (const day in groupedData) {
+    const currentDayLength = groupedData[day].length;
+
+    // Add "Nenhuma Aula" for remaining slots, except after the interval
+    for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
+      groupedData[day].push({
+        disciplina: "Nenhum Agendamento",
+        semestre: ''
+      });
+    }
+
+    // Add interval as the third item
+    groupedData[day].splice(2, 0, {
+      disciplina: "Intervalo",
+      semestre: ''
+    });
+  }
+  return groupedData;
+}
+
 //COMPONENTS -------------------------------------------------------------------------
 const Dashboard: any = ({ theme, themeName }: any) => {
   const [loading, setLoading] = useState(false);
@@ -630,7 +671,8 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        professor_id: selectedProfessor.id || 1,
+        // professor_id: selectedProfessor.id || 1,
+        laboratory_id: "2",
       })
     }).then((response) => response.json()).then((data) => {
       console.log(data)
@@ -787,9 +829,9 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }}
       />
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
-      <ToastContainer 
-      limit={4}
-      autoClose={1000}
+      <ToastContainer
+        limit={4}
+        autoClose={1000}
       />
       <MainContainer>
         <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>

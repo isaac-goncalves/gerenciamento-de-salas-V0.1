@@ -24,6 +24,8 @@ routes.post('/disciplinas', new DisciplinasController().get)
 //GET LABORATORY
 routes.post('/laboratory', new ProfessorsController().getLaboratory)
 
+
+//MAIN GET GRADE DASHBOARD ENDPOINT
 routes.post('/grade/dashboard', new GradeController().getDashboardData)
 
 routes.post('/agendamento', new AgendamentoController().get)
