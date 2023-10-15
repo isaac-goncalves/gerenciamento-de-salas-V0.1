@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates, ModalContentSize, SecondImageWrapper } from './ModalEdit.styles'
 import background from '../../../../public/images/background.jpg';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
 import { ptBR } from 'date-fns/locale';
@@ -93,6 +93,7 @@ const ModalEdit = ({
     //RUNS FOR BOTH
     if (!formData) {
       setFormData(initialData);
+
       toast.info('Selecione um Laboratorio e horários para criar um agendamento!')
       // setInitialDate(new Date(initialData.date));
     }
@@ -113,9 +114,15 @@ const ModalEdit = ({
         console.log("EDIT")
 
       }
+      //OPEN
       else
         if (action == "OPEN") {
           console.log("OPEN")
+        }
+        else
+        if (action == "SCHEDULELABORATORIO") {
+          console.log("SCHEDULELABORATORIO")
+          
         }
         else {
           console.log("ERROR")
@@ -199,7 +206,7 @@ const ModalEdit = ({
       setLaboratory(data.reverse())
 
       if (initialData.id_laboratorio) {
-        const lab = data.find((lab) => lab.id === formData.id_laboratorio);
+        const lab = data.find((lab: any) => lab.id === formData.id_laboratorio);
         setSelectedLaboratory(lab);
       }
 
@@ -243,6 +250,13 @@ const ModalEdit = ({
   //HANDLE CLICKS
 
   async function handleEdit() {
+
+    if(action == "SCHEDULELABORATORIO"){
+
+      
+
+    }
+
     const deletedAgendamentos: any = []
     const newAgendamentos: any = []
     console.clear()
@@ -515,6 +529,9 @@ const ModalEdit = ({
 
   function getAndarLaboratorio(id: number) {
 
+    console.log("getAndarLaboratorio")
+    console.log(id)
+
     const andar = laboratory.find((lab) => lab.id === id)?.andar;
 
     const andaresString = ['Nenhum lab selecionado!', 'Primeiro Andar', 'Segundo Andar'];
@@ -632,7 +649,7 @@ const ModalEdit = ({
                   )}
                 </StyledSelect>
               </div>
-              <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory)}</StyledText></DetailsText>
+              <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory.id)}</StyledText></DetailsText>
               <DetailsText>Criado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
               <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
               <DetailsText>Capacidade: <StyledDates>{selectedLaboratory ? selectedLaboratory.capacidade : null} alunos</StyledDates></DetailsText>
@@ -658,8 +675,11 @@ const ModalEdit = ({
               </DetailsText>
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
-              <ClockTimeWrapper>
+              <ClockTimeWrapper>{
+                  action != "SCHEDULELABORATORIO" ?
                 <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory && selectedLaboratory.id} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} userRole={userRole} />
+                : null
+                }
               </ClockTimeWrapper>
               <SecondImageWrapper>
                 <BackgroundImage src={background} />

@@ -153,7 +153,7 @@ export class GradeController {
   async getAgendamentosData (request: Request, response: Response) {
     console.log('getAgendamentosData')
     const { semestre, professor_id, laboratory_id } = request.body
-    // console.log(request.body)
+     console.log(request.body)
 
     try {
       if (laboratory_id) {
