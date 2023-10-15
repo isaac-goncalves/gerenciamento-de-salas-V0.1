@@ -72,7 +72,11 @@ const ModalEdit = ({
   const [professores, setProfessores] = useState<ProfessoreProps[]>([]);
   const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
   const [startDate, setStartDate] = useState<Date>();
-  const [selectedLaboratory, setSelectedLaboratory] = useState<any>();
+  const [selectedLaboratory, setSelectedLaboratory] = useState<any>(
+    {
+      id: 0
+    }
+  );
   const [selectedProfessor, setSelectedProfessor] = useState<Number>();
   const [selectedData, setSelectedData] = useState<any>();
 
@@ -120,13 +124,13 @@ const ModalEdit = ({
           console.log("OPEN")
         }
         else
-        if (action == "SCHEDULELABORATORIO") {
-          console.log("SCHEDULELABORATORIO")
-          
-        }
-        else {
-          console.log("ERROR")
-        }
+          if (action == "SCHEDULELABORATORIO") {
+            console.log("SCHEDULELABORATORIO")
+
+          }
+          else {
+            console.log("ERROR")
+          }
   }, [initialData])
 
   useEffect(() => {
@@ -251,9 +255,9 @@ const ModalEdit = ({
 
   async function handleEdit() {
 
-    if(action == "SCHEDULELABORATORIO"){
+    if (action == "SCHEDULELABORATORIO") {
 
-      
+
 
     }
 
@@ -676,10 +680,10 @@ const ModalEdit = ({
             </DetailsWrapper>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>{
-                  action != "SCHEDULELABORATORIO" ?
-                <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory && selectedLaboratory.id} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} userRole={userRole} />
-                : null
-                }
+                action != "SCHEDULELABORATORIO" ?
+                  <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory && selectedLaboratory.id} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} userRole={userRole} />
+                  : null
+              }
               </ClockTimeWrapper>
               <SecondImageWrapper>
                 <BackgroundImage src={background} />
