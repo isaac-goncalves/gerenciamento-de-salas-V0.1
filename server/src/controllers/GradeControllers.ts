@@ -285,4 +285,50 @@ export class GradeController {
       return response.status(500).json({ message: 'internal server error' })
     }
   }
+
+
+  async getGradesByProfessorsAndDisciplinas(request: Request, response: Response) {
+
+    const { dia_da_semana, professor_id, semestre } = request.body
+
+    const query = `
+    SELECT
+    grade.id,
+    grade.horario_inicio,
+    grade.horario_fim,
+    grade.id_professor,
+    grade.id_disciplina,
+    grade.id_sala,
+    grade.semestre,
+    grade.created_at,
+    grade.updated_at,
+    professores.name as professor,
+    disciplinas.descricao as disciplina,
+    disciplinas.capacidade as capacidade,
+    laboratorios.descricao as laboratorio
+    FROM
+    grade
+    LEFT JOIN
+    professores ON grade.id_professor = professores.id
+    LEFT JOIN
+    disciplinas ON grade.id_disciplina = disciplinas.id
+    LEFT JOIN
+
+    laboratorios ON grade.id_sala = laboratorios.id
+    WHERE
+    grade.id_professor = '${professor_id}'
+    AND
+    grade.semestre = '${semestre}'
+    AND
+    grade.dia_da_semana = '${dia_da_semana}'
+    ORDER BY
+    grade.id ASC
+    `
+
+    const grades = await gradeRepositories.query(query)
+
+    return response.status(200).json(grades)
+
+  }
+
 }

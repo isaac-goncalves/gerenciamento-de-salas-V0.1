@@ -28,6 +28,12 @@ routes.post('/laboratory', new ProfessorsController().getLaboratory)
 //MAIN GET GRADE DASHBOARD ENDPOINT
 routes.post('/grade/dashboard', new GradeController().getDashboardData)
 
+//GET GRADES DATA BY PROFESSOR ID, DISCIPLINA ID AND DAY OF THE WEEK
+
+routes.post('/grade/professors', new GradeController().getGradesByProfessorsAndDisciplinas)
+
+
+
 routes.post('/agendamento', new AgendamentoController().get)
 
 routes.get('/grade/agendamentos', new AgendamentoController().getGroupedById) // GroupByID
