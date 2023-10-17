@@ -1,1 +1,1 @@
-Teste
+gource --title "Gerenciamento de Salas" --seconds-per-day 0.01

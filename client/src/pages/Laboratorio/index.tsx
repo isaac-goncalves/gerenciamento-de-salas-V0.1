@@ -162,8 +162,8 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
   const [selectedLaboratorio, setSelectedLaboratorio] = useState<any>(
     {
-      id: 1,
-      descricao: "Sala-1",
+      id: 26,
+      descricao: "Laboratorio-6",
     }
   )
 
@@ -234,13 +234,12 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       }
       fetchProfessors(userData.token);
       fetchLaboratoryData();
-
     }
     else {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedLaboratorio, selectedDate, startDate]);
+  }, [selectedSemesterValue, userData, selectedLaboratorio ,selectedProfessor, selectedMethod, selectedDate, startDate]);
 
   useEffect(() => {
 
@@ -263,6 +262,9 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     };
 
   }, []);
+
+
+
 
   //FUNCTIONS ---------------------------------------------------------------------
 
@@ -358,7 +360,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
   }
 
-
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
 
@@ -387,7 +388,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
               const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
               //IMPLEMENTAR LOGICA DE AGENDAMENTO VENCEDOR AQUI
-              
+
               const isCurrentTime = false
               //
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
@@ -716,9 +717,9 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
 
-      setlaboratoryData(data.reverse())
-      return
 
+
+      return setlaboratoryData(data.reverse())
     }
     )
 
@@ -839,7 +840,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       default:
         return 'bubbly-button-shadow-white'
     }
-
 
   }
 
