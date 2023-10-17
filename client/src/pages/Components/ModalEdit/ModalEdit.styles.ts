@@ -216,6 +216,7 @@ export const DetailsWrapper = styled.div`
 export const DetailsText = styled.p`
   font-weight: 500;
   font-size: 1 rem;
+  margin-bottom: 0.2rem;
   color: ${props => props.theme.mainpurple};
 
   span {

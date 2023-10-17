@@ -131,7 +131,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       name: "Selecione um professor",
     },
   ]);
-  const [laboratoryData, setlaboratoryData] = useState([]);
+  const [laboratoryData, setlaboratoryData] = useState<any>([]);
 
   //MODALPROPS
   const [userIsScheduling, setUserIsScheduling] = useState<boolean>(false);
@@ -341,6 +341,24 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     }
   }
 
+  function getProfessorName(professor_id: number) {
+
+    if (professor_id) {
+      const professorObject = professores.filter((item: any) => {
+        if (item.id == professor_id) {
+          return item
+        }
+      })
+
+      return professorObject[0].name
+    }
+    else {
+      return ""
+    }
+
+  }
+
+
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
 
@@ -361,28 +379,27 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
             dayData.map((item: any) => {
               const {
                 disciplina,
-                professor,
+                id_professor,
                 laboratorio,
                 agendamentos,
                 semestre,
               } = item;
 
               const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
+              //IMPLEMENTAR LOGICA DE AGENDAMENTO VENCEDOR AQUI
+              
               const isCurrentTime = false
+              //
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
 
-              // console.log(isCurrentTime)
+              console.log(agendamento)
               // console.log(currentTime)
 
               return (
                 <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
-                  <Professor>{professor}</Professor>
-
-
+                  <Professor>{getProfessorName(id_professor || 0)}</Professor>
                   <Disciplina>{disciplina}</Disciplina>
-
-
                   {
                     !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
                       selectedMethod === 'professor' ?
@@ -413,7 +430,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                             <SemestreSalaWrapper>
                               <Semestre>{semestre}º Semestre</Semestre>
                               <SalaWrapper>
-                                <div>43 Alunos</div> //TODO: colocar o numero de alunos aqui
+                                <div>{agendamento ? agendamento.capacidade + " Alunos" : ""}</div>
                               </SalaWrapper>
                             </SemestreSalaWrapper>
                             : null
@@ -699,7 +716,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
 
-      setlaboratoryData(data)
+      setlaboratoryData(data.reverse())
       return
 
     }
@@ -715,7 +732,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        laboratory_id: selectedLaboratorio.id
+        id_laboratorio: selectedLaboratorio.id
       })
     }).then((response: any) => response.json()).then((data) => {
 

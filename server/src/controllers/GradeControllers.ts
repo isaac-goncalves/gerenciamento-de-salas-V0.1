@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { gradeRepositories } from '../repositories/gradeRepositories'
 import { agendamentosRepository } from '../repositories/agendamentoRepository'
 import { addDays, nextFriday, setDay, startOfWeek } from 'date-fns'
+import { semestresRepository } from '../repositories/semestresRepository'
 // import { professoresRepository } from "../repositories/professoresRepository";
 // import { laboratoriosRepository } from "../repositories/laboratoriosRepository";
 // import { disciplinasRepository } from "../repositories/disciplinasRepositories";
@@ -152,15 +153,14 @@ export class GradeController {
 
   async getAgendamentosData (request: Request, response: Response) {
     console.log('getAgendamentosData')
-    const { semestre, professor_id, laboratory_id } = request.body
-     console.log(request.body)
+    const { semestre, professor_id, id_laboratorio } = request.body
+    console.log(request.body)
 
     try {
-      if (laboratory_id) {
+      if (id_laboratorio) {
         //fetach all agendamentos with laboratory id as
 
         const query = ` 
-
         SELECT
         agendamento.id as id,
         date,
@@ -180,32 +180,38 @@ export class GradeController {
         LEFT JOIN
         professores ON id_professor = professores.id
         LEFT JOIN
-
         laboratorios ON id_laboratorio = laboratorios.id
         WHERE
-        id_laboratorio = '${laboratory_id}'
+        id_laboratorio = '${id_laboratorio}'
         AND schedule_status = 'fixed'
         `
 
         const agendamentos = await gradeRepositories.query(query)
         //grab all grage data where id_grade - gradeID
 
-        let gradesWithAgendamentoFixed:any = [];
+        console.log(agendamentos)
 
-        agendamentos.forEach(async (agendamento: any) => {
-          const grade: any = await gradeRepositories.findOne(
-            agendamento.id_grade
-          )
 
-          grade.agendamento = agendamento
-
-          return gradesWithAgendamentoFixed.push(grade)
-        })
+        const gradesWithAgendamentoFixed = await Promise.all(agendamentos.map(async (agendamento: any) => {
+          const grade: any = await gradeRepositories.findOneBy({
+            id: agendamento.id_grade
+          });
+        
+          console.log(grade);
+        
+          grade.agendamentos = [agendamento];
+        
+          console.log(grade);
+        
+          return grade;
+        }));
 
         // AND
         // agendamento.date BETWEEN '${formatDateForSQL(
         //   getNearestMonday(new Date())
         // )}' AND '${formatDateForSQL(nextFriday(new Date()))}'
+
+        console.log(gradesWithAgendamentoFixed)
 
         return response.status(200).json(gradesWithAgendamentoFixed)
       } else {
@@ -286,9 +292,10 @@ export class GradeController {
     }
   }
 
-
-  async getGradesByProfessorsAndDisciplinas(request: Request, response: Response) {
-
+  async getGradesByProfessorsAndDisciplinas (
+    request: Request,
+    response: Response
+  ) {
     const { dia_da_semana, professor_id, semestre } = request.body
 
     const query = `
@@ -324,11 +331,24 @@ export class GradeController {
     ORDER BY
     grade.id ASC
     `
+    try {
+      const grades = await gradeRepositories.query(query)
 
-    const grades = await gradeRepositories.query(query)
-
-    return response.status(200).json(grades)
-
+      return response.status(200).json(grades)
+    } catch (error) {
+      console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
+    }
   }
 
+  async getSemester (request: Request, response: Response) {
+    const query = `
+    SELECT *
+    FROM
+    semestres
+    `
+    const semesters = await semestresRepository.query(query)
+
+    return response.status(200).json(semesters)
+  }
 }

@@ -21,6 +21,9 @@ routes.post('/professors', new ProfessorsController().get)
 //GET DISCIPLINAS
 routes.post('/disciplinas', new DisciplinasController().get)
 
+//GET SEMESTERS
+routes.post('/semesters' , new GradeController().getSemester)
+
 //GET LABORATORY
 routes.post('/laboratory', new ProfessorsController().getLaboratory)
 
@@ -38,6 +41,7 @@ routes.post('/agendamento', new AgendamentoController().get)
 
 routes.get('/grade/agendamentos', new AgendamentoController().getGroupedById) // GroupByID
 
+//GET AGENDAMENTOS BY LABORATORY
 routes.post('/grade/agendamentos', new GradeController().getAgendamentosData)
 
 routes.post('/laboratoriosschedule', new AgendamentoController().getLaboratoriosSchedule)
@@ -61,7 +65,9 @@ routes.post('/alunos', new UserController().getAlunos)
 routes.get('/template/download', new ETLControllers().download)
 routes.post('/template/upload', new ETLControllers().upload)
 
+//CREATE AGENDAMENTO
 routes.post('/create/agendamento', new AgendamentoController().create)
+
 routes.put('/agendamento', new AgendamentoController().update);
 routes.delete('/agendamento', new AgendamentoController().delete);
 
