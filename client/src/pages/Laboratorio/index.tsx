@@ -165,11 +165,13 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   const closeContextMenu = (type: string) => {
     console.log("Iran")
 
+    console.log(contextMenuData)
+
     const newAgedamentoData = {
       type: type,
       date: dayDateObjectFromClick?.toISOString(),
       uuid_agendamento: contextMenuData.agendamentos[0].uuid_agendamento,
-      id_professor: userData.userData.professor_id,
+      id_professor: contextMenuData.agendamentos[0].id_professor,
       id_laboratorio: 0,
       updated_at: new Date()?.toISOString(),
       created_at: new Date()?.toISOString()
@@ -341,6 +343,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       const newAgedamentoData = {
         date: dayDateObject?.toISOString(),
         uuid_agendamento: "-",
+        type: "SCHEDULELABORATORIO",
         // id_professor: userData.userData.professor_id,
         id_laboratorio: selectedLaboratorio.id,
         updated_at: new Date()?.toISOString(),
@@ -965,7 +968,15 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
           detectRetina: true,
         }}
       />
-      <ModalEdit action={"SCHEDULELABORATORIO"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
+      <ModalEdit
+       action={"SCHEDULELABORATORIO"} 
+       isVisible={schedulingModalIsVisible} 
+       onClose={handleCloseModalEdit} 
+       initialData={editedData} 
+       daysIds={daysIds}
+        idUserLogado={userData.userData.id}
+         userRole={userData.userData.role} 
+         />
       <ToastContainer
         limit={4}
         autoClose={1000}
@@ -1158,12 +1169,12 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
           }}
         >
           <ul>
-            <li onClick={() => closeContextMenu('cancelar')} >
-              <GiCancel size={18} />
-              Cancelar Aula</li>
+            <li onClick={() => closeContextMenu('cancel')} >
+              <GiCancel size={18}/>
+              Excluir agendamento</li>
             <li onClick={() => closeContextMenu('default')}>
               <AiOutlineUserDelete size={18} />
-              Reportar Ausência</li>
+              Cancelar reserva de laboratório</li>
           </ul>
         </StyledContextMenu>
       </MainContainer>

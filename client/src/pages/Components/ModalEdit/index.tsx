@@ -27,6 +27,7 @@ interface ModalProps {
 interface InitialDataProps {
   id: number;
   date: any;
+  type: string;
   horario_inicio: string;
   horario_fim: string;
   id_professor: number;
@@ -625,12 +626,12 @@ const ModalEdit = ({
   };
 
   function getTitleBasedOnAction(action: string) {
-    if (action == "CREATE") {
-      return "Criar Agendamento"
+    if (action == "cancel") {
+      return "Cancelar Agendamento"
     }
     else
-      if (action == "EDIT") {
-        return "Editar Agendamento"
+      if (action == "default") {
+        return "Marcar que o professor não vai hoje"
       }
       else
         if (action == "OPEN") {
@@ -678,7 +679,7 @@ const ModalEdit = ({
         <FormWrapper>
           <StyledTitle>
             {
-              getTitleBasedOnAction(action)
+              getTitleBasedOnAction(formData.type)
             }
           </StyledTitle>
           <SideBysideContainer>
@@ -813,7 +814,7 @@ const ModalEdit = ({
                   date={startDate}
                   selectedLaboratory={selectedLaboratory && selectedLaboratory.id}
                   handleDataSelection={handleDataSelection}
-                  action={action} professores={professores}
+                  action={formData.type} professores={professores}
                   idUserLogado={idUserLogado}
                   userRole={userRole} />
               </ClockTimeWrapper>

@@ -172,8 +172,19 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
       fetchGetGradesByProfessorsAndDisciplinas()
 
-    } else {
-      // fetchByGroupedId("token valido")
+    }
+    else if (action = "cancel") {
+      console.log("Cancel DETECTED")
+      console.log(props)
+
+      if (props) {
+        setForm(props)
+      }
+      fetchByGroupedId("token valido")
+
+    }
+
+    else {
       if (props) {
         setForm(props)
       }
@@ -263,11 +274,11 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
       console.log("transformedData")
       console.log(transformedData)
-      
+
       setScheduleData(transformedData)
 
       return handleDataSelection(transformedData);
-      
+
 
     }).catch((error) => {
       console.log(error)
