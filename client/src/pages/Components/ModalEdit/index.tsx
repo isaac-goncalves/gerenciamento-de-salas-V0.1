@@ -113,9 +113,11 @@ const ModalEdit = ({
     fetchDisciplinas();
     // fetchSemestres();
 
+    console.log("initialData.type")
+    console.log(initialData.type)
 
     //CREATE
-    if (action == "CREATE") {
+    if (initialData.type == "CREATE") {
       console.log("CREATE")
 
     }

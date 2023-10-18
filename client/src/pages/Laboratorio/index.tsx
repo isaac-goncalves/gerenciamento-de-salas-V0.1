@@ -18,9 +18,9 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiFillHeart, AiOutlinePlusCircle, AiOutlineUserDelete } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -43,6 +43,7 @@ import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
 import { StyledButton } from '../Perfil/Perfil.styles';
 import { FaFilter } from 'react-icons/fa';
 import { on } from 'events';
+import { GiCancel } from 'react-icons/gi';
 
 
 interface ScheduleItem {
@@ -139,6 +140,48 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   const [daysIds, setDaysIds] = useState<any>([]);
   const [schedulingModalIsVisible, setSchedulingModalIsVisible] = React.useState(false)
 
+  //STORE CONTEXT MENU 
+  const [isContextMenuVisible, setContextMenuVisible] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [contextMenuData, setContextMenuData] = useState<any>({});
+  const [dayDateObjectFromClick, setDayDateObjectFromClick] = useState<any>({});
+
+  //CONTEXTMENU FUNCTIONS
+
+  const handleContextMenu = (e: any, item: any, dayDateObject: Date) => {
+    e.preventDefault();
+
+    console.log("Clicked")
+    console.log(item)
+
+    setContextMenuData(item)
+    setDayDateObjectFromClick(dayDateObject)
+
+    setContextMenuPosition(
+      { top: e.clientY, left: e.clientX });
+    setContextMenuVisible(true);
+  };
+
+  const closeContextMenu = (type: string) => {
+    console.log("Iran")
+
+    const newAgedamentoData = {
+      type: type,
+      date: dayDateObjectFromClick?.toISOString(),
+      uuid_agendamento: contextMenuData.agendamentos[0].uuid_agendamento,
+      id_professor: userData.userData.professor_id,
+      id_laboratorio: 0,
+      updated_at: new Date()?.toISOString(),
+      created_at: new Date()?.toISOString()
+    }
+
+    console.log("Opening modal as: " + type)
+    console.log(newAgedamentoData)
+
+    openEditModal(newAgedamentoData, daysIds)
+
+    setContextMenuVisible(false);
+  };
 
   //USERSESSIONDATA
   const [userData, setUserData] = useState<any>(
@@ -239,7 +282,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [selectedSemesterValue, userData, selectedLaboratorio ,selectedProfessor, selectedMethod, selectedDate, startDate]);
+  }, [selectedSemesterValue, userData, selectedLaboratorio, selectedProfessor, selectedMethod, selectedDate, startDate]);
 
   useEffect(() => {
 
@@ -368,8 +411,8 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
     const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
 
-    console.log("currentWeekday")
-    console.log(dayDateObject)
+    // console.log("currentWeekday")
+    // console.log(dayDateObject)
 
     return (
       <WeekdayContainer>
@@ -393,52 +436,54 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               //
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
 
-              console.log(agendamento)
+              // console.log(agendamento)
               // console.log(currentTime)
 
               return (
-                <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
-                  className={isCurrentTime ? '' : 'hoverEffect'}>
-                  <Professor>{getProfessorName(id_professor || 0)}</Professor>
-                  <Disciplina>{disciplina}</Disciplina>
-                  {
-                    !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
-                      selectedMethod === 'professor' ?
-                        <SemestreSalaWrapper>
-                          <Semestre>{semestre}º Semestre</Semestre>
-                          <SalaWrapper>
-                            <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                            {agendamento && agendamento.laboratorio && (
-                              <>
-                                <MdKeyboardDoubleArrowRight />
-                                <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                              </>
-                            )}
-                          </SalaWrapper>
-                        </SemestreSalaWrapper>
+                <>
+                  <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
+                    className={isCurrentTime ? '' : 'hoverEffect'}>
+                    <Professor>{getProfessorName(id_professor || 0)}</Professor>
+                    <Disciplina>{disciplina}</Disciplina>
+                    {
+                      !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
+                        selectedMethod === 'professor' ?
+                          <SemestreSalaWrapper>
+                            <Semestre>{semestre}º Semestre</Semestre>
+                            <SalaWrapper>
+                              <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                              {agendamento && agendamento.laboratorio && (
+                                <>
+                                  <MdKeyboardDoubleArrowRight />
+                                  <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                                </>
+                              )}
+                            </SalaWrapper>
+                          </SemestreSalaWrapper>
+                          :
+                          selectedMethod === 'semestre' ?
+                            <SalaWrapper>
+                              <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                              {agendamento && agendamento.laboratorio && (
+                                <>
+                                  <MdKeyboardDoubleArrowRight />
+                                  <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                                </>
+                              )}
+                            </SalaWrapper>
+                            : selectedMethod === 'laboratorio' ?
+                              <SemestreSalaWrapper>
+                                <Semestre>{semestre}º Semestre</Semestre>
+                                <SalaWrapper>
+                                  <div>{agendamento ? agendamento.capacidade + " Alunos" : ""}</div>
+                                </SalaWrapper>
+                              </SemestreSalaWrapper>
+                              : null
                         :
-                        selectedMethod === 'semestre' ?
-                          <SalaWrapper>
-                            <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                            {agendamento && agendamento.laboratorio && (
-                              <>
-                                <MdKeyboardDoubleArrowRight />
-                                <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                              </>
-                            )}
-                          </SalaWrapper>
-                          : selectedMethod === 'laboratorio' ?
-                            <SemestreSalaWrapper>
-                              <Semestre>{semestre}º Semestre</Semestre>
-                              <SalaWrapper>
-                                <div>{agendamento ? agendamento.capacidade + " Alunos" : ""}</div>
-                              </SalaWrapper>
-                            </SemestreSalaWrapper>
-                            : null
-                      :
-                      null
-                  }
-                </Schedule>
+                        null
+                    }
+                  </Schedule>
+                </>
               );
             })}
         </SchedulesContainer>
@@ -738,7 +783,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     }).then((response: any) => response.json()).then((data) => {
 
       const transformedData = groupByWeekday(data)
-      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
 
       setTimeout(() => {
         setLoading(true) // teste de loading
@@ -767,10 +812,10 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         professor_id: selectedProfessor.id,
       })
     }).then((response) => response.json()).then((data) => {
-      console.log(data)
+      // console.log(data)
 
       const transformedData = groupByWeekday(data)
-      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
 
       setTimeout(() => {
         setLoading(true) // teste de loading
@@ -809,7 +854,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
   //PARTICLES FUNCTIONS
   const particlesInit = useCallback(async (engine: Engine) => {
-    console.log(engine);
+    // console.log(engine);
 
     // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
     // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
@@ -819,14 +864,14 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   }, []);
 
   const particlesLoaded = useCallback(async (container: Container | undefined) => {
-    await console.log(container);
+    // await console.log(container);
   }, []);
 
   //THEME FUNCTIONS
 
   function getThemeBasedClass(theme: string) {
 
-    console.log(theme)
+    // console.log(theme)
 
     switch (theme) {
       case 'LightTheme':
@@ -1102,6 +1147,25 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               renderLoading()
             )}
         </ClassesContainer>
+        <StyledContextMenu
+          className="context-menu"
+          style={{
+            position: 'absolute',
+            display: isContextMenuVisible ? 'block' : 'none',
+            top: contextMenuPosition.top,
+            left: contextMenuPosition.left + 20,
+
+          }}
+        >
+          <ul>
+            <li onClick={() => closeContextMenu('cancelar')} >
+              <GiCancel size={18} />
+              Cancelar Aula</li>
+            <li onClick={() => closeContextMenu('default')}>
+              <AiOutlineUserDelete size={18} />
+              Reportar Ausência</li>
+          </ul>
+        </StyledContextMenu>
       </MainContainer>
     </>
   );

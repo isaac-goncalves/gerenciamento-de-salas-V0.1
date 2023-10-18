@@ -12,8 +12,6 @@ interface CalltoActionButtonProps {
   backgroundColor: boolean
 }
 
-
-
 export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
   position: fixed;
   bottom: 2rem;
@@ -34,33 +32,26 @@ export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
 
   transform: scale(1);
   transition: 0.3s;
-  
-    //mobile 
 
-    //move left and up
+  //mobile
 
-    //animation
-/*     
+  //move left and up
+
+  //animation
+  /*     
   &:hover {
     transform: scale(9999);
     transition: 30000.3s;
   } */
 
-
-    
-    
-
-
   @media screen and (max-width: 570px) {
     bottom: 1rem;
     right: 2rem;
-  
   }
-                                                    
+
   /* &:hover {
     transform: scale(3);
   } */
-  
 `
 
 export const MainContainer = styled.div`
@@ -506,16 +497,15 @@ export const ClockContainer = styled.div`
   }
   @media screen and (max-width: 570px) {
     width: 2rem;
-   
-/* border-right: 1px solid ${props => props.theme.lightgrayborder}; */
-  p {
-    font-size: 0.8rem;
-    padding: 0.3rem;
-    background-color: ${props => props.theme.white};  
-    border-radius: 4px;
-  }
-  }
 
+    /* border-right: 1px solid ${props => props.theme.lightgrayborder}; */
+    p {
+      font-size: 0.8rem;
+      padding: 0.3rem;
+      background-color: ${props => props.theme.white};
+      border-radius: 4px;
+    }
+  }
 `
 
 export const WeekContainer = styled.div`
@@ -527,7 +517,7 @@ export const WeekContainer = styled.div`
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -540,7 +530,6 @@ export const WeekContainer = styled.div`
 
 export const WeekdayContainer = styled.div`
   min-width: 10rem;
-
 
   /* border: solid 1px red; */
 
@@ -657,6 +646,31 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     @media screen and (max-width: 570px) {
       font-size: 0.8rem;
       min-width: 2rem;
+    }
+  }
+`
+
+export const StyledContextMenu = styled.div`
+  background-color: ${props => props.theme.white};
+  border-radius: 5px;
+z-index: 99;
+  font-size: 14px;
+  border: 1.5px solid ${props => props.theme.hoverCard};
+  color: ${props => props.theme.textcolor};
+  //hide list styling
+  li {
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid ${props => props.theme.lightgray};
+
+    list-style-type: none;
+    border-radius: 5px;
+    :hover {
+      background-color: ${props => props.theme.lightgrayInput};
+      cursor: pointer;
     }
   }
 `

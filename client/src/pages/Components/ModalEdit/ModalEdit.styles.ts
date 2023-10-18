@@ -142,9 +142,11 @@ export const ProfessorWrapper = styled.div`
   padding: 0.8rem;
   display: flex;
   box-shadow: ${boxShadow};
+   /* border: 1px solid red; */
   flex-direction: column;
+   margin-bottom: 1rem;
   @media screen and (max-width: 875px) {
-    
+    margin-bottom: 1rem;
   }
 `
 
@@ -267,6 +269,7 @@ export const SideBysideContainer = styled.div`
   width: 100%;
   height: 100%;
   gap: 1rem;
+  
 
   @media screen and (max-width: 875px) {
     flex-direction: column;

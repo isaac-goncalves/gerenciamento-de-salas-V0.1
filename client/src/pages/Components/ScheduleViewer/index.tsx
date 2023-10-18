@@ -102,7 +102,7 @@ function transformData(agendamentos: any) {
 
 function transformGradeData(grade: any) {
 
-  console.clear()
+  // console.clear()
   console.log(grade)
 
   const clockTimesArray = ['18:45:00', '19:35:00', '20:35:00', '21:25:00', '22:15:00'];
@@ -148,7 +148,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   useEffect(() => {
-    console.clear()
+    // console.clear()
     console.log("ScheduleViewer useEffect")
     // console.log(setSelectedIds)
     console.log(form)
