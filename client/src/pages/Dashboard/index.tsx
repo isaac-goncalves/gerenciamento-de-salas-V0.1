@@ -351,6 +351,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     }
   }
 
+  function areDatesOnSameDayMonthYear(date1: Date, date2: Date) {
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
+  }
+
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
 
@@ -376,8 +384,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                 agendamentos,
                 semestre,
               } = item;
+              
+              const agendamentoDefaultExist = agendamentos ? agendamentos.some((item: any) => {
+              return item.schedule_status == "default"
+             && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+            }): false
 
-              const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
+              const agendamento = !agendamentoDefaultExist ? agendamentos && agendamentos.length > 0 ? agendamentos[0] : null: null
+             
               const isCurrentTime = false
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
 
@@ -396,7 +410,8 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                           <Semestre>{semestre}º Semestre</Semestre>
                           <SalaWrapper>
                             <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                            {agendamento && agendamento.laboratorio && (
+                            {
+                            agendamento && agendamento.laboratorio && (
                               <>
                                 <MdKeyboardDoubleArrowRight />
                                 <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
@@ -407,7 +422,8 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                         :
                         <SalaWrapper>
                           <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                          {agendamento && agendamento.laboratorio && (
+                          {
+                          agendamento && agendamento.laboratorio && (
                             <>
                               <MdKeyboardDoubleArrowRight />
                               <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>

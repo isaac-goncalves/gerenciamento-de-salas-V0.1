@@ -68,6 +68,8 @@ routes.post('/template/upload', new ETLControllers().upload)
 //CREATE AGENDAMENTO
 routes.post('/create/agendamento', new AgendamentoController().create)
 
+routes.post('/grade/agendamentos/cancelar', new AgendamentoController().cancel)
+
 routes.put('/agendamento', new AgendamentoController().update);
 routes.delete('/agendamento', new AgendamentoController().delete);
 

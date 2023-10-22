@@ -21,10 +21,10 @@ export class Agendamento {
   @Column()
   date: Date
 
-  @Column()
+  @Column({ nullable: true })
   horario_inicio: string
 
-  @Column()
+  @Column({ nullable: true })
   horario_fim: string
 
   @Column()
@@ -36,7 +36,7 @@ export class Agendamento {
   @Column()
   id_grade: number
 
-  @Column()
+  @Column({ nullable: true })
   id_laboratorio: number
 
   @Column()
