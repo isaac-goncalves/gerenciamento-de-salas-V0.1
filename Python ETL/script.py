@@ -42,7 +42,7 @@ dfSemestres.columns = ['descricao', 'ID']
 dfDiasSemana.columns = ['dia_da_semana','id']
                 
 dfGrade.dropna(subset=['id', 'horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at'], inplace=True)
-dfDisciplinas.dropna(subset=['disciplina', 'id'], inplace=True)
+dfDisciplinas.dropna(subset=['disciplina','capacidade', 'id'], inplace=True)
 dfProfessores.dropna(subset=['name', 'id', 'surname','email', 'disciplina'], inplace=True)
 dfLaboratorio.dropna(subset=['descricao', 'id', 'capacidade'], inplace=True)
 dfSemestres.dropna(subset=['descricao', 'ID'], inplace=True)
@@ -79,6 +79,9 @@ for index, row in dfDisciplinas.iterrows():
 
     # Construct the SQL INSERT statement
     query = f"INSERT INTO disciplinas (descricao) VALUES ('{descricao}');" # Modify the table name as per your requirement
+
+    query = f"INSERT INTO disciplinas (descricao) VALUES ('{capacidade}');" # Modify the table name as per your requirement
+
 
     cursor.execute(query)
 
