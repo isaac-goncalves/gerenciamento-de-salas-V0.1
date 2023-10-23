@@ -31,7 +31,6 @@ import { Theme, type Container, type Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
 //import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "tsparticles-slim"; // if you are going to use `loadSlim`, install the "tsparticles-slim" package too.
-//
 
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdOutlineModeEdit, MdOutlineModeEditOutline, MdSubdirectoryArrowRight, MdToday } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
@@ -415,7 +414,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         }
       })
 
-      return professorObject[0].name
+      return professorObject[0].name || "Nenhum professor"
     }
     else {
       return ""

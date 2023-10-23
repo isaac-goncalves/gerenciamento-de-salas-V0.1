@@ -2,9 +2,12 @@ import styled from 'styled-components'
 
 import { Colors } from '../../../colors'
 
+const boxShadow =
+  'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;'
+
 export const Container = styled.div`
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
   height: 100%;
   background-color: ${props => props.theme.lightwhitebackgroud};
   display: flex;
@@ -13,6 +16,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   animation: appear 1s;
+  box-shadow: ${boxShadow};
 `
 
 export const ClockContainer = styled.div`
@@ -21,7 +25,7 @@ export const ClockContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  gap: 2.6rem;
+  gap: 4.6rem;
   width: 30%;
   /* height: 100%; */
 
@@ -29,10 +33,15 @@ export const ClockContainer = styled.div`
   padding-bottom: 0.6rem;
 
   p {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 400;
     margin-bottom: 0.5rem;
     color: ${props => props.theme.textcolor};
+  }
+
+  @media screen and (max-width: 875px) {
+    gap: 3.6rem;
+    margin-top: -10px;
   }
 `
 
@@ -42,7 +51,7 @@ export const WeekdayContainer = styled.div`
   height: 100%;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.5rem;
   border-radius: 8px;
   /* background-color: cyan; //remove later */
   padding-bottom: 0.5rem;
@@ -76,21 +85,21 @@ interface IProps {
 }
 
 interface IProps2 {
- 
   canceled: boolean
   // ItemWasSelected: boolean
 }
 
-
-
 export const ScheduleCell = styled.div`
-  background-color: ${({selected}: IProps) =>{
-    return selected ? (props) => props.theme.mainpurple : (props) => props.theme.horariosCard}
-  };
-  box-shadow: ${({ selected }: IProps) =>{
-    return selected ? "6px 4px 12px rgba(0, 0, 0, 0.2)" : "none"}
-    };
-  /* border: ${({ selected }: IProps) => (selected ? "2px solid #7663ad" : "none")}; */
+  background-color: ${({ selected }: IProps) => {
+    return selected
+      ? props => props.theme.mainpurple
+      : props => props.theme.horariosCard
+  }};
+  box-shadow: ${({ selected }: IProps) => {
+    return selected ? '6px 4px 12px rgba(0, 0, 0, 0.2)' : 'none'
+  }};
+  /* border: ${({ selected }: IProps) =>
+    selected ? '2px solid #7663ad' : 'none'}; */
 
   display: flex;
   flex-direction: column;
@@ -104,35 +113,32 @@ export const ScheduleCell = styled.div`
   padding: 0.4rem 0; // #TODO
   gap: 0.3rem;
 
-  :hover {
-    background-color: ${props => props.theme.hoverCard};
-    transition: 0.1s;
-    p {
-      color: ${props => props.theme.white};
+  @media screen and (min-width: 875px) {
+    :hover {
+      background-color: ${props => props.theme.hoverCard};
+      transition: 0.1s;
+      p {
+        color: ${props => props.theme.white};
+      }
     }
   }
+
   p {
     padding: 0 0.5rem;
     text-align: center;
     text-align-last: center;
     font-size: 0.9rem;
   }
-
-
-
 `
-
 
 export const UidLabel = styled.p`
-  
   display: flex;
   font-weight: 400;
- 
-  color: ${({canceled}: IProps2) =>{
-    return canceled ? "red" : (props) => props.theme.textcolor}
-  };
-  text-decoration: ${({canceled}: IProps2) =>{
-    return canceled ? "line-through" : "none"}
-  };
-`
 
+  color: ${({ canceled }: IProps2) => {
+    return canceled ? 'red' : props => props.theme.textcolor
+  }};
+  text-decoration: ${({ canceled }: IProps2) => {
+    return canceled ? 'line-through' : 'none'
+  }};
+`

@@ -411,40 +411,40 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                   <Professor agendamentoCancelExist={agendamentoCancelExist}>{professor}</Professor>
                   {
                     agendamentoCancelExist ?
-                    (
-                      <Sala agendamento={agendamento}>
-                        Aula Cancelada
-                      </Sala> 
-                        ):
-                    !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
-                  selectedMethod === 'professor' ?
-                  <SemestreSalaWrapper>
-                    <Semestre>{semestre}º Semestre</Semestre>
-                    <SalaWrapper>
-                      <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                      {
-                        agendamento && agendamento.laboratorio && (
-                          <>
-                            <MdKeyboardDoubleArrowRight />
-                            <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                          </>
-                        )}
-                    </SalaWrapper>
-                  </SemestreSalaWrapper>
-                  :
-                  <SalaWrapper>
-                    <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                    {
-                      agendamento && agendamento.laboratorio && (
-                        <>
-                          <MdKeyboardDoubleArrowRight />
-                          <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                        </>
-                      )}
-                  </SalaWrapper>
-                  :
-                  null
-                      
+                      (
+                        <Sala agendamento={agendamento}>
+                          Aula Cancelada
+                        </Sala>
+                      ) :
+                      !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
+                        selectedMethod === 'professor' ?
+                          <SemestreSalaWrapper>
+                            <Semestre>{semestre}º Semestre</Semestre>
+                            <SalaWrapper>
+                              <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                              {
+                                agendamento && agendamento.laboratorio && (
+                                  <>
+                                    <MdKeyboardDoubleArrowRight />
+                                    <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                                  </>
+                                )}
+                            </SalaWrapper>
+                          </SemestreSalaWrapper>
+                          :
+                          <SalaWrapper>
+                            <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                            {
+                              agendamento && agendamento.laboratorio && (
+                                <>
+                                  <MdKeyboardDoubleArrowRight />
+                                  <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                                </>
+                              )}
+                          </SalaWrapper>
+                        :
+                        null
+
                   }
                 </Schedule>
               );
@@ -866,8 +866,8 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
             userData.userData.role == "aluno" || userData.userData.role == "guest" &&
-            // <FaFilter size={35} color='white' />
-            <AiFillHeart size={35} color='white' />
+            <FaFilter size={35} color='white' />
+            // <AiFillHeart size={35} color='white' />
           }
           {
             userData.userData.role == "professor" &&

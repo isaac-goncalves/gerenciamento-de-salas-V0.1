@@ -2,7 +2,8 @@ import styled from 'styled-components'
 
 import { Colors } from '../../../colors'
 
-  const boxShadow = 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;'
+const boxShadow =
+  'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;'
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -31,8 +32,6 @@ export const ModalOverlay = styled.div`
   }
 `
 
-
-
 export const ModalContent = styled.div`
   background: ${props => props.theme.lightgrayInput};
   padding: 1rem;
@@ -43,7 +42,6 @@ export const ModalContent = styled.div`
   align-items: center;
   width: 70%;
   height: 85%;
-
 
   @media screen and (max-width: 875px) {
     flex-direction: column;
@@ -67,7 +65,7 @@ gap: 1rem; */
 export const BackgroundImage = styled.img`
   height: auto;
   @media screen and (max-width: 875px) {
-   width: 100%;
+    width: 100%;
   }
   /* max-height: 100vh; */
   object-fit: cover;
@@ -102,6 +100,7 @@ export const SecondImageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   display: none;
+  margin-bottom: 1rem;
 
   @media screen and (max-width: 875px) {
     height: auto;
@@ -111,7 +110,7 @@ export const SecondImageWrapper = styled.div`
 `
 export const FormWrapper = styled.div`
   height: auto;
- 
+
   background-color: ${props => props.theme.lightgray};
   /* border: 1px solid red; */
   box-shadow: ${boxShadow};
@@ -142,9 +141,9 @@ export const ProfessorWrapper = styled.div`
   padding: 0.8rem;
   display: flex;
   box-shadow: ${boxShadow};
-   /* border: 1px solid red; */
+  /* border: 1px solid red; */
   flex-direction: column;
-   margin-bottom: 1rem;
+  margin-bottom: 1rem;
   @media screen and (max-width: 875px) {
     margin-bottom: 1rem;
   }
@@ -161,29 +160,27 @@ export const StyledSelect = styled.select<StyledSelectProps>`
   border: 1px solid #ccc;
   border-radius: 4px;
   color: ${props => props.theme.textcolor};
- 
 
   &:disabled {
     background-color: ${props => props.theme.white};
-  color: ${props => props.theme.textcolor};
+    color: ${props => props.theme.textcolor};
     background-color: none;
   }
 
   @media screen and (max-width: 875px) {
     font-size: 1rem;
   }
-
 `
 
 export const DateTimeWrapper = styled.div`
   display: flex;
 
   padding: 0.8rem;
-  gap: 1rem;
+
   background-color: ${props => props.theme.lightwhitebackgroud};
   border-radius: 8px;
   box-shadow: ${boxShadow};
-  
+
   @media screen and (max-width: 875px) {
     flex-direction: column;
   }
@@ -193,12 +190,15 @@ export const DateTimeDiv = styled.div`
   display: flex;
   flex-direction: column;
 
-  input{
+  input {
     padding: 6px;
     border: 1px solid #ccc;
-    border-radius: 4px; 
-
+    border-radius: 4px;
   }
+`
+export const DateTimeDayDiv = styled.div`
+  display: flex;
+  flex-direction: column;
 `
 
 export const DetailsWrapper = styled.div`
@@ -269,7 +269,6 @@ export const SideBysideContainer = styled.div`
   width: 100%;
   height: 100%;
   gap: 1rem;
-  
 
   @media screen and (max-width: 875px) {
     flex-direction: column;
@@ -279,6 +278,7 @@ export const SideBysideContainer = styled.div`
 export const ButtonsWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
+  margin-top: 1rem;
   width: 100%;
   justify-content: flex-end;
 `
@@ -304,7 +304,6 @@ export const StyledButton = styled.button`
 export const ClocktimeAndButoonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+
   width: 100%;
-  gap: 1rem;
 `

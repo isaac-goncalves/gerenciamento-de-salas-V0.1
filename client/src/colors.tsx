@@ -18,6 +18,7 @@ export const lightTheme = {
   //gerenciamentoTable
   border_bottom_color: '#dddddd',
   tableHover: 'rgba(109, 99, 221, 0.118)',
+  tableHeaderColor: '#6358DC',
 
 
   primary: '#F4F4F4',
@@ -58,6 +59,7 @@ export const lightThemeRed = {
   //gerenciamentoTable
   border_bottom_color: '#dddddd',
   tableHover: 'rgba(220, 88, 99, 0.181)',
+  tableHeaderColor: '#d83c58',
 
   mainpurple: '#d83c58',
   separator: '#BFBFBF',
@@ -93,6 +95,8 @@ export const darkTheme = {
   //gerenciamentoTable
   border_bottom_color: 'rgb(79, 81, 80)',
   tableHover: 'rgba(109, 99, 221, 0.118)',
+  tableHeaderColor: '#6358DC',
+
 
   circleColor: 'rgba(220, 213, 242, 0.51);',
   primary: '#F4F4F4',

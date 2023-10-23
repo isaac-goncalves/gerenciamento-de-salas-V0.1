@@ -189,7 +189,7 @@ const Gerenciamento: any = ({ theme }: any): any => {
         updated_at: string;
     }
 
-    const AppointmentTable = ({ data }: any) => {
+    const AgendamentosTable = ({ data }: any) => {
         return (
             <TableWrapper>
                 <Table>
@@ -375,7 +375,7 @@ const Gerenciamento: any = ({ theme }: any): any => {
 
     const renderTable = () => {
         if (selectedTable === 'agendamentos') {
-            return <AppointmentTable data={appointmentData} />
+            return <AgendamentosTable data={appointmentData} />
         }
         else if (selectedTable === 'usuarios') {
             return <UsersTable data={usersData} />

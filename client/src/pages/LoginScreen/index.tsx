@@ -97,6 +97,9 @@ const LoginScreen: any = ({ theme }: any): any => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         console.log("submit");
+
+
+
         if (email === "" || password === "") {
             toast.error("Preencha todos os campos");
         } else {
@@ -155,6 +158,12 @@ const LoginScreen: any = ({ theme }: any): any => {
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
+
+    const handleKeyPress = (event: any) => {
+        if (event.key === 'Enter') {
+            handleSubmit(event);
+        }
+    }
 
     const handleGuestLogin = (event: React.FormEvent) => {
         event.preventDefault();
@@ -322,6 +331,7 @@ const LoginScreen: any = ({ theme }: any): any => {
                                         <Input
                                             type="text"
                                             placeholder="Digite seu email"
+                                            onKeyDown={handleKeyPress}
                                             value={email}
                                             onChange={(event: any) => setEmail(event.target.value)}
                                         />
@@ -334,6 +344,7 @@ const LoginScreen: any = ({ theme }: any): any => {
                                         <InputAndEyeIconWrapper>
                                             <InputInternalWrapper>
                                                 <Input
+                                                    onKeyDown={handleKeyPress}
                                                     type={showPassword ? 'text' : 'password'}
                                                     placeholder="**********"
                                                     value={password}

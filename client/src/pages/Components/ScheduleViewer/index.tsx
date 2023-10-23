@@ -70,8 +70,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
   const [selectedProfessor, setSelectedProfessor] = useState<number>(0)
 
   const [selectedDate, setSelectedDate] = useState<string>("")
-
-
+  
 
   const [form, setForm] = useState({} as any)
   const [schedule, setSchedule] = useState(array)
@@ -269,10 +268,17 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
     if (id_professor == undefined) return
 
-    const professorObject = professores.find((item: any) => item.id == id_professor)
-
+    
     // console.log(professorObject.name)
-    return professorObject.name
+    
+    try {
+      const professorObject = professores.find((item: any) => item.id == id_professor)
+      return professorObject.name
+    }
+    catch (error) {
+      return "Professor não encontrado"
+      console.log(error)
+    }
   }
 
   function getTipoDeAgedamento(

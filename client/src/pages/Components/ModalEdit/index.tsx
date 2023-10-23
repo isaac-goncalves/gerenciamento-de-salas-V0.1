@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates, ModalContentSize, SecondImageWrapper } from './ModalEdit.styles'
+import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates, ModalContentSize, SecondImageWrapper, DateTimeDayDiv } from './ModalEdit.styles'
 import background from '../../../../public/images/background.jpg';
 import { format, set } from 'date-fns';
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
@@ -308,7 +308,7 @@ const ModalEdit = ({
     console.log("selectedData")
     console.log(selectedData)
 
-    if(selectedData.lenght < 1){
+    if (selectedData.lenght < 1) {
 
       return toast.error('Selecione um Professor e o Semestre!');
 
@@ -344,8 +344,8 @@ const ModalEdit = ({
       console.log("grade")
       console.log(grade)
 
-      if(grade.selecionado == true ) {
-          newAgendamentos.push(grade.agendamento.id)
+      if (grade.selecionado == true) {
+        newAgendamentos.push(grade.agendamento.id)
       }
 
     })
@@ -642,7 +642,7 @@ const ModalEdit = ({
             return "Agendamento fixo Laboratório"
           }
           else {
-            return "ERROR"
+            return "ERROR - que nao diz nada!"
           }
   }
 
@@ -651,9 +651,7 @@ const ModalEdit = ({
   function getButtonName() {
 
     if (action == "SCHEDULELABORATORIO") {
-
-      return "Agendar Laboratório"
-
+      return "Agendar"
     }
 
     else if (action == "CREATE") {
@@ -666,7 +664,7 @@ const ModalEdit = ({
       return "Abrir Agendamento"
     }
     else {
-      return "ERROR"
+      return "ERROR - que nao diz nada"
     }
   }
 
@@ -684,7 +682,6 @@ const ModalEdit = ({
           </StyledTitle>
           <SideBysideContainer>
             <div>
-           
               <ProfessorWrapper>
                 <DetailsText>Professor:</DetailsText>
                 <StyledSelect
@@ -776,10 +773,10 @@ const ModalEdit = ({
                         </>
                     }
                   </DateTimeDiv>
-                  <DateTimeDiv>
+                  <DateTimeDayDiv>
                     <DetailsText>Dia da Semana:</DetailsText>
                     <StyledText>{formData && formatDate(formData.date)}</StyledText>
-                  </DateTimeDiv>
+                  </DateTimeDayDiv>
                 </DateTimeWrapper>
                 <DetailsText>Capacidade: <StyledText>{selectedLaboratory ? selectedLaboratory.capacidade : null} alunos</StyledText></DetailsText>
                 <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory.id)}</StyledText></DetailsText>
@@ -808,26 +805,22 @@ const ModalEdit = ({
               </DetailsWrapper>
             </div>
             <ClocktimeAndButoonsWrapper>
-              <ClockTimeWrapper>
-                <ScheduleViewer
-                  props={formData}
-                  semester={selectedSemester}
-                  professor_id={selectedProfessor}
-                  laboratoryName={selectedLaboratory && selectedLaboratory.descricao}
-                  date={startDate}
-                  selectedLaboratory={selectedLaboratory && selectedLaboratory.id}
-                  handleDataSelection={handleDataSelection}
-                  action={formData.type} professores={professores}
-                  idUserLogado={idUserLogado}
-                  userRole={userRole} />
-              </ClockTimeWrapper>
-             
+              <ScheduleViewer
+                props={formData}
+                semester={selectedSemester}
+                professor_id={selectedProfessor}
+                laboratoryName={selectedLaboratory && selectedLaboratory.descricao}
+                date={startDate}
+                selectedLaboratory={selectedLaboratory && selectedLaboratory.id}
+                handleDataSelection={handleDataSelection}
+                action={formData.type} professores={professores}
+                idUserLogado={idUserLogado}
+                userRole={userRole} />
+
               <ButtonsWrapper>
                 {action !== 'OPEN' && (
                   <StyledButton onClick={() => handleEdit()}>
-
                     {getButtonName()}
-
                   </StyledButton>
                 )}
                 <StyledButton onClick={() => onClose()}>

@@ -244,6 +244,32 @@ export const TableWrapper = styled.div`
   overflow: auto; /* Add scrollbars when the content overflows */
   width: 100%;
   border-bottom: 2px solid ${props => props.theme.hoverCard};
+  border-radius: 6px;
+  
+::-webkit-scrollbar {
+    width: 13px;
+    height: 13px;
+    background-color: green;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: ${props => props.theme.lightgray};
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: ${props => props.theme.mainpurple};
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: ${props => props.theme.mainpurple};
+    border-radius: 10px;
+}
+
+
+
 `
 
 export const Table = styled.table`
@@ -264,10 +290,11 @@ export const Table = styled.table`
 
   th,
   td {
-    padding: 8px 5px;
+    padding: 8px 10px;
     color: ${props => props.theme.textcolor};
   }
 
+  
   tbody {
   }
 
@@ -296,6 +323,7 @@ export const TableHeaderData = styled.th``
 export const TableHeader = styled.thead`
   position: sticky; /* Make the table header sticky */
   top: 0; /* Fix the header at the top of the container */
+  padding: 4rem;
 `
 
 export const TableBody = styled.tbody`
@@ -324,16 +352,17 @@ export const TableData = styled.td`
 export const TableRowHeader = styled.tr`
   padding: 8px;
   border: 1px solid ${props => props.theme.border_bottom_color};
-  background-color: ${props => props.theme.hoverCard};
+  background-color: ${props => props.theme.tableHeaderColor};
   text-align: left;
 
   th {
     text-align: center;
-    color: ${props => props.theme.textcolor};
+    color: ${props => props.theme.realwhite};
   }
 `
 export const CenteredTableData = styled.td`
   text-align: center;
+  white-space: nowrap;
 `
 
 export const NowrapText = styled.td`

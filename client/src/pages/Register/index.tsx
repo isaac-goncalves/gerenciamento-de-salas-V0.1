@@ -163,6 +163,13 @@ const RegisterScreen: any = ({ theme }: any): any => {
             toast.error("O campo email não pode estar vazio!");
             return;
         }
+
+        if (email.search("@") < 0) {
+            toast.error("O campo email deve conter um @!");
+            return;
+        }
+
+
         //password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character
         if (password === "") {
             toast.error("O campo senha não pode estar vazio!");
@@ -184,18 +191,12 @@ const RegisterScreen: any = ({ theme }: any): any => {
             return;
         }
 
-        if (password.search(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/) < 0) {
-            toast.error("A senha deve conter pelo menos um caractere especial!");
-            return;
-        }
-
         if (password.search(/[A-Z]/) < 0) {
             toast.error("A senha deve conter pelo menos uma letra maiúscula!");
             return;
         }
 
         if (password.search(/[a-z]/) < 0) {
-
             toast.error("A senha deve conter pelo menos uma letra minúscula!");
             return;
         }

@@ -580,7 +580,7 @@ export const WeekDay = styled.p`
   transition: color 0.3s ease-in-out; /* Add the transition property */
 
   @media screen and (max-width: 570px) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 `
 
@@ -646,7 +646,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     word-wrap: break-word;
     width: 100%;
 
-    overflow: hidden;
+    /* overflow: hidden; */
 
     @media screen and (max-width: 570px) {
       font-size: 0.8rem;
@@ -715,6 +715,7 @@ export const Sala = styled.p<StyledComponentSalaProps>`
 export const SalaAgendada = styled.p`
   color: ${props => props.theme.lighterGreen};
   font-weight: 600;
+  white-space: nowrap;
   padding: 0;
 `
 
