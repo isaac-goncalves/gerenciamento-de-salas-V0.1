@@ -641,7 +641,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   p {
     text-align: center;
     text-align-last: center;
-    font-size: 0.8rem;
+    font-size: 1.1rem;
 
     @media screen and (max-width: 570px) {
       font-size: 0.8rem;
@@ -653,7 +653,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
 export const StyledContextMenu = styled.div`
   background-color: ${props => props.theme.white};
   border-radius: 5px;
-z-index: 99;
+  z-index: 99;
   font-size: 14px;
   border: 1.5px solid ${props => props.theme.hoverCard};
   color: ${props => props.theme.textcolor};

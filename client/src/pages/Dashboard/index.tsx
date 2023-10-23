@@ -881,14 +881,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
                 <StyledImageButton>
                   <TodayContainer
-                    size={25}
+                    size={30}
                   />
                 </StyledImageButton>
                 <PularParaHojeText>Pular para hoje</PularParaHojeText>
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
                 <LeftArrow
-                  size={45}
+                  size={50}
                 />
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>

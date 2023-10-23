@@ -352,6 +352,7 @@ export const ButtonConfimarAgendamento = styled.button`
 
 export const DatepickArrowsContainer = styled.div`
   display: flex;
+  align-items: center;
 `
 
 export const PularParaHojeText = styled.p`
@@ -404,7 +405,7 @@ export const StyledDatePicker = styled(DatePicker)`
 `
 
 export const TodayContainer = styled(MdToday)`
-  margin-right: 0.5rem;
+  margin-right: 0.8rem;
   color: ${props => props.theme.mainpurple};
 `
 
@@ -652,7 +653,11 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
   p {
     text-align: center;
     text-align-last: center;
-    font-size: 0.8rem;
+    font-size: 1rem; // font-size da dashboard
+    word-wrap: break-word;
+    width: 100%;
+    
+    overflow: hidden;
 
     @media screen and (max-width: 570px) {
       font-size: 0.8rem;
@@ -708,4 +713,29 @@ export const SalaAgendada = styled.p`
   color: ${props => props.theme.lighterGreen};
   font-weight: 600;
   padding: 0;
+`
+
+export const StyledContextMenu = styled.div`
+  background-color: ${props => props.theme.white};
+  border-radius: 5px;
+  z-index: 99;
+  font-size: 14px;
+  border: 1.5px solid ${props => props.theme.hoverCard};
+  color: ${props => props.theme.textcolor};
+  //hide list styling
+  li {
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid ${props => props.theme.lightgray};
+
+    list-style-type: none;
+    border-radius: 5px;
+    :hover {
+      background-color: ${props => props.theme.lightgrayInput};
+      cursor: pointer;
+    }
+  }
 `

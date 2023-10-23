@@ -215,8 +215,8 @@ const Gerenciamento: any = ({ theme }: any): any => {
                                 <CenteredTableData>{appointment.id_professor}</CenteredTableData>
                                 <CenteredTableData>{appointment.nome_professor}</CenteredTableData>
                                 <CenteredTableData>{format(new Date(appointment.date), 'dd/MM/yyyy', { locale: ptBR })}</CenteredTableData>
-                                <CenteredTableData>{appointment.horario_inicio}</CenteredTableData>
-                                <CenteredTableData>{appointment.horario_fim}</CenteredTableData>
+                                <CenteredTableData>{appointment.horario_inicio || "-"}</CenteredTableData>
+                                <CenteredTableData>{appointment.horario_fim || "-"}</CenteredTableData>
                                 <CenteredTableData>{appointment.uuid_agendamento}</CenteredTableData>
                                 <CenteredTableData>{appointment.id_grade}</CenteredTableData>
                                 <CenteredTableData>{appointment.schedule_status.toUpperCase()
