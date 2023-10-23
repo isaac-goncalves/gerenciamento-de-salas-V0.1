@@ -437,6 +437,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
     const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
 
+    
 
     // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
     const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
@@ -461,6 +462,13 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               } = item;
               // console.log(item.agendamentos)
               //compare if is on the same day and month
+
+
+              const agendamentoCancelExist = agendamentos ? agendamentos.some((item: any) => {
+                return item.schedule_status == "cancel"
+                  && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+              }) : false
+
               const agendamentoDefaultExist = agendamentos ? agendamentos.some((item: any) => {
 
                 console.log(new Date(item.date))
@@ -483,8 +491,9 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 <>
                   <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
                     className={isCurrentTime ? '' : 'hoverEffect'}>
-                    <Professor>{getProfessorName(id_professor || 0)}</Professor>
+                    <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
                     <Disciplina>{disciplina}</Disciplina>
+                    <Sala>{ agendamentoCancelExist? "Aula cancelada" : null }</Sala>
                     {
                       !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
                         selectedMethod === 'professor' ?
@@ -519,7 +528,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                                 </SalaWrapper>
                                 {agendamentoDefaultExist ? "Laboratorio Cancelado" : null}
                               </SemestreSalaWrapper>
-
                               : null
                         :
                         null
@@ -972,7 +980,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   //RENDERS -------------------------------------------------------------------------
   return (
     <>
-      <Particles
+      {/* <Particles
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
@@ -1045,7 +1053,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
           },
           detectRetina: true,
         }}
-      />
+      /> */}
       <ModalEdit
         action={"SCHEDULELABORATORIO"}
         isVisible={schedulingModalIsVisible}
@@ -1063,8 +1071,8 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
             userData.userData.role == "aluno" || userData.userData.role == "guest" &&
-            // <FaFilter size={35} color='white' />
-            <AiFillHeart size={35} color='white' />
+            <FaFilter size={35} color='white' />
+            // <AiFillHeart size={35} color='white' />
           }
           {
             userData.userData.role == "professor" &&

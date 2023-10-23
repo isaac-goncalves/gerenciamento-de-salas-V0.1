@@ -689,7 +689,13 @@ export const SemestreSalaWrapper = styled.p`
   gap: 0.4rem;
 `
 
-export const Professor = styled.p`
+interface StyledComponentDisciplinaProps {
+  agendamentoCancelExist: boolean
+}
+
+export const Professor = styled.p<StyledComponentDisciplinaProps>`
+ text-decoration: ${props =>
+    props.agendamentoCancelExist ? 'line-through' : 'none'};
   font-style: italic;
   color: ${props => props.theme.textcolor};
 `
@@ -698,7 +704,7 @@ export const Semestre = styled.p`
   color: ${props => props.theme.mainpurple};
 `
 interface StyledComponentProps {
-  agendamento: boolean
+  agendamento?: boolean
 }
 
 export const SalaWrapper = styled.div`

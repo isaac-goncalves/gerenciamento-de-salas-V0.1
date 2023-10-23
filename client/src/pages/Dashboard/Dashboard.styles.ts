@@ -659,9 +659,6 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
 
 // }
 
-interface StyledComponentDisciplinaProps {
-  agendamentoCancelExist: boolean
-}
 
 export const Disciplina = styled.p<StyledComponentDisciplinaProps>`
   text-decoration: ${props =>
@@ -678,6 +675,11 @@ export const SemestreSalaWrapper = styled.p`
   display: flex;
   gap: 0.4rem;
 `
+
+interface StyledComponentDisciplinaProps {
+  agendamentoCancelExist: boolean
+}
+
 
 export const Professor = styled.p<StyledComponentDisciplinaProps>`
   text-decoration: ${props =>
