@@ -39,6 +39,9 @@ export class Agendamento {
   @Column()
   id_laboratorio: number
 
+  @Column()
+  schedule_status: string
+
   @CreateDateColumn()
   created_at: Date
 

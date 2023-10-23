@@ -11,7 +11,7 @@ export class AgendamentoController {
   async create (request: Request, response: Response) {
     console.log('create agendamento')
 
-    const { date, id_professor, ids_grade, id_laboratorio, uuid_agendamento } =
+    const { date, id_professor, ids_grade, id_laboratorio, uuid_agendamento, schedule_status } =
       request.body
 
     if (!date || !id_professor || !ids_grade || !id_laboratorio)
@@ -54,6 +54,7 @@ export class AgendamentoController {
           uuid_agendamento: uniqueId,
           id_grade,
           id_laboratorio,
+          schedule_status,
           created_at: new Date(),
           updated_at: new Date()
         })

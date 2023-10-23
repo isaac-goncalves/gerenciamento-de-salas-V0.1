@@ -131,7 +131,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       name: "Selecione um professor",
     },
   ]);
-  const [laboratoryData, setlaboratoryData] = useState([]);
+  const [laboratoryData, setlaboratoryData] = useState<any>([]);
 
   //MODALPROPS
   const [userIsScheduling, setUserIsScheduling] = useState<boolean>(false);
@@ -160,7 +160,12 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       name: "Selecione um professor",
     },);
 
-  const [selectedLaboratorio, setSelectedLaboratorio] = useState([])
+  const [selectedLaboratorio, setSelectedLaboratorio] = useState<any>(
+    {
+      id: 26,
+      descricao: "Laboratorio-6",
+    }
+  )
 
 
 
@@ -202,6 +207,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
         setUserData(userDataJson);
         setSelectedSemesterValue(userDataJson.userData.semestre);
+
       }
     }
   }, [userData]);
@@ -216,24 +222,24 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
       console.log("Usuário logado!")
 
-      // console.log(selectedMethod)
+      console.log("selectedMethod")
+      console.log(selectedMethod)
       if (selectedMethod == "professor") {
         fetchProfessorData();
       }
       else if (selectedMethod == "semestre") {
         fetchSemestreData();
       } else if (selectedMethod == "laboratorio") {
-        fetchLaboratoryData();
+        fetchLaboratoryAgendamentosData()
       }
-
       fetchProfessors(userData.token);
-
+      fetchLaboratoryData();
     }
     else {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [selectedSemesterValue, userData, selectedProfessor, selectedMethod, selectedDate, startDate]);
+  }, [selectedSemesterValue, userData, selectedLaboratorio ,selectedProfessor, selectedMethod, selectedDate, startDate]);
 
   useEffect(() => {
 
@@ -257,12 +263,14 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
   }, []);
 
+
+
+
   //FUNCTIONS ---------------------------------------------------------------------
 
   function handleScheduleClick(dayData: any, item: any, dayDateObject: Date) {
     // console.clear()
     console.log("Clicked")
-    console.log(item.agendamentos.length)
 
     const daysIds: any = []
 
@@ -273,13 +281,33 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     console.log(daysIds)
     console.log(dayDateObject?.toISOString())
 
-    if (item.agendamentos.length > 0) {
+    if (item.agendamentos && item.agendamentos.length > 0) {
+      console.log(item.agendamentos.length)
+
       // console.log("Agendamento exist and the item is") 
       console.log(JSON.stringify(item.agendamentos[0], null, 2))
       console.log("agendamento exist")
 
       openEditModal(item.agendamentos[0], daysIds)
-    } else {
+    }
+    else if (selectedMethod == "laboratorio") {
+
+      console.log("selectedMethod == laboratorio")
+      console.log("Agora devo abrir a modal de agendamento em uma nova forma que ira agendar uma reserva de horario para o laboratorio em questão")
+
+      const newAgedamentoData = {
+        date: dayDateObject?.toISOString(),
+        uuid_agendamento: "-",
+        // id_professor: userData.userData.professor_id,
+        id_laboratorio: selectedLaboratorio.id,
+        updated_at: new Date()?.toISOString(),
+        created_at: new Date()?.toISOString()
+      }
+
+      openEditModal(newAgedamentoData, daysIds)
+
+    }
+    else {
 
       // MONTA OBJ DE MOVO AGENDAMENTO
       //{
@@ -315,6 +343,23 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     }
   }
 
+  function getProfessorName(professor_id: number) {
+
+    if (professor_id) {
+      const professorObject = professores.filter((item: any) => {
+        if (item.id == professor_id) {
+          return item
+        }
+      })
+
+      return professorObject[0].name
+    }
+    else {
+      return ""
+    }
+
+  }
+
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
 
@@ -335,28 +380,27 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
             dayData.map((item: any) => {
               const {
                 disciplina,
-                professor,
+                id_professor,
                 laboratorio,
                 agendamentos,
                 semestre,
               } = item;
 
               const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
+              //IMPLEMENTAR LOGICA DE AGENDAMENTO VENCEDOR AQUI
+
               const isCurrentTime = false
+              //
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
 
-              // console.log(isCurrentTime)
+              console.log(agendamento)
               // console.log(currentTime)
 
               return (
                 <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
-                  <Professor>{professor}</Professor>
-                  
-                   
-                      <Disciplina>{  (selectedMethod !== "laboratorio") ? disciplina: null}</Disciplina>
-                      
-                  
+                  <Professor>{getProfessorName(id_professor || 0)}</Professor>
+                  <Disciplina>{disciplina}</Disciplina>
                   {
                     !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
                       selectedMethod === 'professor' ?
@@ -387,7 +431,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                             <SemestreSalaWrapper>
                               <Semestre>{semestre}º Semestre</Semestre>
                               <SalaWrapper>
-                               <div>43 Alunos</div> //TODO: colocar o numero de alunos aqui
+                                <div>{agendamento ? agendamento.capacidade + " Alunos" : ""}</div>
                               </SalaWrapper>
                             </SemestreSalaWrapper>
                             : null
@@ -480,6 +524,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       fetchData()
     };
   };
+
   const openEditModal = (editedData: any, daysIds: any) => {
     console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
     console.log("daysIds: " + JSON.stringify(daysIds, null, 2))
@@ -584,14 +629,18 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   const handleLaboratoriosChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     console.log("I have been changed")
 
+    console.log(laboratoryData)
 
-    // const professorObject = {
-    //   id: parseInt(event.target.value),
-    //   name: "test"
-    // }
-    // setSelectedProfessor(
-    //   professorObject
-    // )
+    const chosenlaboratorioObject = laboratoryData.filter((item: any) => {
+      if (item.id == event.target.value) {
+        return item
+      }
+    })
+
+    console.log(chosenlaboratorioObject[0])
+
+    setSelectedLaboratorio(chosenlaboratorioObject[0])
+
   }
 
   const handleSemesterChange = (event: any) => {
@@ -667,7 +716,40 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       }, 2000)
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
-      return setlaboratoryData(data)
+
+
+
+      return setlaboratoryData(data.reverse())
+    }
+    )
+
+  }
+
+  async function fetchLaboratoryAgendamentosData() {
+
+    fetch(`${apiUrl}/grade/agendamentos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id_laboratorio: selectedLaboratorio.id
+      })
+    }).then((response: any) => response.json()).then((data) => {
+
+      const transformedData = groupByWeekday(data)
+      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+
+      setTimeout(() => {
+        setLoading(true) // teste de loading
+      }, 2000)
+      // console.log(transformedData)
+      // console.log("transformedData" + JSON.stringify(transformedData, null, 2))
+      // setLoading(true)
+
+
+      return setgrade(transformedData as any)
+
     }
     )
 
@@ -682,7 +764,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        professor_id: selectedProfessor.id || 1,
+        professor_id: selectedProfessor.id,
       })
     }).then((response) => response.json()).then((data) => {
       console.log(data)
@@ -758,7 +840,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       default:
         return 'bubbly-button-shadow-white'
     }
-
 
   }
 
@@ -839,7 +920,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
           detectRetina: true,
         }}
       />
-      <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
+      <ModalEdit action={"SCHEDULELABORATORIO"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ToastContainer
         limit={4}
         autoClose={1000}
@@ -865,7 +946,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               Laboratorio
             </PageName>
             <CourseName>
-              LABORATORIO 1 - ALTERAR AQUI
+              {selectedLaboratorio.descricao}
             </CourseName>
             <CourseSemester>
               2º Semestre de 2023
@@ -965,7 +1046,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               }
               {
                 selectedMethod === "laboratorio" ?
-                  <StyledSelect defaultValue={selectedProfessor.name} onChange={handleLaboratoriosChange}>
+                  <StyledSelect defaultValue={selectedLaboratorio} onChange={handleLaboratoriosChange}>
                     {laboratoryData && laboratoryData.length > 0 ? (
                       laboratoryData.map((laboratoryData: any) => {
                         return (

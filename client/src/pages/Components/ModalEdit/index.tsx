@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ModalOverlay, ModalContent, ImageWrapper, FormWrapper, BackgroundImage, DateTimeWrapper, ButtonsWrapper, DetailsWrapper, DetailsText, ClockTimeWrapper, SideBysideContainer, StyledButton, DateTimeDiv, ProfessorWrapper, StyledTitle, StyledSelect, ClocktimeAndButoonsWrapper, StyledText, StyledDates, ModalContentSize, SecondImageWrapper } from './ModalEdit.styles'
 import background from '../../../../public/images/background.jpg';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
 import { ptBR } from 'date-fns/locale';
@@ -72,8 +72,17 @@ const ModalEdit = ({
   const [professores, setProfessores] = useState<ProfessoreProps[]>([]);
   const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
   const [startDate, setStartDate] = useState<Date>();
-  const [selectedLaboratory, setSelectedLaboratory] = useState<any>();
-  const [selectedProfessor, setSelectedProfessor] = useState<Number>();
+  const [selectedLaboratory, setSelectedLaboratory] = useState<any>(
+    {
+      id: 0
+    }
+  );
+  const [semestres, setSemestres] = useState<Number[]>(
+    [1, 2, 3, 4, 5, 6]
+  );
+
+  const [selectedProfessor, setSelectedProfessor] = useState<Number>(1);
+  const [selectedSemester, setSemesterProfessor] = useState<Number>(1);
   const [selectedData, setSelectedData] = useState<any>();
 
   //MULTISELECT PARAMS
@@ -81,10 +90,10 @@ const ModalEdit = ({
   const [disciplinas, setDisciplinas] = useState([]);
 
 
-
   // const [initialDate, setInitialDate] = useState<any>();
 
   //USEFECCTS
+
   useEffect(() => {
 
     console.log("ModalEdit useEffect")
@@ -93,6 +102,7 @@ const ModalEdit = ({
     //RUNS FOR BOTH
     if (!formData) {
       setFormData(initialData);
+
       toast.info('Selecione um Laboratorio e horários para criar um agendamento!')
       // setInitialDate(new Date(initialData.date));
     }
@@ -101,6 +111,8 @@ const ModalEdit = ({
     fetchProfessorData();
     fetchLaboratoryData();
     fetchDisciplinas();
+    // fetchSemestres();
+
 
     //CREATE
     if (action == "CREATE") {
@@ -113,17 +125,22 @@ const ModalEdit = ({
         console.log("EDIT")
 
       }
+      //OPEN
       else
         if (action == "OPEN") {
           console.log("OPEN")
         }
-        else {
-          console.log("ERROR")
-        }
+        else
+          if (action == "SCHEDULELABORATORIO") {
+            console.log("SCHEDULELABORATORIO")
+          }
+          else {
+            console.log("ERROR")
+          }
   }, [initialData])
 
   useEffect(() => {
-    console.clear()
+    // console.clear()
     console.log("selectedLaboratory useEffect")
     console.log(selectedLaboratory)
   }, [selectedLaboratory])
@@ -199,13 +216,43 @@ const ModalEdit = ({
       setLaboratory(data.reverse())
 
       if (initialData.id_laboratorio) {
-        const lab = data.find((lab) => lab.id === formData.id_laboratorio);
+        const lab = data.find((lab: any) => lab.id === formData.id_laboratorio);
         setSelectedLaboratory(lab);
       }
 
       return data
     });
   }
+  // async function fetchSemestres(token: string) {
+  //   // console.log("Fetching fetchLaboratory...")
+  //   await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/laboratory', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Authorization': 'bearer ' + token,
+  //     }
+  //   }).then((response) => response.json()).then((data) => {
+  //     console.log(data)
+  //     const newSemestersWithPlaceholder =
+  //     {
+  //       id: 0,
+  //       descricao: 'Selecione um Semestre',
+  //       andar: 0,
+  //       capacidade: 0
+  //     }
+
+  //     data.push(newSemestersWithPlaceholder)
+
+  //     setSemestres(data)
+
+  //     if (initialData.id_laboratorio) {
+  //       const lab = data.find((lab: any) => lab.id === formData.id_laboratorio);
+  //       setSelectedLaboratory(lab);
+  //     }
+
+  //     return data
+  //   });
+  // }
+
   //FETCH FUNCTION MULTISELECT
   async function fetchDisciplinas() {
     console.log("Fetching fetchDisciplinas...")
@@ -243,37 +290,63 @@ const ModalEdit = ({
   //HANDLE CLICKS
 
   async function handleEdit() {
+
+    if (action == "SCHEDULELABORATORIO") {
+
+      console.log("i have been clicked")
+
+    }
+
     const deletedAgendamentos: any = []
     const newAgendamentos: any = []
-    console.clear()
+    // console.clear()
     console.log("daysIds")
     console.log(daysIds)
     console.log("selectedData")
     console.log(selectedData)
 
+    if(selectedData.lenght < 1){
+
+      return toast.error('Selecione um Professor e o Semestre!');
+
+    }
+
     //SET UUID
     const uuidAgendamento = formData.uuid_agendamento
 
     //VERIFY IF UUID IS EMPTY
-    selectedData.forEach((agendamento: any, index: number) => {
+    // selectedData.forEach((agendamento: any, index: number) => {
 
-      console.log("agendamento")
-      console.log(agendamento.agendamento)
+    //   console.log("agendamento")
+    //   console.log(agendamento.agendamento)
 
-      //verify if object is empty inside  
-      const agendamentoExist = agendamento.agendamento.id != null ? true : false
-      console.log("agendamentoExist:" + agendamentoExist)
+    //   //verify if object is empty inside  
+    //   const agendamentoExist = agendamento.agendamento.id != null ? true : false
+    //   console.log("agendamentoExist:" + agendamentoExist)
 
-      //INSERT ON NEW AGENDAMENTO IF (NOT EXIST AND IS SELECTED) aka CREATE AGENDAMENTO
-      if (!agendamentoExist && agendamento.selecionado) {
-        newAgendamentos.push(daysIds[index])
+    //   //INSERT ON NEW AGENDAMENTO IF (NOT EXIST AND IS SELECTED) aka CREATE AGENDAMENTO
+    //   if (!agendamentoExist && agendamento.selecionado) {
+    //     newAgendamentos.push(daysIds[index])
+    //   }
+
+    //   //INSERT ON DELETE AGENDAMENTO IF (EXIST AND IS NOT SELECTED) aka DELETE AGENDAMENTO
+    //   if (agendamentoExist && agendamento.selecionado === false) {
+    //     deletedAgendamentos.push(agendamento.agendamento.id)
+    //   }
+    // })
+
+
+    selectedData.forEach((grade: any, index: number) => {
+
+      console.log("grade")
+      console.log(grade)
+
+      if(grade.selecionado == true ) {
+          newAgendamentos.push(grade.agendamento.id)
       }
 
-      //INSERT ON DELETE AGENDAMENTO IF (EXIST AND IS NOT SELECTED) aka DELETE AGENDAMENTO
-      if (agendamentoExist && agendamento.selecionado === false) {
-        deletedAgendamentos.push(agendamento.agendamento.id)
-      }
     })
+
 
     console.log("uuidAgendamento")
     console.log(uuidAgendamento)
@@ -296,6 +369,7 @@ const ModalEdit = ({
         date: startDate,
         id_laboratorio: selectedLaboratory.id,
         id_professor: selectedProfessor,
+        schedule_status: "fixed",
         uuid_agendamento: uuidAgendamento?.toString(),
       }
 
@@ -404,9 +478,8 @@ const ModalEdit = ({
     }
 
     Swal.fire({
-      title: `Tem certeza que deseja ${action === "CREATE" ? "criar" : "editar"
-        }?`,
-      text: "Você não poderá reverter isso!",
+      title: `Tem certeza que deseja criar o agendamento?`,
+      text: "",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -483,6 +556,20 @@ const ModalEdit = ({
     }
   }
 
+  //HANDLE SELECTS
+  const handleSelectSemestreChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // console.log(event.target.value)
+
+    const selectedId = parseInt(event.target.value);
+
+    // console.log(selectedId)
+
+    if (selectedId) {
+      setSemesterProfessor(selectedId);
+      // Update the selectedProfessorId state instead of formData
+    }
+  }
+
   const handleLaboratoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     // console.log(event.target.value)
 
@@ -515,6 +602,9 @@ const ModalEdit = ({
 
   function getAndarLaboratorio(id: number) {
 
+    console.log("getAndarLaboratorio")
+    console.log(id)
+
     const andar = laboratory.find((lab) => lab.id === id)?.andar;
 
     const andaresString = ['Nenhum lab selecionado!', 'Primeiro Andar', 'Segundo Andar'];
@@ -544,9 +634,37 @@ const ModalEdit = ({
         if (action == "OPEN") {
           return "Abrir Agendamento"
         }
-        else {
-          return "ERROR"
-        }
+        else
+          if (action == "SCHEDULELABORATORIO") {
+            return "Agendamento fixo Laboratório"
+          }
+          else {
+            return "ERROR"
+          }
+  }
+
+  //GET BUTTON NAME
+
+  function getButtonName() {
+
+    if (action == "SCHEDULELABORATORIO") {
+
+      return "Agendar Laboratório"
+
+    }
+
+    else if (action == "CREATE") {
+      return "Criar Agendamento"
+    }
+    else if (action == "EDIT") {
+      return "Editar Agendamento"
+    }
+    else if (action == "OPEN") {
+      return "Abrir Agendamento"
+    }
+    else {
+      return "ERROR"
+    }
   }
 
   return (
@@ -561,105 +679,141 @@ const ModalEdit = ({
               getTitleBasedOnAction(action)
             }
           </StyledTitle>
-          <ProfessorWrapper>
-            <DetailsText>Professor:</DetailsText>
-            <StyledSelect
-              value={selectedProfessor || ''}
-              onChange={handleSelectProfessorChange}
-              disabled={action === 'OPEN'}
-            >
-              {professores.length > 0 ? (
-                professores.map((professor) => (
-                  <option key={professor.id} value={professor.id}>
-                    {professor.name}
-                  </option>
-                ))
-              ) : (
-                <option value="">No professors available</option>
-              )}
-            </StyledSelect>
-          </ProfessorWrapper>
-          <DateTimeWrapper>
-            <DateTimeDiv>
-              <DetailsText>Data de agendamento</DetailsText>
-              <DatePicker
-                selected={startDate}
-                disabled={action === 'OPEN'}
-                onChange={(date) => {
-                  //estudar quem vai porder alterar esta funcionalidade
-                  //pois grade ids são linkados com a data de agendamento
-                  setStartDate(date || new Date())
-                  setFormData({ ...formData, date: startDate || new Date() })
-                }} />
-            </DateTimeDiv>
-            <DateTimeDiv>
-              <DetailsText>Dia da Semana:</DetailsText>
-              <StyledText>{formData && formatDate(formData.date)}</StyledText>
-            </DateTimeDiv>
-          </DateTimeWrapper>
           <SideBysideContainer>
-            <DetailsWrapper>
-              <div>
-                <DetailsText>Disciplinas:</DetailsText>
-                <Multiselect
-                  dataKey="id"
-                  textField="disciplina"
-                  placeholder='Selecione a disciplinas'
-                  data={disciplinas}
-                  value={selectedValues}
-                  onChange={value => {
-                    console.log(value)
-                    setSelectedValues(value)
-                  }
-                  }
-                />
-
-              </div>
-              <div>
-                <DetailsText>Laboratório:</DetailsText>
+            <div>
+              <ProfessorWrapper>
+                <DetailsText>Professor:</DetailsText>
                 <StyledSelect
-                  value={selectedLaboratory && selectedLaboratory.id}
+                  value={selectedProfessor || ''}
+                  onChange={handleSelectProfessorChange}
                   disabled={action === 'OPEN'}
-                  onChange={handleLaboratoryChange}>
-                  {laboratory.length > 0 ? (
-                    laboratory.map((laboratory) => (
-                      <option key={laboratory.id} value={laboratory.id}>
-                        {laboratory.descricao}
+                >
+                  {professores.length > 0 ? (
+                    professores.map((professor) => (
+                      <option key={professor.id} value={professor.id}>
+                        {professor.name}
                       </option>
                     ))
                   ) : (
-                    <option value="">No laboratory available</option>
+                    <option value="">No professors available</option>
                   )}
                 </StyledSelect>
-              </div>
-              <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory)}</StyledText></DetailsText>
-              <DetailsText>Criado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
-              <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
-              <DetailsText>Capacidade: <StyledDates>{selectedLaboratory ? selectedLaboratory.capacidade : null} alunos</StyledDates></DetailsText>
-              <DetailsText>ID de agendamento: <br />
-                {/* formData.uuid_agendamento */}
+                <DetailsText>Semestre:</DetailsText>
+                <StyledSelect
+                  value={selectedSemester || ''}
+                  onChange={handleSelectSemestreChange}
+                  disabled={action === 'OPEN'}
+                >
+                  {semestres.length > 0 ? (
+                    semestres.map((semestre) => (
+                      <option key={String(semestre)} value={String(semestre)}>
+                        {String(semestre)}º Semestre
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No professors available</option>
+                  )}
+                </StyledSelect>
+              </ProfessorWrapper>
+
+              <DetailsWrapper>
+                {
+                  action == "SCHEDULELABORATORIO" ? null :
+                    <div>
+                      <DetailsText>Disciplinas:</DetailsText>
+                      <Multiselect
+                        dataKey="id"
+                        textField="disciplina"
+                        placeholder='Selecione a disciplinas'
+                        data={disciplinas}
+                        value={selectedValues}
+                        onChange={value => {
+                          console.log(value)
+                          setSelectedValues(value)
+                        }
+                        }
+                      />
+                    </div>
+                }
                 <div>
-                  <p>
-                    {
-
-                      action === "CREATE"
-
-                        ?
-
-                        "-NOVO😂-"
-
-                        :
-
-                        formData.uuid_agendamento
-
-                    }
-                  </p>
+                  <DetailsText>Laboratório:</DetailsText>
+                  <StyledSelect
+                    value={selectedLaboratory && selectedLaboratory.id}
+                    disabled={action === 'OPEN'}
+                    onChange={handleLaboratoryChange}>
+                    {laboratory.length > 0 ? (
+                      laboratory.map((laboratory) => (
+                        <option key={laboratory.id} value={laboratory.id}>
+                          {laboratory.descricao}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No laboratory available</option>
+                    )}
+                  </StyledSelect>
                 </div>
-              </DetailsText>
-            </DetailsWrapper>
+                <DateTimeWrapper>
+                  <DateTimeDiv>
+                    {
+                      action == "SCHEDULELABORATORIO" ? null :
+                        <>
+                          <DetailsText>Data de agendamento</DetailsText>
+                          <DatePicker
+                            selected={startDate}
+                            disabled={action === 'OPEN'}
+                            onChange={(date) => {
+                              //estudar quem vai porder alterar esta funcionalidade
+                              //pois grade ids são linkados com a data de agendamento
+                              setStartDate(date || new Date())
+                              setFormData({ ...formData, date: startDate || new Date() })
+                            }} />
+                        </>
+                    }
+                  </DateTimeDiv>
+                  <DateTimeDiv>
+                    <DetailsText>Dia da Semana:</DetailsText>
+                    <StyledText>{formData && formatDate(formData.date)}</StyledText>
+                  </DateTimeDiv>
+                </DateTimeWrapper>
+                <DetailsText>Capacidade: <StyledText>{selectedLaboratory ? selectedLaboratory.capacidade : null} alunos</StyledText></DetailsText>
+                <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory.id)}</StyledText></DetailsText>
+                <DetailsText>Criado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
+                <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
+                <DetailsText>ID de agendamento: <br />
+                  {/* formData.uuid_agendamento */}
+                  <div>
+                    <p>
+                      {
+
+                        action === "CREATE"
+
+                          ?
+
+                          "-NOVO😂-"
+
+                          :
+
+                          formData.uuid_agendamento
+
+                      }
+                    </p>
+                  </div>
+                </DetailsText>
+              </DetailsWrapper>
+            </div>
             <ClocktimeAndButoonsWrapper>
               <ClockTimeWrapper>
-                <ScheduleViewer props={formData} selectedLaboratory={selectedLaboratory && selectedLaboratory.id} handleDataSelection={handleDataSelection} action={action} professores={professores} idUserLogado={idUserLogado} userRole={userRole} />
+                <ScheduleViewer
+                  props={formData}
+                  semester={selectedSemester}
+                  professor_id={selectedProfessor}
+                  laboratoryName={selectedLaboratory && selectedLaboratory.descricao}
+                  date={startDate}
+                  selectedLaboratory={selectedLaboratory && selectedLaboratory.id}
+                  handleDataSelection={handleDataSelection}
+                  action={action} professores={professores}
+                  idUserLogado={idUserLogado}
+                  userRole={userRole} />
               </ClockTimeWrapper>
               <SecondImageWrapper>
                 <BackgroundImage src={background} />
@@ -667,7 +821,9 @@ const ModalEdit = ({
               <ButtonsWrapper>
                 {action !== 'OPEN' && (
                   <StyledButton onClick={() => handleEdit()}>
-                    {action === 'CREATE' ? 'Criar' : 'Editar'}
+
+                    {getButtonName()}
+
                   </StyledButton>
                 )}
                 <StyledButton onClick={() => onClose()}>

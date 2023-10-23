@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { Container, WeekdayContainer, ScheduleCell, ClockContainer, UidLabel } from './ScheduleViewer.styles'
+import { set } from 'date-fns';
 
 const array = [
   {
@@ -91,7 +92,7 @@ function transformData(agendamentos: any) {
       agendamento: agendamentoExisteNesteHorario != "" ? agendamentoExisteNesteHorario : {},
     }
 
-    console.log(item)
+    // console.log(item)
 
     items.push(item)
 
@@ -99,7 +100,47 @@ function transformData(agendamentos: any) {
   return items;
 };
 
-function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action, professores, idUserLogado, userRole }: any) {
+function transformGradeData(grade: any) {
+
+  console.clear()
+  console.log(grade)
+
+  const clockTimesArray = ['18:45:00', '19:35:00', '20:35:00', '21:25:00', '22:15:00'];
+  const items = [];
+
+  for (let i = 0; i < clockTimesArray.length; i++) {
+    // console.log("clockTimesArray[i]" + clockTimesArray[i])
+
+    const gradeExisteNesteHorario = grade.filter((grade: any) => grade.horario_inicio === clockTimesArray[i])[0] || []
+
+    // console.log(gradeExisteNesteHorario)
+
+    console.log("================================")
+    console.log("Grade Existe: " + (gradeExisteNesteHorario != "" ? true : false))
+
+    const item = {
+      id: i,
+      selecionado: gradeExisteNesteHorario != "" ? true : false,
+      agendamento: gradeExisteNesteHorario != "" ? gradeExisteNesteHorario : {},
+    }
+
+    // console.log(item)
+
+    items.push(item)
+
+  }
+  return items;
+};
+
+function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, selectedLaboratory, handleDataSelection, action, professores, idUserLogado, userRole }: any) {
+
+  const [selectedLaboratoryId, setSelectedLaboratoryId] = useState<number>(0)
+
+  const [selectedProfessor, setSelectedProfessor] = useState<number>(0)
+
+  const [selectedDate, setSelectedDate] = useState<string>("")
+
+
 
   const [form, setForm] = useState({} as any)
   const [schedule, setSchedule] = useState(array)
@@ -107,8 +148,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   useEffect(() => {
-
-
+    console.clear()
     console.log("ScheduleViewer useEffect")
     // console.log(setSelectedIds)
     console.log(form)
@@ -117,16 +157,32 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
 
     // console.log(props.uuid_agendamento)
 
+    if (action == "SCHEDULELABORATORIO") {
 
-    fetchByGroupedId("token valido")
-    // setSchedule()
-    if (props) {
-      setForm(props)
+      console.log("action == SCHEDULELABORATORIO")
+
+      setSelectedLaboratoryId(selectedLaboratory)
+      setSelectedProfessor(professor_id)
+
+      if (date) {
+        setSelectedDate(
+          date.toISOString()
+        )
+      }
+
+      fetchGetGradesByProfessorsAndDisciplinas()
+
+    } else {
+      // fetchByGroupedId("token valido")
+      if (props) {
+        setForm(props)
+      }
     }
-
     handleDataSelection(scheduleData);
 
-  }, [props, setSelectedIds, selectedLaboratory,])
+    // setSchedule()
+
+  }, [props, setSelectedIds, selectedLaboratory, professor_id, semester, selectedLaboratoryId, selectedProfessor, form])
 
   async function fetchByGroupedId(token: string = localStorage.getItem('token') || "") {
     console.log("Fetching fetchByGroupedId...")
@@ -162,6 +218,56 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
       console.log(transformedData)
 
       return setScheduleData(transformedData)
+
+    }).catch((error) => {
+      console.log(error)
+    }
+    )
+  }
+
+  async function fetchGetGradesByProfessorsAndDisciplinas(token: string = localStorage.getItem('token') || "") {
+    console.log("Fetching getGradesByProfessorsAndDisciplinas...")
+    console.log(form)
+    console.log(selectedLaboratory)
+
+    const obj = { //date to iso string
+      laboratory_id: selectedLaboratoryId,
+      date: selectedDate,
+      dia_da_semana: date.getDay(),
+      semestre: semester,
+      professor_id: selectedProfessor,
+    }
+
+    // "laboratorio_id": 2,
+    // "date": "2023-04-01",
+    // "dia_da_semana": 4,
+    // "semestre": 3,
+    // "professor_id": 2
+
+    const bodyParams = JSON.stringify(obj)
+
+    console.log(bodyParams)
+
+    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/grade/professors', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: bodyParams
+    }).then((response) => response.json()).then(async (data) => {
+
+      console.log("ReturnedData")
+      console.log(data)
+
+      const transformedData = await transformGradeData(data)
+
+      console.log("transformedData")
+      console.log(transformedData)
+      
+      setScheduleData(transformedData)
+
+      return handleDataSelection(transformedData);
+      
 
     }).catch((error) => {
       console.log(error)
@@ -238,17 +344,17 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
     //mostrar indisponível se o agendamento for de outro usuário
 
     if (idUserAgendamento) {
-      if(action == 'CREATE' ) {
+      if (action == 'CREATE') {
         if (idUserAgendamento == idUserLogado && itemIsSelected == true) {
           return "Selecionado"
         } else
-        if (idUserAgendamento != idUserLogado && itemIsSelected == true) {
-          return "Indisponivel"
+          if (idUserAgendamento != idUserLogado && itemIsSelected == true) {
+            return "Indisponivel"
+          }
+      } else
+        if (action == 'OPEN') {
+          return "Agendado"
         }
-      } else 
-      if(action == 'OPEN' ) {
-        return "Agendado"
-      }
     }
     if (itemIsSelected == false) {
       return "Disponivel"
@@ -270,7 +376,7 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
           <p>22:15</p>
         </ClockContainer>
         <WeekdayContainer>
-          <h2>LAB</h2>
+          <h2>{laboratoryName ? laboratoryName : "LAB"}</h2>
           {
             scheduleData.map((item: any) => {
               // const agendamentoExist = item.agendamento !== undefined;
@@ -314,6 +420,12 @@ function ScheduleViewer({ props, selectedLaboratory, handleDataSelection, action
                   <UidLabel canceled={item.edited && !item.selecionado}>
                     <p>{item.agendamento.uuid_agendamento}</p>
                     <p>{getProfessorNameById(item.agendamento.id_professor)}</p>
+                    {
+                      item.agendamento.semestre ?
+                        <p>{(item.agendamento.semestre + 'º Semestre')}</p>
+                        : null
+                    }
+
                   </UidLabel>
                   {/* // item.Agendamento && item.Agendamento[0] ? <p>{item.Agendamento[0].uuid_agendamento}</p> : <p>---</p> */}
                 </ScheduleCell>

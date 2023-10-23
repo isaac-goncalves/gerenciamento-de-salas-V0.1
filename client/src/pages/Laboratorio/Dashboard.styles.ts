@@ -225,7 +225,7 @@ export const StyledSelect = styled.select`
   width: 100%;
   height: 100%;
 
-  max-width: 10rem;
+  max-width: 11rem;
   padding: 8px 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -234,12 +234,12 @@ export const StyledSelect = styled.select`
     padding: 0.5rem;
 
     option {
-      font-size: 0.8rem;
+      font-size: 1rem;
     }
   }
 
   option {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   outline: none;

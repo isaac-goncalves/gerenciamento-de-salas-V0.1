@@ -26,7 +26,7 @@ import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import { Theme, type Container, type Engine } from "tsparticles-engine";
 
-const Gerenciamento: any = ({ theme }: any): any =>  {
+const Gerenciamento: any = ({ theme }: any): any => {
 
     const [usersData, setUsersData] = React.useState<UsersData[]>([])
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
@@ -183,6 +183,7 @@ const Gerenciamento: any = ({ theme }: any): any =>  {
         id_professor: string;
         uuid_agendamento: string;
         id_grade: string;
+        schedule_status: string;
         id_laboratorio: string;
         created_at: string;
         updated_at: string;
@@ -201,6 +202,7 @@ const Gerenciamento: any = ({ theme }: any): any =>  {
                             <th>fim</th>
                             <th>UUID</th>
                             <th>Grade</th>
+                            <th>Type</th>
                             <th>Laboratório</th>
                             <th>Criado</th>
                             <th>Atualizado</th>
@@ -217,6 +219,8 @@ const Gerenciamento: any = ({ theme }: any): any =>  {
                                 <CenteredTableData>{appointment.horario_fim}</CenteredTableData>
                                 <CenteredTableData>{appointment.uuid_agendamento}</CenteredTableData>
                                 <CenteredTableData>{appointment.id_grade}</CenteredTableData>
+                                <CenteredTableData>{appointment.schedule_status.toUpperCase()
+                                }</CenteredTableData>
                                 <CenteredTableData>{appointment.id_laboratorio}</CenteredTableData>
                                 <CenteredTableData>{formatDistanceToNow(new Date(appointment.created_at), { locale: ptBR })} atrás</CenteredTableData>
                                 <CenteredTableData>{formatDistanceToNow(new Date(appointment.updated_at), { locale: ptBR })} atrás</CenteredTableData>
@@ -393,7 +397,7 @@ const Gerenciamento: any = ({ theme }: any): any =>  {
 
     return (
         <>
-        <Particles
+            <Particles
                 id="tsparticles"
                 init={particlesInit}
                 loaded={particlesLoaded}
@@ -467,86 +471,86 @@ const Gerenciamento: any = ({ theme }: any): any =>  {
                     detectRetina: true,
                 }}
             />
-        <ContainerElement>
-            <Helmet>
-                <title>SGSA - Gerenciamento</title>
-            </Helmet>
-            <ToastContainer />
-            <ModalEdit action={"EDIT"} idUserLogado={userData.userData.id} isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={[1, 2, 3, 4]} />
-            <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />
-            <Wrapper>
-                <Header>
-                    <CounterWrapper>
-                        {
-                            isLoading ?
-                                (<h1>{alunosData.length}</h1>)
-                                :
-                                (<PacmanLoader />)
-                        }
-                        <p>Alunos</p>
-                    </CounterWrapper>
-                    <Separator></Separator>
-                    <CounterWrapper>
-                        {
-                            isLoading ?
-                                (<h1>{professoresData.length}</h1>)
-                                :
-                                (<PacmanLoader />)
-                        }
-                        <p>Professores</p>
-                    </CounterWrapper>
-                    <Separator></Separator>
-                    <CounterWrapper>
-                        {
-                            isLoading ?
-                                (<h1>{professoresData.length}</h1>)
-                                :
-                                (<PacmanLoader />)
-                        }
-                        <p>Coordenadores</p>
-                    </CounterWrapper>
-                </Header>
-                <SearchBar>
-                    <SearchIcon
-                        size={25}
-                    />
-                    <input type="text" placeholder="Pesquisar" />
-                    <button onClick={handleClick}>
-                        <BsWhatsapp />
-                        Convidar pelo Whatsapp
-                    </button>
-                </SearchBar>
-                <TableSelector>
-                    <FilterIcon
-                        size={20}
-                    />
-                    <select value={selectedTable} onChange={handleTableChange}>
-                        <option value="agendamentos">Agendamentos</option>
-                        <option value="usuarios">Usuários</option>
-                        <option value="alunos">Alunos</option>
-                        <option value="professores">Professores</option>
-                    </select>
-                    {
-                        selectedTable == "usuarios" &&
-                        <select name="table" id="table" value={selectedCategory} onChange={handleCategoryChange}>
+            <ContainerElement>
+                <Helmet>
+                    <title>SGSA - Gerenciamento</title>
+                </Helmet>
+                <ToastContainer />
+                <ModalEdit action={"EDIT"} idUserLogado={userData.userData.id} isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={[1, 2, 3, 4]} />
+                <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />
+                <Wrapper>
+                    <Header>
+                        <CounterWrapper>
+                            {
+                                isLoading ?
+                                    (<h1>{alunosData.length}</h1>)
+                                    :
+                                    (<PacmanLoader />)
+                            }
+                            <p>Alunos</p>
+                        </CounterWrapper>
+                        <Separator></Separator>
+                        <CounterWrapper>
+                            {
+                                isLoading ?
+                                    (<h1>{professoresData.length}</h1>)
+                                    :
+                                    (<PacmanLoader />)
+                            }
+                            <p>Professores</p>
+                        </CounterWrapper>
+                        <Separator></Separator>
+                        <CounterWrapper>
+                            {
+                                isLoading ?
+                                    (<h1>{professoresData.length}</h1>)
+                                    :
+                                    (<PacmanLoader />)
+                            }
+                            <p>Coordenadores</p>
+                        </CounterWrapper>
+                    </Header>
+                    <SearchBar>
+                        <SearchIcon
+                            size={25}
+                        />
+                        <input type="text" placeholder="Pesquisar" />
+                        <button onClick={handleClick}>
+                            <BsWhatsapp />
+                            Convidar pelo Whatsapp
+                        </button>
+                    </SearchBar>
+                    <TableSelector>
+                        <FilterIcon
+                            size={20}
+                        />
+                        <select value={selectedTable} onChange={handleTableChange}>
+                            <option value="agendamentos">Agendamentos</option>
+                            <option value="usuarios">Usuários</option>
                             <option value="alunos">Alunos</option>
                             <option value="professores">Professores</option>
-                            <option value="administradores">Administradores</option>
                         </select>
+                        {
+                            selectedTable == "usuarios" &&
+                            <select name="table" id="table" value={selectedCategory} onChange={handleCategoryChange}>
+                                <option value="alunos">Alunos</option>
+                                <option value="professores">Professores</option>
+                                <option value="administradores">Administradores</option>
+                            </select>
+                        }
+                    </TableSelector>
+                    {
+                        isLoading ?
+                            renderTable()
+                            :
+                            (
+                                <TableContainer>
+                                    <PacmanLoader />
+                                </TableContainer>
+                            )
                     }
-                </TableSelector>
-                {
-                    isLoading ?
-                        renderTable()
-                        :
-                        (
-                            <TableContainer>
-                                <PacmanLoader />
-                            </TableContainer>
-                        )
-                }
-            </Wrapper>
-        </ContainerElement>
+                </Wrapper>
+            </ContainerElement>
         </>
     );
 }
