@@ -188,7 +188,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       icon: 'warning',
       showCancelButton: true,
 
-      confirmButtonText: 'Sim, cancelar!',
+      confirmButtonText: `Sim, ${schedule_status == 'default' ? "cancelar reserva de laboratório" : 'reportar falta do professor!'}!`,
       cancelButtonText: 'Não, cancelar!'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -430,7 +430,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       date1.getFullYear() === date2.getFullYear()
     );
   }
-  
+
 
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
@@ -462,13 +462,13 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               // console.log(item.agendamentos)
               //compare if is on the same day and month
               const agendamentoDefaultExist = agendamentos ? agendamentos.some((item: any) => {
-                
-                  console.log(new Date(item.date))
-                return item.schedule_status == "default"
-               && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
-              }): false
 
-      
+                console.log(new Date(item.date))
+                return item.schedule_status == "default"
+                  && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+              }) : false
+
+
               const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
               //IMPLEMENTAR LOGICA DE AGENDAMENTO VENCEDOR AQUI
 
@@ -517,7 +517,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                                 <SalaWrapper>
                                   <div>{agendamento ? agendamento.capacidade + " Alunos" : ""}</div>
                                 </SalaWrapper>
-                                {agendamentoDefaultExist ? "Laboratorio Cancelado": null}
+                                {agendamentoDefaultExist ? "Laboratorio Cancelado" : null}
                               </SemestreSalaWrapper>
 
                               : null
@@ -1242,16 +1242,17 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
             position: 'absolute',
             display: isContextMenuVisible ? 'block' : 'none',
             top: contextMenuPosition.top,
-            left: contextMenuPosition.left + 20,
-
+            left: contextMenuPosition.left + 20
           }}
         >
           <ul>
             <li onClick={() => closeContextMenu('cancel')} >
-              <GiCancel size={18} />
-              Excluir agendamento</li>
-            <li onClick={() => closeContextMenu('default')}>
               <AiOutlineUserDelete size={18} />
+              Reportar Falta de Professor
+            </li>
+            <li onClick={() => closeContextMenu('default')}>
+              <GiCancel size={18} />
+
               Cancelar reserva de laboratório</li>
           </ul>
         </StyledContextMenu>

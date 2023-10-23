@@ -684,6 +684,7 @@ const ModalEdit = ({
           </StyledTitle>
           <SideBysideContainer>
             <div>
+           
               <ProfessorWrapper>
                 <DetailsText>Professor:</DetailsText>
                 <StyledSelect
@@ -718,7 +719,9 @@ const ModalEdit = ({
                   )}
                 </StyledSelect>
               </ProfessorWrapper>
-
+              <SecondImageWrapper>
+                <BackgroundImage src={background} />
+              </SecondImageWrapper>
               <DetailsWrapper>
                 {
                   action == "SCHEDULELABORATORIO" ? null :
@@ -818,9 +821,7 @@ const ModalEdit = ({
                   idUserLogado={idUserLogado}
                   userRole={userRole} />
               </ClockTimeWrapper>
-              <SecondImageWrapper>
-                <BackgroundImage src={background} />
-              </SecondImageWrapper>
+             
               <ButtonsWrapper>
                 {action !== 'OPEN' && (
                   <StyledButton onClick={() => handleEdit()}>

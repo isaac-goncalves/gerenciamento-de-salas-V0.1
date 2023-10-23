@@ -12,8 +12,6 @@ interface CalltoActionButtonProps {
   backgroundColor: boolean
 }
 
-
-
 export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
   position: fixed;
   bottom: 2rem;
@@ -34,33 +32,26 @@ export const CalltoActionButton = styled.button<CalltoActionButtonProps>`
 
   transform: scale(1);
   transition: 0.3s;
-  
-    //mobile 
 
-    //move left and up
+  //mobile
 
-    //animation
-/*     
+  //move left and up
+
+  //animation
+  /*     
   &:hover {
     transform: scale(9999);
     transition: 30000.3s;
   } */
 
-
-    
-    
-
-
   @media screen and (max-width: 570px) {
     bottom: 1rem;
     right: 2rem;
-  
   }
-                                                    
+
   /* &:hover {
     transform: scale(3);
   } */
-  
 `
 
 export const MainContainer = styled.div`
@@ -507,16 +498,15 @@ export const ClockContainer = styled.div`
   }
   @media screen and (max-width: 570px) {
     width: 2rem;
-   
-/* border-right: 1px solid ${props => props.theme.lightgrayborder}; */
-  p {
-    font-size: 0.8rem;
-    padding: 0.3rem;
-    background-color: ${props => props.theme.white};  
-    border-radius: 4px;
-  }
-  }
 
+    /* border-right: 1px solid ${props => props.theme.lightgrayborder}; */
+    p {
+      font-size: 0.8rem;
+      padding: 0.3rem;
+      background-color: ${props => props.theme.white};
+      border-radius: 4px;
+    }
+  }
 `
 
 export const WeekContainer = styled.div`
@@ -528,7 +518,7 @@ export const WeekContainer = styled.div`
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -541,7 +531,6 @@ export const WeekContainer = styled.div`
 
 export const WeekdayContainer = styled.div`
   min-width: 10rem;
-
 
   /* border: solid 1px red; */
 
@@ -656,7 +645,7 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
     font-size: 1rem; // font-size da dashboard
     word-wrap: break-word;
     width: 100%;
-    
+
     overflow: hidden;
 
     @media screen and (max-width: 570px) {
@@ -670,9 +659,19 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
 
 // }
 
-export const Disciplina = styled.p`
-  font-weight: 500;
+interface StyledComponentDisciplinaProps {
+  agendamentoCancelExist: boolean
+}
+
+export const Disciplina = styled.p<StyledComponentDisciplinaProps>`
+  text-decoration: ${props =>
+    props.agendamentoCancelExist ? 'line-through' : 'none'};
+
   color: ${props => props.theme.textcolor};
+  color: ${props =>
+    props.agendamentoCancelExist
+      ? props => props.theme.textColorDisabled
+      : props => props.theme.textcolor};
 `
 
 export const SemestreSalaWrapper = styled.p`
@@ -680,7 +679,9 @@ export const SemestreSalaWrapper = styled.p`
   gap: 0.4rem;
 `
 
-export const Professor = styled.p`
+export const Professor = styled.p<StyledComponentDisciplinaProps>`
+  text-decoration: ${props =>
+    props.agendamentoCancelExist ? 'line-through' : 'none'};
   font-style: italic;
   color: ${props => props.theme.textcolor};
 `
@@ -688,7 +689,7 @@ export const Semestre = styled.p`
   font-style: italic;
   color: ${props => props.theme.mainpurple};
 `
-interface StyledComponentProps {
+interface StyledComponentSalaProps {
   agendamento: boolean
 }
 
@@ -698,7 +699,7 @@ export const SalaWrapper = styled.div`
   gap: 0.4rem;
 `
 
-export const Sala = styled.p<StyledComponentProps>`
+export const Sala = styled.p<StyledComponentSalaProps>`
   color: ${props =>
     props.agendamento
       ? props => props.theme.textColorDisabled
