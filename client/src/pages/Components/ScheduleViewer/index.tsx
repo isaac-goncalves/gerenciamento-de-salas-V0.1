@@ -32,77 +32,8 @@ const array = [
 ]
 
 
-// [
-//   {
-//     id: 27,
-//     date: '2023-06-01T23:09:13.533Z',
-//     horario_inicio: '19:35:00',
-//     horario_fim: '20:25:00',
-//     id_professor: 12,
-//     id_grade: '17',
-//     id_laboratorio: '26',
-//     created_at: 2023-05-30T23:09:20.764Z,
-//     updated_at: 2023-05-30T23:09:20.764Z,
-//     uuid_agendamento: '#21153'
-//   },
-//   {
-//     id: 28,
-//     date: '2023-06-01T23:09:13.533Z',
-//     horario_inicio: '20:35:00',
-//     horario_fim: '21:25:00',
-//     id_professor: 12,
-//     id_grade: '18',
-//     id_laboratorio: '26',
-//     created_at: 2023-05-30T23:09:20.765Z,
-//     updated_at: 2023-05-30T23:09:20.765Z,
-//     uuid_agendamento: '#21153'
-//   },
-//   {
-//     id: 29,
-//     date: '2023-06-01T23:09:13.533Z',
-//     horario_inicio: '18:45:00',
-//     horario_fim: '19:35:00',
-//     id_professor: 12,
-//     id_grade: '16',
-//     id_laboratorio: '26',
-//     created_at: 2023-05-30T23:09:20.766Z,
-//     updated_at: 2023-05-31T02:53:56.611Z,
-//     uuid_agendamento: '#21153'
-//   }
-// ]
-
-function transformData(agendamentos: any) {
-
-  const clockTimesArray = ['18:45:00', '19:35:00', '20:35:00', '21:25:00', '22:15:00'];
-  const items = [];
-
-  for (let i = 0; i < clockTimesArray.length; i++) {
-    // console.log("clockTimesArray[i]" + clockTimesArray[i])
-
-    const agendamentoExisteNesteHorario = agendamentos.filter((agendamento: any) => agendamento.horario_inicio === clockTimesArray[i])[0] || []
-
-    // console.log(agendamentoExisteNesteHorario)
-
-    console.log("================================")
-    console.log("Agendamento Existe: " + (agendamentoExisteNesteHorario != "" ? true : false))
-
-    const item = {
-      id: i,
-      selecionado: agendamentoExisteNesteHorario != "" ? true : false,
-      agendamento: agendamentoExisteNesteHorario != "" ? agendamentoExisteNesteHorario : {},
-    }
-
-    // console.log(item)
-
-    items.push(item)
-
-  }
-  return items;
-};
-
 function transformGradeData(grade: any) {
-
-  console.clear()
+  // console.clear()
   console.log(grade)
 
   const clockTimesArray = ['18:45:00', '19:35:00', '20:35:00', '21:25:00', '22:15:00'];
@@ -148,7 +79,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   useEffect(() => {
-    console.clear()
+    // console.clear()
     console.log("ScheduleViewer useEffect")
     // console.log(setSelectedIds)
     console.log(form)
@@ -172,8 +103,19 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
       fetchGetGradesByProfessorsAndDisciplinas()
 
-    } else {
-      // fetchByGroupedId("token valido")
+    }
+    else if (action = "cancel") {
+      console.log("Cancel DETECTED")
+      console.log(props)
+
+      if (props) {
+        setForm(props)
+      }
+      fetchByGroupedId("token valido")
+
+    }
+
+    else {
       if (props) {
         setForm(props)
       }
@@ -212,7 +154,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
       console.log("ReturnedData")
       console.log(data)
 
-      const transformedData = await transformData(data)
+      const transformedData = await transformGradeData(data)
 
       console.log("transformedData")
       console.log(transformedData)
@@ -263,11 +205,11 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
       console.log("transformedData")
       console.log(transformedData)
-      
+
       setScheduleData(transformedData)
 
       return handleDataSelection(transformedData);
-      
+
 
     }).catch((error) => {
       console.log(error)

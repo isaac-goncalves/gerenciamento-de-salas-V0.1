@@ -11,8 +11,14 @@ export class AgendamentoController {
   async create (request: Request, response: Response) {
     console.log('create agendamento')
 
-    const { date, id_professor, ids_grade, id_laboratorio, uuid_agendamento, schedule_status } =
-      request.body
+    const {
+      date,
+      id_professor,
+      ids_grade,
+      id_laboratorio,
+      uuid_agendamento,
+      schedule_status
+    } = request.body
 
     if (!date || !id_professor || !ids_grade || !id_laboratorio)
       return response.status(400).json({ message: 'missing data' })
@@ -282,40 +288,71 @@ export class AgendamentoController {
     //   AND id_laboratorio = ${laboratory_id}
     //   `
     // }
-    if (laboratory_id == undefined) {
-      console.log('laboratory_id == undefined')
-      query = `
-      SELECT * 
-      FROM agendamento 
-      AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)
-      `
-    } else {
-      console.log('full query when creating only')
-      query = `
-        SELECT * 
-        FROM agendamento 
-        WHERE id_laboratorio = ${laboratory_id}
-        AND DATE_TRUNC('day', date) = DATE_TRUNC('day', '${date}'::timestamp)`
-    }
-
     try {
-      // Retrieve grade data for the specified professor and semester
-      if (date == undefined) {
-        return response.status(200).json([
-          {
-            message: 'no data'
-          }
-        ])
+      if (action == 'cancel') {
+        console.log('action = cancel')
+
+        query = `
+      SELECT *
+      FROM agendamento
+      WHERE uuid_agendamento = '${uuid_agendamento}'
+      `
+
+        const agendamentos = await agendamentosRepository.query(query)
+
+        const agendamentosWithGrade = await Promise.all(
+          agendamentos.map(async (agendamento: any) => {
+            const id_grade = agendamento.id_grade
+
+            const queryGrade = ` SELECT * FROM grade WHERE id = ${id_grade} `
+
+            const grade = await gradeRepositories.query(queryGrade)
+
+            return grade[0]
+          })
+        )
+
+        console.log(agendamentosWithGrade)
+        return response.status(200).json(agendamentosWithGrade)
       }
-      const gradeGroupedById = await agendamentosRepository.query(query)
-
-      console.log(gradeGroupedById)
-
-      return response.status(200).json(gradeGroupedById)
     } catch (error) {
       console.log(error)
       return response.status(500).json({ message: 'internal server error' })
     }
+  }
+
+  async cancel (request: Request, response: Response) {
+    const {
+      date,
+      id_professor,
+      id_grade,
+      id_laboratorio,
+      uuid_agendamento,
+      schedule_status
+    } = request.body
+
+    if (!date || !id_professor || !id_grade 
+      || !id_laboratorio || !uuid_agendamento || !schedule_status
+      )
+      return response.status(400).json({ message: 'missing data' })
+
+      const agendamento = agendamentosRepository.create({
+        date,
+        id_professor,
+        uuid_agendamento,
+        id_grade: id_grade,
+        id_laboratorio,
+        schedule_status,
+        created_at: new Date(),
+        updated_at: new Date()
+      })
+
+      if(!agendamento) return response.status(400).json({message: 'Agendamento not found'})
+      else 
+      {
+        await agendamentosRepository.save(agendamento)
+        return response.status(200).json({message: 'Agendamento canceled'})
+      }
   }
 }
 

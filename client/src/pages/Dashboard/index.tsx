@@ -351,6 +351,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     }
   }
 
+  function areDatesOnSameDayMonthYear(date1: Date, date2: Date) {
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
+  }
+
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
 
@@ -377,7 +385,19 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                 semestre,
               } = item;
 
-              const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
+              const agendamentoDefaultExist = agendamentos ? agendamentos.some((item: any) => {
+                return item.schedule_status == "default"
+                  && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+              }) : false
+
+              const agendamentoCancelExist = agendamentos ? agendamentos.some((item: any) => {
+                return item.schedule_status == "cancel"
+                  && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+              }) : false
+
+
+              const agendamento = !agendamentoDefaultExist ? agendamentos && agendamentos.length > 0 ? agendamentos[0] : null : null
+
               const isCurrentTime = false
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
 
@@ -387,35 +407,44 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               return (
                 <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
-                  <Disciplina>{disciplina}</Disciplina>
-                  <Professor>{professor}</Professor>
+                  <Disciplina agendamentoCancelExist={agendamentoCancelExist}>{disciplina}</Disciplina>
+                  <Professor agendamentoCancelExist={agendamentoCancelExist}>{professor}</Professor>
                   {
+                    agendamentoCancelExist ?
+                    (
+                      <Sala agendamento={agendamento}>
+                        Aula Cancelada
+                      </Sala> 
+                        ):
                     !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
-                      selectedMethod === 'professor' ?
-                        <SemestreSalaWrapper>
-                          <Semestre>{semestre}º Semestre</Semestre>
-                          <SalaWrapper>
-                            <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                            {agendamento && agendamento.laboratorio && (
-                              <>
-                                <MdKeyboardDoubleArrowRight />
-                                <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                              </>
-                            )}
-                          </SalaWrapper>
-                        </SemestreSalaWrapper>
-                        :
-                        <SalaWrapper>
-                          <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                          {agendamento && agendamento.laboratorio && (
-                            <>
-                              <MdKeyboardDoubleArrowRight />
-                              <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                            </>
-                          )}
-                        </SalaWrapper>
-                      :
-                      null
+                  selectedMethod === 'professor' ?
+                  <SemestreSalaWrapper>
+                    <Semestre>{semestre}º Semestre</Semestre>
+                    <SalaWrapper>
+                      <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                      {
+                        agendamento && agendamento.laboratorio && (
+                          <>
+                            <MdKeyboardDoubleArrowRight />
+                            <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                          </>
+                        )}
+                    </SalaWrapper>
+                  </SemestreSalaWrapper>
+                  :
+                  <SalaWrapper>
+                    <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                    {
+                      agendamento && agendamento.laboratorio && (
+                        <>
+                          <MdKeyboardDoubleArrowRight />
+                          <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                        </>
+                      )}
+                  </SalaWrapper>
+                  :
+                  null
+                      
                   }
                 </Schedule>
               );
@@ -865,14 +894,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
                 <StyledImageButton>
                   <TodayContainer
-                    size={25}
+                    size={30}
                   />
                 </StyledImageButton>
                 <PularParaHojeText>Pular para hoje</PularParaHojeText>
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
                 <LeftArrow
-                  size={45}
+                  size={50}
                 />
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>

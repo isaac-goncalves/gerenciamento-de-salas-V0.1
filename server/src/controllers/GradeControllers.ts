@@ -109,6 +109,7 @@ export class GradeController {
             professores.name as professor,
             laboratorios.descricao as laboratorio,
             laboratorios.capacidade as capacidade,
+            schedule_status,
             agendamento.updated_at,
             agendamento.created_at
             FROM
@@ -120,11 +121,48 @@ export class GradeController {
             WHERE
             id_grade = '${id_grade}'
             AND 
+            agendamento.schedule_status <> 'fixed'
+            AND 
             agendamento.date BETWEEN '${formatDateForSQL(
               nearestMonday
             )}' AND '${formatDateForSQL(nextSaturnDay)}'
           `
+
+          const queryAgendamentoFixo = `
+          SELECT
+          agendamento.id as id,
+          date,
+          uuid_agendamento,
+          horario_inicio,
+          horario_fim,
+          id_professor,
+          id_grade,
+          id_laboratorio,
+          professores.name as professor,
+          laboratorios.descricao as laboratorio,
+          laboratorios.capacidade as capacidade,
+          schedule_status,
+          agendamento.updated_at,
+          agendamento.created_at
+          FROM
+          agendamento
+          LEFT JOIN
+          professores ON id_professor = professores.id
+          LEFT JOIN
+          laboratorios ON id_laboratorio = laboratorios.id
+          WHERE
+          id_grade = '${id_grade}'
+          AND 
+          agendamento.schedule_status = 'fixed'
+        `
+
           const agendamentos = await gradeRepositories.query(queryAgendamento)
+
+          const agendamentosFixos = await gradeRepositories.query(
+            queryAgendamentoFixo
+          )
+
+          console.log(agendamentosFixos)
 
           //remove 3 hours from date to match the timezone
 
@@ -137,6 +175,12 @@ export class GradeController {
           }
 
           grade.agendamentos = agendamentos || []
+
+          if (agendamentosFixos.length > 0) {
+            agendamentosFixos.forEach((agendamento: any) => {
+              grade.agendamentos.push(agendamento)
+            })
+          }
 
           return grade
         })
@@ -158,62 +202,62 @@ export class GradeController {
 
     try {
       if (id_laboratorio) {
-        //fetach all agendamentos with laboratory id as
-
-        const query = ` 
-        SELECT
-        agendamento.id as id,
-        date,
-        uuid_agendamento,
-        horario_inicio,
-        horario_fim,
-        id_professor,
-        id_grade,
-        id_laboratorio,
-        professores.name as professor,
-        laboratorios.descricao as laboratorio,
-        laboratorios.capacidade as capacidade,
-        agendamento.updated_at,
-        agendamento.created_at
-        FROM
-        agendamento
-        LEFT JOIN
-        professores ON id_professor = professores.id
-        LEFT JOIN
-        laboratorios ON id_laboratorio = laboratorios.id
-        WHERE
-        id_laboratorio = '${id_laboratorio}'
-        AND schedule_status = 'fixed'
+        const query = `
+          SELECT
+            agendamento.id as id,
+            date,
+            uuid_agendamento,
+            horario_inicio,
+            horario_fim,
+            id_professor,
+            id_grade,
+            schedule_status,
+            id_laboratorio,
+            professores.name as professor,
+            laboratorios.descricao as laboratorio,
+            laboratorios.capacidade as capacidade,
+            agendamento.updated_at,
+            agendamento.created_at
+          FROM
+            agendamento
+          LEFT JOIN
+            professores ON id_professor = professores.id
+          LEFT JOIN
+            laboratorios ON id_laboratorio = laboratorios.id
+          WHERE
+            id_laboratorio = '${id_laboratorio}'
         `
 
         const agendamentos = await gradeRepositories.query(query)
-        //grab all grage data where id_grade - gradeID
+        const gradeIds = [
+          ...new Set(
+            agendamentos.map((agendamento: any) => agendamento.id_grade)
+          )
+        ]
 
-        console.log(agendamentos)
+        const gradesObj = await Promise.all(
+          gradeIds.map(async (grade: any) => {
+            const gradeItem = await gradeRepositories.findOneBy({
+              id: grade
+            })
+            return gradeItem
+          })
+        )
 
+        const gradesWithAgendamentos = gradesObj.map((grade: any) => {
+          const gradeWithAgendamentoObj = {
+            ...grade,
+            agendamentos: agendamentos.filter(
+              (agendamento: any) => agendamento.id_grade === grade.id
+            )
+          }
 
-        const gradesWithAgendamentoFixed = await Promise.all(agendamentos.map(async (agendamento: any) => {
-          const grade: any = await gradeRepositories.findOneBy({
-            id: agendamento.id_grade
-          });
-        
-          console.log(grade);
-        
-          grade.agendamentos = [agendamento];
-        
-          console.log(grade);
-        
-          return grade;
-        }));
+          return gradeWithAgendamentoObj
+        })
 
-        // AND
-        // agendamento.date BETWEEN '${formatDateForSQL(
-        //   getNearestMonday(new Date())
-        // )}' AND '${formatDateForSQL(nextFriday(new Date()))}'
+        console.log(gradesWithAgendamentos)
 
-        console.log(gradesWithAgendamentoFixed)
-
-        return response.status(200).json(gradesWithAgendamentoFixed)
+        return response.status(200).json(gradesWithAgendamentos)
       } else {
         // Retrieve grade data for the specified professor and semester
         const query = `

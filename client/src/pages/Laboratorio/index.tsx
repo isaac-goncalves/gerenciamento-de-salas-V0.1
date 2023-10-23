@@ -18,9 +18,9 @@ import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'dat
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiFillHeart, AiOutlinePlusCircle, AiOutlineUserDelete } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -43,7 +43,8 @@ import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
 import { StyledButton } from '../Perfil/Perfil.styles';
 import { FaFilter } from 'react-icons/fa';
 import { on } from 'events';
-
+import { GiCancel } from 'react-icons/gi';
+import Swal from 'sweetalert2';
 
 interface ScheduleItem {
   id: number;
@@ -139,6 +140,67 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   const [daysIds, setDaysIds] = useState<any>([]);
   const [schedulingModalIsVisible, setSchedulingModalIsVisible] = React.useState(false)
 
+  //STORE CONTEXT MENU 
+  const [isContextMenuVisible, setContextMenuVisible] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [contextMenuData, setContextMenuData] = useState<any>({});
+  const [dayDateObjectFromClick, setDayDateObjectFromClick] = useState<any>({});
+
+  //CONTEXTMENU FUNCTIONS
+
+  const handleContextMenu = (e: any, item: any, dayDateObject: Date) => {
+    e.preventDefault();
+
+    console.log("Clicked")
+    console.log(item)
+
+    setContextMenuData(item)
+    setDayDateObjectFromClick(dayDateObject)
+
+    setContextMenuPosition(
+      { top: e.clientY, left: e.clientX });
+    setContextMenuVisible(true);
+  };
+
+  const closeContextMenu = (schedule_status: string) => {
+    console.log("Iran")
+
+    console.log(contextMenuData)
+
+    const newAgedamentoData = {
+      schedule_status: schedule_status,
+      date: dayDateObjectFromClick?.toISOString(),
+      uuid_agendamento: contextMenuData.agendamentos[0].uuid_agendamento,
+      id_professor: contextMenuData.agendamentos[0].id_professor,
+      id_grade: contextMenuData.agendamentos[0].id_grade,
+      id_laboratorio: contextMenuData.agendamentos[0].id_laboratorio,
+    }
+
+    //cancelar para esse id o laboratorio desse dia
+
+    console.log("Opening modal as: " + schedule_status)
+    console.log(newAgedamentoData)
+
+    Swal.fire({
+
+      title: 'Você tem certeza?',
+      text: "Esta ação sera executada somente no dia selecionado! " + dayDateObjectFromClick?.toISOString(),
+      icon: 'warning',
+      showCancelButton: true,
+
+      confirmButtonText: `Sim, ${schedule_status == 'default' ? "cancelar reserva de laboratório" : 'reportar falta do professor!'}!`,
+      cancelButtonText: 'Não, cancelar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        cancelAgendamentoRequest(newAgedamentoData)
+      }
+
+    })
+
+    // openEditModal(newAgedamentoData, daysIds)
+
+    setContextMenuVisible(false);
+  };
 
   //USERSESSIONDATA
   const [userData, setUserData] = useState<any>(
@@ -239,7 +301,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [selectedSemesterValue, userData, selectedLaboratorio ,selectedProfessor, selectedMethod, selectedDate, startDate]);
+  }, [selectedSemesterValue, userData, selectedLaboratorio, selectedProfessor, selectedMethod, selectedDate, startDate]);
 
   useEffect(() => {
 
@@ -298,6 +360,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       const newAgedamentoData = {
         date: dayDateObject?.toISOString(),
         uuid_agendamento: "-",
+        type: "SCHEDULELABORATORIO",
         // id_professor: userData.userData.professor_id,
         id_laboratorio: selectedLaboratorio.id,
         updated_at: new Date()?.toISOString(),
@@ -360,15 +423,27 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
   }
 
+  function areDatesOnSameDayMonthYear(date1: Date, date2: Date) {
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
+  }
+
+
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
 
     const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
+
+    
+
     // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
     const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
     const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
 
-    console.log("currentWeekday")
+    // console.log("currentWeekday")
     console.log(dayDateObject)
 
     return (
@@ -385,6 +460,22 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 agendamentos,
                 semestre,
               } = item;
+              // console.log(item.agendamentos)
+              //compare if is on the same day and month
+
+
+              const agendamentoCancelExist = agendamentos ? agendamentos.some((item: any) => {
+                return item.schedule_status == "cancel"
+                  && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+              }) : false
+
+              const agendamentoDefaultExist = agendamentos ? agendamentos.some((item: any) => {
+
+                console.log(new Date(item.date))
+                return item.schedule_status == "default"
+                  && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+              }) : false
+
 
               const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
               //IMPLEMENTAR LOGICA DE AGENDAMENTO VENCEDOR AQUI
@@ -393,52 +484,56 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               //
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
 
-              console.log(agendamento)
+              // console.log(agendamento)
               // console.log(currentTime)
 
               return (
-                <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
-                  className={isCurrentTime ? '' : 'hoverEffect'}>
-                  <Professor>{getProfessorName(id_professor || 0)}</Professor>
-                  <Disciplina>{disciplina}</Disciplina>
-                  {
-                    !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
-                      selectedMethod === 'professor' ?
-                        <SemestreSalaWrapper>
-                          <Semestre>{semestre}º Semestre</Semestre>
-                          <SalaWrapper>
-                            <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                            {agendamento && agendamento.laboratorio && (
-                              <>
-                                <MdKeyboardDoubleArrowRight />
-                                <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                              </>
-                            )}
-                          </SalaWrapper>
-                        </SemestreSalaWrapper>
+                <>
+                  <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
+                    className={isCurrentTime ? '' : 'hoverEffect'}>
+                    <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
+                    <Disciplina>{disciplina}</Disciplina>
+                    <Sala>{ agendamentoCancelExist? "Aula cancelada" : null }</Sala>
+                    {
+                      !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
+                        selectedMethod === 'professor' ?
+                          <SemestreSalaWrapper>
+                            <Semestre>{semestre}º Semestre</Semestre>
+                            <SalaWrapper>
+                              <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                              {agendamento && agendamento.laboratorio && (
+                                <>
+                                  <MdKeyboardDoubleArrowRight />
+                                  <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                                </>
+                              )}
+                            </SalaWrapper>
+                          </SemestreSalaWrapper>
+                          :
+                          selectedMethod === 'semestre' ?
+                            <SalaWrapper>
+                              <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                              {agendamento && agendamento.laboratorio && (
+                                <>
+                                  <MdKeyboardDoubleArrowRight />
+                                  <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                                </>
+                              )}
+                            </SalaWrapper>
+                            : selectedMethod === 'laboratorio' ?
+                              <SemestreSalaWrapper>
+                                <Semestre>{semestre}º Semestre</Semestre>
+                                <SalaWrapper>
+                                  <div>{agendamento ? agendamento.capacidade + " Alunos" : ""}</div>
+                                </SalaWrapper>
+                                {agendamentoDefaultExist ? "Laboratorio Cancelado" : null}
+                              </SemestreSalaWrapper>
+                              : null
                         :
-                        selectedMethod === 'semestre' ?
-                          <SalaWrapper>
-                            <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                            {agendamento && agendamento.laboratorio && (
-                              <>
-                                <MdKeyboardDoubleArrowRight />
-                                <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                              </>
-                            )}
-                          </SalaWrapper>
-                          : selectedMethod === 'laboratorio' ?
-                            <SemestreSalaWrapper>
-                              <Semestre>{semestre}º Semestre</Semestre>
-                              <SalaWrapper>
-                                <div>{agendamento ? agendamento.capacidade + " Alunos" : ""}</div>
-                              </SalaWrapper>
-                            </SemestreSalaWrapper>
-                            : null
-                      :
-                      null
-                  }
-                </Schedule>
+                        null
+                    }
+                  </Schedule>
+                </>
               );
             })}
         </SchedulesContainer>
@@ -679,6 +774,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       console.log(error)
     })
   }
+
   async function fetchSemestreData() {
     fetch(`${apiUrl}/grade/dashboard`, {
       method: 'POST',
@@ -702,7 +798,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     }
     )
   }
-
 
   async function fetchLaboratoryData() {
     fetch(`${apiUrl}/laboratory`, {
@@ -738,7 +833,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     }).then((response: any) => response.json()).then((data) => {
 
       const transformedData = groupByWeekday(data)
-      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
 
       setTimeout(() => {
         setLoading(true) // teste de loading
@@ -767,10 +862,10 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         professor_id: selectedProfessor.id,
       })
     }).then((response) => response.json()).then((data) => {
-      console.log(data)
+      // console.log(data)
 
       const transformedData = groupByWeekday(data)
-      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
 
       setTimeout(() => {
         setLoading(true) // teste de loading
@@ -807,9 +902,48 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     )
   }
 
+  async function cancelAgendamentoRequest(data: any) {
+    try {
+      await fetch(`${apiUrl}/grade/agendamentos/cancelar`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then((response) => response.json()).then((data) => {
+        if (data.message) {
+          console.log("Agendamento cancelado com sucesso!")
+          Swal.fire(
+            'Cancelado!',
+            'Agendamento cancelado com sucesso!',
+            'success'
+          )
+          fetchData()
+        } else {
+          console.log("Erro ao cancelar agendamento!")
+          Swal.fire(
+            'Erro!',
+            'Erro ao cancelar agendamento!',
+            'error'
+          )
+        }
+      }
+      )
+    }
+    catch (error) {
+      console.log(error)
+      Swal.fire(
+        'Erro!',
+        'Erro ao cancelar agendamento!',
+        'error'
+      )
+    }
+
+  }
+
   //PARTICLES FUNCTIONS
   const particlesInit = useCallback(async (engine: Engine) => {
-    console.log(engine);
+    // console.log(engine);
 
     // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
     // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
@@ -819,14 +953,14 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   }, []);
 
   const particlesLoaded = useCallback(async (container: Container | undefined) => {
-    await console.log(container);
+    // await console.log(container);
   }, []);
 
   //THEME FUNCTIONS
 
   function getThemeBasedClass(theme: string) {
 
-    console.log(theme)
+    // console.log(theme)
 
     switch (theme) {
       case 'LightTheme':
@@ -846,7 +980,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   //RENDERS -------------------------------------------------------------------------
   return (
     <>
-      <Particles
+      {/* <Particles
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
@@ -919,8 +1053,16 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
           },
           detectRetina: true,
         }}
+      /> */}
+      <ModalEdit
+        action={"SCHEDULELABORATORIO"}
+        isVisible={schedulingModalIsVisible}
+        onClose={handleCloseModalEdit}
+        initialData={editedData}
+        daysIds={daysIds}
+        idUserLogado={userData.userData.id}
+        userRole={userData.userData.role}
       />
-      <ModalEdit action={"SCHEDULELABORATORIO"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ToastContainer
         limit={4}
         autoClose={1000}
@@ -929,8 +1071,8 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
             userData.userData.role == "aluno" || userData.userData.role == "guest" &&
-            // <FaFilter size={35} color='white' />
-            <AiFillHeart size={35} color='white' />
+            <FaFilter size={35} color='white' />
+            // <AiFillHeart size={35} color='white' />
           }
           {
             userData.userData.role == "professor" &&
@@ -1102,6 +1244,26 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               renderLoading()
             )}
         </ClassesContainer>
+        <StyledContextMenu
+          className="context-menu"
+          style={{
+            position: 'absolute',
+            display: isContextMenuVisible ? 'block' : 'none',
+            top: contextMenuPosition.top,
+            left: contextMenuPosition.left + 20
+          }}
+        >
+          <ul>
+            <li onClick={() => closeContextMenu('cancel')} >
+              <AiOutlineUserDelete size={18} />
+              Reportar Falta de Professor
+            </li>
+            <li onClick={() => closeContextMenu('default')}>
+              <GiCancel size={18} />
+
+              Cancelar reserva de laboratório</li>
+          </ul>
+        </StyledContextMenu>
       </MainContainer>
     </>
   );
