@@ -176,7 +176,7 @@ const LoginScreen: any = ({ theme }: any): any => {
             email: `${guestRandomNumber}_guest@mail.com`,
             password: "Password123$",
             role: "guest",
-            semestre: 1
+            semester: 1
         }
 
         fetch(`${apiUrl}/register`, {
@@ -203,7 +203,7 @@ const LoginScreen: any = ({ theme }: any): any => {
 
                 setTimeout(() => {
                     console.log("redirecting")
-                    window.location.href = "/dashboard";
+                     window.location.href = "/dashboard";
                 }
                     , 4000);
             }

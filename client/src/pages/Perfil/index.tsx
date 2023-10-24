@@ -358,7 +358,7 @@ const Perfil: any = ({ theme }: any): any => {
                         updateToken();
                         Swal.fire(
                             'Editado!',
-                            'O usuário foi editado com sucesso.',
+                            'Os dados foram editados com sucesso!',
                             'success'
                         )
                     }
@@ -379,7 +379,18 @@ const Perfil: any = ({ theme }: any): any => {
 
             let newToken = {};
 
-            if (userData.userData.token == 'aluno') {
+            if (userData.userData.role == 'aluno') {
+
+                newToken = {
+                    ...userData,
+                    userData: {
+                        ...userData.userData,
+                        semestre: semestre,
+                        disciplina: disciplina
+                    }
+                }
+            }
+            if (userData.userData.role == 'guest') {
 
                 newToken = {
                     ...userData,

@@ -26,6 +26,8 @@ import jwt from 'jsonwebtoken'
 import { disciplinasRepository } from '../repositories/disciplinasRepositories'
 import { professorDisciplinaRepositories } from '../repositories/professorDisciplinaRepositories'
 import { tr } from 'date-fns/locale'
+import { guestRepositories } from '../repositories/guestRepositories'
+import { Guests } from '../entities/Guests'
 
 // Define storage for uploaded files
 
@@ -47,7 +49,15 @@ const fileFilter = (
 
 export class UserController {
   async create (request: Request, response: Response) {
-    const { name, surname, email, password, role, semester, discipline } =
+    const { 
+      name,
+      surname, 
+      email, 
+      password, 
+      role,
+       semester, 
+       discipline
+       } =
       request.body
 
     //CONSOLE
@@ -215,7 +225,31 @@ export class UserController {
       }
 
       //CASE USER IS GUEST
-      else if (role === 'guest') {
+      else if (role == 'guest') {
+        //create user guest on database guest
+
+        if (semester == undefined) {
+          return response.status(400).json({ error: 'Semester is missing' })
+        }
+        
+        const newGuest: any = await guestRepositories.create({
+          email,
+          semester: semester,
+          user_id: savedUser.id,
+          created_at: new Date(),
+          updated_at: new Date()
+        })
+
+        // console.log("newGuest")
+        // console.log(newGuest)
+
+        const savedGuest = await guestRepositories.save(newGuest)
+
+        // console.log("savedGuest")
+        // console.log(savedGuest)
+
+        //CREATE TOKEN
+
         const token = jwt.sign(
           { id: savedUser.id },
           process.env.JWT_PASS ?? '',
@@ -256,8 +290,7 @@ export class UserController {
       //   })
       // }
     } catch (error) {
-      // console.log(error)
-
+      console.log(error)
       return response.status(500).json({ message: 'Internal server error' })
     }
   }
@@ -510,15 +543,14 @@ export class UserController {
     }
   }
 
-  async edit (request: Request, response: Response) {
+  async editUserData (request: Request, response: Response) {
     const { email, role, semester, disciplina } = request.body
 
     //COO00000000000LOCAR name, surname, tmb depois
 
     //PRINTS TO CONSOLE FOR DEBUG
-
-    // console.log(request.body)
-    // console.log(email)
+    console.log(request.body)
+    console.log(email)
 
     //CHECK IF PARAMS ARE MISSING
 
@@ -533,15 +565,15 @@ export class UserController {
     } else if (role == 'professor' && !disciplina) {
       return response.status(400).json({ error: 'Discipline is missing' })
     }
+    const userExists = await usuariosRepository.findOneBy({ email })
+    if (!userExists) {
+      return response.status(400).json({ error: 'User does not exist' })
+    }
     try {
-      const userExists = await usuariosRepository.findOneBy({ email })
-      if (!userExists) {
-        return response.status(400).json({ error: 'User does not exist' })
-      }
-
       //ID USER IS ALUNO
       if (role == 'aluno') {
         //FIND USER ON ALUNO TABLE
+
         const aluno = await alunosRepository.findOneBy({
           user_id: userExists.id
         })
@@ -561,8 +593,38 @@ export class UserController {
 
         //UPDATE USER ON DATABASE
         await alunosRepository.update(aluno.id, updatedAluno)
-      }
 
+        console.log('User updated!')
+
+        return response.status(200).json({ message: 'User updated' })
+      }else
+      if (role == 'guest') {
+        //FIND USER ON ALUNO TABLE
+
+        const guest = await guestRepositories.findOneBy({
+          user_id: userExists.id
+        })
+        if (!guest) {
+          return response.status(400).json({ error: 'Guest does not exist' })
+        }
+
+        //UPDATE USER
+        const updatedGuest = {
+          ...guest,
+          // name,
+          // surname,
+          email,
+          semester: semester,
+          updated_at: new Date()
+        }
+
+        //UPDATE USER ON DATABASE
+        await guestRepositories.update(guest.id, updatedGuest)
+
+        console.log('Guest updated!')
+
+        return response.status(200).json({ message: 'User updated' })
+      }
       //IF USER IS PROFESSOR
       else if (role == 'professor') {
         const professor = await professoresRepository.findOneBy({
@@ -638,8 +700,11 @@ export class UserController {
         console.log('User updated!')
 
         return response.status(200).json({ message: 'User updated' })
+      } else {
+        return response.status(400).json({ error: 'Role is missing' })
       }
     } catch (error) {
+      console.log(error)
       return response.status(500).json({ message: 'internal server error' })
     }
   }
