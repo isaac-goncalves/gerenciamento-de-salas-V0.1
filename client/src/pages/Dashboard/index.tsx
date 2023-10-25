@@ -45,6 +45,7 @@ import { FaFilter } from 'react-icons/fa';
 import { on } from 'events';
 
 import banner from '../../../public/images/banner.jpg';
+import ModalAskSemestre from '../Components/ModalAskSemestre';
 
 
 interface ScheduleItem {
@@ -468,7 +469,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
     return (
       <WeekdayContainer>
-         <FatecBanner src={banner} />
+        <FatecBanner src={banner} />
       </WeekdayContainer>
     )
   };
@@ -877,6 +878,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }}
       />
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
+      <ModalAskSemestre isVisible={true} onClose={handleCloseModalEdit} />
       <ToastContainer
         limit={4}
         autoClose={1000}
@@ -926,7 +928,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>
 
                 <RightArrow
-                  size={45}
+                  size={50}
                 />
               </DatepickArrowsContainer>
               <CurrentMonth>

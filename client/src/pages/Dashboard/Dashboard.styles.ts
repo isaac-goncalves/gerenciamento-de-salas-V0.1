@@ -397,22 +397,40 @@ export const StyledDatePicker = styled(DatePicker)`
 
 export const TodayContainer = styled(MdToday)`
   margin-right: 0.8rem;
+height: 100%;
+width: 100%;
   color: ${props => props.theme.mainpurple};
+  &:hover {
+    background-color: ${props => props.theme.hoverCard};
+  }
 `
 
 export const LeftArrow = styled(MdChevronLeft)`
   margin-right: 0.5rem;
+  border-radius: 6px;
   color: ${props => props.theme.mainpurple};
+
+  &:hover {
+    background-color: ${props => props.theme.hoverCard};
+  }
 `
 
 export const RightArrow = styled(MdChevronRight)`
   margin-right: 0.5rem;
   color: ${props => props.theme.mainpurple};
+  border-radius: 6px;
+  &:hover {
+    background-color: ${props => props.theme.hoverCard};
+  }
 `
 
 export const DownArrow = styled(TbChevronDown)`
   margin-right: 0.5rem;
   color: ${props => props.theme.mainpurple};
+  border-radius: 6px;
+  &:hover {
+    background-color: ${props => props.theme.hoverCard};
+  }
 `
 
 export const FilterIcon = styled(FaFilter)`
@@ -451,6 +469,8 @@ export const StyledImageButton = styled.button`
   background: transparent;
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 100%;
   justify-content: center;
   cursor: pointer;
   border: none;
@@ -573,10 +593,8 @@ export const WeekdayContainer = styled.div`
   //css for when i stop hovering
 `
 
-export const FatecBanner= styled.img`
-
-  
-width: 100%;
+export const FatecBanner = styled.img`
+  width: 100%;
   height: 100%;
   object-fit: fit-content;
   background-size: cover; /* This will make the image cover the entire container */
@@ -669,7 +687,6 @@ export const Schedule = styled.div<{ isCurrentTime: boolean }>`
 
 // }
 
-
 export const Disciplina = styled.p<StyledComponentDisciplinaProps>`
   text-decoration: ${props =>
     props.agendamentoCancelExist ? 'line-through' : 'none'};
@@ -689,7 +706,6 @@ export const SemestreSalaWrapper = styled.p`
 interface StyledComponentDisciplinaProps {
   agendamentoCancelExist: boolean
 }
-
 
 export const Professor = styled.p<StyledComponentDisciplinaProps>`
   text-decoration: ${props =>
