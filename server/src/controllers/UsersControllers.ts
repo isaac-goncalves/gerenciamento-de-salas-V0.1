@@ -860,4 +860,39 @@ export class UserController {
 
     res.sendFile(file)
   }
+
+  async setGuestSemester(request: Request, response: Response) {
+  
+    const { email, semester } = request.body
+
+    console.log(request.body)
+
+    const userExists = await usuariosRepository.findOneBy({ email })
+
+    if (!userExists) {
+      return response.status(400).json({ error: 'User does not exist' })
+    }
+
+    const guestExists = await guestRepositories.findOneBy({ user_id: userExists.id })
+
+    if (!guestExists) {
+      return response.status(400).json({ error: 'Guest does not exist' })
+    }
+
+    const updatedGuest = {
+      ...guestExists,
+      semester
+    }
+
+    const updatedGuestObject = await guestRepositories.update(
+      guestExists.id,
+      updatedGuest
+    )
+
+    console.log('updated guest')
+    console.log(updatedGuestObject)
+
+    return response.status(200).json({ message: 'Guest updated' })
+
+  }
 }

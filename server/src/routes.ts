@@ -57,6 +57,10 @@ routes.post('/usuarios', new UserController().get)
 routes.post('/usuarios/edit', new UserController().editUserData)
 routes.post('/usuarios/upload', new UserController().uploadFile)
 routes.get('/usuarios/:userId', new UserController().profilePicture)
+
+//SET GUEST SEMESTRE ON ASK MODAL 
+routes.get('/usuarios/semestre', new UserController().setGuestSemester)
+
 routes.get('/server/uploads', express.static('uploads/user/profilepics'));
 
 routes.post('/professores', new UserController().getProfessores)

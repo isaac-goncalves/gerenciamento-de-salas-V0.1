@@ -37,9 +37,7 @@ const ModalAskSemestre = ({
     [1, 2, 3, 4, 5, 6]
   );
 
-  const [selectedProfessor, setSelectedProfessor] = useState<Number>(1);
   const [selectedSemester, setSemesterProfessor] = useState<Number>(1);
-  const [selectedData, setSelectedData] = useState<any>();
 
   //USERSESSIONDATA
   const [userData, setUserData] = useState<any>(
@@ -92,10 +90,11 @@ const ModalAskSemestre = ({
 
   async function setUserSemestre(semestre: Number) {
     const params = {
-      semestre: selectedSemester
+      semestre: selectedSemester,
+      email: userData.userData.email,
     }
 
-    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/user/semestre`, {
+    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/usuarios/semestre`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
