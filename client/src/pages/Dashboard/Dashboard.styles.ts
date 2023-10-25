@@ -573,6 +573,16 @@ export const WeekdayContainer = styled.div`
   //css for when i stop hovering
 `
 
+export const FatecBanner= styled.img`
+
+  
+width: 100%;
+  height: 100%;
+  object-fit: fit-content;
+  background-size: cover; /* This will make the image cover the entire container */
+  background-position: center;
+`
+
 export const WeekDay = styled.p`
   font-size: 1rem;
   padding: 0.5rem 0;

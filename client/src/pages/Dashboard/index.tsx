@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -43,6 +43,8 @@ import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
 import { StyledButton } from '../Perfil/Perfil.styles';
 import { FaFilter } from 'react-icons/fa';
 import { on } from 'events';
+
+import banner from '../../../public/images/banner.jpg';
 
 
 interface ScheduleItem {
@@ -450,6 +452,23 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               );
             })}
         </SchedulesContainer>
+      </WeekdayContainer>
+    )
+  };
+
+  const renderBanner = (dayName: string, dayData: any) => {
+
+    const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
+    // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
+    const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
+    const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
+
+    console.log("currentWeekday")
+    console.log(dayDateObject)
+
+    return (
+      <WeekdayContainer>
+         <FatecBanner src={banner} />
       </WeekdayContainer>
     )
   };
@@ -1010,6 +1029,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                 {renderWeekday('Quarta', grade.quarta)}
                 {renderWeekday('Quinta', grade.quinta)}
                 {renderWeekday('Sexta', grade.sexta)}
+                {renderBanner('Sexta', grade.sexta)}
               </WeekContainer>
             ) : (
               renderLoading()
