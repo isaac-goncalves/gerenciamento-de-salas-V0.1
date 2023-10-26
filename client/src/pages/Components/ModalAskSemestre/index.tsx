@@ -95,7 +95,7 @@ const ModalAskSemestre = ({
     }
 
     await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/usuarios/semestre`, {
-      method: 'PUT',
+      method: 'POST',
       body: JSON.stringify(params),
       headers: {
         'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ const ModalAskSemestre = ({
 
     const selectedId = parseInt(event.target.value);
 
-    // console.log(selectedId)
+     console.log(selectedId)
 
     if (selectedId) {
       setSemesterProfessor(selectedId);
@@ -131,7 +131,6 @@ const ModalAskSemestre = ({
           </StyledTitle>
           <SideBysideContainer>
             <ProfessorWrapper>
-
               <DetailsText>Semestre:</DetailsText>
               <StyledSelect
                 value={selectedSemester || ''}
