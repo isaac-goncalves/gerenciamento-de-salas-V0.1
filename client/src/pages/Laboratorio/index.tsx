@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle, AiOutlineUserDelete } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu, Disciplina2, Sala2, CurrentMonthText } from '../Dashboard/Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -436,7 +436,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
     const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
 
-    
+
 
     // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
     const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
@@ -491,8 +491,8 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                   <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
                     className={isCurrentTime ? '' : 'hoverEffect'}>
                     <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
-                    <Disciplina>{disciplina}</Disciplina>
-                    <Sala>{ agendamentoCancelExist? "Aula cancelada" : null }</Sala>
+                    <Disciplina2>{disciplina}</Disciplina2>
+                    <Sala2>{agendamentoCancelExist ? "Aula cancelada" : null}</Sala2>
                     {
                       !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
                         selectedMethod === 'professor' ?
@@ -1115,7 +1115,9 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 />
               </DatepickArrowsContainer>
               <CurrentMonth>
-                {GetCurrentMonthAndYear(startDate)}
+                <CurrentMonthText>
+                  {GetCurrentMonthAndYear(startDate)}
+                </CurrentMonthText>
                 <DownArrow
                   size={45}
                 />

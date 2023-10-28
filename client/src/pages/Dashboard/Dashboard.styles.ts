@@ -108,11 +108,15 @@ export const CoursesWrapper = styled.div`
 
 export const ClassesContainer = styled.div`
   min-width: 98%;
+  background-color: red;
+  justify-content: center;
+  display: flex;
   /* overflow-y: auto;
   overflow: auto; */
   z-index: 2;
   display: flex;
-  flex-direction: row;
+  text-align: center;
+  flex-direction: column;
   justify-content: center;
   margin-bottom: 2rem;
   background-color: ${props => props.theme.white};
@@ -347,7 +351,7 @@ export const PularParaHojeText = styled.p`
   // hide when screen is small
   //pointer click
   cursor: pointer;
-    padding-right:6px;
+  padding-right: 6px;
 
   color: ${props => props.theme.textcolor};
 
@@ -392,9 +396,18 @@ export const StyledDatePicker = styled(DatePicker)`
   border-radius: 4px;
 `
 
+export const CurrentMonthText = styled.p`
+  padding-left: 0.5rem;
+`
+export const CockAndMainContainerWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
 export const DatepickArrowsContainer = styled.div`
   display: flex;
   height: 100%;
+  margin-left: 0.8rem;
   /* width: 100%; */
   align-items: center;
   border-radius: 6px;
@@ -402,7 +415,7 @@ export const DatepickArrowsContainer = styled.div`
   /* margin-right: 0.8rem; */
   &:hover {
     background-color: ${props => props.theme.iconTextHoverColor};
-    transform: scale(1.10);
+    transform: scale(1.1);
   }
 
   /* Apply the bounce animation when the button is clicked */
@@ -685,6 +698,11 @@ export const SemestreSalaWrapper = styled.p`
   gap: 0.4rem;
 `
 
+export const Disciplina2 = styled.p`
+  font-weight: 500;
+  color: ${props => props.theme.textcolor};
+`
+
 interface StyledComponentDisciplinaProps {
   agendamentoCancelExist: boolean
 }
@@ -710,6 +728,21 @@ export const SalaWrapper = styled.div`
 `
 
 export const Sala = styled.p<StyledComponentSalaProps>`
+  color: ${props =>
+    props.agendamento
+      ? props => props.theme.textColorDisabled
+      : props => props.theme.lighterGreen};
+  font-weight: 600;
+  font-weight: ${props => (props.agendamento ? '500' : '600')};
+  text-decoration: ${props => (props.agendamento ? 'line-through' : 'none')};
+  padding: 0;
+`
+
+interface StyledComponentProps {
+  agendamento?: boolean
+}
+
+export const Sala2 = styled.p<StyledComponentProps>`
   color: ${props =>
     props.agendamento
       ? props => props.theme.textColorDisabled

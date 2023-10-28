@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -277,7 +277,7 @@ const Grade: any = ({ theme, themeName }: any) => {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [ userData]);
+  }, [userData]);
 
   useEffect(() => {
 
@@ -370,19 +370,10 @@ const Grade: any = ({ theme, themeName }: any) => {
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
 
-    const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
-    // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
-    const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
-    const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
-
-    console.log("currentWeekday")
-    console.log(dayDateObject)
-
     return (
       <WeekdayContainer>
-        <WeekDay>{currentWeekDay}</WeekDay>
         <SchedulesContainer isCurrentDay={currentDay === dayName}>
-          <h2>{dayName}</h2>
+          <h2>STARTDATE DATE I THINK</h2>
           {
             dayData.map((item: any) => {
               const {
@@ -942,8 +933,10 @@ const Grade: any = ({ theme, themeName }: any) => {
                 />
               </DatepickArrowsContainer>
               <CurrentMonth>
-                {GetCurrentMonthAndYear(startDate)}
                 <DatepickArrowsContainer>
+                  <CurrentMonthText>
+                    {GetCurrentMonthAndYear(startDate)}
+                  </CurrentMonthText>
                   <DownArrow
                     size={45}
                   />
@@ -1023,7 +1016,10 @@ const Grade: any = ({ theme, themeName }: any) => {
             </FilterWrapper>
           </DatePickWrapper>
         </Header>
+        
         <ClassesContainer>
+        <div>CURRENT DAY</div>
+        <CockAndMainContainerWrapper>
           <ClockContainer>
             <p>18:45</p>
             <p>19:35</p>
@@ -1032,12 +1028,15 @@ const Grade: any = ({ theme, themeName }: any) => {
             <p>21:25</p>
             <p>22:15</p>
           </ClockContainer>
+         
           {loading
             &&
             grade
             ?
             (
-              <WeekContainer>
+              <>
+              
+             <WeekContainer>
                 {renderWeekday('Segunda', grade.segunda)}
                 {renderWeekday('Terça', grade.terca)}
                 {renderWeekday('Quarta', grade.quarta)}
@@ -1045,9 +1044,12 @@ const Grade: any = ({ theme, themeName }: any) => {
                 {renderWeekday('Sexta', grade.sexta)}
                 {renderBanner('Sexta', grade.sexta)}
               </WeekContainer>
+              </>
+
             ) : (
               renderLoading()
             )}
+        </CockAndMainContainerWrapper>
         </ClassesContainer>
       </MainContainer>
     </>
