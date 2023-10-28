@@ -18,6 +18,7 @@ import { lightTheme, lightThemeRed, darkTheme, vancedTheme } from './colors';
 import { useEffect, useState } from 'react';
 import GlobalStyle from './theme/globalStyle'
 import { toast } from 'react-toastify';
+import Grade from './pages/Dashboard';
 
 
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
@@ -145,6 +146,16 @@ function App() {
               <>
                 <Navbar toggleTheme={toggleTheme} />
                 <Dashboard
+                  theme={themeArray[theme]}
+                  themeName={ThemeName}
+                />
+                {/* <Circles ballCount={4} /> */}
+              </>
+            } />
+             <Route path="/grade" element={
+              <>
+                <Navbar toggleTheme={toggleTheme} />
+                <Grade
                   theme={themeArray[theme]}
                   themeName={ThemeName}
                 />

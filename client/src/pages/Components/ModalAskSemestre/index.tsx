@@ -74,7 +74,7 @@ const ModalAskSemestre = ({
         setUserData({ userData: storedUserData, token });
       }
     }
-  }, [userData]);
+  }, []);
 
   //HANDLE CLICKS
 
@@ -98,7 +98,7 @@ const ModalAskSemestre = ({
 
     setUserSemestre(selectedSemester)
 
-     onCloseModalAskSemester(selectedSemester);
+    onCloseModalAskSemester(selectedSemester);
 
   }
 
@@ -141,11 +141,27 @@ const ModalAskSemestre = ({
       <ModalContent onClick={e => e.stopPropagation()}>
         <FormWrapper>
           <StyledTitle>
-            Selecione o semestre padrão
+            Selecione o semestre/curso padrão
           </StyledTitle>
           <SideBysideContainer>
             <ProfessorWrapper>
               <DetailsText>Semestre:</DetailsText>
+              <StyledSelect
+                value={selectedSemester || ''}
+                onChange={handleSelectSemestreChange}
+              >
+                {semestres.length > 0 ? (
+                  semestres.map((semestre) => (
+                    <option key={String(semestre)} value={String(semestre)}>
+                      {String(semestre)}º Semestre
+                    </option>
+                  ))
+                ) : (
+                  <option value="">No professors available</option>
+                )}
+              </StyledSelect>
+
+              <DetailsText>Curso:</DetailsText>
               <StyledSelect
                 value={selectedSemester || ''}
                 onChange={handleSelectSemestreChange}

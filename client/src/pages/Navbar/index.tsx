@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon, HamburgerWrapper, HamburgerDiv, SchedulesWrapper, ProfileWrapper, GerenciamentoWrapper, TemplateWrapper, NotificationWrapper, DarmodeWrapper, LogoutWrapper, LaboratoriosWrapper } from './Navbar.styles'
+import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon, HamburgerWrapper, HamburgerDiv, SchedulesWrapper, ProfileWrapper, GerenciamentoWrapper, TemplateWrapper, NotificationWrapper, DarmodeWrapper, LogoutWrapper, LaboratoriosWrapper, DashboardWrapper } from './Navbar.styles'
 import styled from 'styled-components'
 
 import { Colors } from '../../colors';
@@ -131,9 +131,17 @@ const Navbar = ( {toggleTheme} : any ) => {
                     </HamburgerDiv>
                     <MenuLink to="/dashboard"  >
                         <RowWrapper >
+                            <DashboardWrapper/>
+                            {
+                                menuOpen && <p>DASHBOARD</p>
+                            }
+                        </RowWrapper>
+                    </MenuLink>
+                    <MenuLink to="/grade"  >
+                        <RowWrapper >
                             <SchedulesWrapper/>
                             {
-                                menuOpen && <p>HORÁRIOS</p>
+                                menuOpen && <p>GRADE</p>
                             }
                         </RowWrapper>
                     </MenuLink>

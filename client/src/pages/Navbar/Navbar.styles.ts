@@ -4,8 +4,10 @@ import { NavLink as Link } from 'react-router-dom'
 
 import { Colors } from '../../colors'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { GrSchedules } from 'react-icons/gr'
 import { CgProfile } from 'react-icons/cg'
+
+import { BiSolidDashboard } from 'react-icons/bi'
+import { GrSchedules } from 'react-icons/gr'
 import { BiCog } from 'react-icons/bi'
 import { TbFileUpload, TbLogout } from 'react-icons/tb'
 import { IoMdNotificationsOutline } from 'react-icons/io'
@@ -79,6 +81,15 @@ export const SchedulesWrapper = styled(FaRegClock)`
     font-size: 1.4rem;
   }
 `
+export const DashboardWrapper = styled(BiSolidDashboard)`
+  color: ${props => props.theme.mainpurple};
+  font-size: 1.6rem;
+
+  @media screen and (min-width: 570px) {
+    font-size: 1.4rem;
+  }
+`
+
 export const LaboratoriosWrapper = styled(HiOutlineDesktopComputer)`
   color: ${props => props.theme.mainpurple};
   font-size: 1.6rem;
