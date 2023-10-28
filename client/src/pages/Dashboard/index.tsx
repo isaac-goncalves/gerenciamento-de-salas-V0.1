@@ -14,7 +14,7 @@ import { Colors } from '../../colors';
 
 import { toast, ToastContainer } from 'react-toastify';
 
-import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
+import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks, set } from 'date-fns';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -181,6 +181,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
   const [editedData, setEditedData] = useState<any>({});
   const [daysIds, setDaysIds] = useState<any>([]);
   const [schedulingModalIsVisible, setSchedulingModalIsVisible] = React.useState(false)
+  const [askSemesterModalIsVisible, setAskSemesterModalIsVisible] = React.useState(false)
 
 
   //USERSESSIONDATA
@@ -238,10 +239,9 @@ const Dashboard: any = ({ theme, themeName }: any) => {
           window.location.href = '/';
         }, 2000);
       } else {
-        // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
-
+        console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
-        setSelectedSemesterValue(userDataJson.userData.semestre);
+        setSelectedSemesterValue(userDataJson.userData.semester);
       }
     }
   }, [userData]);
@@ -254,6 +254,10 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
     if (userData.token !== '' && userData.userData.id !== 0) {
 
+      if (!userData.userData.semesterverified) {
+        setAskSemesterModalIsVisible(true)
+      }
+
       console.log("Usuário logado!")
 
       // console.log(selectedMethod)
@@ -263,7 +267,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       else {
         fetchSemestreData();
       }
-
 
       fetchProfessors(userData.token);
 
@@ -552,6 +555,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       fetchData()
     };
   };
+
+  const handleCloseModalAskSemester = (semestre: number) => {
+
+    setSelectedSemesterValue(semestre)
+
+    setAskSemesterModalIsVisible(false);
+  };
+
   const openEditModal = (editedData: any, daysIds: any) => {
     console.log("Edited Data: " + JSON.stringify(editedData, null, 2))
     console.log("daysIds: " + JSON.stringify(daysIds, null, 2))
@@ -878,7 +889,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }}
       />
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
-      <ModalAskSemestre isVisible={true} onClose={handleCloseModalEdit} />
+      <ModalAskSemestre isVisible={askSemesterModalIsVisible} onCloseModalAskSemester={handleCloseModalAskSemester} />
       <ToastContainer
         limit={4}
         autoClose={1000}
@@ -913,11 +924,9 @@ const Dashboard: any = ({ theme, themeName }: any) => {
           <DatePickWrapper>
             <DatepickContainer>
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
-                <StyledImageButton>
-                  <TodayContainer
-                    size={30}
-                  />
-                </StyledImageButton>
+                <TodayContainer
+                  size={30}
+                />
                 <PularParaHojeText>Pular para hoje</PularParaHojeText>
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
@@ -926,16 +935,17 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                 />
               </DatepickArrowsContainer>
               <DatepickArrowsContainer onClick={() => handleArrowRight()}>
-
                 <RightArrow
                   size={50}
                 />
               </DatepickArrowsContainer>
               <CurrentMonth>
                 {GetCurrentMonthAndYear(startDate)}
-                <DownArrow
-                  size={45}
-                />
+                <DatepickArrowsContainer>
+                  <DownArrow
+                    size={45}
+                  />
+                </DatepickArrowsContainer>
               </CurrentMonth>
               <CalendarWrapper>
                 Semana do dia

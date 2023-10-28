@@ -305,6 +305,8 @@ export const DatePickWrapper = styled.div`
 
 export const DatepickContainer = styled.div`
   display: flex;
+  height: 100%;
+  width: 100%;
   flex-direction: row;
   /* border: 1px solid ${props => props.theme.lightgrayborder}; */
   gap: 1rem;
@@ -341,15 +343,11 @@ export const ButtonConfimarAgendamento = styled.button`
   }
 `
 
-export const DatepickArrowsContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
-
 export const PularParaHojeText = styled.p`
   // hide when screen is small
   //pointer click
   cursor: pointer;
+    padding-right:6px;
 
   color: ${props => props.theme.textcolor};
 
@@ -388,49 +386,48 @@ export const StyledDatePicker = styled(DatePicker)`
   background-color: ${props => props.theme.white};
   color: ${props => props.theme.textcolor};
   font-size: 1rem;
-
   width: 7rem;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 `
 
+export const DatepickArrowsContainer = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  border-radius: 6px;
+
+  /* margin-right: 0.8rem; */
+  &:hover {
+    background-color: ${props => props.theme.iconTextHoverColor};
+    transform: scale(1.10);
+  }
+
+  /* Apply the bounce animation when the button is clicked */
+  &:active {
+    animation: bounce 0.5s;
+    transform-origin: center bottom;
+  }
+`
+
 export const TodayContainer = styled(MdToday)`
   margin-right: 0.8rem;
-height: 100%;
-width: 100%;
+  margin-left: 0.4rem;
   color: ${props => props.theme.mainpurple};
-  &:hover {
-    background-color: ${props => props.theme.hoverCard};
-  }
 `
 
 export const LeftArrow = styled(MdChevronLeft)`
-  margin-right: 0.5rem;
-  border-radius: 6px;
   color: ${props => props.theme.mainpurple};
-
-  &:hover {
-    background-color: ${props => props.theme.hoverCard};
-  }
 `
 
 export const RightArrow = styled(MdChevronRight)`
-  margin-right: 0.5rem;
   color: ${props => props.theme.mainpurple};
-  border-radius: 6px;
-  &:hover {
-    background-color: ${props => props.theme.hoverCard};
-  }
 `
 
 export const DownArrow = styled(TbChevronDown)`
-  margin-right: 0.5rem;
   color: ${props => props.theme.mainpurple};
-  border-radius: 6px;
-  &:hover {
-    background-color: ${props => props.theme.hoverCard};
-  }
 `
 
 export const FilterIcon = styled(FaFilter)`
@@ -469,26 +466,11 @@ export const StyledImageButton = styled.button`
   background: transparent;
   display: flex;
   align-items: center;
-  width: 100%;
-  height: 100%;
+
   justify-content: center;
   cursor: pointer;
   border: none;
   /* Define the bounce animation */
-  &:active {
-    animation: ${bounceAnimation} 0.5s; /* Apply the bounce animation */
-    transform-origin: center bottom;
-  }
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  /* Apply the bounce animation when the button is clicked */
-  &:active {
-    animation: bounce 0.5s;
-    transform-origin: center bottom;
-  }
 `
 
 export const ClockPaddingUp = styled.div`

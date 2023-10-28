@@ -22,12 +22,12 @@ import "react-datepicker/dist/react-datepicker.css";
 
 interface ModalProps {
   isVisible: boolean
-  onClose: Function
+  onCloseModalAskSemester: Function
 }
 
 const ModalAskSemestre = ({
   isVisible,
-  onClose,
+  onCloseModalAskSemester,
 }: ModalProps) => {
 
   if (!isVisible) return null
@@ -82,9 +82,23 @@ const ModalAskSemestre = ({
 
     toast.success('Semestre padrão alterado com sucesso!');
 
+    //set userData.userData.SemesterVerified to true and update token
+
+    const newUserData = {
+      token: userData.token,
+      userData: {
+        ...userData.userData,
+        semester: selectedSemester,
+        semesterverified: true
+      }
+    }
+
+
+    localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(newUserData))
+
     setUserSemestre(selectedSemester)
 
-    onClose(true);
+     onCloseModalAskSemester(selectedSemester);
 
   }
 
@@ -114,7 +128,7 @@ const ModalAskSemestre = ({
 
     const selectedId = parseInt(event.target.value);
 
-     console.log(selectedId)
+    console.log(selectedId)
 
     if (selectedId) {
       setSemesterProfessor(selectedId);
@@ -123,7 +137,7 @@ const ModalAskSemestre = ({
   }
 
   return (
-    <ModalOverlay onClick={() => onClose()}>
+    <ModalOverlay onClick={() => onCloseModalAskSemester()}>
       <ModalContent onClick={e => e.stopPropagation()}>
         <FormWrapper>
           <StyledTitle>
@@ -152,7 +166,7 @@ const ModalAskSemestre = ({
                 <StyledButton onClick={() => handleEdit()}>
                   OK
                 </StyledButton>
-                <StyledButton onClick={() => onClose()}>
+                <StyledButton onClick={() => onCloseModalAskSemester()}>
                   CANCELAR
                 </StyledButton>
               </ButtonsWrapper>

@@ -176,9 +176,12 @@ export const MenuLink = styled(Link)`
   text-decoration: none;
 
   &.active {
-    color: #000000;
+    color: ${props => props.theme.iconTextHoverColor};
   }
-
+  &:hover {
+    background-color: ${props => props.theme.iconTextHoverColor};
+    /* transform: scale(1.10); */
+  }
 
   &:last-child {
     margin-left: 0.2rem;

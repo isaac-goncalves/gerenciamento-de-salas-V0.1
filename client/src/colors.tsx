@@ -33,6 +33,7 @@ export const lightTheme = {
   backgroud: '#8E8E8E',
   horariosCard: 'rgba(99, 88, 220, 0.31)',
   hoverCard: '#A29EC7',
+  iconTextHoverColor: '#a29ec738',
   EditModalWrapperBackgroudColor: '#F3E6F9',
   tableheadercolor: '##494949',
   hoverbuttonColor: "#663399"
@@ -70,6 +71,7 @@ export const lightThemeRed = {
   backgroud: '#8E8E8E',
   horariosCard: 'rgba(220, 88, 99, 0.31)',
   hoverCard: '#981e3a55',
+  iconTextHoverColor: '#981e3a18',
   EditModalWrapperBackgroudColor: '#F3E6F9',
   tableheadercolor: '##494949'
 }
@@ -108,6 +110,7 @@ export const darkTheme = {
   backgroud: '#8E8E8E',
   horariosCard: 'rgba(99, 88, 220, 0.31)',
   hoverCard: '#A29EC7',
+  iconTextHoverColor: '#a29ec738',
   EditModalWrapperBackgroudColor: '#F3E6F9',
   tableheadercolor: '##494949'
 }
@@ -144,6 +147,7 @@ export const vancedTheme = {
   backgroud: '#8E8E8E',
   horariosCard: 'rgba(220, 88, 99, 0.31)',
   hoverCard: '#981e3a55',
+  iconTextHoverColor: '#981e3a18',
   EditModalWrapperBackgroudColor: '#F3E6F9',
   tableheadercolor: '##494949'
 }
