@@ -702,7 +702,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     })
   }
   async function fetchSemestreData() {
-    fetch(`${apiUrl}/grade/dashboard`, {
+    fetch(`${apiUrl}/grade/grade`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

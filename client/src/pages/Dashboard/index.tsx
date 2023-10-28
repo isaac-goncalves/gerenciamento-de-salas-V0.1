@@ -752,6 +752,7 @@ const Grade: any = ({ theme, themeName }: any) => {
       body: JSON.stringify({
         semestre: selectedSemesterValue || 1,
         date: selectedDate || new Date() //add localStorage later
+        
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -914,7 +915,7 @@ const Grade: any = ({ theme, themeName }: any) => {
               2º Semestre de 2023
             </CourseSemester>
           </CoursesWrapper>
-          <DatePickWrapper>
+          {/* <DatePickWrapper>
             <DatepickContainer>
               <DatepickArrowsContainer onClick={() => handleSelectToday()}>
                 <TodayContainer
@@ -1014,7 +1015,7 @@ const Grade: any = ({ theme, themeName }: any) => {
                 }
               </>
             </FilterWrapper>
-          </DatePickWrapper>
+          </DatePickWrapper> */}
         </Header>
         
         <ClassesContainer>
@@ -1041,6 +1042,7 @@ const Grade: any = ({ theme, themeName }: any) => {
                 {renderWeekday('Terça', grade.terca)}
                 {renderWeekday('Quarta', grade.quarta)}
                 {renderWeekday('Quinta', grade.quinta)}
+                {renderWeekday('Sexta', grade.sexta)}
                 {renderWeekday('Sexta', grade.sexta)}
                 {renderBanner('Sexta', grade.sexta)}
               </WeekContainer>
