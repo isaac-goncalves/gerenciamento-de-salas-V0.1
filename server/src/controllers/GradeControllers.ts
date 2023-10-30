@@ -41,13 +41,20 @@ function formatDateForSQL (date: Date) {
 }
 
 export class GradeController {
-  async getDashboardData (request: Request, response: Response) {
-    console.log('get grade')
 
-    const { semestre } = request.body
+
+  async getDashboardData (request: Request, response: Response) {
+
+
+    console.log('get Dashboard')
+
+
+
     const { date } = request.body
 
-    // console.log(date)
+    const dateTransformed = new Date(date).getDay()
+
+     console.log(dateTransformed)
 
     try {
       //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
@@ -75,7 +82,7 @@ export class GradeController {
               LEFT JOIN 
                   laboratorios ON grade.id_sala = laboratorios.id 
               WHERE 
-                  grade.semestre = '${semestre}' 
+                  dia_da_semana = '${dateTransformed}'
               ORDER BY
                   grade.id ASC
             `
@@ -195,8 +202,11 @@ export class GradeController {
     }
   }
 
+
+
   async getGradeData (request: Request, response: Response) {
-    console.log('get grade')
+
+    console.log('get Grade')
 
     const { semestre } = request.body
     const { date } = request.body
