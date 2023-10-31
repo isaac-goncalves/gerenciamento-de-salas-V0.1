@@ -116,7 +116,7 @@ export const ClassesContainer = styled.div`
   z-index: 2;
   display: flex;
   text-align: center;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   margin-bottom: 2rem;
   background-color: ${props => props.theme.white};
@@ -132,6 +132,7 @@ export const ClassesContainer = styled.div`
     padding: 0.4rem;
   }
 `
+
 
 export const PageName = styled.h1`
   font-size: 1.6rem;
@@ -736,6 +737,15 @@ export const Sala = styled.p<StyledComponentSalaProps>`
   font-weight: ${props => (props.agendamento ? '500' : '600')};
   text-decoration: ${props => (props.agendamento ? 'line-through' : 'none')};
   padding: 0;
+
+`
+
+export const StyledDayName = styled.p<StyledComponentSalaProps>`
+  color: ${props => props.theme.lighterGreen};
+  font-weight: 600;
+  padding: 0;
+  font-size: 1.5rem;
+  white-space: nowrap;
 `
 
 interface StyledComponentProps {

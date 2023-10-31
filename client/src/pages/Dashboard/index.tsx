@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -41,7 +41,7 @@ import arrowLeft from '../../../public/images/pickDateicons/arrow_left.svg';
 import arrowRight from '../../../public/images/pickDateicons/arrow_right.svg';
 import arrowDown from '../../../public/images/pickDateicons/arrow_down.svg';
 import { StyledButton } from '../Perfil/Perfil.styles';
-import { FaFilter } from 'react-icons/fa';
+import { FaFilter, FaHeart } from 'react-icons/fa';
 import { on } from 'events';
 
 import banner from '../../../public/images/banner.jpg';
@@ -82,43 +82,59 @@ type GroupedData = {
 
 export var themetest = null;
 
-function groupByWeekday(data: ScheduleItem[]): GroupedData {
-  const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
+function groupBySemester(fetchedData: ScheduleItem[]): GroupedData {
+  const semestresString = ["semestre1", "semestre2", "semestre3", "semestre4", "semestre5", "semestre6"];
   const totalItemsPerDay = 6;
 
-  // Initialize groupedData with each day of the week and an empty array
+  // Initialize groupedData with each day of the week and an empty 
+
   const groupedData: GroupedData = {
-    segunda: [],
-    terca: [],
-    quarta: [],
-    quinta: [],
-    sexta: [],
+    semestre1: [],
+    semestre2: [],
+    semestre3: [],
+    semestre4: [],
+    semestre5: [],
+    semestre6: [],
   };
 
-  for (const item of data) {
-    const dayIndex = parseInt(item.dia_da_semana) - 1;
-    const day = daysOfWeek[dayIndex];
+  for (const item of fetchedData) {
+    console.log(item.semestre)
 
-    groupedData[day].push(item);
+    const semesterIndex = parseInt(item.semestre) - 1;
+
+    console.log(semesterIndex)
+
+    const semester = semestresString[semesterIndex];
+
+    console.log("TEST")
+    console.log(semester)
+
+    console.log(groupedData[semester])
+
+
+    groupedData[semester].push(item);
   }
 
-  for (const day in groupedData) {
-    const currentDayLength = groupedData[day].length;
+  // for (const day in groupedData) {
+  //   const currentDayLength = groupedData[day].length;
 
-    // Add "Nenhuma Aula" for remaining slots, except after the interval
-    for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
-      groupedData[day].push({
-        disciplina: "Nenhuma Aula",
-        semestre: ''
-      });
-    }
+  //   // Add "Nenhuma Aula" for remaining slots, except after the interval
+  //   for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
+  //     groupedData[day].push({
+  //       disciplina: "Nenhuma Aula",
+  //       semestre: ''
+  //     });
+  //   }
 
-    // Add interval as the third item
-    groupedData[day].splice(2, 0, {
-      disciplina: "Intervalo",
-      semestre: ''
-    });
-  }
+  //   // Add interval as the third item
+  //   groupedData[day].splice(2, 0, {
+  //     disciplina: "Intervalo",
+  //     semestre: ''
+  //   });
+  // }
+
+  console.log("groupedData: " + JSON.stringify(groupedData, null, 2))
+
   return groupedData;
 }
 
@@ -163,7 +179,7 @@ function groupByWeekdayLaboratorios(data: ScheduleItem[]): GroupedData {
 }
 
 //COMPONENTS -------------------------------------------------------------------------
-const Grade: any = ({ theme, themeName }: any) => {
+const Dashboard: any = ({ theme, themeName }: any) => {
   const [loading, setLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -213,7 +229,7 @@ const Grade: any = ({ theme, themeName }: any) => {
   const [currentTime, setCurrentTime] = useState('');
 
   // set to nearest Monday
-  const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1));
+  const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>(new Date());
   // set to nearest Friday
   const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5));
 
@@ -246,12 +262,7 @@ const Grade: any = ({ theme, themeName }: any) => {
         console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
         setSelectedSemesterValue(userDataJson.userData.semester);
-        if (selectedMethod == "professor") {
-          fetchProfessorData();
-        }
-        else {
-          fetchSemestreData();
-        }
+
       }
     }
   }, [userData]);
@@ -261,7 +272,7 @@ const Grade: any = ({ theme, themeName }: any) => {
 
     console.log('Starting to render stuff2...');
 
-    console.log(startDate)
+    console.log(currentSelectedDate)
 
     if (userData.token !== '' && userData.userData.id !== 0) {
 
@@ -271,13 +282,20 @@ const Grade: any = ({ theme, themeName }: any) => {
       if (!userData.userData.semesterverified) {
         setAskSemesterModalIsVisible(true)
       }
+      //FETCH DATA THAT CHANGES ON THE FILTERS
+      if (selectedMethod == "professor") {
+        fetchProfessorData();
+      }
+      else {
+        fetchSemestreData();
+      }
 
     }
     else {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [userData]);
+  }, [selectedMethod, selectedSemesterValue, currentSelectedDate]);
 
   useEffect(() => {
 
@@ -368,12 +386,17 @@ const Grade: any = ({ theme, themeName }: any) => {
   }
 
   //RENDER FUNCTIONS
-  const renderWeekday = (dayName: string, dayData: any) => {
+  const renderWeekday = (semesterName: string, dayData: any) => {
+
+    // const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
+    // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
+    // const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
+    // const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
 
     return (
       <WeekdayContainer>
-        <SchedulesContainer isCurrentDay={currentDay === dayName}>
-          <h2>STARTDATE DATE I THINK</h2>
+        <SchedulesContainer isCurrentDay={currentDay === semesterName}>
+          <h2>{semesterName}</h2>
           {
             dayData.map((item: any) => {
               const {
@@ -386,12 +409,12 @@ const Grade: any = ({ theme, themeName }: any) => {
 
               const agendamentoDefaultExist = agendamentos ? agendamentos.some((item: any) => {
                 return item.schedule_status == "default"
-                  && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+                  && areDatesOnSameDayMonthYear(new Date(item.date), currentSelectedDate)
               }) : false
 
               const agendamentoCancelExist = agendamentos ? agendamentos.some((item: any) => {
                 return item.schedule_status == "cancel"
-                  && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
+                  && areDatesOnSameDayMonthYear(new Date(item.date), currentSelectedDate)
               }) : false
 
 
@@ -455,7 +478,7 @@ const Grade: any = ({ theme, themeName }: any) => {
 
   const renderBanner = (dayName: string, dayData: any) => {
 
-    const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
+    const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, currentSelectedDate)
     // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
     const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
     const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
@@ -567,41 +590,35 @@ const Grade: any = ({ theme, themeName }: any) => {
   //DATEPICKER FUNCTIONS
   const handleSelectToday = () => {
     const today = new Date()
-    const monday = startOfWeek(today, { weekStartsOn: 1 });
-    const friday = endOfWeek(today, { weekStartsOn: 6 });
-    setStartDate(monday);
-    setEndDate(friday);
+    setCurrentSelectedDate(today);
   }
-  const handleArrowLeft = () => {
-    const startDateTransformed = new Date(startDate as any)
-    const endDateTransformed = new Date(endDate as any)
-    const monday = subWeeks(startDateTransformed, 1)
-    const friday = subWeeks(endDateTransformed, 1)
-    setStartDate(monday);
+  const handleArrowLeft = (currentSelectedDate: Date) => {
 
-    setEndDate(friday);
+    const datePreviousDay = new Date()
+
+    datePreviousDay.setDate(currentSelectedDate.getDate() - 1)
+
+    setCurrentSelectedDate(datePreviousDay);
+
   }
-  const handleArrowRight = () => {
-    const startDateTransformed = new Date(startDate as any)
-    const endDateTransformed = new Date(endDate as any)
-    const monday = addWeeks(startDateTransformed, 1)
-    const friday = addWeeks(endDateTransformed, 1)
-    setStartDate(monday);
+  const handleArrowRight = (currentSelectedDate: Date) => {
+    const dateNextDay = new Date()
 
-    setEndDate(friday);
+    dateNextDay.setDate(currentSelectedDate.getDate() + 1)
+
+    setCurrentSelectedDate(dateNextDay);
+
   }
   const handleStartDateChange = (date: Date) => {
-    const monday = startOfWeek(date, { weekStartsOn: 1 });
-    const friday = endOfWeek(date, { weekStartsOn: 6 });
-    setStartDate(monday);
-    setEndDate(friday);
+
+    setCurrentSelectedDate(date);
+
+    // const monday = startOfWeek(date, { weekStartsOn: 1 });
+    // const friday = endOfWeek(date, { weekStartsOn: 6 });
+    // setCurrentSelectedDate(monday);
+    // setEndDate(friday);
   };
-  const handleEndDateChange = (date: Date) => {
-    const monday = startOfWeek(date, { weekStartsOn: 1 });
-    const friday = endOfWeek(date, { weekStartsOn: 6 });
-    setStartDate(monday);
-    setEndDate(friday);
-  };
+
   const getDayBasedOnWeekday: any = (dayName: string, startDate: any) => {
     const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const dayIndex = days.indexOf(dayName);
@@ -700,12 +717,12 @@ const Grade: any = ({ theme, themeName }: any) => {
       },
       body: JSON.stringify({
         semestre: selectedSemesterValue || 1,
-        date: startDate //add localStorage later
+        date: currentSelectedDate //add localStorage later
       })
     }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-      const transformedData = groupByWeekday(data)
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      console.log(data)
+      const transformedData = groupBySemester(data)
+      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       setTimeout(() => {
         setLoading(true) // teste de loading
       }, 2000)
@@ -730,7 +747,7 @@ const Grade: any = ({ theme, themeName }: any) => {
     }).then((response) => response.json()).then((data) => {
       console.log(data)
 
-      const transformedData = groupByWeekday(data)
+      const transformedData = groupBySemester(data)
       console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
 
       setTimeout(() => {
@@ -752,10 +769,11 @@ const Grade: any = ({ theme, themeName }: any) => {
       body: JSON.stringify({
         semestre: selectedSemesterValue || 1,
         date: selectedDate || new Date() //add localStorage later
+
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
-      const transformedData = groupByWeekday(data)
+      const transformedData = groupBySemester(data)
       // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       setTimeout(() => {
         setLoading(true) // teste de loading
@@ -803,6 +821,17 @@ const Grade: any = ({ theme, themeName }: any) => {
 
 
   }
+
+  function capitalizeFirstLetter(str) {
+    // Check if the input is not an empty string
+    if (str.length > 0) {
+        // Capitalize the first letter and concatenate it with the rest of the string
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    } else {
+        // Handle empty string
+        return str;
+    }
+}
 
   //RENDERS -------------------------------------------------------------------------
   return (
@@ -922,34 +951,35 @@ const Grade: any = ({ theme, themeName }: any) => {
                 />
                 <PularParaHojeText>Pular para hoje</PularParaHojeText>
               </DatepickArrowsContainer>
-              <DatepickArrowsContainer onClick={() => handleArrowLeft()}>
+              <DatepickArrowsContainer onClick={() => handleArrowLeft(currentSelectedDate)}>
                 <LeftArrow
                   size={50}
                 />
               </DatepickArrowsContainer>
-              <DatepickArrowsContainer onClick={() => handleArrowRight()}>
+              <DatepickArrowsContainer onClick={() => handleArrowRight(currentSelectedDate)}>
                 <RightArrow
                   size={50}
                 />
               </DatepickArrowsContainer>
-              <CurrentMonth>
+              {/* <CurrentMonth>
                 <DatepickArrowsContainer>
                   <CurrentMonthText>
-                    {GetCurrentMonthAndYear(startDate)}
+                    {GetCurrentMonthAndYear(currentSelectedDate)}
                   </CurrentMonthText>
                   <DownArrow
                     size={45}
                   />
                 </DatepickArrowsContainer>
-              </CurrentMonth>
+              </CurrentMonth> */}
               <CalendarWrapper>
-                Semana do dia
+                Dia
                 <StyledDatePicker
-                  selected={startDate} onChange={handleStartDateChange} />
-                ao dia
-                <StyledDatePicker selected={endDate} onChange={handleEndDateChange} />
+                  selected={currentSelectedDate} onChange={handleStartDateChange} />
+                {/* ao dia
+                <StyledDatePicker selected={endDate} onChange={handleEndDateChange} /> */}
               </CalendarWrapper>
             </DatepickContainer>
+            <StyledDayName >{capitalizeFirstLetter(String(currentSelectedDate.toLocaleDateString('pt-BR', { weekday: 'long', timeZone: 'UTC' })) || null)}</StyledDayName>
             <FilterWrapper>
               <FilterIconWrapper>
                 <FilterIcon
@@ -1016,44 +1046,63 @@ const Grade: any = ({ theme, themeName }: any) => {
             </FilterWrapper>
           </DatePickWrapper>
         </Header>
-        
-        <ClassesContainer>
-        <div>CURRENT DAY</div>
-        <CockAndMainContainerWrapper>
-          <ClockContainer>
-            <p>18:45</p>
-            <p>19:35</p>
-            <p>20:25</p>
-            <p>20:35</p>
-            <p>21:25</p>
-            <p>22:15</p>
-          </ClockContainer>
-         
-          {loading
-            &&
-            grade
-            ?
-            (
-              <>
-              
-             <WeekContainer>
-                {renderWeekday('Segunda', grade.segunda)}
-                {renderWeekday('Terça', grade.terca)}
-                {renderWeekday('Quarta', grade.quarta)}
-                {renderWeekday('Quinta', grade.quinta)}
-                {renderWeekday('Sexta', grade.sexta)}
-                {renderBanner('Sexta', grade.sexta)}
-              </WeekContainer>
-              </>
 
-            ) : (
-              renderLoading()
-            )}
-        </CockAndMainContainerWrapper>
+        <ClassesContainer>
+          <CockAndMainContainerWrapper>
+            <ClockContainer>
+              <p>18:45</p>
+              <p>19:35</p>
+              <p>20:25</p>
+              <p>20:35</p>
+              <p>21:25</p>
+              <p>22:15</p>
+            </ClockContainer>
+
+            {loading
+              &&
+              grade
+              ?
+              (
+                <>
+
+                  <WeekContainer>
+                    {/* {
+                      grade && grade.map((item: any) => {
+                        console.log(item)
+
+
+                        return (
+                          <>
+                            <WeekdayContainer key={item.semestre}>
+                              <WeekDay>
+                                <h2>{item.semestre}º Semestre</h2>
+                              </WeekDay>
+                              <SchedulesContainer isCurrentDay={false}>
+                                <h2>STARTDATE DATE I THINK</h2>
+                              </SchedulesContainer>
+                            </WeekdayContainer>
+                          </>
+                        )
+                      })
+                    } */}
+                    {renderWeekday('1º Semestre', grade.semestre1)}
+                    {renderWeekday('2º Semestre', grade.semestre2)}
+                    {renderWeekday('3º Semestre', grade.semestre3)}
+                    {renderWeekday('4º Semestre', grade.semestre4)}
+                    {renderWeekday('5º Semestre', grade.semestre5)}
+                    {renderWeekday('6º Semestre', grade.semestre6)}
+                    {renderBanner('Sexta', grade.semestre6)}
+                  </WeekContainer >
+                </>
+
+              ) : (
+                renderLoading()
+              )}
+          </CockAndMainContainerWrapper>
         </ClassesContainer>
       </MainContainer>
     </>
   );
 };
 
-export default Grade
+export default Dashboard

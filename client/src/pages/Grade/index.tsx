@@ -163,7 +163,7 @@ function groupByWeekdayLaboratorios(data: ScheduleItem[]): GroupedData {
 }
 
 //COMPONENTS -------------------------------------------------------------------------
-const Dashboard: any = ({ theme, themeName }: any) => {
+const Grade: any = ({ theme, themeName }: any) => {
   const [loading, setLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -246,12 +246,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
         setSelectedSemesterValue(userDataJson.userData.semester);
-        if (selectedMethod == "professor") {
-          fetchProfessorData();
-        }
-        else {
-          fetchSemestreData();
-        }
+        fetchProfessors(userDataJson.token)
       }
     }
   }, [userData]);
@@ -272,12 +267,20 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         setAskSemesterModalIsVisible(true)
       }
 
+      //FETCH DATA THAT CHANGES ON THE FILTERS
+      if (selectedMethod == "professor") {
+        fetchProfessorData();
+      }
+      else {
+        fetchSemestreData();
+      }
+
     }
     else {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [userData]);
+  }, [ selectedSemesterValue, selectedProfessor, selectedMethod, selectedDate, startDate]);
 
   useEffect(() => {
 
@@ -702,7 +705,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     })
   }
   async function fetchSemestreData() {
-    fetch(`${apiUrl}/grade/dashboard`, {
+    fetch(`${apiUrl}/grade/grade`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -733,8 +736,8 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        // professor_id: selectedProfessor.id || 1,
-        laboratory_id: "2",
+         professor_id: selectedProfessor.id || 1,
+        // laboratory_id: "2",
       })
     }).then((response) => response.json()).then((data) => {
       console.log(data)
@@ -914,7 +917,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         <Header>
           <CoursesWrapper>
             <PageName>
-              Dashboard
+              Grade
             </PageName>
             <CourseName>
               Análise e Desenv. de Sistemas
@@ -1056,4 +1059,4 @@ const Dashboard: any = ({ theme, themeName }: any) => {
   );
 };
 
-export default Dashboard
+export default Grade

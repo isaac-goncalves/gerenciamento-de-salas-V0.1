@@ -18,7 +18,7 @@ import { lightTheme, lightThemeRed, darkTheme, vancedTheme } from './colors';
 import { useEffect, useState } from 'react';
 import GlobalStyle from './theme/globalStyle'
 import { toast } from 'react-toastify';
-import Grade from './pages/Dashboard';
+import Grade from './pages/Grade';
 
 
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);

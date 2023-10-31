@@ -41,8 +41,172 @@ function formatDateForSQL (date: Date) {
 }
 
 export class GradeController {
+
+
   async getDashboardData (request: Request, response: Response) {
-    console.log('get grade')
+
+
+    console.log('get Dashboard')
+
+
+
+    const { date } = request.body
+
+    const dateTransformed = new Date(date).getDay()
+
+     console.log(dateTransformed)
+
+    try {
+      //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
+      //pegar o semestre da pessoa e filtrar tambem
+
+      const query = `
+                  SELECT 
+                  grade.id, 
+                  grade.horario_inicio, 
+                  grade.horario_fim, 
+                  grade.dia_da_semana, 
+                  grade.semestre, 
+                  grade.created_at, 
+                  grade.updated_at, 
+                  professores.name as professor, 
+                  disciplinas.descricao as disciplina, 
+                  disciplinas.capacidade as capacidade,
+                  laboratorios.descricao as laboratorio 
+              FROM 
+                  grade 
+              LEFT JOIN 
+                  professores ON grade.id_professor = professores.id 
+              LEFT JOIN 
+                  disciplinas ON grade.id_disciplina = disciplinas.id 
+              LEFT JOIN 
+                  laboratorios ON grade.id_sala = laboratorios.id 
+              WHERE 
+                  dia_da_semana = '${dateTransformed}'
+              ORDER BY
+                  grade.id ASC
+            `
+
+      const gradeWithProfessor = await gradeRepositories.query(query)
+
+      //pesdquisar sobre os agendamentos de cada grade e retornar junto com a grade
+
+      const gradeWithAgendamento = await Promise.all(
+        gradeWithProfessor.map(async (grade: any) => {
+          const id_grade = grade.id
+
+          const nearestMonday = getNearestMonday(date)
+
+          console.log(nearestMonday)
+
+          const nextSaturnDay = addDays(nearestMonday, 5)
+
+          console.log(nextSaturnDay)
+
+          const queryAgendamento = `
+            SELECT
+            agendamento.id as id,
+            date,
+            uuid_agendamento,
+            horario_inicio,
+            horario_fim,
+            id_professor,
+            id_grade,
+            id_laboratorio,
+            professores.name as professor,
+            laboratorios.descricao as laboratorio,
+            laboratorios.capacidade as capacidade,
+            schedule_status,
+            agendamento.updated_at,
+            agendamento.created_at
+            FROM
+            agendamento
+            LEFT JOIN
+            professores ON id_professor = professores.id
+            LEFT JOIN
+            laboratorios ON id_laboratorio = laboratorios.id
+            WHERE
+            id_grade = '${id_grade}'
+            AND 
+            agendamento.schedule_status <> 'fixed'
+            AND 
+            agendamento.date BETWEEN '${formatDateForSQL(
+              nearestMonday
+            )}' AND '${formatDateForSQL(nextSaturnDay)}'
+          `
+
+          const queryAgendamentoFixo = `
+          SELECT
+          agendamento.id as id,
+          date,
+          uuid_agendamento,
+          horario_inicio,
+          horario_fim,
+          id_professor,
+          id_grade,
+          id_laboratorio,
+          professores.name as professor,
+          laboratorios.descricao as laboratorio,
+          laboratorios.capacidade as capacidade,
+          schedule_status,
+          agendamento.updated_at,
+          agendamento.created_at
+          FROM
+          agendamento
+          LEFT JOIN
+          professores ON id_professor = professores.id
+          LEFT JOIN
+          laboratorios ON id_laboratorio = laboratorios.id
+          WHERE
+          id_grade = '${id_grade}'
+          AND 
+          agendamento.schedule_status = 'fixed'
+        `
+
+          const agendamentos = await gradeRepositories.query(queryAgendamento)
+
+          const agendamentosFixos = await gradeRepositories.query(
+            queryAgendamentoFixo
+          )
+
+          console.log(agendamentosFixos)
+
+          //remove 3 hours from date to match the timezone
+
+          if (agendamentos[0] && agendamentos[0].date) {
+            const newDate = new Date(agendamentos[0].date)
+
+            newDate.setHours(newDate.getHours() - 3)
+
+            agendamentos[0].date = newDate
+          }
+
+          grade.agendamentos = agendamentos || []
+
+          if (agendamentosFixos.length > 0) {
+            agendamentosFixos.forEach((agendamento: any) => {
+              grade.agendamentos.push(agendamento)
+            })
+          }
+
+          return grade
+        })
+      )
+
+      //  console.log(JSON.stringify(gradeWithAgendamento))
+
+      return response.status(200).json(gradeWithAgendamento)
+    } catch (error) {
+      console.log(error)
+      return response.status(500).json({ message: 'internal server error' })
+    }
+  }
+
+
+
+  async getGradeData (request: Request, response: Response) {
+
+    console.log('get Grade')
 
     const { semestre } = request.body
     const { date } = request.body

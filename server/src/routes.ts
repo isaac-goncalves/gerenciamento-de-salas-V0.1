@@ -31,6 +31,8 @@ routes.post('/laboratory', new ProfessorsController().getLaboratory)
 //MAIN GET GRADE DASHBOARD ENDPOINT
 routes.post('/grade/dashboard', new GradeController().getDashboardData)
 
+routes.post('/grade/grade', new GradeController().getGradeData)
+
 //GET GRADES DATA BY PROFESSOR ID, DISCIPLINA ID AND DAY OF THE WEEK
 
 routes.post('/grade/professors', new GradeController().getGradesByProfessorsAndDisciplinas)
