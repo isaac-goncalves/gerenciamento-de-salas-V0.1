@@ -10,11 +10,4 @@ export class Course {
     
     @Column()
     periodo: string;
-
-    @Column({
-        type: 'integer',
-        nullable: true // sets the column to allow NULL as a valid value
-    })
-    id_professor: number;
-
 }
