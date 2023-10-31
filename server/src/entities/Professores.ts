@@ -43,7 +43,7 @@ export class Professores {
   })
   disciplina: number
 
-  @Column()
+  @Column({ nullable: true })
   course_id: number;
 
   @Column({

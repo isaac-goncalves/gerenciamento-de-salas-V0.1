@@ -97,7 +97,8 @@ export const darkTheme = {
   //gerenciamentoTable
   border_bottom_color: 'rgb(79, 81, 80)',
   tableHover: 'rgba(109, 99, 221, 0.118)',
-  tableHeaderColor: '#6358DC',
+  tableHeaderColor: 'rgb(153, 189, 255);',
+  
 
 
   circleColor: 'rgba(220, 213, 242, 0.51);',
@@ -135,6 +136,8 @@ export const vancedTheme = {
   //gerenciamentoTable
   border_bottom_color: 'rgb(79, 81, 80)',
   tableHover: 'rgba(220, 88, 99, 0.181)',
+  tableHeaderColor: '#d83c58',
+
 
 
   circleColor: 'rgba(220, 213, 242, 0.51);',

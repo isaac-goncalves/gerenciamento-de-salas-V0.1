@@ -31,6 +31,7 @@ import ModalEdit from '../Components/ModalEdit';
 import ModalDelete from '../Components/ModalDelete'
 import FileUploadButton from '../Components/FileUploadButton';
 import FileDownloadButton from '../Components/FileDownloadButton';
+import { CenteredTableData, TableRowHeader, TableWrapper } from '../Gerenciamento/Perfil.styles';
 
 const Templates: any = ({ theme }: any): any => {
 
@@ -85,6 +86,7 @@ const Templates: any = ({ theme }: any): any => {
 
 
 
+
     const [userFetchedData, setUserFetchedData] = React.useState<UserData[]>([])
     const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
     const [alunosData, setAlunosData] = React.useState<any>([])
@@ -102,7 +104,7 @@ const Templates: any = ({ theme }: any): any => {
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
 
-
+    const [courseData, setCourseData] = useState<any>([]);
 
 
 
@@ -117,7 +119,8 @@ const Templates: any = ({ theme }: any): any => {
                 appointmentDataResponse,
                 userDataResponse,
                 alunosDataResponse,
-                professoresDataResponse
+                professoresDataResponse,
+                coursesDataResponse
             ] = await Promise.all([
                 fetch(`${apiUrl}/agendamento`, {
                     method: 'post',
@@ -130,6 +133,9 @@ const Templates: any = ({ theme }: any): any => {
                 }).then(res => res.json()),
                 fetch(`${apiUrl}/professores`, {
                     method: 'post',
+                }).then(res => res.json()),
+                fetch(`${apiUrl}/courses`, {
+                    method: 'post',
                 }).then(res => res.json())
             ]);
 
@@ -140,6 +146,8 @@ const Templates: any = ({ theme }: any): any => {
             const ProfessorWithOutFirstElement = professoresDataResponse.slice(1);
 
             setProfessoresData(ProfessorWithOutFirstElement);
+
+            setCourseData(coursesDataResponse);
 
             setTimeout(() => {
                 setIsLoading(true);
@@ -179,6 +187,44 @@ const Templates: any = ({ theme }: any): any => {
         updated_at: string
     }
 
+
+    interface UsersData {
+        id: number
+        name: string
+        email: string
+        role: string
+        created_at: string
+        updated_at: string
+    }
+
+    const CoursesTable = ({ data }: any) => {
+        return ( 
+            <TableWrapper>
+                <Table>
+                    <TableHeader>
+                        <TableRowHeader>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Tipo</th>
+                            <th>Criado</th>
+                            <th>Atualizado</th>
+                        </TableRowHeader>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map((user: UsersData) => (
+                            <tr key={user.id}>
+                                <CenteredTableData>{user.id}</CenteredTableData>
+                                <CenteredTableData>{user.email}</CenteredTableData>
+                                <CenteredTableData>{user.role}</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</CenteredTableData>
+                            </tr>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableWrapper>
+        )
+    }
 
     return (<>
         <Particles
@@ -297,6 +343,9 @@ const Templates: any = ({ theme }: any): any => {
                 <ButtonWrapper>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />
                     <FileDownloadButton buttonText={"Download Template Atualizado"} fileName={templateFileName} fileUrl={templateFileUrl} />
+
+
+
                     <FileUploadButton loggedUserRole={userData.userData.role} />
                 </ButtonWrapper>
                 {

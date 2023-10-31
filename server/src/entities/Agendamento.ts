@@ -36,7 +36,7 @@ export class Agendamento {
   @Column()
   id_grade: number
 
-  @Column()
+  @Column({ nullable: true })
   course_id: number;
 
   @Column({ nullable: true })

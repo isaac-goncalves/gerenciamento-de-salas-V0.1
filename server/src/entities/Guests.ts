@@ -15,7 +15,7 @@ export class Guests {
   @Column()
   semester: string
 
-  @Column()
+  @Column({ nullable: true })
   course_id: number;
 
   @Column()

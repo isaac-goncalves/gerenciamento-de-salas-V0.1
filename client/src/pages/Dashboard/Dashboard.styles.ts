@@ -719,7 +719,7 @@ export const Semestre = styled.p`
   color: ${props => props.theme.mainpurple};
 `
 interface StyledComponentSalaProps {
-  agendamento: boolean
+  agendamento?: boolean
 }
 
 export const SalaWrapper = styled.div`

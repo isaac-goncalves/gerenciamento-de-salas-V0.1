@@ -15,7 +15,7 @@ export class Disciplinas {
   @Column()
   descricao: string
   
-  @Column()
+  @Column({ nullable: true })
   course_id: number;
 
   @Column({ type: 'integer', default: 30, nullable: true })

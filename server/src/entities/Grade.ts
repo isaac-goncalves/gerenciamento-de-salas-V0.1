@@ -8,7 +8,7 @@ export class Grade {
     @Column()
     grade_id: number;
     
-    @Column()
+    @Column({ nullable: true })
     course_id: number;
 
     @Column()
