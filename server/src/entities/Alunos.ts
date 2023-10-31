@@ -22,6 +22,9 @@ export class Alunos {
     semestre: number;
 
     @Column()
+    course_id: number;
+
+    @Column()
     created_at: Date;
 
     @Column()

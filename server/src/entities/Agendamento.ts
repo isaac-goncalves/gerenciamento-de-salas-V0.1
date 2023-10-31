@@ -36,6 +36,9 @@ export class Agendamento {
   @Column()
   id_grade: number
 
+  @Column()
+  course_id: number;
+
   @Column({ nullable: true })
   id_laboratorio: number
 

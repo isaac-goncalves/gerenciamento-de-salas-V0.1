@@ -43,6 +43,9 @@ export class Professores {
   })
   disciplina: number
 
+  @Column()
+  course_id: number;
+
   @Column({
     type: 'boolean',
     nullable: true,

@@ -6,6 +6,12 @@ export class Grade {
     id: number;
 
     @Column()
+    grade_id: number;
+    
+    @Column()
+    course_id: number;
+
+    @Column()
     horario_inicio: string;
 
     @Column()

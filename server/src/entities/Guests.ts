@@ -16,6 +16,9 @@ export class Guests {
   semester: string
 
   @Column()
+  course_id: number;
+
+  @Column()
   email: string
 
   @Column({
