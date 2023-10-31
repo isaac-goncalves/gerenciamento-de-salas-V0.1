@@ -10,6 +10,7 @@ import { DisciplinasController } from './controllers/DisciplinasController'
 // import { TransactionsController } from "./controllers/TransactionsControllers";
 
 import multer, { Multer } from 'multer';
+import { CoursesController } from './controllers/CourseController'
 
 const routes = Router()
 const userController = new UserController()
@@ -80,5 +81,9 @@ routes.put('/agendamento', new AgendamentoController().update);
 routes.delete('/agendamento', new AgendamentoController().delete);
 
 // routes.post("/transaction", new TransactionsController().create);
+
+routes.post('/course/create', new CoursesController().createNewCourse)
+routes.post('/course', new CoursesController().get)
+routes.post('/course/delete', new CoursesController().delete)
 
 export default routes

@@ -22,16 +22,18 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Header, Separator,
-    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper, ContainerElement
+    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper, ContainerElement, StyledButton
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
 
 import ModalEdit from '../Components/ModalEdit';
-import ModalDelete from '../Components/ModalDelete'
+import NewCourseModal from '../Components/NewCourseModal'
 import FileUploadButton from '../Components/FileUploadButton';
 import FileDownloadButton from '../Components/FileDownloadButton';
 import { CenteredTableData, TableRowHeader, TableWrapper } from '../Gerenciamento/Perfil.styles';
+import { AiFillEdit, AiOutlineDownload, AiOutlineUpload } from 'react-icons/ai';
+import Swal from 'sweetalert2';
 
 const Templates: any = ({ theme }: any): any => {
 
@@ -57,6 +59,28 @@ const Templates: any = ({ theme }: any): any => {
         }
     );
 
+
+    const [userFetchedData, setUserFetchedData] = React.useState<UserData[]>([])
+    const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
+    const [alunosData, setAlunosData] = React.useState<any>([])
+    const [professoresData, setProfessoresData] = React.useState<any>([])
+
+    const [editingModal, setEditingModal] = React.useState(false)
+    const [deleteModal, setDeleteModal] = React.useState(false)
+
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [Error, setError] = React.useState(true);
+
+    const [selectedTable, setSelectedTable] = useState('agendamentos');
+    const [selectedCategory, setSelectedCategory] = useState('Alunos');
+
+    const [agendamentoId, setAgendamentoId] = useState<Number>(2);
+    const [editedData, setEditedData] = useState<any>({});
+
+    const [courseData, setCourseData] = useState<any>([]);
+
+    const [modalNewCourseIsVisible, setModalNewCourseIsVisible] = useState(false);
+
     useLayoutEffect(() => {
         console.log('Starting to render stuff...');
         if (userData.token === '' || userData.userData.id === 0) {
@@ -78,6 +102,7 @@ const Templates: any = ({ theme }: any): any => {
             } else {
                 console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
 
+                fetchData();
 
                 setUserData(userDataJson);
             }
@@ -85,35 +110,12 @@ const Templates: any = ({ theme }: any): any => {
     }, [userData]);
 
 
-
-
-    const [userFetchedData, setUserFetchedData] = React.useState<UserData[]>([])
-    const [appointmentData, setAppointmentData] = React.useState<AppointmentData[]>([])
-    const [alunosData, setAlunosData] = React.useState<any>([])
-    const [professoresData, setProfessoresData] = React.useState<any>([])
-
-    const [editingModal, setEditingModal] = React.useState(false)
-    const [deleteModal, setDeleteModal] = React.useState(false)
-
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [Error, setError] = React.useState(true);
-
-    const [selectedTable, setSelectedTable] = useState('agendamentos');
-    const [selectedCategory, setSelectedCategory] = useState('Alunos');
-
-    const [agendamentoId, setAgendamentoId] = useState<Number>(2);
-    const [editedData, setEditedData] = useState<any>({});
-
-    const [courseData, setCourseData] = useState<any>([]);
-
-
-
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [modalNewCourseIsVisible]);
 
     async function fetchData() {
-        setIsLoading(false);
+        // setIsLoading(false);
         try {
             const [
                 appointmentDataResponse,
@@ -134,7 +136,7 @@ const Templates: any = ({ theme }: any): any => {
                 fetch(`${apiUrl}/professores`, {
                     method: 'post',
                 }).then(res => res.json()),
-                fetch(`${apiUrl}/courses`, {
+                fetch(`${apiUrl}/course`, {
                     method: 'post',
                 }).then(res => res.json())
             ]);
@@ -188,42 +190,114 @@ const Templates: any = ({ theme }: any): any => {
     }
 
 
-    interface UsersData {
-        id: number
-        name: string
-        email: string
-        role: string
-        created_at: string
-        updated_at: string
+    interface CourseData {
+        id: number,
+        course_name: string,
+
+    }
+
+    interface DataProps {
+        id: number,
+        course_name: string,
+    }
+
+
+    const handleDeleteCourse = (courseData: DataProps) => {
+
+        Swal.fire({
+            title: 'Você tem certeza?',
+            text: "Você não poderá reverter essa ação!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: theme.mainpurple,
+            confirmButtonText: 'Sim, deletar curso!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleDeleteCourseConfirmed(courseData);
+            }
+        })
+
+
+    }
+
+    const handleDeleteCourseConfirmed = async (courseData: DataProps) => {
+        console.log('handleDeleteCourse');
+        fetch(`${apiUrl}/course/delete`, {
+            method: 'post',
+            body: JSON.stringify({ id: courseData.id })
+        }).then(res => res.json()).then(res => {
+            console.log(res);
+            toast.success('Curso deletado com sucesso!');
+        }).catch(err => {
+            console.error(err);
+            toast.error('Erro ao deletar curso. Tente novamente mais tarde.')
+        });
+        fetchData();
     }
 
     const CoursesTable = ({ data }: any) => {
-        return ( 
+        return (
             <TableWrapper>
                 <Table>
                     <TableHeader>
                         <TableRowHeader>
                             <th>ID</th>
-                            <th>Email</th>
-                            <th>Tipo</th>
-                            <th>Criado</th>
-                            <th>Atualizado</th>
+                            <th>NOME</th>
+                            <th>SEMESTRES</th>
+                            <th>PERIODO</th>
+                            <th>ACTIONS</th>
+                            {/* <th>Criado</th>
+                            <th>Atualizado</th> */}
                         </TableRowHeader>
                     </TableHeader>
                     <TableBody>
-                        {data.map((user: UsersData) => (
-                            <tr key={user.id}>
-                                <CenteredTableData>{user.id}</CenteredTableData>
-                                <CenteredTableData>{user.email}</CenteredTableData>
-                                <CenteredTableData>{user.role}</CenteredTableData>
-                                <CenteredTableData>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</CenteredTableData>
-                                <CenteredTableData>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</CenteredTableData>
+                        {courseData.map((course: CourseData) => (
+                            <tr key={course.id}>
+                                <CenteredTableData>{course.id}</CenteredTableData>
+                                <NowrapText>{course.course_name}</NowrapText>
+                                <CenteredTableData>{6}</CenteredTableData>
+                                <CenteredTableData>NETURNO</CenteredTableData>
+                                <td>
+                                    <ButtonsWrapper>
+                                        <EditButton type="button" ><AiFillEdit/>
+                                            <p>
+                                                Edit
+                                            </p>
+                                        </EditButton>
+                                        <EditButton type="button" ><AiOutlineDownload />
+                                            <p>
+                                                Download
+                                            </p>
+                                        </EditButton>
+                                        <EditButton type="button" ><AiOutlineUpload />
+                                            <p>
+                                                Upload
+                                            </p>
+                                        </EditButton>
+                                        <DeleteButton type="button" onClick={() => handleDeleteCourse(course)} ><RiDeleteBinLine />
+                                            <p>
+                                                Excluir
+                                            </p>
+                                        </DeleteButton>
+                                    </ButtonsWrapper>
+                                </td>
+                                {/* <CenteredTableData>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</CenteredTableData> */}
                             </tr>
                         ))}
                     </TableBody>
                 </Table>
             </TableWrapper>
         )
+    }
+
+    const handleCreateNewCourse = () => {
+        console.log('handleCreateNewCourse');
+
+        setModalNewCourseIsVisible(!modalNewCourseIsVisible);
+        const [shouldFetchData, setShouldFetchData] = useState(false);
+
     }
 
     return (<>
@@ -301,6 +375,7 @@ const Templates: any = ({ theme }: any): any => {
                 detectRetina: true,
             }}
         />
+        <NewCourseModal isVisible={modalNewCourseIsVisible} onClose={handleCreateNewCourse} />
         <ContainerElement>
             <Helmet>
                 <title>SGSA - Templates</title>
@@ -340,12 +415,10 @@ const Templates: any = ({ theme }: any): any => {
                 </Header>
                 <PageTitle>Templates</PageTitle>
                 <TemplateImage src={templateImage} />
+                <StyledButton onClick={handleCreateNewCourse}>"CRIAR NOVO CURSO"</StyledButton>
+                <CoursesTable />
                 <ButtonWrapper>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />
-                    <FileDownloadButton buttonText={"Download Template Atualizado"} fileName={templateFileName} fileUrl={templateFileUrl} />
-
-
-
                     <FileUploadButton loggedUserRole={userData.userData.role} />
                 </ButtonWrapper>
                 {
