@@ -5,7 +5,7 @@ export class Grade {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: true })
     grade_id: number;
     
     @Column({ nullable: true })

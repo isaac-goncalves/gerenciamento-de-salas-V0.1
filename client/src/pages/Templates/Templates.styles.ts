@@ -61,6 +61,7 @@ export const PageTitle = styled.h1`
 export const TemplateImage = styled.img`
   width: 90%;
   margin: 1rem;
+  height: 100px;
 `
 
 export const CounterWrapper = styled.div`
@@ -83,6 +84,25 @@ export const CounterWrapper = styled.div`
       font-size: 0.8rem;
     }
   }
+`
+
+export const StyledButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  height: 2.5rem;
+  border: none;
+  background-color: ${props => props.theme.mainpurple};
+  color: ${props => props.theme.realwhite};
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  cursor: pointer;
+  white-space: nowrap;
 `
 
 export const Separator = styled.div`

@@ -13,42 +13,49 @@ const FileInput = styled.input`
 
 // Label styled component
 const Label = styled.label`
+ background-color: ${props => props.theme.hoverCard};
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  min-width: 12rem;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 4px;
   color: white;
-  background-color: ${props => props.theme.mainpurple};
-  padding: 10px 20px;
-  gap: 10px;
-  max-width: 20rem;
-  width: 100%;
-  max-height: 2.5rem;
-  text-align: center;
+  font-size: 16px;
+  height: 2rem;
+  padding: 0 0.4rem;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-  
+  transition: background-color 0.3s ease;
+
+  margin-left: 0.5rem;
+  p {
+    font-size: 0.8rem;
+  }
+
   &:hover {
-    background-color: ${props => props.theme.horariosCard};
+    background-color: #006f8f;
   }
 `;
 
 
 interface FileUploadButtonProps {
-  userId: string;
+  userId?: string;
   loggedUserRole: string;
   action: string;
+  course: number;
 }
 
 // FileUploadButton component
-const FileUploadButton = ({ userId, loggedUserRole, action }: FileUploadButtonProps) => {
+const FileUploadButton = ({ course, userId, loggedUserRole, action }: FileUploadButtonProps) => {
 
   const [loggedUser, setLoggedUser] = React.useState('');
+  const [selectedCourse, setSelectedCourse] = React.useState(0);
+  
 
   useEffect(() => {
     setLoggedUser(loggedUserRole);
+    setSelectedCourse(course);
   }
     , [loggedUserRole]);
 
@@ -71,13 +78,12 @@ const FileUploadButton = ({ userId, loggedUserRole, action }: FileUploadButtonPr
       url = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/usuarios/upload/';
     }
     else {
-      url = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/template/upload';
+      url = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/template/upload/${selectedCourse}`;
     }
 
     const formData = new FormData();
-    
+
     formData.append('file', selectedFile);
-    formData.append('userId', userId);
 
     fetch(url, {
       method: 'POST',
@@ -97,20 +103,21 @@ const FileUploadButton = ({ userId, loggedUserRole, action }: FileUploadButtonPr
   };
   //insira um reac icon de arquivo ali depois do escolher arquivo
   return (
-      <Label
-        onClick={() => { loggedUser == 'aluno' || loggedUser == 'guest' ? toast.error('Usuário sem permissão para upload de arquivos🧐') : null }}
-        htmlFor="fileUpload">
-        <HiOutlineUpload
-          size={25}
-        />
-        Escolher arquivo para upload
-        <FileInput
-          disabled={loggedUser === 'aluno' || loggedUser == 'guest' ? true : false}
-          id="fileUpload"
-          type="file"
-          onChange={handleFileChange}
-        />
-      </Label>
+    <Label
+      htmlFor="fileUpload">
+      <HiOutlineUpload
+        size={25}
+      />
+      <p>
+        Enviar Arquivo
+      </p>
+      <FileInput
+        // disabled={loggedUser === 'aluno' || loggedUser == 'guest' ? true : false}
+        id="fileUpload"
+        type="file"
+        onChange={handleFileChange}
+      />
+    </Label>
   );
 };
 

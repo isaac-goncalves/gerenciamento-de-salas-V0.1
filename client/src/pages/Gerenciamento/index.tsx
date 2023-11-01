@@ -18,7 +18,7 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 
 import ModalEdit from '../Components/ModalEdit';
-import ModalDelete from '../Components/ModalDelete';
+import NewCourseModal from '../Components/ModalDelete';
 import { BsWhatsapp } from 'react-icons/bs';
 
 //PARTICLES IMPORTS
@@ -477,7 +477,7 @@ const Gerenciamento: any = ({ theme }: any): any => {
                 </Helmet>
                 <ToastContainer />
                 <ModalEdit action={"EDIT"} idUserLogado={userData.userData.id} isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={[1, 2, 3, 4]} />
-                <ModalDelete isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />
+                <NewCourseModal isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />
                 <Wrapper>
                     <Header>
                         <CounterWrapper>
