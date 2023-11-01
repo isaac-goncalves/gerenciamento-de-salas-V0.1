@@ -37,6 +37,11 @@ export class ETLControllers {
   async upload (req: Request, res: Response) {
     console.log('upload')
 
+    //grab course_id by url params
+    const  course_id  = req.params.course_id
+
+    console.log(course_id)
+
     try {
       await upload.single('file')(req, res, (error) => {
         if (error) {
@@ -52,7 +57,7 @@ export class ETLControllers {
 
         console.log(uploadedFile.path)
         
-        const childProcess = spawn('python', [filePath, uploadedFile.path]);
+        const childProcess = spawn('python', [filePath, uploadedFile.path, course_id]);
   
         let stdoutData = '';
         let stderrData = '';

@@ -10,15 +10,25 @@ if len(sys.argv) < 2:
 
 # Get the file path from the command-line argument
 file_path = sys.argv[1]
-
+course_id = int(sys.argv[2])
+print(course_id)
 # Establish a connection to your PostgreSQL database
 connection = psycopg2.connect(
     host='localhost',
     port='5432',
     database='gerenciamento-de-salas',
-    user='carolineamarante',
+    user='postgres',
     password='2406'
 )
+
+# Local Database
+# connection = psycopg2.connect(
+#     host='sgsa05database.postgres.database.azure.com',
+#     port='5432',
+#     database='gerenciamento_de_salas',
+#     user='sgsaadmin@sgsa05database',
+#     password='I17092004c.'
+# )
 
 # Read the Excel file and specify the sheet name
 dfGrade = pd.read_excel(file_path, sheet_name='Final_table', usecols='B:K', skiprows=1, nrows=1000) #grade
@@ -42,7 +52,7 @@ dfSemestres.columns = ['descricao', 'ID']
 dfDiasSemana.columns = ['dia_da_semana','id']
                 
 dfGrade.dropna(subset=['id', 'horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at'], inplace=True)
-dfDisciplinas.dropna(subset=['disciplina','capacidade', 'id'], inplace=True)
+dfDisciplinas.dropna(subset=['disciplina', 'id'], inplace=True)
 dfProfessores.dropna(subset=['name', 'id', 'surname','email', 'disciplina'], inplace=True)
 dfLaboratorio.dropna(subset=['descricao', 'id', 'capacidade'], inplace=True)
 dfSemestres.dropna(subset=['descricao', 'ID'], inplace=True)
@@ -79,9 +89,6 @@ for index, row in dfDisciplinas.iterrows():
 
     # Construct the SQL INSERT statement
     query = f"INSERT INTO disciplinas (descricao) VALUES ('{descricao}');" # Modify the table name as per your requirement
-
-    query = f"INSERT INTO disciplinas (descricao) VALUES ('{capacidade}');" # Modify the table name as per your requirement
-
 
     cursor.execute(query)
 
@@ -156,15 +163,33 @@ for index, row in dfDiasSemana.iterrows():
 
 #------------------- grade -------------------#
 
-queryTruncateGrade = "TRUNCATE grade CASCADE;"
-cursor.execute(queryTruncateGrade)
+# queryTruncateGrade = "TRUNCATE grade CASCADE;"
+# cursor.execute(queryTruncateGrade)
 
-reset_sequence_query_grade = "ALTER SEQUENCE grade_id_seq RESTART WITH 1;"
-cursor.execute(reset_sequence_query_grade)
+def delete_grades(course_id):
+      try:
+          cursor.execute("DELETE FROM grade WHERE course_id = %s", (course_id,))
+          connection.commit()
+          count = cursor.rowcount
+          print(count, "Record deleted successfully ")
+      except (Exception, psycopg2.Error) as error:
+          print("Error in Delete operation", error)
+      finally:
+          # closing database connection.
+          if connection:
+            #   cursor.close()
+            #   connection.close()
+              print("PostgreSQL connection is closed")
+
+delete_grades(course_id)
+
+# reset_sequence_query_grade = "ALTER SEQUENCE grade_id_seq RESTART WITH 1;"
+# cursor.execute(reset_sequence_query_grade)
 
 for index, row in dfGrade.iterrows():
-    id = int(row['id'])
+    course_id_data = int(course_id)
     horario_inicio = row['horario_inicio']
+    grade_id = int(row['id'])
     horario_fim = row['horario_fim']
     dia_da_semana = row['dia_da_semana']
     id_professor = int(row['id_professor'])
@@ -173,10 +198,13 @@ for index, row in dfGrade.iterrows():
     id_sala = int(row['id_sala'])
     created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
     updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
-
-    query_grade = f"INSERT INTO grade (id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, semestre, id_sala, created_at, updated_at) VALUES ({id}, '{horario_inicio}', '{horario_fim}', '{dia_da_semana}', {id_professor}, {id_disciplina}, '{semestre}', {id_sala}, '{created_at}', '{updated_at}');"
-    cursor.execute(query_grade)
-
+    
+    query_grade = "INSERT INTO grade (horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id, semestre, id_sala, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);" # Modify the table name as per your requirement
+    
+    data = (horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id_data, semestre, id_sala, created_at, updated_at)
+    
+    cursor.execute(query_grade, data)
+    print(course_id)
 
 #------------------- disciplinas -------------------#
 
@@ -187,7 +215,7 @@ queryGetDisciplinas = "SELECT * FROM disciplinas LIMIT 100;"  # Modify the table
 
 queryGetProfessores = "SELECT * FROM professores LIMIT 100;"  # Modify the table name as per your requirement
 
-queryGetGrade = "SELECT * FROM grade LIMIT 100;"  # Modify the table name as per your requirement
+queryGetGrade = "SELECT * FROM grade LIMIT 100000;"  # Modify the table name as per your requirement
 
 queryGetLaboratorio = "SELECT * FROM laboratorio LIMIT 100;"  # Modify the table name as per your requirement
 
@@ -200,7 +228,7 @@ queryGetDiasSemana = "SELECT * FROM dias_semana LIMIT 100;"  # Modify the table 
 # Execute the query
 
 
-cursor.execute(queryGetDisciplinas)
+cursor.execute(queryGetGrade)
 
 # Retrieve the data from the cursor
 rows = cursor.fetchall()
@@ -213,6 +241,7 @@ print("Checking!")
 for row in rows:
    print(row)
 
+print("Rows: ", len(rows))
 print("FINISHED!")
 
 # Close the cursor and the connection

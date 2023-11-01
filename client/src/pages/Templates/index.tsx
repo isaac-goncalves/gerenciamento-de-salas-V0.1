@@ -260,7 +260,7 @@ const Templates: any = ({ theme }: any): any => {
                                 <CenteredTableData>NETURNO</CenteredTableData>
                                 <td>
                                     <ButtonsWrapper>
-                                        <EditButton type="button" ><AiFillEdit/>
+                                        <EditButton type="button" ><AiFillEdit />
                                             <p>
                                                 Edit
                                             </p>
@@ -270,11 +270,7 @@ const Templates: any = ({ theme }: any): any => {
                                                 Download
                                             </p>
                                         </EditButton>
-                                        <EditButton type="button" ><AiOutlineUpload />
-                                            <p>
-                                                Upload
-                                            </p>
-                                        </EditButton>
+                                        <FileUploadButton action={""} course={course.id} loggedUserRole={userData.userData.role} />
                                         <DeleteButton type="button" onClick={() => handleDeleteCourse(course)} ><RiDeleteBinLine />
                                             <p>
                                                 Excluir
