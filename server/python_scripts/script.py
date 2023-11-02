@@ -11,7 +11,7 @@ if len(sys.argv) < 2:
 # Get the file path from the command-line argument
 file_path = sys.argv[1]
 c 
-print(course_id)
+# print(course_id)
 # Establish a connection to your PostgreSQL database
 connection = psycopg2.connect(
     host='localhost',
@@ -166,22 +166,7 @@ for index, row in dfDiasSemana.iterrows():
 # queryTruncateGrade = "TRUNCATE grade CASCADE;"
 # cursor.execute(queryTruncateGrade)
 
-def delete_grades(course_id):
-      try:
-          cursor.execute("DELETE FROM grade WHERE course_id = %s", (course_id,))
-          connection.commit()
-          count = cursor.rowcount
-          print(count, "Record deleted successfully ")
-      except (Exception, psycopg2.Error) as error:
-          print("Error in Delete operation", error)
-      finally:
-          # closing database connection.
-          if connection:
-            #   cursor.close()
-            #   connection.close()
-              print("PostgreSQL connection is closed")
-
-delete_grades(course_id)
+deleteBasedOnID("grade", course_id)
 
 # reset_sequence_query_grade = "ALTER SEQUENCE grade_id_seq RESTART WITH 1;"
 # cursor.execute(reset_sequence_query_grade)
@@ -204,7 +189,7 @@ for index, row in dfGrade.iterrows():
     data = (grade_id,horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id_data, semestre, id_sala, created_at, updated_at)
     
     cursor.execute(query_grade, data)
-    print(course_id)
+    # print(course_id)
 
 #------------------- disciplinas -------------------#
 

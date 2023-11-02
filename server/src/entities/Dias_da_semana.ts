@@ -8,4 +8,7 @@ export class Dias_da_semana  {
     @Column()
     dia_da_semana: string;
 
+    @Column({nullable: true} )
+    course_id: number;
+
 }

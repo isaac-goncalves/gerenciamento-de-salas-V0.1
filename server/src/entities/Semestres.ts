@@ -8,4 +8,6 @@ export class Semestres  {
     @Column()
     descricao: string;
 
+    @Column({nullable: true} )
+    course_id: number;
 }
