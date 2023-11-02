@@ -13,10 +13,11 @@ file_path = sys.argv[1]
 
 # Establish a connection to your PostgreSQL database
 connection = psycopg2.connect(
-    host='localhost',
+    #host='localhost',
+    host = '192.168.0.53',
     port='5432',
     database='gerenciamento-de-salas',
-    user='carolineamarante',
+    user='postgresql',
     password='2406'
 )
 

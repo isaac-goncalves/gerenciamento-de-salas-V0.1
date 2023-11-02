@@ -14,7 +14,8 @@ course_id = int(sys.argv[2])
 print(course_id)
 # Establish a connection to your PostgreSQL database
 connection = psycopg2.connect(
-    host='localhost',
+    #host='localhost',
+    host = '192.168.0.53',
     port='5432',
     database='gerenciamento-de-salas',
     user='postgres',
@@ -76,21 +77,37 @@ print(dfDiasSemana)
 cursor = connection.cursor()
 
 #------------------- disciplinas -------------------#
-queryTruncate = f"TRUNCATE disciplinas;"
+#queryTruncate = f"TRUNCATE disciplinas;"
+#cursor.execute(queryTruncate)
 
-cursor.execute(queryTruncate)
+def delete_disciplinas(course_id):
+      try:
+          cursor.execute("DELETE FROM grade WHERE course_id = %s", (course_id))
+          connection.commit()
+          count = cursor.rowcount
+          print(count, "Record deleted successfully ")
+      except (Exception, psycopg2.Error) as error:
+          print("Error in Delete operation", error)
+      finally:
+          # closing database connection.
+          if connection:
+            #   cursor.close()
+            #   connection.close()
+              print("PostgreSQL connection is closed")
 
-reset_sequence_query = "ALTER SEQUENCE disciplinas_id_seq RESTART WITH 1;" # reset id sequence
-cursor.execute(reset_sequence_query)
+
+delete_disciplinas(course_id)
+ # reset id sequence
 
 for index, row in dfDisciplinas.iterrows():
-    descricao = row['disciplina']
+    descricao = row['disciplina'],
+    course_id_data = int(course_id)
+    query = f"INSERT INTO disciplinas (descricao, course_id) VALUES (%s, %s);" # Modify the table name as per your requirement
 
+    data = (descricao, course_id_data)
 
-    # Construct the SQL INSERT statement
-    query = f"INSERT INTO disciplinas (descricao) VALUES ('{descricao}');" # Modify the table name as per your requirement
+    cursor.execute(query, data) 
 
-    cursor.execute(query)
 
 #------------------- professores -------------------#
 
@@ -168,7 +185,7 @@ for index, row in dfDiasSemana.iterrows():
 
 def delete_grades(course_id):
       try:
-          cursor.execute("DELETE FROM grade WHERE course_id = %s", (course_id,))
+          cursor.execute("DELETE FROM grade WHERE course_id = %s", (course_id))
           connection.commit()
           count = cursor.rowcount
           print(count, "Record deleted successfully ")
@@ -180,6 +197,7 @@ def delete_grades(course_id):
             #   cursor.close()
             #   connection.close()
               print("PostgreSQL connection is closed")
+
 
 delete_grades(course_id)
 
