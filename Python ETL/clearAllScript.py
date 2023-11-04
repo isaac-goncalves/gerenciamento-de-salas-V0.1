@@ -13,7 +13,7 @@ connection = psycopg2.connect(
 cursor = connection.cursor()
 
 # Tabelas a serem limpas e reinicializadas
-tables_to_reset = ["disciplinas", "professores", "semestres", "dias_da_semana", "grade"]
+tables_to_reset = ["disciplinas", "laboratorios" , "professores","professor_disciplina", "semestres", "dias_da_semana", "grade"]
 
 try:
     for table in tables_to_reset:

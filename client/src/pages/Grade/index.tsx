@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText } from '../Dashboard/Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, StyledCourseSelect } from '../Dashboard/Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -75,6 +75,12 @@ interface Professor {
   id: number;
   name: string;
 }
+
+interface CourseProps {
+  id: number;
+  course_name: string;
+}
+
 
 type GroupedData = {
   [key: string]: Array<ScheduleItem | IntervalItem>;
@@ -175,6 +181,12 @@ const Grade: any = ({ theme, themeName }: any) => {
       name: "Selecione um professor",
     },
   ]);
+  const [courses, setCourses] = useState<CourseProps[]>([
+    {
+      id: 0,
+      course_name: "Selecione um Curso",
+    },
+  ]);
 
   //MODALPROPS
   const [userIsScheduling, setUserIsScheduling] = useState<boolean>(false);
@@ -204,6 +216,14 @@ const Grade: any = ({ theme, themeName }: any) => {
       name: "Selecione um professor",
     },
   );
+  const [selectedCourse, setSelectedCourse] = useState<CourseProps>(
+    {
+      id: 0,
+      course_name: "Selecione um Curso",
+    },
+  );
+
+
 
   //WEIRD DATE STUFF
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -245,6 +265,7 @@ const Grade: any = ({ theme, themeName }: any) => {
       } else {
         console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
+        fetchCourses();
         setSelectedSemesterValue(userDataJson.userData.semester);
         fetchProfessors(userDataJson.token)
       }
@@ -280,7 +301,7 @@ const Grade: any = ({ theme, themeName }: any) => {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [ selectedSemesterValue, selectedProfessor, selectedMethod, selectedDate, startDate]);
+  }, [selectedSemesterValue, selectedProfessor, selectedMethod, selectedDate, startDate, selectedCourse]);
 
   useEffect(() => {
 
@@ -686,6 +707,21 @@ const Grade: any = ({ theme, themeName }: any) => {
     return `${month} de ${year}`
   }
 
+  const handleSelectCourse = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // console.log(event.target.value)
+    const courseObjectFromFetch = courses.find((course: any) => {
+      return course.id == event.target.value
+    })
+    
+    console.log(courseObjectFromFetch)
+
+    setSelectedCourse(
+      courseObjectFromFetch as any
+    )
+
+
+  }
+
   //FETCH FUNCTION
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")
@@ -704,6 +740,7 @@ const Grade: any = ({ theme, themeName }: any) => {
       console.log(error)
     })
   }
+
   async function fetchSemestreData() {
     fetch(`${apiUrl}/grade/grade`, {
       method: 'POST',
@@ -712,7 +749,8 @@ const Grade: any = ({ theme, themeName }: any) => {
       },
       body: JSON.stringify({
         semestre: selectedSemesterValue || 1,
-        date: startDate //add localStorage later
+        date: startDate, //add localStorage later
+        course_id: selectedCourse.id || 1,
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -736,7 +774,7 @@ const Grade: any = ({ theme, themeName }: any) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-         professor_id: selectedProfessor.id || 1,
+        professor_id: selectedProfessor.id || 1,
         // laboratory_id: "2",
       })
     }).then((response) => response.json()).then((data) => {
@@ -775,6 +813,17 @@ const Grade: any = ({ theme, themeName }: any) => {
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
       return setgrade(transformedData)
+    }
+    )
+  }
+  async function fetchCourses() {
+    console.log("Fetching Courses...")
+    fetch(`${apiUrl}/course`, {
+      method: 'POST',
+    }).then((response) => response.json()).then((data) => {
+      console.log(data)
+      setSelectedCourse(data[0])
+      return setCourses(data)
     }
     )
   }
@@ -920,7 +969,7 @@ const Grade: any = ({ theme, themeName }: any) => {
               Grade
             </PageName>
             <CourseName>
-              Análise e Desenv. de Sistemas
+              { selectedCourse.course_name}
             </CourseName>
             <CourseSemester>
               2º Semestre de 2023
@@ -944,7 +993,7 @@ const Grade: any = ({ theme, themeName }: any) => {
                   size={50}
                 />
               </DatepickArrowsContainer>
-              <CurrentMonth>
+              {/* <CurrentMonth>
                 <CurrentMonthText>
                   {GetCurrentMonthAndYear(startDate)}
                 </CurrentMonthText>
@@ -953,7 +1002,7 @@ const Grade: any = ({ theme, themeName }: any) => {
                     size={45}
                   />
                 </DatepickArrowsContainer>
-              </CurrentMonth>
+              </CurrentMonth> */}
               <CalendarWrapper>
                 Semana do dia
                 <StyledDatePicker
@@ -968,6 +1017,19 @@ const Grade: any = ({ theme, themeName }: any) => {
                   size={20}
                 />
               </FilterIconWrapper>
+              <StyledCourseSelect defaultValue={selectedCourse.course_name} onChange={handleSelectCourse}>
+                {courses && courses.length > 0 ? (
+                  courses.map((course) => {
+                    return (
+                      <option key={course.id} value={course.id}>
+                        {course.course_name}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option value="">No professors available</option>
+                )}
+              </StyledCourseSelect>
               <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
                 <option value="professor">
                   Professor
@@ -1011,7 +1073,6 @@ const Grade: any = ({ theme, themeName }: any) => {
                     6º
                   </option>
                 </StyledSelectValue>}
-
               <>
                 {
                   userData.userData.professor_id == 0 || userData.userData.professor_id == undefined ?

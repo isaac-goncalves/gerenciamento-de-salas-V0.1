@@ -37,6 +37,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+  border: 1px solid red;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
   @media screen and (max-width: 570px) {
     gap: 0.5rem;
@@ -115,12 +116,12 @@ export const Separator = styled.div`
 `
 
 export const ButtonWrapper = styled.div`
-  /* border: 1px solid red; */
+  border: 1px solid red;
   gap:2rem;
-  width: 70%;
+  width: 100%;
   display: flex;
 
-  justify-content: space-between;
+  justify-content: flex-end;
   input {
     width: 80%;
     height: 2.5rem;
@@ -144,6 +145,8 @@ export const ButtonsWrapper = styled.td`
   display: flex;
   /* border: 1px solid red; */
   gap: 0.2rem;
+  width: 100%;
+  justify-content: flex-end;
   align-items: center;
 `
 
@@ -229,9 +232,9 @@ export const TableSelector = styled.div`
 export const Table = styled.table`
   /* border : 1px solid red; */
   border-collapse: collapse;
-
+  color: ${props => props.theme.textcolor};
   width: 100%;
-  background-color: ${props => props.theme.white};
+  /* background-color: ${props => props.theme.mainpurple}; */
   z-index: 1;
   font-size: 0.9em;
 
@@ -282,7 +285,23 @@ export const TableHeader = styled.thead`
   top: 0; /* Fix the header at the top of the container */
 `
 
-export const TableBody = styled.tbody``
+export const TableBody = styled.tbody`
+ tr {
+    height: 3rem;
+    /* background-color: ${props => props.theme.hoverCard}; */
+  }
+
+  tr:hover {
+    background-color: ${props => props.theme.tableHover};
+    cursor: pointer;
+  }
+
+  td {
+    /* color: ${props => props.theme.textcolor}; */
+  }
+
+  /* border: 1px solid red; */
+`
 
 export const TableContainer = styled.tbody`
   max-height: 100%; /* Adjust the desired maximum height */

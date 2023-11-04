@@ -45,12 +45,11 @@ export class GradeController {
 
   async getDashboardData (request: Request, response: Response) {
 
-
     console.log('get Dashboard')
 
+    const { date, course_id } = request.body
 
-
-    const { date } = request.body
+    console.log(course_id)
 
     const dateTransformed = new Date(date).getDay()
 
@@ -69,10 +68,11 @@ export class GradeController {
                   grade.semestre, 
                   grade.created_at, 
                   grade.updated_at, 
+                  grade.course_id,
                   professores.name as professor, 
                   disciplinas.descricao as disciplina, 
                   disciplinas.capacidade as capacidade,
-                  laboratorios.descricao as laboratorio 
+                  laboratorios.descricao as laboratorio   
               FROM 
                   grade 
               LEFT JOIN 
@@ -83,6 +83,8 @@ export class GradeController {
                   laboratorios ON grade.id_sala = laboratorios.id 
               WHERE 
                   dia_da_semana = '${dateTransformed}'
+              AND
+                  grade.course_id = '${course_id}'
               ORDER BY
                   grade.id ASC
             `
@@ -210,6 +212,7 @@ export class GradeController {
 
     const { semestre } = request.body
     const { date } = request.body
+    const { course_id } = request.body
 
     // console.log(date)
 
@@ -239,7 +242,9 @@ export class GradeController {
               LEFT JOIN 
                   laboratorios ON grade.id_sala = laboratorios.id 
               WHERE 
-                  grade.semestre = '${semestre}' 
+                  grade.semestre = '${semestre}'
+              AND
+                  grade.course_id = '${course_id}' 
               ORDER BY
                   grade.id ASC
             `

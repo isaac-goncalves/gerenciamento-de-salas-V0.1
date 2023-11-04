@@ -250,6 +250,43 @@ export const StyledSelect = styled.select`
   }
 `
 
+export const StyledCourseSelect = styled.select`
+  font-size: 0.4rem;
+  background-color: ${props => props.theme.white};
+  color: ${props => props.theme.textcolor};
+  z-index: 99;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  max-width: 19rem;
+  padding: 8px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  @media screen and (max-width: 500px) {
+    padding: 0.5rem;
+
+    option {
+      font-size: 0.8rem;
+    }
+  }
+
+  option {
+    font-size: 0.8rem;
+  }
+
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: ${props => props.theme.mainpurple};
+  }
+
+  &:focus {
+    border-color: ${props => props.theme.mainpurple};
+  }
+`
+
 export const StyledSelectValue = styled.select`
   font-size: 0.4rem;
   background-color: ${props => props.theme.white};

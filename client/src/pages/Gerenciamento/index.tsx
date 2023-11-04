@@ -337,6 +337,7 @@ const Gerenciamento: any = ({ theme }: any): any => {
         name: string
         surname: string
         email: string
+        course_name: string
         user_id: number
         disciplina: string
         created_at: string
@@ -353,6 +354,7 @@ const Gerenciamento: any = ({ theme }: any): any => {
                             <th>Sobrenome</th>
                             <th>Email</th>
                             <th>Disciplina</th>
+                            <th>Curso</th>
                             <th>Criado em</th>
                         </TableRowHeader>
                     </TableHeader>
@@ -364,6 +366,7 @@ const Gerenciamento: any = ({ theme }: any): any => {
                                 <CenteredTableData>{professor.surname}</CenteredTableData>
                                 <CenteredTableData>{professor.email}</CenteredTableData>
                                 <CenteredTableData>{professor.disciplina}</CenteredTableData>
+                                <CenteredTableData>{professor.course_name}</CenteredTableData>
                                 <CenteredTableData>{formatDistanceToNow(new Date(professor.created_at), { locale: ptBR })} atrás</CenteredTableData>
                             </tr>
                         ))}

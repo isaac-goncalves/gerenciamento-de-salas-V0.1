@@ -14,4 +14,7 @@ export class Laboratorios  {
     @Column()
     capacidade: number;
 
+    @Column({ nullable: true })
+    course_id: number;
+
 }

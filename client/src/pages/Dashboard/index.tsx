@@ -66,6 +66,11 @@ interface ProfessoreProps {
   name: string;
 }
 
+interface CourseProps {
+  id: number;
+  course_name: string;
+}
+
 interface IntervalItem {
   semestre: string;
   disciplina: string;
@@ -192,6 +197,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     },
   ]);
 
+  const [courses, setCourses] = useState<CourseProps[]>([
+    {
+      id: 0,
+      course_name: "Selecione um Curso",
+    },
+  ]);
+
+
   //MODALPROPS
   const [userIsScheduling, setUserIsScheduling] = useState<boolean>(false);
   const [editedData, setEditedData] = useState<any>({});
@@ -220,6 +233,15 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       name: "Selecione um professor",
     },
   );
+
+  const [selectedCourse, setSelectedCourse] = useState<CourseProps>(
+    {
+      id: 0,
+      course_name: "Selecione um Curso",
+    },
+  );
+
+
 
   //WEIRD DATE STUFF
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -261,6 +283,8 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       } else {
         console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
+        fetchCouses();
+        fetchDashboard()
         setSelectedSemesterValue(userDataJson.userData.semester);
 
       }
@@ -282,6 +306,9 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       if (!userData.userData.semesterverified) {
         setAskSemesterModalIsVisible(true)
       }
+
+     
+
       //FETCH DATA THAT CHANGES ON THE FILTERS
       if (selectedMethod == "professor") {
         fetchProfessorData();
@@ -295,7 +322,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [selectedMethod, selectedSemesterValue, currentSelectedDate]);
+  }, [selectedMethod, selectedSemesterValue, currentSelectedDate, selectedCourse]);
 
   useEffect(() => {
 
@@ -427,7 +454,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               // console.log(currentTime)
 
               return (
-                <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
+                <Schedule  isCurrentTime={isCurrentTime}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
                   <Disciplina agendamentoCancelExist={agendamentoCancelExist}>{disciplina}</Disciplina>
                   <Professor agendamentoCancelExist={agendamentoCancelExist}>{professor}</Professor>
@@ -568,7 +595,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     setSchedulingModalIsVisible(false);
     if (resetParams) {
       setUserIsScheduling(false)
-      fetchData()
+      fetchDashboard()
     };
   };
 
@@ -673,6 +700,19 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       professorObject
     )
   }
+  const handleSelectCourse = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // console.log(event.target.value)
+    const courseObject: CourseProps = {
+      id: parseInt(event.target.value),
+      course_name: "test"
+    }
+
+    setSelectedCourse(
+      courseObject
+    )
+
+  }
+
   const handleSemesterChange = (event: any) => {
     setSelectedSemesterValue(event.target.value)
   }
@@ -717,7 +757,8 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       },
       body: JSON.stringify({
         semestre: selectedSemesterValue || 1,
-        date: currentSelectedDate //add localStorage later
+        date: currentSelectedDate, //add localStorage later
+        course_id: selectedCourse.id || 1,
       })
     }).then((response) => response.json()).then((data) => {
       console.log(data)
@@ -760,7 +801,20 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     }
     )
   }
-  async function fetchData() {
+
+  async function fetchCouses() {
+    console.log("Fetching Courses...")
+    fetch(`${apiUrl}/course`, {
+      method: 'POST',
+    }).then((response) => response.json()).then((data) => {
+      console.log(data)
+      setSelectedCourse(data[0])
+      return setCourses(data)
+    }
+    )
+  }
+
+  async function fetchDashboard() {
     fetch(`${apiUrl}/grade/dashboard`, {
       method: 'POST',
       headers: {
@@ -768,8 +822,8 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       },
       body: JSON.stringify({
         semestre: selectedSemesterValue || 1,
-        date: selectedDate || new Date() //add localStorage later
-
+        date: selectedDate || new Date(), //add localStorage later
+        course_id: selectedCourse.id || 1,
       })
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
@@ -822,16 +876,16 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
   }
 
-  function capitalizeFirstLetter(str) {
+  function capitalizeFirstLetter(str: any) {
     // Check if the input is not an empty string
     if (str.length > 0) {
-        // Capitalize the first letter and concatenate it with the rest of the string
-        return str.charAt(0).toUpperCase() + str.slice(1);
+      // Capitalize the first letter and concatenate it with the rest of the string
+      return str.charAt(0).toUpperCase() + str.slice(1);
     } else {
-        // Handle empty string
-        return str;
+      // Handle empty string
+      return str;
     }
-}
+  }
 
   //RENDERS -------------------------------------------------------------------------
   return (
@@ -937,7 +991,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               Dashboard
             </PageName>
             <CourseName>
-              Análise e Desenv. de Sistemas
+
             </CourseName>
             <CourseSemester>
               2º Semestre de 2023
@@ -986,67 +1040,24 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                   size={20}
                 />
               </FilterIconWrapper>
-              <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
-                <option value="professor">
-                  Professor
-                </option>
-                <option value="semestre">
-                  Semestre
-                </option>
+              <StyledSelect defaultValue={selectedCourse.course_name} onChange={handleSelectCourse}>
+                {courses && courses.length > 0 ? (
+                  courses.map((course) => {
+                    return (
+                      <option key={course.id} value={course.id}>
+                        {course.course_name}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option value="">No professors available</option>
+                )}
               </StyledSelect>
-              {selectedMethod === "professor" ?
-                <StyledSelect defaultValue={selectedProfessor.name} onChange={handleSelectProfessor}>
-                  {professores && professores.length > 0 ? (
-                    professores.map((professor) => {
-                      return (
-                        <option key={professor.id} value={professor.id}>
-                          {professor.name}
-                        </option>
-                      );
-                    })
-                  ) : (
-                    <option value="">No professors available</option>
-                  )}
-                </StyledSelect>
-                :
-                <StyledSelectValue id={'selectFilter'} value={selectedSemesterValue} onChange={handleSemesterChange}>
-                  <option value="1">
-                    1º
-                  </option>
-                  <option value="2">
-                    2º
-                  </option>
-                  <option value="3">
-                    3º
-                  </option>
-                  <option value="4">
-                    4º
-                  </option>
-                  <option value="5">
-                    5º
-                  </option>
-                  <option value="6">
-                    6º
-                  </option>
-                </StyledSelectValue>}
-
-              <>
-                {
-                  userData.userData.professor_id == 0 || userData.userData.professor_id == undefined ?
-                    null
-                    :
-                    (
-                      userIsScheduling ?
-                        <ButtonConfimarAgendamento onClick={handleActionButtonClick}>Cancelar</ButtonConfimarAgendamento>
-                        :
-                        <ButtonConfimarAgendamento onClick={handleActionButtonClick}>Novo agendamento</ButtonConfimarAgendamento>
-                    )
-                }
-              </>
+          
+             
             </FilterWrapper>
           </DatePickWrapper>
         </Header>
-
         <ClassesContainer>
           <CockAndMainContainerWrapper>
             <ClockContainer>

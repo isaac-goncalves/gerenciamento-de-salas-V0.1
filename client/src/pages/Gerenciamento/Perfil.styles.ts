@@ -275,7 +275,7 @@ export const TableWrapper = styled.div`
 export const Table = styled.table`
   border-collapse: collapse;
   width: 100%;
-  background-color: ${props => props.theme.lightgray};
+  /* background-color: ${props => props.theme.lightgray}; */
   z-index: 1;
   font-size: 0.8em;
   /* margin-bottom: 2px solid ${props => props.theme.mainpurple}; */

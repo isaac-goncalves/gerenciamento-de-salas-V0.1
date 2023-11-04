@@ -100,6 +100,17 @@ cursor = connection.cursor()
 #queryTruncate = f"TRUNCATE disciplinas;"
 #cursor.execute(queryTruncate)
 
+cursor.execute("SELECT MAX(id) FROM disciplinas;")
+
+lastDisciplinaId = cursor.fetchone()[0]
+
+if lastDisciplinaId is None:
+    lastDisciplinaId = 0
+
+print(
+    "\033[92m {}\033[00m" .format(lastDisciplinaId), "Last disciplina id"
+)
+
 deleteBasedOnID("disciplinas", course_id)
 # reset id sequence
 
@@ -114,6 +125,16 @@ for index, row in dfDisciplinas.iterrows():
 
 
 #------------------- professores -------------------#
+
+cursor.execute("SELECT MAX(id) FROM professores;")
+
+lastProfessorId = cursor.fetchone()[0]
+if lastProfessorId is None:
+    lastProfessorId = 0
+
+print(
+    "\033[92m {}\033[00m" .format(lastProfessorId), "Last professor id"
+)
 
 deleteBasedOnID("professores", course_id)
 
@@ -136,12 +157,24 @@ for index, row in dfProfessores.iterrows():
 
 # deleteBasedOnID("laboratorios", course_id)
 
+cursor.execute("SELECT MAX(id) FROM laboratorios;")
+
+lastLaboratorioId = cursor.fetchone()[0]
+if lastLaboratorioId is None:
+    lastLaboratorioId = 0
+
+print(
+    "\033[92m {}\033[00m" .format(lastLaboratorioId), "Last laboratorios id"
+)
+
+deleteBasedOnID("laboratorios", course_id)
+
 for index, row in dfLaboratorio.iterrows():
     descricao = row['descricao']
     andar = int(row['andar'])
     capacidade = int(row['capacidade'])
 
-    query_laboratorios = f"INSERT INTO laboratorios (descricao, andar, capacidade) VALUES ('{descricao}', '{andar}', {capacidade});"    
+    query_laboratorios = f"INSERT INTO laboratorios (course_id, descricao, andar, capacidade) VALUES ('{course_id}','{descricao}', '{andar}', {capacidade});"    
     cursor.execute(query_laboratorios)
 
 #------------------- Semestres -------------------#
@@ -177,6 +210,8 @@ deleteBasedOnID("grade", course_id)
 # reset_sequence_query_grade = "ALTER SEQUENCE grade_id_seq RESTART WITH 1;"
 # cursor.execute(reset_sequence_query_grade)
 
+# lastProfessorId = cursor.execute("SELECT MAX(id) FROM professores;")
+
 for index, row in dfGrade.iterrows():
     course_id_data = int(course_id)
     horario_inicio = row['horario_inicio']
@@ -192,7 +227,7 @@ for index, row in dfGrade.iterrows():
     
     query_grade = "INSERT INTO grade (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id, semestre, id_sala, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);" # Modify the table name as per your requirement
     
-    data = (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id_data, semestre, id_sala, created_at, updated_at)
+    data = (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor + lastProfessorId, id_disciplina + lastDisciplinaId, course_id_data, semestre, id_sala + lastLaboratorioId, created_at, updated_at)
     
     cursor.execute(query_grade, data)
     
@@ -234,6 +269,7 @@ print("Checking!")
 # print("Rows: ", len(rows))
 #print in green 
 print("\033[92m {}\033[00m" .format(len(rows)), "Records inserted successfully into grade table")
+
 
 end_time = time.time()
 elapsed_time = end_time - start_time

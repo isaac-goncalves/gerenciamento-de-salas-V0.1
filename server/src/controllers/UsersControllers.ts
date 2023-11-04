@@ -28,6 +28,7 @@ import { professorDisciplinaRepositories } from '../repositories/professorDiscip
 import { tr } from 'date-fns/locale'
 import { guestRepositories } from '../repositories/guestRepositories'
 import { Guests } from '../entities/Guests'
+import { coursesRepository } from '../repositories/coursesRepository'
 
 // Define storage for uploaded files
 
@@ -49,15 +50,7 @@ const fileFilter = (
 
 export class UserController {
   async create (request: Request, response: Response) {
-    const { 
-      name,
-      surname, 
-      email, 
-      password, 
-      role,
-       semester, 
-       discipline
-       } =
+    const { name, surname, email, password, role, semester, discipline } =
       request.body
 
     //CONSOLE
@@ -231,7 +224,7 @@ export class UserController {
         if (semester == undefined) {
           return response.status(400).json({ error: 'Semester is missing' })
         }
-        
+
         const newGuest: any = await guestRepositories.create({
           email,
           semester: semester,
@@ -597,8 +590,7 @@ export class UserController {
         console.log('User updated!')
 
         return response.status(200).json({ message: 'User updated' })
-      }else
-      if (role == 'guest') {
+      } else if (role == 'guest') {
         //FIND USER ON ALUNO TABLE
 
         const guest = await guestRepositories.findOneBy({
@@ -727,12 +719,33 @@ export class UserController {
     // console.log('get Professores')
 
     try {
-      const usuarios = await professoresRepository.find()
+      const professores = await professoresRepository.find()
 
-      // console.log(JSON.stringify(usuarios, null, 2))
+      // add course name from couses repository
+      const professorsWithCursoName: any[] = [];
 
-      return response.status(200).json(usuarios)
+      await Promise.all(
+        professores.map(async (item: any) => {
+          const courseName = await coursesRepository.findOneBy({
+            id: item.course_id,
+          });
+      
+          // console.log(courseName?.course_name);
+      
+          item.course_name = courseName?.course_name || 'no course name'
+      
+           console.log(item);
+      
+          professorsWithCursoName.push(item);
+        })
+      );
+      // console.log(JSON.stringify(professorsWithCursoName, null, 2))
+
+      //  console.log(JSON.stringify(professores, null, 2))
+
+      return response.status(200).json(professorsWithCursoName)
     } catch (error) {
+      console.log(error)
       return response.status(500).json({ message: 'internal server error' })
     }
   }
@@ -861,8 +874,7 @@ export class UserController {
     res.sendFile(file)
   }
 
-  async setGuestSemester(request: Request, response: Response) {
-  
+  async setGuestSemester (request: Request, response: Response) {
     const { email, semester } = request.body
 
     console.log(request.body)
@@ -873,7 +885,9 @@ export class UserController {
       return response.status(400).json({ error: 'User does not exist' })
     }
 
-    const guestExists = await guestRepositories.findOneBy({ user_id: userExists.id })
+    const guestExists = await guestRepositories.findOneBy({
+      user_id: userExists.id
+    })
 
     if (!guestExists) {
       return response.status(400).json({ error: 'Guest does not exist' })
@@ -893,6 +907,5 @@ export class UserController {
     console.log(updatedGuestObject)
 
     return response.status(200).json({ message: 'Guest updated' })
-
   }
 }

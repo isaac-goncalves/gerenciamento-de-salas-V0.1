@@ -258,7 +258,7 @@ const Templates: any = ({ theme }: any): any => {
                                 <NowrapText>{course.course_name}</NowrapText>
                                 <CenteredTableData>{6}</CenteredTableData>
                                 <CenteredTableData>NETURNO</CenteredTableData>
-                                <td>
+                                <CenteredTableData>
                                     <ButtonsWrapper>
                                         <EditButton type="button" ><AiFillEdit />
                                             <p>
@@ -277,7 +277,7 @@ const Templates: any = ({ theme }: any): any => {
                                             </p>
                                         </DeleteButton>
                                     </ButtonsWrapper>
-                                </td>
+                                </CenteredTableData>
                                 {/* <CenteredTableData>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</CenteredTableData>
                                 <CenteredTableData>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</CenteredTableData> */}
                             </tr>
@@ -410,12 +410,11 @@ const Templates: any = ({ theme }: any): any => {
                     </CounterWrapper>
                 </Header>
                 <PageTitle>Templates</PageTitle>
-                <TemplateImage src={templateImage} />
-                <StyledButton onClick={handleCreateNewCourse}>"CRIAR NOVO CURSO"</StyledButton>
+                {/* <TemplateImage src={templateImage} /> */}
                 <CoursesTable />
                 <ButtonWrapper>
+                    <StyledButton onClick={handleCreateNewCourse}>"CRIAR NOVO CURSO"</StyledButton>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />
-                    <FileUploadButton loggedUserRole={userData.userData.role} />
                 </ButtonWrapper>
                 {
                     // isLoading ?
