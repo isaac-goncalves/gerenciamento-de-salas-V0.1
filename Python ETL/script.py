@@ -157,25 +157,28 @@ for index, row in dfProfessores.iterrows():
 
 # deleteBasedOnID("laboratorios", course_id)
 
-cursor.execute("SELECT MAX(id) FROM laboratorios;")
-
-lastLaboratorioId = cursor.fetchone()[0]
-if lastLaboratorioId is None:
-    lastLaboratorioId = 0
-
-print(
-    "\033[92m {}\033[00m" .format(lastLaboratorioId), "Last laboratorios id"
-)
-
-deleteBasedOnID("laboratorios", course_id)
-
 for index, row in dfLaboratorio.iterrows():
     descricao = row['descricao']
     andar = int(row['andar'])
     capacidade = int(row['capacidade'])
+    numero_sala = index + 1  # Calculate the numero_sala
 
-    query_laboratorios = f"INSERT INTO laboratorios (course_id, descricao, andar, capacidade) VALUES ('{course_id}','{descricao}', '{andar}', {capacidade});"    
-    cursor.execute(query_laboratorios)
+    # Check if the record with the same numero_sala exists
+    check_query = f"SELECT * FROM laboratorios WHERE numero_sala = {numero_sala};"
+    cursor.execute(check_query)
+    existing_record = cursor.fetchone()
+
+    if existing_record:
+        # Update the existing record if it exists
+        update_query = f"UPDATE laboratorios SET descricao = '{descricao}', andar = {andar}, capacidade = {capacidade} WHERE numero_sala = {numero_sala};"
+        cursor.execute(update_query)
+    else:
+        # Insert a new record if it doesn't exist
+        insert_query = f"INSERT INTO laboratorios (numero_sala, descricao, andar, capacidade) VALUES ({numero_sala}, '{descricao}', {andar}, {capacidade});"
+        cursor.execute(insert_query)
+
+# Commit the changes to the database
+connection.commit()
 
 #------------------- Semestres -------------------#
 
@@ -227,7 +230,7 @@ for index, row in dfGrade.iterrows():
     
     query_grade = "INSERT INTO grade (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id, semestre, id_sala, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);" # Modify the table name as per your requirement
     
-    data = (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor + lastProfessorId, id_disciplina + lastDisciplinaId, course_id_data, semestre, id_sala + lastLaboratorioId, created_at, updated_at)
+    data = (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor + lastProfessorId, id_disciplina + lastDisciplinaId, course_id_data, semestre, id_sala, created_at, updated_at)
     
     cursor.execute(query_grade, data)
     

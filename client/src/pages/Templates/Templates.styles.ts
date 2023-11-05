@@ -37,7 +37,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
   @media screen and (max-width: 570px) {
     gap: 0.5rem;
@@ -57,6 +57,41 @@ export const Header = styled.div`
 export const PageTitle = styled.h1`
   font-size: 2rem;
   color: ${props => props.theme.textcolor};
+`
+
+export const FilterWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+
+  select {
+    width: 10rem;
+    height: 2.5rem;
+    border: none;
+    background-color: ${props => props.theme.lightgray};
+    border-radius: 4px;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    color: ${props => props.theme.textcolor};
+    border: 1px solid ${props => props.theme.mainpurple};
+
+    :focus {
+      outline: none;
+    }
+  }
+
+  option {
+    width: 10rem;
+    height: 2.5rem;
+    border: none;
+    background-color: ${props => props.theme.lightgray};
+    border-radius: 4px;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    color: ${props => props.theme.textcolor};
+    margin-left: 1rem;
+  }
 `
 
 export const TemplateImage = styled.img`
@@ -117,7 +152,7 @@ export const Separator = styled.div`
 
 export const ButtonWrapper = styled.div`
   border: 1px solid red;
-  gap:2rem;
+  gap: 2rem;
   width: 100%;
   display: flex;
 
@@ -137,16 +172,16 @@ export const ButtonWrapper = styled.div`
     flex-direction: column;
     gap: 1rem;
   }
-
-
 `
 
 export const ButtonsWrapper = styled.td`
   display: flex;
   /* border: 1px solid red; */
-  gap: 0.2rem;
-  width: 100%;
+  gap: 0.5rem;
+  /* width: 100%; */
   justify-content: flex-end;
+
+  /* justify-content: flex-end; */
   align-items: center;
 `
 
@@ -166,7 +201,7 @@ export const EditButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s ease;
 
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
   p {
     font-size: 0.8rem;
   }
@@ -286,7 +321,7 @@ export const TableHeader = styled.thead`
 `
 
 export const TableBody = styled.tbody`
- tr {
+  tr {
     height: 3rem;
     /* background-color: ${props => props.theme.hoverCard}; */
   }

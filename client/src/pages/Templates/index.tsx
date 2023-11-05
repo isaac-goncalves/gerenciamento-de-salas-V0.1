@@ -22,7 +22,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Header, Separator,
-    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper, ContainerElement, StyledButton
+    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper, ContainerElement, StyledButton, FilterWrapper
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -31,7 +31,7 @@ import ModalEdit from '../Components/ModalEdit';
 import NewCourseModal from '../Components/NewCourseModal'
 import FileUploadButton from '../Components/FileUploadButton';
 import FileDownloadButton from '../Components/FileDownloadButton';
-import { CenteredTableData, TableRowHeader, TableWrapper } from '../Gerenciamento/Perfil.styles';
+import { CenteredTableData, FilterIcon, TableRowHeader, TableWrapper } from '../Gerenciamento/Perfil.styles';
 import { AiFillEdit, AiOutlineDownload, AiOutlineUpload } from 'react-icons/ai';
 import Swal from 'sweetalert2';
 
@@ -71,13 +71,15 @@ const Templates: any = ({ theme }: any): any => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [Error, setError] = React.useState(true);
 
-    const [selectedTable, setSelectedTable] = useState('agendamentos');
     const [selectedCategory, setSelectedCategory] = useState('Alunos');
 
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
 
     const [courseData, setCourseData] = useState<any>([]);
+    const [laboratoriosData, setLaboratoriosData] = useState<any>([]);
+
+    const [selectedTable, setSelectedTable] = useState<String>('cursos');
 
     const [modalNewCourseIsVisible, setModalNewCourseIsVisible] = useState(false);
 
@@ -101,9 +103,7 @@ const Templates: any = ({ theme }: any): any => {
                 }, 2000);
             } else {
                 console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
-
                 fetchData();
-
                 setUserData(userDataJson);
             }
         }
@@ -122,7 +122,8 @@ const Templates: any = ({ theme }: any): any => {
                 userDataResponse,
                 alunosDataResponse,
                 professoresDataResponse,
-                coursesDataResponse
+                coursesDataResponse,
+                laboratoriosDataResponse
             ] = await Promise.all([
                 fetch(`${apiUrl}/agendamento`, {
                     method: 'post',
@@ -138,12 +139,16 @@ const Templates: any = ({ theme }: any): any => {
                 }).then(res => res.json()),
                 fetch(`${apiUrl}/course`, {
                     method: 'post',
+                }).then(res => res.json()),
+                fetch(`${apiUrl}/laboratory`, {
+                    method: 'post',
                 }).then(res => res.json())
             ]);
 
             setUserFetchedData(userDataResponse);
             setAppointmentData(appointmentDataResponse);
             setAlunosData(alunosDataResponse);
+            setLaboratoriosData(laboratoriosDataResponse.reverse());
 
             const ProfessorWithOutFirstElement = professoresDataResponse.slice(1);
 
@@ -196,13 +201,21 @@ const Templates: any = ({ theme }: any): any => {
 
     }
 
+    interface LaboratoryData {
+        id: number,
+        descricao: string,
+        capacidade: number,
+        andar: number,
+        numero_sala: number,
+    }
+
     interface DataProps {
         id: number,
         course_name: string,
     }
 
 
-    const handleDeleteCourse = (courseData: DataProps) => {
+    const handleDelete = (type: string ,deleteData: any) => {
 
         Swal.fire({
             title: 'Você tem certeza?',
@@ -214,18 +227,18 @@ const Templates: any = ({ theme }: any): any => {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                handleDeleteCourseConfirmed(courseData);
+                handleDeleteConfirmed(type, deleteData);
             }
         })
 
 
     }
 
-    const handleDeleteCourseConfirmed = async (courseData: DataProps) => {
+    const handleDeleteConfirmed = async (type: string, data: DataProps) => {
         console.log('handleDeleteCourse');
-        fetch(`${apiUrl}/course/delete`, {
+        fetch(`${apiUrl}/${type}/delete`, {
             method: 'post',
-            body: JSON.stringify({ id: courseData.id })
+            body: JSON.stringify({ id: data.id })
         }).then(res => res.json()).then(res => {
             console.log(res);
             toast.success('Curso deletado com sucesso!');
@@ -270,8 +283,58 @@ const Templates: any = ({ theme }: any): any => {
                                                 Download
                                             </p>
                                         </EditButton>
-                                        <FileUploadButton action={""} course={course.id} loggedUserRole={userData.userData.role} />
-                                        <DeleteButton type="button" onClick={() => handleDeleteCourse(course)} ><RiDeleteBinLine />
+                                        <FileUploadButton action={""} course={course.id} loggedUserRole={userData.userData.role} uploadText='Upload Template' />
+                                        <DeleteButton type="button" onClick={() => handleDelete("course", course)} ><RiDeleteBinLine />
+                                            <p>
+                                                Excluir
+                                            </p>
+                                        </DeleteButton>
+                                    </ButtonsWrapper>
+                                </CenteredTableData>
+                                {/* <CenteredTableData>{formatDistanceToNow(new Date(user.created_at), { locale: ptBR })} atrás</CenteredTableData>
+                                <CenteredTableData>{formatDistanceToNow(new Date(user.updated_at), { locale: ptBR })} atrás</CenteredTableData> */}
+                            </tr>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableWrapper>
+        )
+    }
+
+    const LabsTable = ({ data }: any) => {
+        return (
+            <TableWrapper>
+                <Table>
+                    <TableHeader>
+                        <TableRowHeader>
+                            <th>ID</th>
+                            <th>Laboratorio</th>
+                            <th>ANDAR</th>
+                            <th>CAPACIDADE</th>
+                            <th>Numero Sala</th>
+                            <th>Actions</th>
+                            {/* <th>Criado</th>
+                            <th>Atualizado</th> */}
+                        </TableRowHeader>
+                    </TableHeader>
+                    <TableBody>
+                        {laboratoriosData.map((laboratorio: LaboratoryData) => (
+                            <tr key={laboratorio.id}>
+                                <CenteredTableData>{laboratorio.id}</CenteredTableData>
+                                <CenteredTableData>{laboratorio.descricao}</CenteredTableData>
+                                <CenteredTableData>{laboratorio.andar}º</CenteredTableData>
+                                <CenteredTableData>{laboratorio.capacidade} Alunos</CenteredTableData>
+                                <CenteredTableData>{laboratorio.numero_sala}</CenteredTableData>
+                                <CenteredTableData>
+                                    <ButtonsWrapper>
+                                        <EditButton type="button" >
+                                            <AiFillEdit />
+                                            <p>
+                                                Edit
+                                            </p>
+                                        </EditButton>
+                                        <FileUploadButton action={""} course={laboratorio.id} loggedUserRole={userData.userData.role} uploadText='Upload Picture' />
+                                        <DeleteButton type="button" onClick={() => handleDelete("laboratorio", laboratorio)} ><RiDeleteBinLine />
                                             <p>
                                                 Excluir
                                             </p>
@@ -411,7 +474,19 @@ const Templates: any = ({ theme }: any): any => {
                 </Header>
                 <PageTitle>Templates</PageTitle>
                 {/* <TemplateImage src={templateImage} /> */}
-                <CoursesTable />
+                <FilterWrapper>
+                    <FilterIcon
+                        size={20}
+                    />
+                    <select name="table" id="table" onChange={(e) => setSelectedTable(e.target.value)}>
+                        <option value="cursos">Cursos</option>
+                        <option value="laboratorios">Laboratórios</option>
+                    </select>
+                </FilterWrapper>
+                {selectedTable == 'cursos' ?
+                    <CoursesTable /> :
+                    <LabsTable />
+                }
                 <ButtonWrapper>
                     <StyledButton onClick={handleCreateNewCourse}>"CRIAR NOVO CURSO"</StyledButton>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />

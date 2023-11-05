@@ -5,6 +5,9 @@ export class Laboratorios  {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({nullable: true})
+    numero_sala: number;
+
     @Column()
     descricao: string;
 
@@ -13,8 +16,5 @@ export class Laboratorios  {
 
     @Column()
     capacidade: number;
-
-    @Column({ nullable: true })
-    course_id: number;
 
 }

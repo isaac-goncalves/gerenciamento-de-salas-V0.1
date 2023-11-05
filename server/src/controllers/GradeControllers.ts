@@ -80,7 +80,7 @@ export class GradeController {
               LEFT JOIN 
                   disciplinas ON grade.id_disciplina = disciplinas.id 
               LEFT JOIN 
-                  laboratorios ON grade.id_sala = laboratorios.id 
+                  laboratorios ON grade.id_sala = laboratorios.numero_sala
               WHERE 
                   dia_da_semana = '${dateTransformed}'
               AND
@@ -126,7 +126,7 @@ export class GradeController {
             LEFT JOIN
             professores ON id_professor = professores.id
             LEFT JOIN
-            laboratorios ON id_laboratorio = laboratorios.id
+            laboratorios ON id_laboratorio = laboratorios.numero_sala
             WHERE
             id_grade = '${id_grade}'
             AND 
@@ -158,7 +158,7 @@ export class GradeController {
           LEFT JOIN
           professores ON id_professor = professores.id
           LEFT JOIN
-          laboratorios ON id_laboratorio = laboratorios.id
+          laboratorios ON id_laboratorio = laboratorios.numero_sala
           WHERE
           id_grade = '${id_grade}'
           AND 
@@ -204,8 +204,6 @@ export class GradeController {
     }
   }
 
-
-
   async getGradeData (request: Request, response: Response) {
 
     console.log('get Grade')
@@ -240,7 +238,7 @@ export class GradeController {
               LEFT JOIN 
                   disciplinas ON grade.id_disciplina = disciplinas.id 
               LEFT JOIN 
-                  laboratorios ON grade.id_sala = laboratorios.id 
+                  laboratorios ON grade.id_sala = laboratorios.numero_sala
               WHERE 
                   grade.semestre = '${semestre}'
               AND
@@ -286,7 +284,7 @@ export class GradeController {
             LEFT JOIN
             professores ON id_professor = professores.id
             LEFT JOIN
-            laboratorios ON id_laboratorio = laboratorios.id
+            laboratorios ON id_laboratorio = laboratorios.numero_sala
             WHERE
             id_grade = '${id_grade}'
             AND 
@@ -318,7 +316,7 @@ export class GradeController {
           LEFT JOIN
           professores ON id_professor = professores.id
           LEFT JOIN
-          laboratorios ON id_laboratorio = laboratorios.id
+          laboratorios ON id_laboratorio = laboratorios.numero_sala
           WHERE
           id_grade = '${id_grade}'
           AND 
@@ -392,7 +390,7 @@ export class GradeController {
           LEFT JOIN
             professores ON id_professor = professores.id
           LEFT JOIN
-            laboratorios ON id_laboratorio = laboratorios.id
+            laboratorios ON id_laboratorio = laboratorios.numero_sala
           WHERE
             id_laboratorio = '${id_laboratorio}'
         `
@@ -483,7 +481,7 @@ export class GradeController {
             LEFT JOIN
               professores ON CAST(id_professor AS INTEGER) = professores.id
             LEFT JOIN
-              laboratorios ON CAST(id_laboratorio AS INTEGER) = laboratorios.id
+              laboratorios ON CAST(id_laboratorio AS INTEGER) = laboratorios.numero_sala
             WHERE
               id_grade = '${id_grade}'
           `
@@ -534,7 +532,7 @@ export class GradeController {
     disciplinas ON grade.id_disciplina = disciplinas.id
     LEFT JOIN
 
-    laboratorios ON grade.id_sala = laboratorios.id
+    laboratorios ON grade.id_sala = laboratorios.numero_sala
     WHERE
     grade.id_professor = '${professor_id}'
     AND

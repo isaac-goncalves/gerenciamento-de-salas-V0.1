@@ -211,6 +211,7 @@ export const TableSelector = styled.div`
     box-sizing: border-box;
     color: ${props => props.theme.textcolor};
     margin-right: 1rem;
+    border: 1px solid ${props => props.theme.mainpurple};
   }
 
   option {

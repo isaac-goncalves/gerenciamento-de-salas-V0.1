@@ -28,7 +28,6 @@ const Label = styled.label`
   cursor: pointer;
   transition: background-color 0.3s ease;
 
-  margin-left: 0.5rem;
   p {
     font-size: 0.8rem;
   }
@@ -44,10 +43,11 @@ interface FileUploadButtonProps {
   loggedUserRole: string;
   action: string;
   course: number;
+  uploadText: string;
 }
 
 // FileUploadButton component
-const FileUploadButton = ({ course, userId, loggedUserRole, action }: FileUploadButtonProps) => {
+const FileUploadButton = ({ course, userId, loggedUserRole, action, uploadText }: FileUploadButtonProps) => {
 
   const [loggedUser, setLoggedUser] = React.useState('');
   const [selectedCourse, setSelectedCourse] = React.useState(0);
@@ -109,7 +109,7 @@ const FileUploadButton = ({ course, userId, loggedUserRole, action }: FileUpload
         size={25}
       />
       <p>
-        Enviar Arquivo
+        {uploadText}
       </p>
       <FileInput
         // disabled={loggedUser === 'aluno' || loggedUser == 'guest' ? true : false}
