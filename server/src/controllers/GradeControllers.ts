@@ -4,6 +4,7 @@ import { gradeRepositories } from '../repositories/gradeRepositories'
 import { agendamentosRepository } from '../repositories/agendamentoRepository'
 import { addDays, nextFriday, setDay, startOfWeek } from 'date-fns'
 import { semestresRepository } from '../repositories/semestresRepository'
+import { id } from 'date-fns/locale'
 // import { professoresRepository } from "../repositories/professoresRepository";
 // import { laboratoriosRepository } from "../repositories/laboratoriosRepository";
 // import { disciplinasRepository } from "../repositories/disciplinasRepositories";
@@ -41,10 +42,7 @@ function formatDateForSQL (date: Date) {
 }
 
 export class GradeController {
-
-
   async getDashboardData (request: Request, response: Response) {
-
     console.log('get Dashboard')
 
     const { date, course_id } = request.body
@@ -53,13 +51,44 @@ export class GradeController {
 
     const dateTransformed = new Date(date).getDay()
 
-     console.log(dateTransformed)
+    console.log(dateTransformed)
 
     try {
       //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
       //pegar o semestre da pessoa e filtrar tambem
 
-      const query = `
+      let query = ''
+
+      if (course_id == 0 || course_id == null || course_id == undefined) {
+        query = `
+                  SELECT 
+                  grade.id, 
+                  grade.horario_inicio, 
+                  grade.horario_fim, 
+                  grade.dia_da_semana, 
+                  grade.semestre, 
+                  grade.created_at, 
+                  grade.updated_at, 
+                  grade.course_id,
+                  professores.name as professor, 
+                  disciplinas.descricao as disciplina, 
+                  disciplinas.capacidade as capacidade,
+                  laboratorios.descricao as laboratorio   
+              FROM 
+                  grade 
+              LEFT JOIN 
+                  professores ON grade.id_professor = professores.id 
+              LEFT JOIN 
+                  disciplinas ON grade.id_disciplina = disciplinas.id 
+              LEFT JOIN 
+                  laboratorios ON grade.id_sala = laboratorios.numero_sala
+              WHERE 
+                  dia_da_semana = '${dateTransformed}'
+              ORDER BY
+                  grade.id ASC
+            `
+      } else {
+        query = `
                   SELECT 
                   grade.id, 
                   grade.horario_inicio, 
@@ -88,6 +117,7 @@ export class GradeController {
               ORDER BY
                   grade.id ASC
             `
+      }
 
       const gradeWithProfessor = await gradeRepositories.query(query)
 
@@ -205,7 +235,6 @@ export class GradeController {
   }
 
   async getGradeData (request: Request, response: Response) {
-
     console.log('get Grade')
 
     const { semestre } = request.body
@@ -365,6 +394,15 @@ export class GradeController {
   async getAgendamentosData (request: Request, response: Response) {
     console.log('getAgendamentosData')
     const { semestre, professor_id, id_laboratorio } = request.body
+
+    if (
+      id_laboratorio == 0 ||
+      id_laboratorio == null ||
+      id_laboratorio == undefined
+    ) {
+      return response.status(200).json([])
+    }
+
     console.log(request.body)
 
     try {

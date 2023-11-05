@@ -14,7 +14,7 @@ import { Colors } from '../../colors';
 
 import { toast, ToastContainer } from 'react-toastify';
 
-import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks } from 'date-fns';
+import { startOfWeek, endOfWeek, setDay, addDays, subWeeks, addWeeks, set } from 'date-fns';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -223,7 +223,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
   const [selectedLaboratorio, setSelectedLaboratorio] = useState<any>(
     {
-      id: 26,
+      id: 0,
       descricao: "Laboratorio-6",
     }
   )
@@ -300,7 +300,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [selectedSemesterValue, userData, selectedLaboratorio, selectedProfessor, selectedMethod, selectedDate, startDate]);
+  }, [selectedSemesterValue, selectedLaboratorio, selectedProfessor, selectedMethod, selectedDate, startDate]);
 
   useEffect(() => {
 
@@ -802,17 +802,14 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     fetch(`${apiUrl}/laboratory`, {
       method: 'POST'
     }).then((response: any) => response.json()).then((data) => {
-      // console.log(data)
-
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+     
       setTimeout(() => {
         setLoading(true) // teste de loading
       }, 2000)
-      // setLoading(true)
-      // console.log(transformedData.segunda[0].agendamentos.professor)
 
-
-
+      if(selectedLaboratorio.id == 0){
+        setSelectedLaboratorio(data[0])
+      }
       return setlaboratoryData(data.reverse())
     }
     )

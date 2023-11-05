@@ -308,11 +308,11 @@ const Templates: any = ({ theme }: any): any => {
                     <TableHeader>
                         <TableRowHeader>
                             <th>ID</th>
-                            <th>Laboratorio</th>
+                            <th>LABORATORIO</th>
                             <th>ANDAR</th>
                             <th>CAPACIDADE</th>
-                            <th>Numero Sala</th>
-                            <th>Actions</th>
+                            <th>NUMERO SALA</th>
+                            <th>ACTIONS</th>
                             {/* <th>Criado</th>
                             <th>Atualizado</th> */}
                         </TableRowHeader>
