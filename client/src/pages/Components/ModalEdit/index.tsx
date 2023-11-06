@@ -211,7 +211,8 @@ const ModalEdit = ({
         id: 0,
         descricao: 'Selecione um laboratório',
         andar: 0,
-        capacidade: 0
+        capacidade: 0,
+        numero_sala: 0
       }
 
       data.push(newLabsWithPlaceholder)
@@ -370,7 +371,7 @@ const ModalEdit = ({
       const finalData: any = {
         ids_grade: newAgendamentos,
         date: startDate,
-        id_laboratorio: selectedLaboratory.id,
+        id_laboratorio: selectedLaboratory.numero_sala,
         id_professor: selectedProfessor,
         schedule_status: "fixed",
         uuid_agendamento: uuidAgendamento?.toString(),

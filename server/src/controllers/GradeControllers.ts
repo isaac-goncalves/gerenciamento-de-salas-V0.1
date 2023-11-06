@@ -393,12 +393,12 @@ export class GradeController {
 
   async getAgendamentosData (request: Request, response: Response) {
     console.log('getAgendamentosData')
-    const { semestre, professor_id, id_laboratorio } = request.body
+    const { semestre, professor_id, numero_sala } = request.body
 
     if (
-      id_laboratorio == 0 ||
-      id_laboratorio == null ||
-      id_laboratorio == undefined
+      numero_sala == 0 ||
+      numero_sala == null ||
+      numero_sala == undefined
     ) {
       return response.status(200).json([])
     }
@@ -406,7 +406,7 @@ export class GradeController {
     console.log(request.body)
 
     try {
-      if (id_laboratorio) {
+      if (numero_sala) {
         const query = `
           SELECT
             agendamento.id as id,
@@ -430,7 +430,7 @@ export class GradeController {
           LEFT JOIN
             laboratorios ON id_laboratorio = laboratorios.numero_sala
           WHERE
-            id_laboratorio = '${id_laboratorio}'
+            id_laboratorio = '${numero_sala}'
         `
 
         const agendamentos = await gradeRepositories.query(query)

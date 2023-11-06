@@ -225,6 +225,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     {
       id: 0,
       descricao: "Laboratorio-6",
+      numero_sala: 0,
     }
   )
 
@@ -351,7 +352,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
       openEditModal(item.agendamentos[0], daysIds)
     }
-    else if (selectedMethod == "laboratorio") {
+    else if (selectedMethod == "laboratorio") { //caso o usuario esteja no modo de laboratorio
 
       console.log("selectedMethod == laboratorio")
       console.log("Agora devo abrir a modal de agendamento em uma nova forma que ira agendar uma reserva de horario para o laboratorio em questão")
@@ -361,7 +362,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         uuid_agendamento: "-",
         type: "SCHEDULELABORATORIO",
         // id_professor: userData.userData.professor_id,
-        id_laboratorio: selectedLaboratorio.id,
+        id_laboratorio: selectedLaboratorio.laboratorio_name,
         updated_at: new Date()?.toISOString(),
         created_at: new Date()?.toISOString()
       }
@@ -824,7 +825,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id_laboratorio: selectedLaboratorio.id
+        numero_sala: selectedLaboratorio.numero_sala
       })
     }).then((response: any) => response.json()).then((data) => {
 
