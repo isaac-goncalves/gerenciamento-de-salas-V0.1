@@ -34,7 +34,7 @@ const array = [
 
 function transformGradeData(grade: any) {
   // console.clear()
-  console.log(grade)
+  // console.log(grade)
 
   const clockTimesArray = ['18:45:00', '19:35:00', '20:35:00', '21:25:00', '22:15:00'];
   const items = [];
@@ -46,8 +46,8 @@ function transformGradeData(grade: any) {
 
     // console.log(gradeExisteNesteHorario)
 
-    console.log("================================")
-    console.log("Grade Existe: " + (gradeExisteNesteHorario != "" ? true : false))
+    // console.log("================================")
+    // console.log("Grade Existe: " + (gradeExisteNesteHorario != "" ? true : false))
 
     const item = {
       id: i,
@@ -79,9 +79,9 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
   useEffect(() => {
     // console.clear()
-    console.log("ScheduleViewer useEffect")
+    // console.log("ScheduleViewer useEffect")
     // console.log(setSelectedIds)
-    console.log(form)
+    // console.log(form)
 
     // console.log("ScheduleViewer props")
 
@@ -89,7 +89,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
     if (action == "SCHEDULELABORATORIO") {
 
-      console.log("action == SCHEDULELABORATORIO")
+      // console.log("action == SCHEDULELABORATORIO")
 
       setSelectedLaboratoryId(selectedLaboratory)
       setSelectedProfessor(professor_id)
@@ -104,8 +104,8 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
     }
     else if (action = "cancel") {
-      console.log("Cancel DETECTED")
-      console.log(props)
+      // console.log("Cancel DETECTED")
+      // console.log(props)
 
       if (props) {
         setForm(props)
@@ -126,9 +126,9 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
   }, [props, setSelectedIds, selectedLaboratory, professor_id, semester, selectedLaboratoryId, selectedProfessor, form])
 
   async function fetchByGroupedId(token: string = localStorage.getItem('token') || "") {
-    console.log("Fetching fetchByGroupedId...")
-    console.log(form)
-    console.log(selectedLaboratory)
+    // console.log("Fetching fetchByGroupedId...")
+    // console.log(form)
+    // console.log(selectedLaboratory)
 
     const obj = {
       uuid_agendamento: props.uuid_agendamento,
@@ -139,7 +139,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
     const bodyParams = JSON.stringify(obj)
 
-    console.log(bodyParams)
+    // console.log(bodyParams)
 
     await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/agendamento/grouped', {
       method: 'POST',
@@ -150,26 +150,26 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
       body: bodyParams
     }).then((response) => response.json()).then(async (data) => {
 
-      console.log("ReturnedData")
-      console.log(data)
+      // console.log("ReturnedData")
+      // console.log(data)
 
       const transformedData = await transformGradeData(data)
 
-      console.log("transformedData")
-      console.log(transformedData)
+      // console.log("transformedData")
+      // console.log(transformedData)
 
       return setScheduleData(transformedData)
 
     }).catch((error) => {
-      console.log(error)
+      // console.log(error)
     }
     )
   }
 
   async function fetchGetGradesByProfessorsAndDisciplinas(token: string = localStorage.getItem('token') || "") {
-    console.log("Fetching getGradesByProfessorsAndDisciplinas...")
-    console.log(form)
-    console.log(selectedLaboratory)
+    // console.log("Fetching getGradesByProfessorsAndDisciplinas...")
+    // console.log(form)
+    // console.log(selectedLaboratory)
 
     const obj = { //date to iso string
       laboratory_id: selectedLaboratoryId,
@@ -187,7 +187,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
     const bodyParams = JSON.stringify(obj)
 
-    console.log(bodyParams)
+    // console.log(bodyParams)
 
     await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/grade/professors', {
       method: 'POST',
@@ -197,13 +197,13 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
       body: bodyParams
     }).then((response) => response.json()).then(async (data) => {
 
-      console.log("ReturnedData")
-      console.log(data)
+      // console.log("ReturnedData")
+      // console.log(data)
 
       const transformedData = await transformGradeData(data)
 
-      console.log("transformedData")
-      console.log(transformedData)
+      // console.log("transformedData")
+      // console.log(transformedData)
 
       setScheduleData(transformedData)
 
@@ -211,14 +211,14 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
 
 
     }).catch((error) => {
-      console.log(error)
+      // console.log(error)
     }
     )
   }
 
   const handleSelection = (id: number, idAgendamento: number) => {
-    console.log("idAgendamento: " + idAgendamento);
-    console.log("ID: " + id);
+    // console.log("idAgendamento: " + idAgendamento);
+    // console.log("ID: " + id);
 
     const NewArray = scheduleData.map((item, index) => {
 
@@ -233,7 +233,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
       return item;
     });
 
-    console.log(NewArray);
+    // console.log(NewArray);
 
     setScheduleData(NewArray);
     handleDataSelection(NewArray);
@@ -277,7 +277,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
     }
     catch (error) {
       return "Professor não encontrado"
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -286,8 +286,8 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
     idUserAgendamento: number,
     idUserLogado: number) {
 
-    console.log("idUserAgendamento: " + idUserAgendamento)
-    console.log("idUserLogado: " + idUserLogado)
+    // console.log("idUserAgendamento: " + idUserAgendamento)
+    // console.log("idUserLogado: " + idUserLogado)
 
     //mostrar indisponível se o agendamento for de outro usuário
 

@@ -28,7 +28,7 @@ export const ClockContainer = styled.div`
   gap: 4.6rem;
   width: 30%;
   /* height: 100%; */
-
+  margin-right: 1rem;
   padding-top: 3rem;
   padding-bottom: 0.6rem;
 

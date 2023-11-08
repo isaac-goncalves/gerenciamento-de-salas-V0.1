@@ -33,7 +33,7 @@ interface InitialDataProps {
   id_professor: number;
   id_grade: number;
   uuid_agendamento: string;
-  id_laboratorio: number;
+  numero_sala: number;
   capacidade: number;
   created_at: string;
   updated_at: string;
@@ -49,11 +49,7 @@ interface LaboratoryProps {
   descricao: string;
   andar: number;
   capacidade: number;
-}
-
-interface Professor {
-  id: number;
-  name: string;
+  numero_sala: number;
 }
 
 const ModalEdit = ({
@@ -75,7 +71,11 @@ const ModalEdit = ({
   const [startDate, setStartDate] = useState<Date>();
   const [selectedLaboratory, setSelectedLaboratory] = useState<any>(
     {
-      id: 0
+      id: 0,
+      descricao: 'Selecione um laboratório',
+      andar: 0,
+      capacidade: 0,
+      numero_sala: 0
     }
   );
   const [semestres, setSemestres] = useState<Number[]>(
@@ -112,7 +112,6 @@ const ModalEdit = ({
     fetchProfessorData();
     fetchLaboratoryData();
     fetchDisciplinas();
-    // fetchSemestres();
 
     console.log("initialData.type")
     console.log(initialData.type)
@@ -133,6 +132,7 @@ const ModalEdit = ({
         if (action == "OPEN") {
           console.log("OPEN")
         }
+        //SCHEDULELABORATORIO
         else
           if (action == "SCHEDULELABORATORIO") {
             console.log("SCHEDULELABORATORIO")
@@ -142,11 +142,11 @@ const ModalEdit = ({
           }
   }, [initialData])
 
-  useEffect(() => {
-    // console.clear()
-    console.log("selectedLaboratory useEffect")
-    console.log(selectedLaboratory)
-  }, [selectedLaboratory])
+  // useEffect(() => {
+  //   // console.clear()
+  //   console.log("selectedLaboratory useEffect")
+  //   console.log(selectedLaboratory)
+  // }, [selectedLaboratory])
 
   //FETCHES
   const fetchProfessorData = async () => {
@@ -185,18 +185,6 @@ const ModalEdit = ({
       // console.log(error); // Handle the error appropriately
     }
   }
-  async function fetchProfessors(token: string) {
-    // console.log("Fetching fetchProfessors...")
-    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/professors', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'bearer ' + token,
-      }
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-      return setProfessores(data)
-    });
-  }
   async function fetchLaboratory(token: string) {
     // console.log("Fetching fetchLaboratory...")
     await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/laboratory', {
@@ -219,14 +207,28 @@ const ModalEdit = ({
 
       setLaboratory(data.reverse())
 
-      if (initialData.id_laboratorio) {
-        const lab = data.find((lab: any) => lab.id === formData.id_laboratorio);
+      if (initialData.numero_sala) {
+        const lab = data.find((lab: any) => lab.numero_sala === formData.numero_sala);
         setSelectedLaboratory(lab);
       }
 
       return data
     });
   }
+
+  async function fetchProfessors(token: string) {
+    // console.log("Fetching fetchProfessors...")
+    await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/professors', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'bearer ' + token,
+      }
+    }).then((response) => response.json()).then((data) => {
+      // console.log(data)
+      return setProfessores(data)
+    });
+  }
+
   // async function fetchSemestres(token: string) {
   //   // console.log("Fetching fetchLaboratory...")
   //   await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/laboratory', {
@@ -298,7 +300,6 @@ const ModalEdit = ({
     if (action == "SCHEDULELABORATORIO") {
 
       console.log("i have been clicked")
-
     }
 
     const deletedAgendamentos: any = []
@@ -318,27 +319,26 @@ const ModalEdit = ({
     //SET UUID
     const uuidAgendamento = formData.uuid_agendamento
 
-    //VERIFY IF UUID IS EMPTY
-    // selectedData.forEach((agendamento: any, index: number) => {
+    // VERIFY IF UUID IS EMPTY
+    selectedData.forEach((agendamento: any, index: number) => {
 
-    //   console.log("agendamento")
-    //   console.log(agendamento.agendamento)
+      console.log("agendamento")
+      console.log(agendamento.agendamento)
 
-    //   //verify if object is empty inside  
-    //   const agendamentoExist = agendamento.agendamento.id != null ? true : false
-    //   console.log("agendamentoExist:" + agendamentoExist)
+      //verify if object is empty inside  
+      const agendamentoExist = agendamento.agendamento.id != null ? true : false
+      console.log("agendamentoExist:" + agendamentoExist)
 
-    //   //INSERT ON NEW AGENDAMENTO IF (NOT EXIST AND IS SELECTED) aka CREATE AGENDAMENTO
-    //   if (!agendamentoExist && agendamento.selecionado) {
-    //     newAgendamentos.push(daysIds[index])
-    //   }
+      //INSERT ON NEW AGENDAMENTO IF (NOT EXIST AND IS SELECTED) aka CREATE AGENDAMENTO
+      if (!agendamentoExist && agendamento.selecionado) {
+        newAgendamentos.push(daysIds[index])
+      }
 
-    //   //INSERT ON DELETE AGENDAMENTO IF (EXIST AND IS NOT SELECTED) aka DELETE AGENDAMENTO
-    //   if (agendamentoExist && agendamento.selecionado === false) {
-    //     deletedAgendamentos.push(agendamento.agendamento.id)
-    //   }
-    // })
-
+      //INSERT ON DELETE AGENDAMENTO IF (EXIST AND IS NOT SELECTED) aka DELETE AGENDAMENTO
+      if (agendamentoExist && agendamento.selecionado === false) {
+        deletedAgendamentos.push(agendamento.agendamento.id)
+      }
+    })
 
     selectedData.forEach((grade: any, index: number) => {
 
@@ -350,7 +350,6 @@ const ModalEdit = ({
       }
 
     })
-
 
     console.log("uuidAgendamento")
     console.log(uuidAgendamento)
@@ -432,44 +431,6 @@ const ModalEdit = ({
     // console.log(initialDate)
 
 
-    //EXCLUDES CHECK FOR UPDATE ID WE ARE CREATING THE AGENDAMENTO aka UPDATE AGENDAMENTO IF UDPATE
-    if (uuidAgendamento != "-") {
-      const agendamentoAlterado =
-        formData.date !== new Date(formData.date).toISOString()
-          || formData.id_laboratorio !== selectedLaboratory
-          || formData.id_professor !== selectedProfessor ? true : false
-
-      console.log("agendamentoAlterado: " + agendamentoAlterado)
-
-      if (agendamentoAlterado) {
-        try {
-
-          const updatedAgendamentos = {
-            date: formData.date,
-            id_laboratorio: selectedLaboratory,
-            id_professor: selectedProfessor,
-            uuid_agendamento: uuidAgendamento,
-          }
-
-          const response = await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/agendamento`, {
-            method: 'PUT',
-            body: JSON.stringify(updatedAgendamentos),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          if (response.ok) {
-            toast.success('Agendamento Atualizado com sucesso!');
-            console.log("Atualizado com sucesso")
-            onClose(true);
-          } else {
-            toast.error('Erro ao Atualizado agendamento, tente novamente.');
-          }
-        } catch (error) {
-          toast.error('Erro ao Atualizado agendamento, tente novamente.');
-        }
-      }
-    }
 
     //SWAL ASKING TO EDIT
     if (selectedLaboratory === undefined) {
@@ -492,13 +453,13 @@ const ModalEdit = ({
       cancelButtonText: 'Cancelar'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        if (newAgendamentos.length > 0) {
-          await createAgendamento()
-        }
+        // if (newAgendamentos.length > 0) {
+        //   await createAgendamento()
+        // }
         if (deletedAgendamentos.length > 0) {
           await deleteAgendamento()
         }
-        //  await updateAgendamento()
+        await updateAgendamento(uuidAgendamento)
 
         Swal.fire(
           `${action === "CREATE" ? "Criado" : "Editado"
@@ -540,6 +501,49 @@ const ModalEdit = ({
     }
   }
 
+  async function updateAgendamento(uuidAgendamento: any) {
+ //EXCLUDES CHECK FOR UPDATE ID WE ARE CREATING THE AGENDAMENTO aka UPDATE AGENDAMENTO IF UDPATE
+ if (uuidAgendamento != "-") {
+  const agendamentoAlterado =
+    // formData.date !== new Date(formData.date).toISOString()
+       formData.numero_sala !== selectedLaboratory.numero_sala
+      || formData.id_professor !== selectedProfessor ? true : false
+      
+
+  console.log("agendamentoAlterado: " + agendamentoAlterado)
+
+  if (agendamentoAlterado) {
+    try {
+
+      const updatedAgendamentos = {
+        date: formData.date,
+        id_laboratorio: selectedLaboratory.numero_sala,
+        id_professor: selectedProfessor,
+        uuid_agendamento: uuidAgendamento,
+      }
+
+      const response = await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/agendamento`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedAgendamentos),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        toast.success('Agendamento Atualizado com sucesso!');
+        console.log("Atualizado com sucesso")
+        onClose(true);
+      } else {
+        toast.error('Erro ao Atualizado agendamento, tente novamente.');
+      }
+    } catch (error) {
+      toast.error('Erro ao Atualizado agendamento, tente novamente.');
+    }
+  }
+}
+
+  }
+  
   async function handleDataSelection(selectedData: any) {
     console.log("handleSelection")
     console.log(selectedData)
@@ -582,7 +586,7 @@ const ModalEdit = ({
     // console.log(selectedLab)
 
     if (selectedLab) {
-      const labs = laboratory.find((lab) => lab.id == selectedLab);
+      const labs = laboratory.find((lab) => lab.numero_sala == selectedLab);
 
       setSelectedLaboratory(labs);
 
@@ -609,7 +613,7 @@ const ModalEdit = ({
     console.log("getAndarLaboratorio")
     console.log(id)
 
-    const andar = laboratory.find((lab) => lab.id === id)?.andar;
+    const andar = laboratory.find((lab) => lab.numero_sala === id)?.andar;
 
     const andaresString = ['Nenhum lab selecionado!', 'Primeiro Andar', 'Segundo Andar'];
 
@@ -667,6 +671,9 @@ const ModalEdit = ({
     else {
       return "ERROR - que nao diz nada"
     }
+  }
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   return (
@@ -742,12 +749,12 @@ const ModalEdit = ({
                 <div>
                   <DetailsText>Laboratório:</DetailsText>
                   <StyledSelect
-                    value={selectedLaboratory && selectedLaboratory.id}
+                    value={selectedLaboratory && selectedLaboratory.numero_sala}
                     disabled={action === 'OPEN'}
                     onChange={handleLaboratoryChange}>
                     {laboratory.length > 0 ? (
                       laboratory.map((laboratory) => (
-                        <option key={laboratory.id} value={laboratory.id}>
+                        <option key={laboratory.numero_sala} value={laboratory.numero_sala}>
                           {laboratory.descricao}
                         </option>
                       ))
@@ -776,11 +783,11 @@ const ModalEdit = ({
                   </DateTimeDiv>
                   <DateTimeDayDiv>
                     <DetailsText>Dia da Semana:</DetailsText>
-                    <StyledText>{formData && formatDate(formData.date)}</StyledText>
+                    <StyledText>{formData && capitalizeFirstLetter(formatDate(formData.date))}</StyledText>
                   </DateTimeDayDiv>
                 </DateTimeWrapper>
                 <DetailsText>Capacidade: <StyledText>{selectedLaboratory ? selectedLaboratory.capacidade : null} alunos</StyledText></DetailsText>
-                <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory.id)}</StyledText></DetailsText>
+                <DetailsText>Andar: <StyledText>{getAndarLaboratorio(selectedLaboratory.numero_sala)}</StyledText></DetailsText>
                 <DetailsText>Criado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
                 <DetailsText>Editado em: <br /><StyledDates>{formData && formatDate(formData.created_at)}</StyledDates></DetailsText>
                 <DetailsText>ID de agendamento: <br />
@@ -817,7 +824,6 @@ const ModalEdit = ({
                 action={formData.type} professores={professores}
                 idUserLogado={idUserLogado}
                 userRole={userRole} />
-
               <ButtonsWrapper>
                 {action !== 'OPEN' && (
                   <StyledButton onClick={() => handleEdit()}>

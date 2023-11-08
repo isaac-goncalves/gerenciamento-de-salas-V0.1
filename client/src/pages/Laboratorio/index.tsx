@@ -172,7 +172,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       uuid_agendamento: contextMenuData.agendamentos[0].uuid_agendamento,
       id_professor: contextMenuData.agendamentos[0].id_professor,
       id_grade: contextMenuData.agendamentos[0].id_grade,
-      id_laboratorio: contextMenuData.agendamentos[0].id_laboratorio,
+      id_laboratorio: contextMenuData.agendamentos[0].numero_sala,
     }
 
     //cancelar para esse id o laboratorio desse dia
@@ -220,7 +220,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       id: 0,
       name: "Selecione um professor",
     },);
-
   const [selectedLaboratorio, setSelectedLaboratorio] = useState<any>(
     {
       id: 0,
@@ -228,7 +227,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       numero_sala: 0,
     }
   )
-
 
 
   //WEIRD DATE STUFF
@@ -327,7 +325,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
 
 
-
   //FUNCTIONS ---------------------------------------------------------------------
 
   function handleScheduleClick(dayData: any, item: any, dayDateObject: Date) {
@@ -362,7 +359,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         uuid_agendamento: "-",
         type: "SCHEDULELABORATORIO",
         // id_professor: userData.userData.professor_id,
-        id_laboratorio: selectedLaboratorio.laboratorio_name,
+        numero_sala: selectedLaboratorio.numero_sala,
         updated_at: new Date()?.toISOString(),
         created_at: new Date()?.toISOString()
       }
@@ -370,40 +367,24 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       openEditModal(newAgedamentoData, daysIds)
 
     }
-    else {
+    // else {
 
-      // MONTA OBJ DE MOVO AGENDAMENTO
-      //{
-      //   "id": 9,
-      //   "date": "2023-08-25T00:23:27.240Z",
-      //   "uuid_agendamento": "#21324",
-      //   "horario_inicio": "18:45:00",
-      //   "horario_fim": "19:35:00",
-      //   "id_professor": 12,
-      //   "id_grade": 16,
-      //   "id_laboratorio": 25,
-      //   "professor": "Marcos Allan",
-      //   "laboratorio": "Laboratorio-5",
-      //   "updated_at": "2023-08-27T00:23:37.849Z",
-      //   "created_at": "2023-08-27T00:23:37.849Z"
-      // }
+    //   const newAgedamentoData = {
+    //     date: dayDateObject?.toISOString(),
+    //     uuid_agendamento: "-",
+    //     id_professor: userData.userData.professor_id,
+    //     numero_salas: selectedLaboratorio.numero_sala,
+    //     updated_at: new Date()?.toISOString(),
+    //     created_at: new Date()?.toISOString()
+    //   }
 
-      const newAgedamentoData = {
-        date: dayDateObject?.toISOString(),
-        uuid_agendamento: "-",
-        id_professor: userData.userData.professor_id,
-        id_laboratorio: 0,
-        updated_at: new Date()?.toISOString(),
-        created_at: new Date()?.toISOString()
-      }
-
-      //ABRE MODAL DE NOVO AGENDAMNTO CASO USUARIO ESTEJA NO MODO DE CRIAÇÂO 
-      userIsScheduling
-        ?
-        openEditModal(newAgedamentoData, daysIds)
-        :
-        console.log("Is not agendating")
-    }
+    //   //ABRE MODAL DE NOVO AGENDAMNTO CASO USUARIO ESTEJA NO MODO DE CRIAÇÂO 
+    //   userIsScheduling
+    //     ?
+    //     openEditModal(newAgedamentoData, daysIds)
+    //     :
+    //     console.log("Is not agendating")
+    // }
   }
 
   function getProfessorName(professor_id: number) {
@@ -444,7 +425,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
 
     // console.log("currentWeekday")
-    console.log(dayDateObject)
+    // console.log(dayDateObject)
 
     return (
       <WeekdayContainer>
@@ -471,7 +452,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
               const agendamentoDefaultExist = agendamentos ? agendamentos.some((item: any) => {
 
-                console.log(new Date(item.date))
+                // console.log(new Date(item.date))
                 return item.schedule_status == "default"
                   && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
               }) : false
@@ -722,12 +703,13 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   }
 
   const handleLaboratoriosChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+
     console.log("I have been changed")
 
     console.log(laboratoryData)
 
     const chosenlaboratorioObject = laboratoryData.filter((item: any) => {
-      if (item.id == event.target.value) {
+      if (item.numero_sala == event.target.value) {
         return item
       }
     })
@@ -803,18 +785,17 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     fetch(`${apiUrl}/laboratory`, {
       method: 'POST'
     }).then((response: any) => response.json()).then((data) => {
-     
+
       setTimeout(() => {
         setLoading(true) // teste de loading
       }, 2000)
 
-      if(selectedLaboratorio.id == 0){
+      if (selectedLaboratorio.id == 0) {
         setSelectedLaboratorio(data[0])
       }
       return setlaboratoryData(data.reverse())
     }
     )
-
   }
 
   async function fetchLaboratoryAgendamentosData() {
@@ -1191,7 +1172,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                     {laboratoryData && laboratoryData.length > 0 ? (
                       laboratoryData.map((laboratoryData: any) => {
                         return (
-                          <option key={laboratoryData.id} value={laboratoryData.id}>
+                          <option key={laboratoryData.id} value={laboratoryData.numero_sala}>
                             {laboratoryData.descricao}
                           </option>
                         )

@@ -289,6 +289,7 @@ export class AgendamentoController {
     //   `
     // }
     try {
+      
       if (action == 'cancel') {
         console.log('action = cancel')
 
@@ -296,6 +297,7 @@ export class AgendamentoController {
       SELECT *
       FROM agendamento
       WHERE uuid_agendamento = '${uuid_agendamento}'
+      AND schedule_status = 'fixed'
       `
 
         const agendamentos = await agendamentosRepository.query(query)
@@ -312,7 +314,7 @@ export class AgendamentoController {
           })
         )
 
-        console.log(agendamentosWithGrade)
+        // console.log(agendamentosWithGrade)
         return response.status(200).json(agendamentosWithGrade)
       }
     } catch (error) {

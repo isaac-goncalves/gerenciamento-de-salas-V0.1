@@ -417,7 +417,7 @@ export class GradeController {
             id_professor,
             id_grade,
             schedule_status,
-            id_laboratorio,
+            agendamento.id_laboratorio as numero_sala,
             professores.name as professor,
             laboratorios.descricao as laboratorio,
             laboratorios.capacidade as capacidade,
