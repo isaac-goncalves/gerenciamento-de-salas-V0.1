@@ -261,7 +261,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       // } else {
 
       //FETCH DATA THAT CHANGES ON THE FILTERS
-      if(selectedCourse.id != 0){
+      if (selectedCourse.id != 0) {
         fetchSemestreData();
       }
     }
@@ -331,12 +331,11 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                   && areDatesOnSameDayMonthYear(new Date(item.date), currentSelectedDate)
               }) : false
 
-
               const agendamento = !agendamentoDefaultExist ? agendamentos && agendamentos.length > 0 ? agendamentos[0] : null : null
 
               const isCurrentTime = false
+              
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
-
               // console.log(isCurrentTime)
               // console.log(currentTime)
 
@@ -823,7 +822,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
           </DatePickWrapper>
         </Header>
         <ClassesContainer>
-          <CockAndMainContainerWrapper>
+          
             <ClockContainer>
               <p>18:45</p>
               <p>19:35</p>
@@ -839,7 +838,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               ?
               (
                 <>
-
                   <WeekContainer>
                     {/* {
                       grade && grade.map((item: any) => {
@@ -869,11 +867,11 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                     {renderBanner('Sexta', grade.semestre6)}
                   </WeekContainer >
                 </>
-
               ) : (
                 renderLoading()
               )}
-          </CockAndMainContainerWrapper>
+              
+          
         </ClassesContainer>
       </MainContainer>
     </>

@@ -50,7 +50,7 @@ export const ModalContent = styled.div`
     /* justify-content: flex-start; */
 
     width: 90%;
-    height: 95%;
+    height: 50%;
   }
 `
 
@@ -169,6 +169,13 @@ export const StyledSelect = styled.select<StyledSelectProps>`
     background-color: ${props => props.theme.white};
     color: ${props => props.theme.textcolor};
     background-color: none;
+  }
+
+  //border color is mainpurple when focused
+
+  &:focus {
+    outline: none;
+    border: 2px solid ${props => props.theme.mainpurple};
   }
 
   @media screen and (max-width: 875px) {

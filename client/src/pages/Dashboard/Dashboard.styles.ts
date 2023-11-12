@@ -111,6 +111,7 @@ export const ClassesContainer = styled.div`
   background-color: red;
   justify-content: center;
   display: flex;
+  
   /* overflow-y: auto;
   overflow: auto; */
   z-index: 2;
@@ -442,8 +443,7 @@ export const CurrentMonthText = styled.p`
   padding-left: 0.5rem;
 `
 export const CockAndMainContainerWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
+
 `
 
 export const DatepickArrowsContainer = styled.div`

@@ -712,7 +712,7 @@ const Grade: any = ({ theme, themeName }: any) => {
     const courseObjectFromFetch = courses.find((course: any) => {
       return course.id == event.target.value
     })
-    
+
     console.log(courseObjectFromFetch)
 
     setSelectedCourse(
@@ -969,7 +969,7 @@ const Grade: any = ({ theme, themeName }: any) => {
               Grade
             </PageName>
             <CourseName>
-              { selectedCourse.course_name}
+              {selectedCourse.course_name}
             </CourseName>
             <CourseSemester>
               2º Semestre de 2023
