@@ -39,6 +39,10 @@ const semestresOptions = [
     { value: '6', label: '6º SEMESTRE ADS - 2023' },
 ];
 
+interface CourseProps {
+    id: number;
+    course_name: string;
+}
 
 
 const RegisterScreen: any = ({ theme }: any): any => {
@@ -63,12 +67,27 @@ const RegisterScreen: any = ({ theme }: any): any => {
 
     const [role, setRole] = useState("aluno");
 
+    const [courses, setCourses] = useState<CourseProps[]>([
+        {
+            id: 0,
+            course_name: "Selecione um Curso",
+        },
+    ]);
+
+    const [selectedCourse, setSelectedCourse] = useState<CourseProps>(
+        {
+            id: 0,
+            course_name: "Selecione um Curso",
+        },
+    );
+
     //FUNCTIONS
 
     useEffect(() => {
 
         console.log('Starting to render Register...');
         fetchDisciplinas()
+        fetchCourses()
 
     }, [])
 
@@ -108,6 +127,16 @@ const RegisterScreen: any = ({ theme }: any): any => {
         })
     }
 
+    async function fetchCourses() {
+        console.log("Fetching Courses...")
+        fetch(`${apiUrl}/course`, {
+            method: 'POST',
+        }).then((response) => response.json()).then((data) => {
+            return setCourses(data)
+        }
+        )
+    }
+
     //AUXILIARY FUNCTIONS
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -128,6 +157,19 @@ const RegisterScreen: any = ({ theme }: any): any => {
     const handleChangeDisciplina = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setDisciplina(event.target.value);
     };
+
+    const handleSelectCourse = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        // console.log(event.target.value)
+        const courseObject: CourseProps = {
+            id: parseInt(event.target.value),
+            course_name: event.target.options[event.target.selectedIndex].text
+        }
+
+        setSelectedCourse(
+            courseObject
+        )
+
+    }
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -154,7 +196,7 @@ const RegisterScreen: any = ({ theme }: any): any => {
             return;
         }
 
-        if (selectedValues.length < 1  && role === "professor") {
+        if (selectedValues.length < 1 && role === "professor") {
             toast.error("O campo Disciplina não pode estar vazio!");
             return;
         }
@@ -201,7 +243,7 @@ const RegisterScreen: any = ({ theme }: any): any => {
             return;
         }
 
-       
+
 
 
 
@@ -209,7 +251,7 @@ const RegisterScreen: any = ({ theme }: any): any => {
 
         try {
 
-            const arrayOfDisciplineIds = selectedValues.map((item:any ) => item.id)
+            const arrayOfDisciplineIds = selectedValues.map((item: any) => item.id)
 
             const params = {
                 name: name,
@@ -218,7 +260,8 @@ const RegisterScreen: any = ({ theme }: any): any => {
                 password: password,
                 role: role,
                 semester: IsProfessor ? "" : semestre,
-                discipline: IsProfessor ? arrayOfDisciplineIds : ""
+                discipline: IsProfessor ? arrayOfDisciplineIds : "",
+                course_id: selectedCourse.id
             }
 
             console.log(params);
@@ -469,6 +512,19 @@ const RegisterScreen: any = ({ theme }: any): any => {
 
                                 }
                             </>
+                            <StyledSelect value={selectedCourse.id} onChange={handleSelectCourse}>
+                                {courses && courses.length > 0 ? (
+                                    courses.map((course) => {
+                                        return (
+                                            <option key={course.id} value={course.id}>
+                                                {course.course_name}
+                                            </option>
+                                        );
+                                    })
+                                ) : (
+                                    <option value="">No professors available</option>
+                                )}
+                            </StyledSelect>
                             <InputWrapper>
                                 <label>Email</label>
                                 <Input

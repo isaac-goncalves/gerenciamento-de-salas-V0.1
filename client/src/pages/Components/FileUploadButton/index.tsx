@@ -51,7 +51,7 @@ const FileUploadButton = ({ course, userId, loggedUserRole, action, uploadText }
 
   const [loggedUser, setLoggedUser] = React.useState('');
   const [selectedCourse, setSelectedCourse] = React.useState(0);
-  
+
 
   useEffect(() => {
     setLoggedUser(loggedUserRole);
@@ -92,8 +92,14 @@ const FileUploadButton = ({ course, userId, loggedUserRole, action, uploadText }
       .then((response) => response.json())
       .then((data) => {
         // Handle the response from the backend
-        toast.success('Template enviado e processado com sucesso!');
+
+        if (data.message = "File uploaded and processed successfully") {
+          toast.success('Template enviado e processado com sucesso!');
+        } else {
+          toast.error('Foi encontrado um erro ao processar o upload do template. Tente novamente mais tarde.');
+        }
         console.log(data);
+        //enable other uploads 
       })
       .catch((error) => {
         // Handle errors

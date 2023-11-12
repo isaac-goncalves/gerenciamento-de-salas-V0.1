@@ -50,17 +50,18 @@ const fileFilter = (
 
 export class UserController {
   async create (request: Request, response: Response) {
-    const { name, surname, email, password, role, semester, discipline } =
+    const { name, surname, email, password, role, semester, discipline, course_id } =
       request.body
 
     //CONSOLE
-    console.log(name, surname, email, password)
+    console.log(name, surname, email, password, course_id)
     console.log('role=' + role)
     console.log('semester=' + semester)
     console.log('discipline=' + discipline)
+    console.log('course_id=' + course_id)
 
     //CHECK IF PARAMS ARE MISSING
-    if (!name || !surname || !email || !password || !role) {
+    if (!name || !surname || !email || !password || !role ) {
       return response.status(400).json({ error: 'Missing params' })
     }
 
@@ -112,6 +113,7 @@ export class UserController {
           surname,
           email,
           semestre: semester,
+          course_id: course_id,
           user_id: savedUser.id,
           created_at: new Date(),
           updated_at: new Date()
@@ -127,10 +129,19 @@ export class UserController {
           }
         )
 
+        const courseName = await coursesRepository.findOneBy({
+          id: course_id,
+        });
+
+        const alunoWithCourseName = {
+          ...newAluno,
+          course_name: courseName?.course_name || 'no course name'
+        }
+
         //RETURN USER DATA
         return response.status(201).json({
           message: 'Aluno created',
-          userData: newAluno,
+          userData: alunoWithCourseName,
           token: token
         })
 
@@ -142,6 +153,7 @@ export class UserController {
           surname,
           email,
           semestre: semester,
+          course_id: course_id,
           user_id: savedUser.id,
           created_at: new Date(),
           updated_at: new Date()
@@ -197,6 +209,15 @@ export class UserController {
           theme: 1
         }
 
+        const courseName = await coursesRepository.findOneBy({
+          id: course_id,
+        });
+
+        const professorWithCourseName = {
+          ...professorWithDisciplinas,
+          course_name: courseName?.course_name || 'no course name' 
+        }
+
         // console.log(savedProfessor)
 
         //CREATE TOKEN
@@ -212,7 +233,7 @@ export class UserController {
 
         return response.status(201).json({
           message: 'Professor created',
-          userData: professorWithDisciplinas,
+          userData: professorWithCourseName,
           token: token
         })
       }
@@ -438,8 +459,18 @@ export class UserController {
 
         userData = AlunoWithRole
 
+        const courseName = await coursesRepository.findOneBy({
+          id: userData.course_id,
+        });
+
+
+        const userDataWithCourseName = {
+          ...userData,
+          course_name: courseName?.course_name || 'no course name'
+        }
+
         return response.status(201).json({
-          userData: userData,
+          userData: userDataWithCourseName,
           token: token
         })
 
@@ -489,16 +520,21 @@ export class UserController {
         })
 
         Promise.all(promises)
-          .then(disciplinasNamesArray => {
+          .then( async (disciplinasNamesArray) => {
             console.log('disciplinasNamesArray=')
             console.log(disciplinasNamesArray)
+
+            const courseName = await coursesRepository.findOneBy({
+              id: userData.course_id,
+            });
 
             const returnObj = {
               ...userData,
               disciplina: disciplinasIds,
               nomeDisciplina: disciplinasNamesArray,
               role: userExists.role,
-              theme: userExists.theme
+              theme: userExists.theme,
+              course_name: courseName?.course_name || 'no course name'
             }
 
             return response.status(201).json({

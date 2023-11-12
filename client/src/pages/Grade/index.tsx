@@ -758,7 +758,7 @@ const Grade: any = ({ theme, themeName }: any) => {
       // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       setTimeout(() => {
         setLoading(true) // teste de loading
-      }, 2000)
+      }, 0)
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
       return setgrade(transformedData as any)

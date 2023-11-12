@@ -55,14 +55,13 @@ dfLaboratorio = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='K:N'
 dfSemestres = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='P:Q', skiprows=2, nrows=20) #semestres
 dfDiasSemana = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='S:T', skiprows=2, nrows=6) #dias da semana
 
-
 dfGrade.columns = ['id','horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at']
 
 dfDisciplinas.columns = ['disciplina', 'id']
 
 dfProfessores.columns = ['name','id', 'surname', 'email' ,'disciplina']
 
-dfLaboratorio.columns = ['descricao', 'andar','id','capacidade']
+dfLaboratorio.columns = ['descricao','andar','id','capacidade']
 
 dfSemestres.columns = ['descricao', 'ID']
 
@@ -95,6 +94,11 @@ for df in dataframes:
 
 # Create a cursor object
 cursor = connection.cursor()
+
+#------------------- agendamentos -------------------#
+
+queryTruncateAgendamento = "TRUNCATE agendamento;"
+cursor.execute(queryTruncateAgendamento)
 
 #------------------- disciplinas -------------------#
 #queryTruncate = f"TRUNCATE disciplinas;"
