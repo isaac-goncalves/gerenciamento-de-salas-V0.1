@@ -21,11 +21,20 @@ console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
 import "react-datepicker/dist/react-datepicker.css";
 
 interface ModalProps {
+  handleDefaultCourse: Function
+  courses: CourseProps[]
   isVisible: boolean
   onCloseModalAskSemester: Function
 }
 
+interface CourseProps {
+  id: Number
+  course_name: String
+}
+
 const ModalAskSemestre = ({
+  handleDefaultCourse,
+  courses,
   isVisible,
   onCloseModalAskSemester,
 }: ModalProps) => {
@@ -37,7 +46,14 @@ const ModalAskSemestre = ({
     [1, 2, 3, 4, 5, 6]
   );
 
-  const [selectedSemester, setSemesterProfessor] = useState<Number>(1);
+  const [selectedCourse, setSelectedCourse] = useState<CourseProps>(
+    {
+      id: 0,
+      course_name: "Selecione um curso"
+    }
+  );
+
+  const [selectedSemester, setSelectedSemester] = useState<Number>(1);
 
   //USERSESSIONDATA
   const [userData, setUserData] = useState<any>(
@@ -78,28 +94,33 @@ const ModalAskSemestre = ({
 
   //HANDLE CLICKS
 
-  async function handleEdit() {
-
-    toast.success('Semestre padrão alterado com sucesso!');
+  async function handlesumbitDefaultValues() {
 
     //set userData.userData.SemesterVerified to true and update token
-
-    const newUserData = {
-      token: userData.token,
-      userData: {
-        ...userData.userData,
-        semester: selectedSemester,
-        semesterverified: true
+    try {
+      const newUserData = {
+        token: userData.token,
+        userData: {
+          ...userData.userData,
+          courseId: selectedCourse.id,
+          course_name: selectedCourse.course_name,
+          semester: selectedSemester,
+          semesterverified: true
+        }
       }
+
+      localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(newUserData))
+
+      setUserSemestre(selectedSemester)
+      handleDefaultCourse(selectedCourse)
+
+      onCloseModalAskSemester(selectedSemester, selectedCourse);
+      toast.success('Semestre e Curso padrão alterado com sucesso!');
+    } catch (error) {
+
+      toast.error('Erro ao alterar semestre e curso padrão!');
+      console.log(error)
     }
-
-
-    localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(newUserData))
-
-    setUserSemestre(selectedSemester)
-
-    onCloseModalAskSemester(selectedSemester);
-
   }
 
   async function setUserSemestre(semestre: Number) {
@@ -131,7 +152,26 @@ const ModalAskSemestre = ({
     console.log(selectedId)
 
     if (selectedId) {
-      setSemesterProfessor(selectedId);
+      setSelectedSemester(selectedId);
+      // Update the selectedProfessorId state instead of formData
+    }
+  }
+
+  const handleSelectCourseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(event.target)
+
+    const selectedId = parseInt(event.target.value);
+    console.log(selectedId)
+
+    const course_name = courses.find((course: any) => course.id === selectedId)?.course_name || ""
+
+    const courseObject: CourseProps = {
+      id: selectedId,
+      course_name: course_name
+    }
+
+    if (selectedId) {
+      setSelectedCourse(courseObject)
       // Update the selectedProfessorId state instead of formData
     }
   }
@@ -141,7 +181,7 @@ const ModalAskSemestre = ({
       <ModalContent onClick={e => e.stopPropagation()}>
         <FormWrapper>
           <StyledTitle>
-            Selecione o semestre/curso padrão
+            Selecione seu Semestre e Curso padrão
           </StyledTitle>
           <SideBysideContainer>
             <ProfessorWrapper>
@@ -160,16 +200,15 @@ const ModalAskSemestre = ({
                   <option value="">No professors available</option>
                 )}
               </StyledSelect>
-
               <DetailsText>Curso:</DetailsText>
               <StyledSelect
-                value={selectedSemester || ''}
-                onChange={handleSelectSemestreChange}
+                value={selectedCourse.id || ''}
+                onChange={handleSelectCourseChange}
               >
-                {semestres.length > 0 ? (
-                  semestres.map((semestre) => (
-                    <option key={String(semestre)} value={String(semestre)}>
-                      {String(semestre)}º Semestre
+                {courses.length > 0 ? (
+                  courses.map((course: any) => (
+                    <option key={course.id} value={course.id}>
+                      {String(course.course_name)}
                     </option>
                   ))
                 ) : (
@@ -179,7 +218,7 @@ const ModalAskSemestre = ({
             </ProfessorWrapper>
             <ClocktimeAndButoonsWrapper>
               <ButtonsWrapper>
-                <StyledButton onClick={() => handleEdit()}>
+                <StyledButton onClick={() => handlesumbitDefaultValues()}>
                   OK
                 </StyledButton>
                 <StyledButton onClick={() => onCloseModalAskSemester()}>
@@ -193,4 +232,5 @@ const ModalAskSemestre = ({
     </ModalOverlay >
   )
 }
+
 export default ModalAskSemestre

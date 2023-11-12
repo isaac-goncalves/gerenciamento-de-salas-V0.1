@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName, StyledCourseSelect } from './Dashboard.styles'
 
 import ModalEdit from '../Components/ModalEdit';
 
@@ -116,7 +116,6 @@ function groupBySemester(fetchedData: ScheduleItem[]): GroupedData {
 
     console.log(groupedData[semester])
 
-
     groupedData[semester].push(item);
   }
 
@@ -140,46 +139,6 @@ function groupBySemester(fetchedData: ScheduleItem[]): GroupedData {
 
   console.log("groupedData: " + JSON.stringify(groupedData, null, 2))
 
-  return groupedData;
-}
-
-function groupByWeekdayLaboratorios(data: ScheduleItem[]): GroupedData {
-  const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
-  const totalItemsPerDay = 6;
-
-  // Initialize groupedData with each day of the week and an empty array
-  const groupedData: GroupedData = {
-    segunda: [],
-    terca: [],
-    quarta: [],
-    quinta: [],
-    sexta: [],
-  };
-
-  for (const item of data) {
-    const dayIndex = parseInt(item.dia_da_semana) - 1;
-    const day = daysOfWeek[dayIndex];
-
-    groupedData[day].push(item);
-  }
-
-  for (const day in groupedData) {
-    const currentDayLength = groupedData[day].length;
-
-    // Add "Nenhuma Aula" for remaining slots, except after the interval
-    for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
-      groupedData[day].push({
-        disciplina: "Nenhum Agendamento",
-        semestre: ''
-      });
-    }
-
-    // Add interval as the third item
-    groupedData[day].splice(2, 0, {
-      disciplina: "Intervalo",
-      semestre: ''
-    });
-  }
   return groupedData;
 }
 
@@ -226,13 +185,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
   //STORE FILTER DATA
   const [selectedMethod, setSelectedMethod] = useState("semestre");
-  const [selectedSemesterValue, setSelectedSemesterValue] = useState(1)
-  const [selectedProfessor, setSelectedProfessor] = useState<Professor>(
-    {
-      id: 0,
-      name: "Selecione um professor",
-    },
-  );
 
   const [selectedCourse, setSelectedCourse] = useState<CourseProps>(
     {
@@ -240,7 +192,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       course_name: "Selecione um Curso",
     },
   );
-
 
 
   //WEIRD DATE STUFF
@@ -270,26 +221,25 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       console.log(JSON.stringify(storedUserData));
       console.log('token' + token);
 
-      if (token == null || localUserData == null) {
-
+      if (token == null) {
         console.log(localUserData)
-
-
         toast.error('Você precisa estar logado para acessar essa página!');
         localStorage.removeItem('gerenciamento-de-salas@v1.2');
         setTimeout(() => {
           window.location.href = '/';
         }, 2000);
-      } else {
+      } else if (userData.userData.id == 0) {
         console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
-        fetchCouses();
-        fetchDashboard()
-        setSelectedSemesterValue(userDataJson.userData.semester);
-
+        if (!userDataJson.userData.semesterverified) {
+          setAskSemesterModalIsVisible(true)
+        }
       }
+      fetchCourses();
+      // fetchSemestreData();
+
     }
-  }, [userData]);
+  }, []);
 
 
   useEffect(() => {
@@ -297,112 +247,43 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     console.log('Starting to render stuff2...');
 
     console.log(currentSelectedDate)
+    console.log(userData)
+    console.log(selectedCourse)
 
     if (userData.token !== '' && userData.userData.id !== 0) {
-
       console.log("Usuário logado!")
 
-      // console.log(selectedMethod)
-      if (!userData.userData.semesterverified) {
-        setAskSemesterModalIsVisible(true)
-      }
-
-     
+      // if (userData.userData.semesterverified == true) {
+      //   setSelectedCourse({
+      //     id: userData.userData.courseId,
+      //     course_name: userData.userData.course_name
+      //   })
+      // } else {
 
       //FETCH DATA THAT CHANGES ON THE FILTERS
-      if (selectedMethod == "professor") {
-        fetchProfessorData();
-      }
-      else {
+      if(selectedCourse.id != 0){
         fetchSemestreData();
       }
-
     }
     else {
       console.log("Usuário nao esta logado!")
     }
 
-  }, [selectedMethod, selectedSemesterValue, currentSelectedDate, selectedCourse]);
+  }, [selectedMethod, currentSelectedDate, selectedCourse]);
 
   useEffect(() => {
-
-    const updateCurrentDayAndTime = () => {
-      const now = new Date();
-      const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-      setCurrentDay(days[now.getDay()]);
-
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      setCurrentTime(`${hours}:${minutes}`);
-    };
-
-    updateCurrentDayAndTime();
-    const timerId = setInterval(updateCurrentDayAndTime, 60000); // Update every minute
-
-    // setSelectedSemesterValue(userData.userData.semestre)
-    return () => {
-      clearInterval(timerId);
-    };
-
-  }, []);
-
-  //FUNCTIONS ---------------------------------------------------------------------
-
-  function handleScheduleClick(dayData: any, item: any, dayDateObject: Date) {
-    // console.clear()
-    console.log("Clicked")
-    console.log(item.agendamentos.length)
-
-    const daysIds: any = []
-
-    dayData.forEach((item: any) => {
-      item.id ? daysIds.push(item.id) : null
-    })
-
-    console.log(daysIds)
-    console.log(dayDateObject?.toISOString())
-
-    if (item.agendamentos.length > 0) {
-      // console.log("Agendamento exist and the item is") 
-      console.log(JSON.stringify(item.agendamentos[0], null, 2))
-      console.log("agendamento exist")
-
-      openEditModal(item.agendamentos[0], daysIds)
+    if (userData.userData.semesterverified == true) {
+      setSelectedCourse({
+        id: userData.userData.courseId,
+        course_name: userData.userData.course_name
+      })
     } else {
-
-      // MONTA OBJ DE MOVO AGENDAMENTO
-      //{
-      //   "id": 9,
-      //   "date": "2023-08-25T00:23:27.240Z",
-      //   "uuid_agendamento": "#21324",
-      //   "horario_inicio": "18:45:00",
-      //   "horario_fim": "19:35:00",
-      //   "id_professor": 12,
-      //   "id_grade": 16,
-      //   "id_laboratorio": 25,
-      //   "professor": "Marcos Allan",
-      //   "laboratorio": "Laboratorio-5",
-      //   "updated_at": "2023-08-27T00:23:37.849Z",
-      //   "created_at": "2023-08-27T00:23:37.849Z"
-      // }
-
-      const newAgedamentoData = {
-        date: dayDateObject?.toISOString(),
-        uuid_agendamento: "-",
-        id_professor: userData.userData.professor_id,
-        id_laboratorio: 0,
-        updated_at: new Date()?.toISOString(),
-        created_at: new Date()?.toISOString()
-      }
-
-      //ABRE MODAL DE NOVO AGENDAMNTO CASO USUARIO ESTEJA NO MODO DE CRIAÇÂO 
-      userIsScheduling
-        ?
-        openEditModal(newAgedamentoData, daysIds)
-        :
-        console.log("Is not agendating")
+      setSelectedCourse(courses[0])
     }
   }
+    , [courses])
+
+  //FUNCTIONS ---------------------------------------------------------------------
 
   function areDatesOnSameDayMonthYear(date1: Date, date2: Date) {
     return (
@@ -410,6 +291,12 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       date1.getMonth() === date2.getMonth() &&
       date1.getFullYear() === date2.getFullYear()
     );
+  }
+
+  function handleDefaultCourse(selectedCourse: CourseProps) {
+
+    setSelectedCourse(selectedCourse)
+
   }
 
   //RENDER FUNCTIONS
@@ -422,7 +309,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
     return (
       <WeekdayContainer>
-        <SchedulesContainer isCurrentDay={currentDay === semesterName}>
+        <SchedulesContainer>
           <h2>{semesterName}</h2>
           {
             dayData.map((item: any) => {
@@ -454,7 +341,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               // console.log(currentTime)
 
               return (
-                <Schedule  isCurrentTime={isCurrentTime}
+                <Schedule isCurrentTime={isCurrentTime}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
                   <Disciplina agendamentoCancelExist={agendamentoCancelExist}>{disciplina}</Disciplina>
                   <Professor agendamentoCancelExist={agendamentoCancelExist}>{professor}</Professor>
@@ -532,7 +419,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                 size={10}
                 loading />
             </WeekDay>
-            <SchedulesContainer isCurrentDay={false}>
+            <SchedulesContainer>
               <h2>{day}</h2>
               {
                 Array(6)
@@ -595,15 +482,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     setSchedulingModalIsVisible(false);
     if (resetParams) {
       setUserIsScheduling(false)
-      fetchDashboard()
+      fetchSemestreData()
     };
   };
 
-  const handleCloseModalAskSemester = (semestre: number) => {
-
-    setSelectedSemesterValue(semestre)
+  const handleCloseModalAskSemester = (semestre: number, couseObject: CourseProps) => {
 
     setAskSemesterModalIsVisible(false);
+
   };
 
   const openEditModal = (editedData: any, daysIds: any) => {
@@ -645,7 +531,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     // setCurrentSelectedDate(monday);
     // setEndDate(friday);
   };
-
   const getDayBasedOnWeekday: any = (dayName: string, startDate: any) => {
     const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const dayIndex = days.indexOf(dayName);
@@ -667,44 +552,14 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       dayDateObject: nextDay
     }
   };
-  const isWithinClassTime = (startTime: any, endTime: any) => {
-
-    // console.log("Start Time: " + startTime)
-    // console.log("End Time: " + endTime)
-
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const [endHour, endMinute] = endTime.split(':').map(Number);
-
-    const start = new Date();
-    start.setHours(startHour, startMinute, 0, 0);
-
-    const end = new Date();
-    end.setHours(endHour, endMinute, 0, 0);
-
-    return now >= start && now <= end;
-  };
 
   //FILTER FUNCTIONS
-  const handleSelectProfessor = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    // console.log(event.target.value)
 
-    const professorObject = {
-      id: parseInt(event.target.value),
-      name: "test"
-    }
-    setSelectedProfessor(
-      professorObject
-    )
-  }
   const handleSelectCourse = (event: React.ChangeEvent<HTMLSelectElement>) => {
     // console.log(event.target.value)
     const courseObject: CourseProps = {
       id: parseInt(event.target.value),
-      course_name: "test"
+      course_name: event.target.options[event.target.selectedIndex].text
     }
 
     setSelectedCourse(
@@ -713,42 +568,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
   }
 
-  const handleSemesterChange = (event: any) => {
-    setSelectedSemesterValue(event.target.value)
-  }
-  const handleMethodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    // console.log(event.target.value)
-    setSelectedMethod(event.target.value)
-  }
-  const GetCurrentMonthAndYear = (date: any) => {
-    // console.log(date)
-    const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-
-    const month = monthNames[date.getMonth()]
-    const year = date.getFullYear()
-
-    return `${month} de ${year}`
-  }
-
   //FETCH FUNCTION
-  async function fetchProfessors(token: string) {
-    console.log("Fetching fetchProfessors...")
-    // console.log(process.env.REACT_APP_API_KEY)
-    await fetch(`${apiUrl}/professors`, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'bearer ' + token,
-      }
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-
-      setProfessores(data);
-
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
   async function fetchSemestreData() {
     fetch(`${apiUrl}/grade/dashboard`, {
       method: 'POST',
@@ -756,7 +576,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        semestre: selectedSemesterValue || 1,
         date: currentSelectedDate, //add localStorage later
         course_id: selectedCourse.id || 1,
       })
@@ -773,71 +592,18 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     }
     )
   }
-  async function fetchProfessorData() {
-    console.log("Fetching fetchProfessorData...")
-    console.log(selectedProfessor)
-    fetch(`${apiUrl}/grade/agendamentos`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        // professor_id: selectedProfessor.id || 1,
-        laboratory_id: "2",
-      })
-    }).then((response) => response.json()).then((data) => {
-      console.log(data)
 
-      const transformedData = groupBySemester(data)
-      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-
-      setTimeout(() => {
-        setLoading(true) // teste de loading
-      }, 2000)
-      // console.log(transformedData)
-      // console.log("transformedData" + JSON.stringify(transformedData, null, 2))
-      // setLoading(true)
-      return setgrade(transformedData as any)
-    }
-    )
-  }
-
-  async function fetchCouses() {
+  async function fetchCourses() {
     console.log("Fetching Courses...")
     fetch(`${apiUrl}/course`, {
       method: 'POST',
     }).then((response) => response.json()).then((data) => {
-      console.log(data)
-      setSelectedCourse(data[0])
+      console.log(userData)
       return setCourses(data)
     }
     )
   }
 
-  async function fetchDashboard() {
-    fetch(`${apiUrl}/grade/dashboard`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        semestre: selectedSemesterValue || 1,
-        date: selectedDate || new Date(), //add localStorage later
-        course_id: selectedCourse.id || 1,
-      })
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-      const transformedData = groupBySemester(data)
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-      setTimeout(() => {
-        setLoading(true) // teste de loading
-      }, 2000)
-      // setLoading(true)
-      // console.log(transformedData.segunda[0].agendamentos.professor)
-      return setgrade(transformedData)
-    }
-    )
-  }
 
   //PARTICLES FUNCTIONS
   const particlesInit = useCallback(async (engine: Engine) => {
@@ -965,7 +731,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }}
       />
       <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
-      <ModalAskSemestre isVisible={askSemesterModalIsVisible} onCloseModalAskSemester={handleCloseModalAskSemester} />
+      <ModalAskSemestre handleDefaultCourse={handleDefaultCourse} courses={courses} isVisible={askSemesterModalIsVisible} onCloseModalAskSemester={handleCloseModalAskSemester} />
       <ToastContainer
         limit={4}
         autoClose={1000}
@@ -1040,7 +806,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                   size={20}
                 />
               </FilterIconWrapper>
-              <StyledSelect defaultValue={selectedCourse.course_name} onChange={handleSelectCourse}>
+              <StyledCourseSelect value={selectedCourse.id} onChange={handleSelectCourse}>
                 {courses && courses.length > 0 ? (
                   courses.map((course) => {
                     return (
@@ -1052,9 +818,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                 ) : (
                   <option value="">No professors available</option>
                 )}
-              </StyledSelect>
-          
-             
+              </StyledCourseSelect>
             </FilterWrapper>
           </DatePickWrapper>
         </Header>

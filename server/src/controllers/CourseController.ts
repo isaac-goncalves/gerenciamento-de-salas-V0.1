@@ -26,7 +26,10 @@ export class CoursesController {
   async get (request: Request, response: Response) {
     console.log('Getting Courses')
 
-    const courses = await coursesRepository.find()
+    //sord by course_name with query 
+
+    const query = "SELECT * FROM courses ORDER BY course_name"
+    const courses = await coursesRepository.query(query)
 
     return response.status(200).json(courses)
   }

@@ -41,7 +41,7 @@ export const ModalContent = styled.div`
   /* justify-content: center; */
   align-items: center;
   width: 30%;
-  height: 35%;
+  height: 45%;
 
   @media screen and (max-width: 875px) {
     flex-direction: column;
@@ -144,9 +144,10 @@ export const ProfessorWrapper = styled.div`
   box-shadow: ${boxShadow};
   height:100%;
   width:100%;
+  gap: 0.4rem;
   /* border: 1px solid red; */
   flex-direction: column;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   @media screen and (max-width: 875px) {
     margin-bottom: 1rem;
   }
@@ -281,7 +282,7 @@ export const SideBysideContainer = styled.div`
 export const ButtonsWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   width: 100%;
   justify-content: flex-end;
 `
@@ -308,6 +309,5 @@ export const StyledButton = styled.button`
 export const ClocktimeAndButoonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
   width: 100%;
 `

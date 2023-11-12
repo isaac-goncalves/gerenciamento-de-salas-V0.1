@@ -207,7 +207,11 @@ const LoginScreen: any = ({ theme }: any): any => {
                 }
                     , 4000);
             }
-            )
+            ).catch((err) => {
+                console.log(err);
+                toast.error("Erro ao criar usuário guest!");
+            }
+            );
 
     }
     return (

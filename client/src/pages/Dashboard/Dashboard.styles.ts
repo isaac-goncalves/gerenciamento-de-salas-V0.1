@@ -235,7 +235,11 @@ export const StyledSelect = styled.select`
   }
 
   option {
-    font-size: 0.8rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 8px 20px;
+    
   }
 
   outline: none;
@@ -649,7 +653,7 @@ export const PacmanLoaderWrapper = styled(PacmanLoader)`
   color: red;
 `
 
-export const SchedulesContainer = styled.div<{ isCurrentDay: boolean }>`
+export const SchedulesContainer = styled.div`
   max-width: 20rem;
   display: flex;
   padding: 0.5rem 0;

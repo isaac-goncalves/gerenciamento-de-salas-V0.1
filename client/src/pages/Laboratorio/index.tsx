@@ -146,7 +146,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   const [dayDateObjectFromClick, setDayDateObjectFromClick] = useState<any>({});
 
   //CONTEXTMENU FUNCTIONS
-
   const handleContextMenu = (e: any, item: any, dayDateObject: Date) => {
     e.preventDefault();
 
@@ -176,7 +175,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     }
 
     //cancelar para esse id o laboratorio desse dia
-
     console.log("Opening modal as: " + schedule_status)
     console.log(newAgedamentoData)
 
@@ -197,7 +195,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     })
 
     // openEditModal(newAgedamentoData, daysIds)
-
     setContextMenuVisible(false);
   };
 
@@ -223,18 +220,14 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   const [selectedLaboratorio, setSelectedLaboratorio] = useState<any>(
     {
       id: 0,
-      descricao: "Laboratorio-6",
+      descricao: "Selecione um laboratorio",
       numero_sala: 0,
     }
   )
 
-
   //WEIRD DATE STUFF
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-
-  const [date, setDate] = useState(new Date());
   const [currentDay, setCurrentDay] = useState('');
-  const [currentTime, setCurrentTime] = useState('');
 
   // set to nearest Monday
   const [startDate, setStartDate] = useState<Date | null>(setDay(new Date(), 1));
@@ -273,22 +266,18 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   }, [userData]);
 
   useEffect(() => {
-
     console.log('Starting to render stuff...');
-
     console.log(startDate)
 
     if (userData.token !== '' && userData.userData.id !== 0) {
-
       console.log("Usuário logado!")
-
       console.log("selectedMethod")
       console.log(selectedMethod)
       if (selectedMethod == "professor") {
         fetchProfessorData();
       }
       else if (selectedMethod == "semestre") {
-        fetchSemestreData();
+        // fetchSemestreData();
       } else if (selectedMethod == "laboratorio") {
         fetchLaboratoryAgendamentosData()
       }
@@ -300,30 +289,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     }
 
   }, [selectedSemesterValue, selectedLaboratorio, selectedProfessor, selectedMethod, selectedDate, startDate]);
-
-  useEffect(() => {
-
-    const updateCurrentDayAndTime = () => {
-      const now = new Date();
-      const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-      setCurrentDay(days[now.getDay()]);
-
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
-      setCurrentTime(`${hours}:${minutes}`);
-    };
-
-    updateCurrentDayAndTime();
-    const timerId = setInterval(updateCurrentDayAndTime, 60000); // Update every minute
-
-    // setSelectedSemesterValue(userData.userData.semestre)
-    return () => {
-      clearInterval(timerId);
-    };
-
-  }, []);
-
-
 
   //FUNCTIONS ---------------------------------------------------------------------
 
@@ -412,13 +377,9 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     );
   }
 
-
   //RENDER FUNCTIONS
   const renderWeekday = (dayName: string, dayData: any) => {
-
     const getDayBasedOnWeekdayObj = getDayBasedOnWeekday(dayName, startDate)
-
-
 
     // const [currentWeekDay, dayDateObject] = getDayBasedOnWeekday(dayName, startDate)
     const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
@@ -430,7 +391,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     return (
       <WeekdayContainer>
         <WeekDay>{currentWeekDay}</WeekDay>
-        <SchedulesContainer isCurrentDay={currentDay === dayName}>
+        <SchedulesContainer>
           <h2>{dayName}</h2>
           {
             dayData.map((item: any) => {
@@ -444,7 +405,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               // console.log(item.agendamentos)
               //compare if is on the same day and month
 
-
               const agendamentoCancelExist = agendamentos ? agendamentos.some((item: any) => {
                 return item.schedule_status == "cancel"
                   && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
@@ -456,7 +416,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 return item.schedule_status == "default"
                   && areDatesOnSameDayMonthYear(new Date(item.date), dayDateObject)
               }) : false
-
 
               const agendamento = agendamentos && agendamentos.length > 0 ? agendamentos[0] : null;
               //IMPLEMENTAR LOGICA DE AGENDAMENTO VENCEDOR AQUI
@@ -597,7 +556,12 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     setSchedulingModalIsVisible(false);
     if (resetParams) {
       setUserIsScheduling(false)
-      fetchData()
+      if (selectedMethod == "professor") {
+        fetchProfessorData();
+      }
+      else if (selectedMethod == "laboratorio") {
+        fetchLaboratoryAgendamentosData()
+      }
     };
   };
 
@@ -757,30 +721,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     })
   }
 
-  async function fetchSemestreData() {
-    fetch(`${apiUrl}/grade/dashboard`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        semestre: selectedSemesterValue || 1,
-        date: startDate //add localStorage later
-      })
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-      const transformedData = groupByWeekday(data)
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-      setTimeout(() => {
-        setLoading(true) // teste de loading
-      }, 2000)
-      // setLoading(true)
-      // console.log(transformedData.segunda[0].agendamentos.professor)
-      return setgrade(transformedData as any)
-    }
-    )
-  }
-
   async function fetchLaboratoryData() {
     fetch(`${apiUrl}/laboratory`, {
       method: 'POST'
@@ -790,10 +730,12 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         setLoading(true) // teste de loading
       }, 2000)
 
+      const revertedData = data.reverse()
+
       if (selectedLaboratorio.id == 0) {
-        setSelectedLaboratorio(data[0])
+        setSelectedLaboratorio(revertedData[0])
       }
-      return setlaboratoryData(data.reverse())
+      return setlaboratoryData(revertedData)
     }
     )
   }
@@ -856,29 +798,29 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     )
   }
 
-  async function fetchData() {
-    fetch(`${apiUrl}/grade/dashboard`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        semestre: selectedSemesterValue || 1,
-        date: selectedDate || new Date() //add localStorage later
-      })
-    }).then((response) => response.json()).then((data) => {
-      // console.log(data)
-      const transformedData = groupByWeekday(data)
-      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-      setTimeout(() => {
-        setLoading(true) // teste de loading
-      }, 2000)
-      // setLoading(true)
-      // console.log(transformedData.segunda[0].agendamentos.professor)
-      return setgrade(transformedData)
-    }
-    )
-  }
+  // async function fetchData() {
+  //   fetch(`${apiUrl}/grade/dashboard`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       semestre: selectedSemesterValue || 1,
+  //       date: selectedDate || new Date() //add localStorage later
+  //     })
+  //   }).then((response) => response.json()).then((data) => {
+  //     // console.log(data)
+  //     const transformedData = groupByWeekday(data)
+  //     // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+  //     setTimeout(() => {
+  //       setLoading(true) // teste de loading
+  //     }, 2000)
+  //     // setLoading(true)
+  //     // console.log(transformedData.segunda[0].agendamentos.professor)
+  //     return setgrade(transformedData)
+  //   }
+  //   )
+  // }
 
   async function cancelAgendamentoRequest(data: any) {
     try {
@@ -1117,13 +1059,10 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               </FilterIconWrapper>
               <StyledSelect value={selectedMethod} onChange={handleMethodChange}>
                 <option value="laboratorio">
-                  Laboratorio
+                  Laboratório
                 </option>
                 <option value="professor">
                   Professor
-                </option>
-                <option value="semestre">
-                  Semestre
                 </option>
               </StyledSelect>
               {
@@ -1141,30 +1080,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                     <option value="">No professors available</option>
                   )}
                 </StyledSelect>
-              }
-              {
-                selectedMethod === "semester" ?
-                  <StyledSelectValue id={'selectFilter'} value={selectedSemesterValue} onChange={handleSemesterChange}>
-                    <option value="1">
-                      1º
-                    </option>
-                    <option value="2">
-                      2º
-                    </option>
-                    <option value="3">
-                      3º
-                    </option>
-                    <option value="4">
-                      4º
-                    </option>
-                    <option value="5">
-                      5º
-                    </option>
-                    <option value="6">
-                      6º
-                    </option>
-                  </StyledSelectValue>
-                  : null
               }
               {
                 selectedMethod === "laboratorio" ?
