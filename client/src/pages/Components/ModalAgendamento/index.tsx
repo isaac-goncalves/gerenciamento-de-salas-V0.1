@@ -252,7 +252,9 @@ const ModalAgendamento = ({
 
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
+    
       return setProfessores(data)
+
     });
   }
 

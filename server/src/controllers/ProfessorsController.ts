@@ -19,20 +19,25 @@ export class ProfessorsController {
     // if (!token) return response.status(401).json({ message: 'missing token' })
 
     // const [, tokenValue] = token.split(' ')
-
+    //sort alpoabetically
     try {
       let professores = []
-      if(selectedCourse != null){
-       professores = await professoresRepository.find({
-        where: {
-          course_id: selectedCourse
-        }}
-      )
+      if (selectedCourse != null) {
+        professores = await professoresRepository.find({
+          where: {
+            course_id: selectedCourse
+          },
+          order: {
+            name: 'ASC'
+          }
+        })
+      } else {
+        professores = await professoresRepository.find({
+          order: {
+            name: 'ASC'
+          }
+        })
       }
-      else{
-        professores = await professoresRepository.find()
-      }
-
 
       // console.log(JSON.stringify(professores, null, 2))
 
