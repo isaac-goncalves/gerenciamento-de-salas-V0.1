@@ -52,7 +52,12 @@ interface LaboratoryProps {
   numero_sala: number;
 }
 
-const ModalEdit = ({
+interface CourseProps {
+  id: number;
+  course_name: string;
+}
+
+const ModalAgendamento = ({
   idUserLogado,
   action,
   isVisible,
@@ -66,6 +71,12 @@ const ModalEdit = ({
 
   //STATES
   const [formData, setFormData] = useState<InitialDataProps>(initialData);
+  const [courses, setCourses] = useState<CourseProps[]>([
+    {
+      id: 0,
+      course_name: "Selecione um Curso",
+    },
+  ]);
   const [professores, setProfessores] = useState<ProfessoreProps[]>([]);
   const [laboratory, setLaboratory] = useState<LaboratoryProps[]>([]);
   const [startDate, setStartDate] = useState<Date>();
@@ -89,7 +100,12 @@ const ModalEdit = ({
   //MULTISELECT PARAMS
   const [selectedValues, setSelectedValues] = useState([]);
   const [disciplinas, setDisciplinas] = useState([]);
-
+  const [selectedCourse, setSelectedCourse] = useState<CourseProps>(
+    {
+      id: 0,
+      course_name: "Selecione um Curso",
+    },
+  );
 
   // const [initialDate, setInitialDate] = useState<any>();
 
@@ -112,6 +128,7 @@ const ModalEdit = ({
     fetchProfessorData();
     fetchLaboratoryData();
     fetchDisciplinas();
+    fetchCourses();
 
     console.log("initialData.type")
     console.log(initialData.type)
@@ -142,11 +159,13 @@ const ModalEdit = ({
           }
   }, [initialData])
 
-  // useEffect(() => {
-  //   // console.clear()
-  //   console.log("selectedLaboratory useEffect")
-  //   console.log(selectedLaboratory)
-  // }, [selectedLaboratory])
+
+
+  useEffect(() => {
+  
+    fetchProfessorData();
+
+  }, [selectedCourse])
 
   //FETCHES
   const fetchProfessorData = async () => {
@@ -218,14 +237,24 @@ const ModalEdit = ({
 
   async function fetchProfessors(token: string) {
     // console.log("Fetching fetchProfessors...")
+
+    const params = {
+      selectedCourse: selectedCourse.id
+    }
+
     await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/professors', {
       method: 'POST',
       headers: {
         'Authorization': 'bearer ' + token,
-      }
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params)
+
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
+    
       return setProfessores(data)
+
     });
   }
 
@@ -234,7 +263,7 @@ const ModalEdit = ({
   //   await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/laboratory', {
   //     method: 'POST',
   //     headers: {
-  //       'Authorization': 'bearer ' + token,
+    //       'Authorization': 'bearer ' + token,
   //     }
   //   }).then((response) => response.json()).then((data) => {
   //     console.log(data)
@@ -291,6 +320,16 @@ const ModalEdit = ({
     }).catch((error) => {
       console.log(error)
     })
+  }
+
+  async function fetchCourses() {
+    console.log("Fetching Courses...")
+    fetch(`${apiUrl}/course`, {
+      method: 'POST',
+    }).then((response) => response.json()).then((data) => {
+      return setCourses(data)
+    }
+    )
   }
 
   //HANDLE CLICKS
@@ -502,48 +541,48 @@ const ModalEdit = ({
   }
 
   async function updateAgendamento(uuidAgendamento: any) {
- //EXCLUDES CHECK FOR UPDATE ID WE ARE CREATING THE AGENDAMENTO aka UPDATE AGENDAMENTO IF UDPATE
- if (uuidAgendamento != "-") {
-  const agendamentoAlterado =
-    // formData.date !== new Date(formData.date).toISOString()
-       formData.numero_sala !== selectedLaboratory.numero_sala
-      || formData.id_professor !== selectedProfessor ? true : false
-      
+    //EXCLUDES CHECK FOR UPDATE ID WE ARE CREATING THE AGENDAMENTO aka UPDATE AGENDAMENTO IF UDPATE
+    if (uuidAgendamento != "-") {
+      const agendamentoAlterado =
+        // formData.date !== new Date(formData.date).toISOString()
+        formData.numero_sala !== selectedLaboratory.numero_sala
+          || formData.id_professor !== selectedProfessor ? true : false
 
-  console.log("agendamentoAlterado: " + agendamentoAlterado)
 
-  if (agendamentoAlterado) {
-    try {
+      console.log("agendamentoAlterado: " + agendamentoAlterado)
 
-      const updatedAgendamentos = {
-        date: formData.date,
-        id_laboratorio: selectedLaboratory.numero_sala,
-        id_professor: selectedProfessor,
-        uuid_agendamento: uuidAgendamento,
+      if (agendamentoAlterado) {
+        try {
+
+          const updatedAgendamentos = {
+            date: formData.date,
+            id_laboratorio: selectedLaboratory.numero_sala,
+            id_professor: selectedProfessor,
+            uuid_agendamento: uuidAgendamento,
+          }
+
+          const response = await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/agendamento`, {
+            method: 'PUT',
+            body: JSON.stringify(updatedAgendamentos),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            toast.success('Agendamento Atualizado com sucesso!');
+            console.log("Atualizado com sucesso")
+            onClose(true);
+          } else {
+            toast.error('Erro ao Atualizado agendamento, tente novamente.');
+          }
+        } catch (error) {
+          toast.error('Erro ao Atualizado agendamento, tente novamente.');
+        }
       }
-
-      const response = await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/agendamento`, {
-        method: 'PUT',
-        body: JSON.stringify(updatedAgendamentos),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.ok) {
-        toast.success('Agendamento Atualizado com sucesso!');
-        console.log("Atualizado com sucesso")
-        onClose(true);
-      } else {
-        toast.error('Erro ao Atualizado agendamento, tente novamente.');
-      }
-    } catch (error) {
-      toast.error('Erro ao Atualizado agendamento, tente novamente.');
     }
-  }
-}
 
   }
-  
+
   async function handleDataSelection(selectedData: any) {
     console.log("handleSelection")
     console.log(selectedData)
@@ -577,7 +616,7 @@ const ModalEdit = ({
       // Update the selectedProfessorId state instead of formData
     }
   }
-
+  
   const handleLaboratoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     // console.log(event.target.value)
 
@@ -676,6 +715,21 @@ const ModalEdit = ({
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  //FILTER FUNCTIONS
+
+  const handleSelectCourse = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // console.log(event.target.value)
+    const courseObject: CourseProps = {
+      id: parseInt(event.target.value),
+      course_name: event.target.options[event.target.selectedIndex].text
+    }
+
+    setSelectedCourse(
+      courseObject
+    )
+
+  }
+
   return (
     <ModalOverlay onClick={() => onClose()}>
       <ModalContent onClick={e => e.stopPropagation()}>
@@ -691,6 +745,20 @@ const ModalEdit = ({
           <SideBysideContainer>
             <div>
               <ProfessorWrapper>
+                <DetailsText>Courso:</DetailsText>
+                <StyledSelect value={selectedCourse.id} onChange={handleSelectCourse}>
+                  {courses && courses.length > 0 ? (
+                    courses.map((course) => {
+                      return (
+                        <option key={course.id} value={course.id}>
+                          {course.course_name}
+                        </option>
+                      );
+                    })
+                  ) : (
+                    <option value="">No professors available</option>
+                  )}
+                </StyledSelect>
                 <DetailsText>Professor:</DetailsText>
                 <StyledSelect
                   value={selectedProfessor || ''}
@@ -842,4 +910,4 @@ const ModalEdit = ({
   )
 }
 
-export default ModalEdit
+export default ModalAgendamento

@@ -151,7 +151,7 @@ export const Separator = styled.div`
 `
 
 export const ButtonWrapper = styled.div`
-  border: 1px solid red;
+  /* border: 1px solid red; */
   gap: 2rem;
   width: 100%;
   display: flex;
@@ -170,7 +170,9 @@ export const ButtonWrapper = styled.div`
 
   @media screen and (max-width: 1394px) {
     flex-direction: column;
-    gap: 1rem;
+    /* gap: 1rem; */
+    align-items: center;
+    justify-content: center;
   }
 `
 

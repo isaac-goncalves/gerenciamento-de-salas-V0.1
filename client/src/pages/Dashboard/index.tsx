@@ -22,7 +22,7 @@ import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName, StyledCourseSelect } from './Dashboard.styles'
 
-import ModalEdit from '../Components/ModalEdit';
+import ModalAgendamento from '../Components/ModalAgendamento';
 
 import { ParticleOptions } from '../Components/ParticlesOptions';
 
@@ -236,7 +236,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }
       }
       fetchCourses();
-      // fetchSemestreData();
+      fetchSemestreData();
 
     }
   }, []);
@@ -334,7 +334,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               const agendamento = !agendamentoDefaultExist ? agendamentos && agendamentos.length > 0 ? agendamentos[0] : null : null
 
               const isCurrentTime = false
-              
+
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
               // console.log(isCurrentTime)
               // console.log(currentTime)
@@ -584,7 +584,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       setTimeout(() => {
         setLoading(true) // teste de loading
-      }, 2000)
+      }, 0)
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
       return setgrade(transformedData as any)
@@ -729,7 +729,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
           detectRetina: true,
         }}
       />
-      <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
+      <ModalAgendamento action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ModalAskSemestre handleDefaultCourse={handleDefaultCourse} courses={courses} isVisible={askSemesterModalIsVisible} onCloseModalAskSemester={handleCloseModalAskSemester} />
       <ToastContainer
         limit={4}
@@ -822,24 +822,22 @@ const Dashboard: any = ({ theme, themeName }: any) => {
           </DatePickWrapper>
         </Header>
         <ClassesContainer>
-          
-            <ClockContainer>
-              <p>18:45</p>
-              <p>19:35</p>
-              <p>20:25</p>
-              <p>20:35</p>
-              <p>21:25</p>
-              <p>22:15</p>
-            </ClockContainer>
-
-            {loading
-              &&
-              grade
-              ?
-              (
-                <>
-                  <WeekContainer>
-                    {/* {
+          <ClockContainer>
+            <p>18:45</p>
+            <p>19:35</p>
+            <p>20:25</p>
+            <p>20:35</p>
+            <p>21:25</p>
+            <p>22:15</p>
+          </ClockContainer>
+          {loading
+            &&
+            grade
+            ?
+            (
+              <>
+                <WeekContainer>
+                  {/* {
                       grade && grade.map((item: any) => {
                         console.log(item)
 
@@ -858,20 +856,20 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                         )
                       })
                     } */}
-                    {renderWeekday('1º Semestre', grade.semestre1)}
-                    {renderWeekday('2º Semestre', grade.semestre2)}
-                    {renderWeekday('3º Semestre', grade.semestre3)}
-                    {renderWeekday('4º Semestre', grade.semestre4)}
-                    {renderWeekday('5º Semestre', grade.semestre5)}
-                    {renderWeekday('6º Semestre', grade.semestre6)}
-                    {renderBanner('Sexta', grade.semestre6)}
-                  </WeekContainer >
-                </>
-              ) : (
-                renderLoading()
-              )}
-              
-          
+                  {renderWeekday('1º Semestre', grade.semestre1)}
+                  {renderWeekday('2º Semestre', grade.semestre2)}
+                  {renderWeekday('3º Semestre', grade.semestre3)}
+                  {renderWeekday('4º Semestre', grade.semestre4)}
+                  {renderWeekday('5º Semestre', grade.semestre5)}
+                  {renderWeekday('6º Semestre', grade.semestre6)}
+                  {renderBanner('Sexta', grade.semestre6)}
+                </WeekContainer >
+              </>
+            ) : (
+              renderLoading()
+            )}
+
+
         </ClassesContainer>
       </MainContainer>
     </>

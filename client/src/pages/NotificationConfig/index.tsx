@@ -22,7 +22,7 @@ import {
 
 import { toast, ToastContainer } from 'react-toastify';
 
-import ModalEdit from '../Components/ModalEdit';
+import ModalAgendamento from '../Components/ModalAgendamento';
 import NewCourseModal from '../Components/ModalDelete'
 import FileUploadButton from '../Components/FileUploadButton';
 import FileDownloadButton from '../Components/FileDownloadButton';

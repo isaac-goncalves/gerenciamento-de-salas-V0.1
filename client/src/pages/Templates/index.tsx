@@ -27,7 +27,7 @@ import {
 
 import { toast, ToastContainer } from 'react-toastify';
 
-import ModalEdit from '../Components/ModalEdit';
+import ModalAgendamento from '../Components/ModalAgendamento';
 import NewCourseModal from '../Components/NewCourseModal'
 import FileUploadButton from '../Components/FileUploadButton';
 import FileDownloadButton from '../Components/FileDownloadButton';
@@ -76,7 +76,7 @@ const Templates: any = ({ theme }: any): any => {
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
 
-    const [courseData, setCourseData] = useState<any>([]);
+    const [coursesData, setCoursesData] = useState<any>([]);
     const [laboratoriosData, setLaboratoriosData] = useState<any>([]);
 
     const [selectedTable, setSelectedTable] = useState<String>('cursos');
@@ -154,7 +154,7 @@ const Templates: any = ({ theme }: any): any => {
 
             setProfessoresData(ProfessorWithOutFirstElement);
 
-            setCourseData(coursesDataResponse);
+            setCoursesData(coursesDataResponse);
 
             setTimeout(() => {
                 setIsLoading(true);
@@ -215,8 +215,7 @@ const Templates: any = ({ theme }: any): any => {
     }
 
 
-    const handleDelete = (type: string ,deleteData: any) => {
-
+    const handleDelete = (type: string, deleteData: any) => {
         Swal.fire({
             title: 'Você tem certeza?',
             text: "Você não poderá reverter essa ação!",
@@ -230,8 +229,6 @@ const Templates: any = ({ theme }: any): any => {
                 handleDeleteConfirmed(type, deleteData);
             }
         })
-
-
     }
 
     const handleDeleteConfirmed = async (type: string, data: DataProps) => {
@@ -247,6 +244,11 @@ const Templates: any = ({ theme }: any): any => {
             toast.error('Erro ao deletar curso. Tente novamente mais tarde.')
         });
         fetchData();
+    }
+
+    const handleDownloadCourseCurrentTemplate = (courseId: number) => {
+        console.log('handleDownloadCourseCurrentTemplate');
+        window.open(`${apiUrl}/template/download/${courseId}`);
     }
 
     const CoursesTable = ({ data }: any) => {
@@ -265,7 +267,7 @@ const Templates: any = ({ theme }: any): any => {
                         </TableRowHeader>
                     </TableHeader>
                     <TableBody>
-                        {courseData.map((course: CourseData) => (
+                        {coursesData.map((course: CourseData) => (
                             <tr key={course.id}>
                                 <CenteredTableData>{course.id}</CenteredTableData>
                                 <NowrapText>{course.course_name}</NowrapText>
@@ -278,7 +280,8 @@ const Templates: any = ({ theme }: any): any => {
                                                 Edit
                                             </p>
                                         </EditButton>
-                                        <EditButton type="button" ><AiOutlineDownload />
+                                        <EditButton type="button" onClick={() => handleDownloadCourseCurrentTemplate(course.id)}><AiOutlineDownload size={20}
+                                        />
                                             <p>
                                                 Download
                                             </p>
@@ -356,7 +359,6 @@ const Templates: any = ({ theme }: any): any => {
 
         setModalNewCourseIsVisible(!modalNewCourseIsVisible);
         const [shouldFetchData, setShouldFetchData] = useState(false);
-
     }
 
     return (<>

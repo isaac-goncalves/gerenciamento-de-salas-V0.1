@@ -22,7 +22,7 @@ import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, StyledCourseSelect } from '../Dashboard/Dashboard.styles'
 
-import ModalEdit from '../Components/ModalEdit';
+import ModalAgendamento from '../Components/ModalAgendamento';
 
 import { ParticleOptions } from '../Components/ParticlesOptions';
 
@@ -758,7 +758,7 @@ const Grade: any = ({ theme, themeName }: any) => {
       // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
       setTimeout(() => {
         setLoading(true) // teste de loading
-      }, 2000)
+      }, 0)
       // setLoading(true)
       // console.log(transformedData.segunda[0].agendamentos.professor)
       return setgrade(transformedData as any)
@@ -942,7 +942,7 @@ const Grade: any = ({ theme, themeName }: any) => {
           detectRetina: true,
         }}
       />
-      <ModalEdit action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
+      <ModalAgendamento action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
       <ModalAskSemestre isVisible={askSemesterModalIsVisible} onCloseModalAskSemester={handleCloseModalAskSemester} />
       <ToastContainer
         limit={4}

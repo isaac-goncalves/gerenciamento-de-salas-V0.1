@@ -20,5 +20,8 @@
     "react-particles": "^2.12.2",
     "react-spinners": "^0.13.8",
     "react-transition-group": "^4.4.5"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0"
   }
 }

@@ -2,18 +2,10 @@ import { Request, Response } from 'express'
 import multer, { FileFilterCallback } from 'multer'
 
 import { spawn } from 'child_process'
-
+// Run this command in your terminal: npm install --save-dev @types/glob
+import fs from 'fs'
 import path from 'path'
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.resolve('uploads')) // Set the destination folder for uploaded files
-  },
-  filename: (req, file, cb) => {
-    const timestamp = Date.now()
-    cb(null, `${timestamp}_${file.originalname}`) // Use the original file name
-  }
-})
+import glob from 'glob'
 
 const fileFilter = (
   req: Request,
@@ -31,61 +23,100 @@ const fileFilter = (
   cb(null, true)
 }
 
-const upload = multer({ storage, fileFilter })
-
 export class ETLControllers {
   async upload (req: Request, res: Response) {
     console.log('upload')
 
     //grab course_id by url params
-    const  course_id  = req.params.course_id
+    const course_id = req.params.course_id
 
     console.log(course_id)
 
+    const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, path.resolve('uploads')) // Set the destination folder for uploaded files
+      },
+      filename: (req, file, cb) => {
+        const timestamp = Date.now()
+        cb(null, `${course_id}_${timestamp}_${file.originalname}`) // Use the original file name
+      }
+    })
+
+    const upload = multer({ storage, fileFilter })
+
     try {
-      await upload.single('file')(req, res, (error) => {
+      const previousFilePath = path.join(
+        __dirname,
+        '../../',
+        'uploads',
+        `*${course_id}_*`
+      )
+      const filesToDelete = glob.sync(previousFilePath)
+      filesToDelete.forEach((file: string) => {
+        fs.unlinkSync(file)
+        console.log(`Deleted previous file: ${file}`)
+      })
+
+      await upload.single('file')(req, res, error => {
         if (error) {
-          return res.status(400).json({ error: error.message });
+          return res.status(400).json({ error: error.message })
         }
-  
+
         if (!req.file) {
-          return res.status(400).json({ error: 'No file uploaded' });
+          return res.status(400).json({ error: 'No file uploaded' })
         }
-  
-        const uploadedFile = req.file;
-        const filePath = path.join(__dirname, '../../', 'python_scripts', 'script.py');
+
+        const uploadedFile = req.file
+        const filePath = path.join(
+          __dirname,
+          '../../',
+          'python_scripts',
+          'script.py'
+        )
 
         console.log(uploadedFile.path)
-        
-        const childProcess = spawn('python', [filePath, uploadedFile.path, course_id]);
-  
-        let stdoutData = '';
-        let stderrData = '';
-  
-        childProcess.stdout.on('data', (data) => {
-          stdoutData += data.toString();
-        });
-  
-        childProcess.stderr.on('data', (data) => {
-          stderrData += data.toString();
-        });
-  
-        childProcess.on('error', (err) => {
-          console.error('Child process error:', err);
-          return res.status(500).json({ error: 'Failed to process the file' });
-        });
-  
-        childProcess.on('exit', (code) => {
+
+        const childProcess = spawn('python', [
+          filePath,
+          uploadedFile.path,
+          course_id
+        ])
+
+        let stdoutData = ''
+        let stderrData = ''
+
+        childProcess.stdout.on('data', data => {
+          stdoutData += data.toString()
+        })
+
+        childProcess.stderr.on('data', data => {
+          stderrData += data.toString()
+        })
+
+        childProcess.on('error', err => {
+          console.error('Child process error:', err)
+          return res.status(500).json({ error: 'Failed to process the file' })
+        })
+
+        childProcess.on('exit', code => {
           if (code === 0) {
             // File processed successfully
-            return res.json({ message: 'File uploaded and processed successfully', stdout: stdoutData, stderr: stderrData });
+            return res.json({
+              message: 'File uploaded and processed successfully',
+              stdout: stdoutData,
+              stderr: stderrData
+            })
           } else {
-            console.error('Child process exited with code:', code);
-            console.error('Child process stderr:', stderrData);
-            return res.status(500).json({ error: 'Failed to process the file', stdout: stdoutData, stderr: stderrData });
+            console.error('Child process exited with code:', code)
+            console.error('Child process stderr:', stderrData)
+            return res.status(500).json({
+              error: 'Failed to process the file',
+              stdout: stdoutData,
+              stderr: stderrData
+            })
           }
-        });
-      });
+        })
+      })
     } catch (error) {
       console.error('An error occurred:', error)
       return res.status(500).json({ error: 'Failed to upload the file' })
@@ -99,6 +130,22 @@ export class ETLControllers {
     ) // Caminho para o arquivo no servidor
 
     const fileName = 'TEMPLATE_BASE_DADOS.xlsx'
+
+    response.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${fileName}"`
+    )
+
+    // Envie o arquivo como resposta
+    response.sendFile(filePath)
+  }
+
+  async downloadFileById (request: Request, response: Response) {
+    const { course_id } = request.params
+
+    const filePath = path.join(__dirname, `../../templates/${course_id}.xlsx`) // Caminho para o arquivo no servidor
+
+    const fileName = `${course_id}.xlsx`
 
     response.setHeader(
       'Content-Disposition',
