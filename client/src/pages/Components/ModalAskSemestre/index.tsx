@@ -21,7 +21,7 @@ console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL)
 import "react-datepicker/dist/react-datepicker.css";
 
 interface ModalProps {
-  handleDefaultCourse: Function
+  handleDefaultCourse?: Function
   courses: CourseProps[]
   isVisible: boolean
   onCloseModalAskSemester: Function
@@ -112,6 +112,7 @@ const ModalAskSemestre = ({
       localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(newUserData))
 
       setUserSemestre(selectedSemester)
+      if (handleDefaultCourse)
       handleDefaultCourse(selectedCourse)
 
       onCloseModalAskSemester(selectedSemester, selectedCourse);

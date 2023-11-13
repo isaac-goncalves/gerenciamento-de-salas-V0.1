@@ -17,7 +17,7 @@ import {
 
 import { toast, ToastContainer } from 'react-toastify';
 
-import ModalEdit from '../Components/ModalEdit';
+import ModalAgendamento from '../Components/ModalAgendamento';
 import NewCourseModal from '../Components/ModalDelete';
 import { BsWhatsapp } from 'react-icons/bs';
 
@@ -479,7 +479,7 @@ const Gerenciamento: any = ({ theme }: any): any => {
                     <title>SGSA - Gerenciamento</title>
                 </Helmet>
                 <ToastContainer />
-                <ModalEdit action={"EDIT"} idUserLogado={userData.userData.id} isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={[1, 2, 3, 4]} />
+                <ModalAgendamento action={"EDIT"} idUserLogado={userData.userData.id} isVisible={editingModal} onClose={handleCloseModalEdit} initialData={editedData} daysIds={[1, 2, 3, 4]} />
                 <NewCourseModal isVisible={deleteModal} onClose={handleCloseModalDelete} deleteData={editedData} />
                 <Wrapper>
                     <Header>

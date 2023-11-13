@@ -5,6 +5,7 @@ import { Colors } from '../../../colors';
 
 import { HiOutlineUpload } from 'react-icons/hi';
 import { toast, ToastContainer } from 'react-toastify';
+import { AiOutlineUpload } from 'react-icons/ai';
 
 // FileInput styled component
 const FileInput = styled.input`
@@ -39,21 +40,20 @@ const Label = styled.label`
 
 
 interface FileUploadButtonProps {
-  userId?: string;
+  course: number;
   loggedUserRole: string;
   action: string;
-  course: number;
   uploadText: string;
 }
 
 // FileUploadButton component
-const FileUploadButton = ({ course, userId, loggedUserRole, action, uploadText }: FileUploadButtonProps) => {
+const FileUploadButton = ({ course,loggedUserRole, action, uploadText }: FileUploadButtonProps) => {
 
   const [loggedUser, setLoggedUser] = React.useState('');
   const [selectedCourse, setSelectedCourse] = React.useState(0);
 
-
   useEffect(() => {
+    console.log(course);
     setLoggedUser(loggedUserRole);
     setSelectedCourse(course);
   }
@@ -70,7 +70,9 @@ const FileUploadButton = ({ course, userId, loggedUserRole, action, uploadText }
     }
   };
 
-  const sendFileToBackend = (selectedFile: File) => {
+  const sendFileToBackend = async (selectedFile: File) => {
+
+    console.log(selectedCourse);
 
     let url = '';
 
@@ -85,7 +87,7 @@ const FileUploadButton = ({ course, userId, loggedUserRole, action, uploadText }
 
     formData.append('file', selectedFile);
 
-    fetch(url, {
+    await fetch(url, {
       method: 'POST',
       body: formData,
     })
@@ -111,10 +113,12 @@ const FileUploadButton = ({ course, userId, loggedUserRole, action, uploadText }
   return (
     <Label
       htmlFor="fileUpload">
-      <HiOutlineUpload
-        size={25}
+      <AiOutlineUpload
+        // onClick={handleFileChange}
+        size={20}
       />
       <p>
+        {selectedCourse}
         {uploadText}
       </p>
       <FileInput

@@ -8,7 +8,9 @@ export class ProfessorsController {
   async get (request: Request, response: Response) {
     console.log('get professores')
 
-    //grab token
+    const { selectedCourse } = request.body
+
+    console.log(selectedCourse)
 
     const token = request.headers.authorization
 
@@ -19,19 +21,32 @@ export class ProfessorsController {
     // const [, tokenValue] = token.split(' ')
 
     try {
-      const professores = await professoresRepository.find()
+      let professores = []
+      if(selectedCourse != null){
+       professores = await professoresRepository.find({
+        where: {
+          course_id: selectedCourse
+        }}
+      )
+      }
+      else{
+        professores = await professoresRepository.find()
+      }
+
 
       // console.log(JSON.stringify(professores, null, 2))
 
       const newProfessores = await professores.map((professor: any) => {
         const id = professor.id
         const name = professor.name
+        const course_id = professor.course_id
 
         // console.log(id, name)
 
         const obj = {
           id: id,
-          name: name
+          name: name,
+          course_id: course_id
         }
         return obj
       })

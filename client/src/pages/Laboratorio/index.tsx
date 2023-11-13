@@ -22,7 +22,7 @@ import { AiFillHeart, AiOutlinePlusCircle, AiOutlineUserDelete } from 'react-ico
 
 import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu, Disciplina2, Sala2, CurrentMonthText } from '../Dashboard/Dashboard.styles'
 
-import ModalEdit from '../Components/ModalEdit';
+import ModalAgendamento from '../Components/ModalAgendamento';
 
 import { ParticleOptions } from '../Components/ParticlesOptions';
 
@@ -974,7 +974,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
           detectRetina: true,
         }}
       /> */}
-      <ModalEdit
+      <ModalAgendamento
         action={"SCHEDULELABORATORIO"}
         isVisible={schedulingModalIsVisible}
         onClose={handleCloseModalEdit}

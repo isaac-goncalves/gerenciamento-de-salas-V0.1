@@ -558,6 +558,8 @@ export class GradeController {
     grade.semestre,
     grade.created_at,
     grade.updated_at,
+    grade.course_id,
+    courses.course_name as course_name,
     professores.name as professor,
     disciplinas.descricao as disciplina,
     disciplinas.capacidade as capacidade,
@@ -569,8 +571,9 @@ export class GradeController {
     LEFT JOIN
     disciplinas ON grade.id_disciplina = disciplinas.id
     LEFT JOIN
-
     laboratorios ON grade.id_sala = laboratorios.numero_sala
+    LEFT JOIN
+    courses ON grade.course_id = courses.id
     WHERE
     grade.id_professor = '${professor_id}'
     AND

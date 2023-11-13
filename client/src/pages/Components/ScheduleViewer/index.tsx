@@ -373,7 +373,7 @@ function ScheduleViewer({ props, semester, professor_id, laboratoryName, date, s
                         <p>{(item.agendamento.semestre + 'º Semestre')}</p>
                         : null
                     }
-
+                    <p>{item.agendamento.course_name}</p>
                   </UidLabel>
                   {/* // item.Agendamento && item.Agendamento[0] ? <p>{item.Agendamento[0].uuid_agendamento}</p> : <p>---</p> */}
                 </ScheduleCell>
