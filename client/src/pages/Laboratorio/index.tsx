@@ -427,6 +427,26 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               // console.log(agendamento)
               // console.log(currentTime)
 
+              function abbreviateCourseName(courseName: string) {
+                // Split the course name into words
+
+                if (courseName == "Nenhuma Aula" || courseName == "Intervalo" || courseName == "") {
+                  return ""
+                }
+
+                // Use a regular expression to find uppercase letters
+                const uppercaseLetters = courseName.match(/[A-Z]/g);
+
+                // Check if there are any uppercase letters
+                if (uppercaseLetters) {
+                  // Join the uppercase letters to form the abbreviation
+                  const abbreviation = uppercaseLetters.join('');
+                  return abbreviation;
+                } else {
+                  return "null"; // No uppercase letters found
+                }
+              }
+
               return (
                 <>
                   <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
@@ -434,6 +454,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                     <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
                     <Disciplina2>{disciplina}</Disciplina2>
                     <Sala2>{agendamentoCancelExist ? "Aula cancelada" : null}</Sala2>
+                    <Disciplina2>{abbreviateCourseName(item.course_name || "")}</Disciplina2>
                     {
                       !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
                         selectedMethod === 'professor' ?
@@ -493,7 +514,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 size={10}
                 loading />
             </WeekDay>
-            <SchedulesContainer isCurrentDay={false}>
+            <SchedulesContainer>
               <h2>{day}</h2>
               {
                 Array(6)

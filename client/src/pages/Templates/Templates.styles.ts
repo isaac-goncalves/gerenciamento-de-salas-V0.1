@@ -212,6 +212,35 @@ export const EditButton = styled.button`
     background-color: #006f8f;
   }
 `
+export const Label = styled.label`
+ background-color: ${props => props.theme.hoverCard};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  height: 2rem;
+  padding: 0 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  &:hover {
+    background-color: #006f8f;
+  }
+`;
+
+export const FileInput = styled.input`
+  display: none;
+`;
+
 export const DeleteButton = styled.button`
   background-color: #f47174;
   display: flex;

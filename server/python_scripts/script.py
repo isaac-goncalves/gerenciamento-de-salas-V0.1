@@ -97,8 +97,8 @@ cursor = connection.cursor()
 
 #------------------- agendamentos -------------------#
 
-queryTruncateAgendamento = "TRUNCATE agendamento;"
-cursor.execute(queryTruncateAgendamento)
+queryTruncateAgendamentos = "TRUNCATE agendamento;"
+cursor.execute(queryTruncateAgendamentos)
 
 #------------------- disciplinas -------------------#
 #queryTruncate = f"TRUNCATE disciplinas;"

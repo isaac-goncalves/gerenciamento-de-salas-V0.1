@@ -5,6 +5,7 @@ import { agendamentosRepository } from '../repositories/agendamentoRepository'
 import { addDays, nextFriday, setDay, startOfWeek } from 'date-fns'
 import { semestresRepository } from '../repositories/semestresRepository'
 import { id } from 'date-fns/locale'
+import { coursesRepository } from '../repositories/coursesRepository'
 // import { professoresRepository } from "../repositories/professoresRepository";
 // import { laboratoriosRepository } from "../repositories/laboratoriosRepository";
 // import { disciplinasRepository } from "../repositories/disciplinasRepositories";
@@ -395,11 +396,7 @@ export class GradeController {
     console.log('getAgendamentosData')
     const { semestre, professor_id, numero_sala } = request.body
 
-    if (
-      numero_sala == 0 ||
-      numero_sala == null ||
-      numero_sala == undefined
-    ) {
+    if (numero_sala == 0 || numero_sala == null || numero_sala == undefined) {
       return response.status(200).json([])
     }
 
@@ -407,6 +404,8 @@ export class GradeController {
 
     try {
       if (numero_sala) {
+        //GRAB ALL AGENDAMENTOS FOR THE SPECIFIED LABORATORY
+
         const query = `
           SELECT
             agendamento.id as id,
@@ -442,9 +441,17 @@ export class GradeController {
 
         const gradesObj = await Promise.all(
           gradeIds.map(async (grade: any) => {
-            const gradeItem = await gradeRepositories.findOneBy({
+            const gradeItem: any = await gradeRepositories.findOneBy({
               id: grade
             })
+
+            const courseObject = await coursesRepository.findOneBy({
+              id: gradeItem.course_id || 0
+            })
+
+            // Add the course_name property to the gradeItem
+            gradeItem.course_name = courseObject?.course_name
+
             return gradeItem
           })
         )
@@ -464,7 +471,7 @@ export class GradeController {
 
         return response.status(200).json(gradesWithAgendamentos)
       } else {
-        // Retrieve grade data for the specified professor and semester
+        // GET ALL AGENDAMENTOS FOR THE SPECIFIED PROFESSOR
         const query = `
         SELECT 
           grade.id, 

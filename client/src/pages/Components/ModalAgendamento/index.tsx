@@ -159,12 +159,8 @@ const ModalAgendamento = ({
           }
   }, [initialData])
 
-
-
   useEffect(() => {
-  
     fetchProfessorData();
-
   }, [selectedCourse])
 
   //FETCHES
@@ -252,41 +248,11 @@ const ModalAgendamento = ({
 
     }).then((response) => response.json()).then((data) => {
       // console.log(data)
-    
+
       return setProfessores(data)
 
     });
   }
-
-  // async function fetchSemestres(token: string) {
-  //   // console.log("Fetching fetchLaboratory...")
-  //   await fetch(String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + '/laboratory', {
-  //     method: 'POST',
-  //     headers: {
-    //       'Authorization': 'bearer ' + token,
-  //     }
-  //   }).then((response) => response.json()).then((data) => {
-  //     console.log(data)
-  //     const newSemestersWithPlaceholder =
-  //     {
-  //       id: 0,
-  //       descricao: 'Selecione um Semestre',
-  //       andar: 0,
-  //       capacidade: 0
-  //     }
-
-  //     data.push(newSemestersWithPlaceholder)
-
-  //     setSemestres(data)
-
-  //     if (initialData.id_laboratorio) {
-  //       const lab = data.find((lab: any) => lab.id === formData.id_laboratorio);
-  //       setSelectedLaboratory(lab);
-  //     }
-
-  //     return data
-  //   });
-  // }
 
   //FETCH FUNCTION MULTISELECT
   async function fetchDisciplinas() {
@@ -469,8 +435,6 @@ const ModalAgendamento = ({
     console.log(new Date(formData.date))
     // console.log(initialDate)
 
-
-
     //SWAL ASKING TO EDIT
     if (selectedLaboratory === undefined) {
       toast.error('Selecione um laboratório!');
@@ -492,9 +456,9 @@ const ModalAgendamento = ({
       cancelButtonText: 'Cancelar'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        // if (newAgendamentos.length > 0) {
-        //   await createAgendamento()
-        // }
+        if (newAgendamentos.length > 0) {
+          await createAgendamento()
+        }
         if (deletedAgendamentos.length > 0) {
           await deleteAgendamento()
         }
@@ -616,7 +580,7 @@ const ModalAgendamento = ({
       // Update the selectedProfessorId state instead of formData
     }
   }
-  
+
   const handleLaboratoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     // console.log(event.target.value)
 
@@ -711,12 +675,12 @@ const ModalAgendamento = ({
       return "ERROR - que nao diz nada"
     }
   }
-  function capitalizeFirstLetter(string) {
+
+  function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   //FILTER FUNCTIONS
-
   const handleSelectCourse = (event: React.ChangeEvent<HTMLSelectElement>) => {
     // console.log(event.target.value)
     const courseObject: CourseProps = {
@@ -745,7 +709,7 @@ const ModalAgendamento = ({
           <SideBysideContainer>
             <div>
               <ProfessorWrapper>
-                <DetailsText>Courso:</DetailsText>
+                <DetailsText>Curso:</DetailsText>
                 <StyledSelect value={selectedCourse.id} onChange={handleSelectCourse}>
                   {courses && courses.length > 0 ? (
                     courses.map((course) => {
