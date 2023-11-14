@@ -57,7 +57,14 @@ function index({ theme }: any) {
         // },
         particles: {
           color: {
-            value: theme.bubblecolor,
+            value: theme.white,
+          },
+          links: {
+            color: theme.mainpurple,
+            distance: 150,
+            enable: true,
+            opacity: 0.5,
+            width: 1,
           },
           move: {
             direction: "none",
