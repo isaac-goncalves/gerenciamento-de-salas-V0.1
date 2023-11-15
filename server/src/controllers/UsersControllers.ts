@@ -770,7 +770,7 @@ export class UserController {
       
           item.course_name = courseName?.course_name || 'no course name'
       
-           console.log(item);
+          //  console.log(item);
       
           professorsWithCursoName.push(item);
         })

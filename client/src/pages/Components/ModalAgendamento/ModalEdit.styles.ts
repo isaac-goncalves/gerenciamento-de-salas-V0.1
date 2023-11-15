@@ -159,6 +159,7 @@ export const StyledSelect = styled.select<StyledSelectProps>`
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: ${props => props.theme.white};
   color: ${props => props.theme.textcolor};
 
   &:disabled {
@@ -285,7 +286,7 @@ export const ButtonsWrapper = styled.div`
 export const StyledButton = styled.button`
   font-size: 1rem;
   background-color: ${props => props.theme.mainpurple};
-  color: #ffffff;
+  color: ${props => props.theme.realWhite};
   border: none;
   height: 40px;
   width: 100%;

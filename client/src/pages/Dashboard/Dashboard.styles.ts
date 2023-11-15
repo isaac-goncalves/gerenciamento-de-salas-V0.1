@@ -755,6 +755,10 @@ export const Professor = styled.p<StyledComponentDisciplinaProps>`
   font-style: italic;
   color: ${props => props.theme.textcolor};
 `
+export const SchedulesWrapper = styled.div`
+display: flex;
+`
+
 export const Semestre = styled.p`
   font-style: italic;
   color: ${props => props.theme.mainpurple};

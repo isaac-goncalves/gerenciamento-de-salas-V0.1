@@ -26,9 +26,6 @@ export const lightTheme = {
   textcolor: '#2F2F2F',
   textColorDisabled: '#757575',
   mainpurple: '#6358DC',
-  
-  bubblecolor: '#5249b57',
-
   separator: '#BFBFBF',
   lightgrayborder: '#8E8E8E',
   lightGreen: 'rgb(139,195,74)',
@@ -66,9 +63,6 @@ export const lightThemeRed = {
   tableHeaderColor: '#d83c58',
 
   mainpurple: '#d83c58',
-  bubblecolor: '#d83c58',
-
-
   separator: '#BFBFBF',
   lightgrayInput: '#D9D9D9',
   lightgrayborder: '#8E8E8E',

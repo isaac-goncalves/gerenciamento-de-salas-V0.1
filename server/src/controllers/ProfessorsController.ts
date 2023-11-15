@@ -10,7 +10,7 @@ export class ProfessorsController {
 
     const { selectedCourse } = request.body
 
-    console.log(selectedCourse)
+    // console.log(selectedCourse)
 
     const token = request.headers.authorization
 

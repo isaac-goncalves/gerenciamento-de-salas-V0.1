@@ -6,7 +6,6 @@ import time
 
 start_time = time.time()
 
-
 # Check if the file path argument is provided
 if len(sys.argv) < 2:
     print("Please provide the file path as an argument.")
@@ -16,6 +15,7 @@ if len(sys.argv) < 2:
 file_path = sys.argv[1]
 course_id = int(sys.argv[2])
 print(course_id)
+
 # Establish a connection to your PostgreSQL database
 connection = psycopg2.connect(
     #host='localhost',
@@ -37,7 +37,6 @@ def deleteBasedOnID(tableName, course_id):
     except (Exception, psycopg2.Error) as error:
         print("Error in Delete operation", error)
     
-
 # Local Database
 # connection = psycopg2.connect(
 #     host='sgsa05database.postgres.database.azure.com',
@@ -56,15 +55,10 @@ dfSemestres = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='P:Q', 
 dfDiasSemana = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='S:T', skiprows=2, nrows=6) #dias da semana
 
 dfGrade.columns = ['id','horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at']
-
 dfDisciplinas.columns = ['disciplina', 'id']
-
 dfProfessores.columns = ['name','id', 'surname', 'email' ,'disciplina']
-
 dfLaboratorio.columns = ['descricao','andar','id','capacidade']
-
 dfSemestres.columns = ['descricao', 'ID']
-
 dfDiasSemana.columns = ['dia_da_semana','id']
                 
 # dfGrade.dropna(subset=['id', 'horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at'], inplace=True)
@@ -132,27 +126,59 @@ for index, row in dfDisciplinas.iterrows():
 
 cursor.execute("SELECT MAX(id) FROM professores;")
 
-lastProfessorId = cursor.fetchone()[0]
-if lastProfessorId is None:
-    lastProfessorId = 0
+# lastProfessorId = cursor.fetchone()[0]
+# if lastProfessorId is None:
+#     lastProfessorId = 0
 
-print(
-    "\033[92m {}\033[00m" .format(lastProfessorId), "Last professor id"
-)
+# print(
+#     "\033[92m {}\033[00m" .format(lastProfessorId), "Last professor id"
+# )
 
-deleteBasedOnID("professores", course_id)
+# deleteBasedOnID("professores", course_id)
+
+# inserir usando email como chave nao inserir dois na mesma tabela com o mesmo email
+# depois salvar o course id na tabela e associar o course id com o professor a disciplina nao tem 
 
 for index, row in dfProfessores.iterrows():
-    name = row['name']
-    surname = row['surname']
-    email = row['email']
-    disciplina = row['disciplina']
-    created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
-    updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
+    
+    query = "SELECT * FROM professores WHERE email = %s;"
+    data = (row['email'],)
+    cursor.execute(query, data)
+    
+    existing_record = cursor.fetchone()
+    
+    if existing_record: 
+        update_query = f"UPDATE professores SET name = '{row['name']}', surname = '{row['surname']}', disciplina = {row['disciplina']} WHERE email = '{row['email']}';"
+        cursor.execute(update_query)
+        
+        # Get the existing professor ID
+        existing_professor_id = existing_record['id']  # Replace 'id' with the actual column name
+        
+        # Now, insert into professores_cursos table
+        query_professores_course = f"INSERT INTO professores_cursos (id_professor, course_id) VALUES ('{existing_professor_id}', '{course_id}');"
+        cursor.execute(query_professores_course)
+        
+    else:
+        name = row['name']
+        surname = row['surname']
+        email = row['email']
+        disciplina = row['disciplina']
+        created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    # Construct the SQL INSERT statement for professores
-    query_professores = f"INSERT INTO professores (course_id, name, surname, email, disciplina, created_at, updated_at) VALUES ('{course_id}','{name}', '{surname}','{email}', {disciplina}, '{created_at}', '{updated_at}');"
-    cursor.execute(query_professores)
+        # Construct the SQL INSERT statement for professores
+        query_professores = f"INSERT INTO professores (course_id, name, surname, email, disciplina, created_at, updated_at) VALUES ('{course_id}','{name}', '{surname}','{email}', {disciplina}, '{created_at}', '{updated_at}');"
+        cursor.execute(query_professores)
+
+        # Get the last inserted professor ID
+        last_inserted_id = cursor.lastrowid
+        
+        # Now, insert into professores_cursos table
+        query_professores_course = f"INSERT INTO professores_cursos (id_professor, course_id) VALUES ('{last_inserted_id}', '{course_id}');"
+        cursor.execute(query_professores_course)
+
+
+
 
 # query_set_professores_sequence = "SELECT setval('professores_id_seq', (SELECT MAX(id) FROM professores));"
 # cursor.execute(query_set_professores_sequence)
@@ -234,7 +260,7 @@ for index, row in dfGrade.iterrows():
     
     query_grade = "INSERT INTO grade (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id, semestre, id_sala, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);" # Modify the table name as per your requirement
     
-    data = (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor + lastProfessorId, id_disciplina + lastDisciplinaId, course_id_data, semestre, id_sala, created_at, updated_at)
+    data = (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina + lastDisciplinaId, course_id_data, semestre, id_sala, created_at, updated_at)
     
     cursor.execute(query_grade, data)
     

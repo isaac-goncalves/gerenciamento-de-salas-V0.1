@@ -48,11 +48,11 @@ export class GradeController {
 
     const { date, course_id } = request.body
 
-    console.log(course_id)
+    // console.log(course_id)
 
     const dateTransformed = new Date(date).getDay()
 
-    console.log(dateTransformed)
+    // console.log(dateTransformed)
 
     try {
       //pegar conteudo da tabela grade juntando os ids dos professores com a disciplina e o laboratorio
@@ -130,11 +130,11 @@ export class GradeController {
 
           const nearestMonday = getNearestMonday(date)
 
-          console.log(nearestMonday)
+          // console.log(nearestMonday)
 
           const nextSaturnDay = addDays(nearestMonday, 5)
 
-          console.log(nextSaturnDay)
+          // console.log(nextSaturnDay)
 
           const queryAgendamento = `
             SELECT
@@ -202,7 +202,7 @@ export class GradeController {
             queryAgendamentoFixo
           )
 
-          console.log(agendamentosFixos)
+          // console.log(agendamentosFixos)
 
           //remove 3 hours from date to match the timezone
 
@@ -287,11 +287,11 @@ export class GradeController {
 
           const nearestMonday = getNearestMonday(date)
 
-          console.log(nearestMonday)
+          // console.log(nearestMonday)
 
           const nextSaturnDay = addDays(nearestMonday, 5)
 
-          console.log(nextSaturnDay)
+          // console.log(nextSaturnDay)
 
           const queryAgendamento = `
             SELECT
@@ -359,7 +359,7 @@ export class GradeController {
             queryAgendamentoFixo
           )
 
-          console.log(agendamentosFixos)
+          // console.log(agendamentosFixos)
 
           //remove 3 hours from date to match the timezone
 
@@ -400,7 +400,7 @@ export class GradeController {
       return response.status(200).json([])
     }
 
-    console.log(request.body)
+    // console.log(request.body)
 
     try {
       if (numero_sala) {
@@ -467,7 +467,7 @@ export class GradeController {
           return gradeWithAgendamentoObj
         })
 
-        console.log(gradesWithAgendamentos)
+        // console.log(gradesWithAgendamentos)
 
         return response.status(200).json(gradesWithAgendamentos)
       } else {
