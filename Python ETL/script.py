@@ -49,14 +49,14 @@ def deleteBasedOnID(tableName, course_id):
 # Read the Excel file and specify the sheet name
 dfGrade = pd.read_excel(file_path, sheet_name='Final_table', usecols='B:K', skiprows=1, nrows=1000) #grade
 dfDisciplinas = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='B:C', skiprows=2, nrows=100) #disciplinas
-dfProfessores = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='E:I', skiprows=2, nrows=100) #Professores
+dfProfessores = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='E:H', skiprows=2, nrows=100) #Professores
 dfLaboratorio = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='K:N', skiprows=2, nrows=100) #Laboratorio
 dfSemestres = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='P:Q', skiprows=2, nrows=20) #semestres
 dfDiasSemana = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='S:T', skiprows=2, nrows=6) #dias da semana
 
 dfGrade.columns = ['id','horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at']
 dfDisciplinas.columns = ['disciplina', 'id']
-dfProfessores.columns = ['name','id', 'surname', 'email' ,'disciplina']
+dfProfessores.columns = ['name','id', 'surname', 'email']
 dfLaboratorio.columns = ['descricao','andar','id','capacidade']
 dfSemestres.columns = ['descricao', 'ID']
 dfDiasSemana.columns = ['dia_da_semana','id']
@@ -148,7 +148,7 @@ for index, row in dfProfessores.iterrows():
     existing_record = cursor.fetchone()
     
     if existing_record: 
-        update_query = f"UPDATE professores SET name = '{row['name']}', surname = '{row['surname']}', disciplina = {row['disciplina']} WHERE email = '{row['email']}';"
+        update_query = f"UPDATE professores SET name = '{row['name']}', surname = '{row['surname']}' WHERE email = '{row['email']}';"
         cursor.execute(update_query)
         
         # Get the existing professor ID
@@ -162,12 +162,11 @@ for index, row in dfProfessores.iterrows():
         name = row['name']
         surname = row['surname']
         email = row['email']
-        disciplina = row['disciplina']
         created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         # Construct the SQL INSERT statement for professores
-        query_professores = f"INSERT INTO professores (course_id, name, surname, email, disciplina, created_at, updated_at) VALUES ('{course_id}','{name}', '{surname}','{email}', {disciplina}, '{created_at}', '{updated_at}');"
+        query_professores = f"INSERT INTO professores (course_id, name, surname, email, created_at, updated_at) VALUES ('{course_id}','{name}', '{surname}','{email}', {disciplina}, '{created_at}', '{updated_at}');"
         cursor.execute(query_professores)
 
         # Get the last inserted professor ID
