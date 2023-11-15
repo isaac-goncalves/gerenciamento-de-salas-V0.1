@@ -24,14 +24,6 @@ import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, We
 
 import ModalAgendamento from '../Components/ModalAgendamento';
 
-import { ParticleOptions } from '../Components/ParticlesOptions';
-
-import { useCallback } from "react";
-import { Theme, type Container, type Engine } from "tsparticles-engine";
-import Particles from "react-tsparticles";
-//import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
-import { loadSlim } from "tsparticles-slim"; // if you are going to use `loadSlim`, install the "tsparticles-slim" package too.
-
 import { MdKeyboardArrowRight, MdKeyboardDoubleArrowRight, MdOutlineModeEdit, MdOutlineModeEditOutline, MdSubdirectoryArrowRight, MdToday } from 'react-icons/md';
 import { FiFilter } from 'react-icons/fi';
 
@@ -44,6 +36,7 @@ import { FaFilter } from 'react-icons/fa';
 import { on } from 'events';
 import { GiCancel } from 'react-icons/gi';
 import Swal from 'sweetalert2';
+import ParticlesComponent from '../Components/ParticlesComponent';
 
 interface ScheduleItem {
   id: number;
@@ -427,6 +420,26 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               // console.log(agendamento)
               // console.log(currentTime)
 
+              function abbreviateCourseName(courseName: string) {
+                // Split the course name into words
+
+                if (courseName == "Nenhuma Aula" || courseName == "Intervalo" || courseName == "") {
+                  return ""
+                }
+
+                // Use a regular expression to find uppercase letters
+                const uppercaseLetters = courseName.match(/[A-Z]/g);
+
+                // Check if there are any uppercase letters
+                if (uppercaseLetters) {
+                  // Join the uppercase letters to form the abbreviation
+                  const abbreviation = uppercaseLetters.join('');
+                  return abbreviation;
+                } else {
+                  return "null"; // No uppercase letters found
+                }
+              }
+
               return (
                 <>
                   <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
@@ -434,6 +447,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                     <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
                     <Disciplina2>{disciplina}</Disciplina2>
                     <Sala2>{agendamentoCancelExist ? "Aula cancelada" : null}</Sala2>
+                    <Disciplina2>{abbreviateCourseName(item.course_name || "")}</Disciplina2>
                     {
                       !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
                         selectedMethod === 'professor' ?
@@ -493,7 +507,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 size={10}
                 loading />
             </WeekDay>
-            <SchedulesContainer isCurrentDay={false}>
+            <SchedulesContainer>
               <h2>{day}</h2>
               {
                 Array(6)
@@ -838,7 +852,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
             'Agendamento cancelado com sucesso!',
             'success'
           )
-          fetchData()
+          fetchLaboratoryAgendamentosData()
         } else {
           console.log("Erro ao cancelar agendamento!")
           Swal.fire(
@@ -860,21 +874,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     }
 
   }
-
-  //PARTICLES FUNCTIONS
-  const particlesInit = useCallback(async (engine: Engine) => {
-    // console.log(engine);
-
-    // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
-    //await loadFull(engine);
-    await loadSlim(engine);
-  }, []);
-
-  const particlesLoaded = useCallback(async (container: Container | undefined) => {
-    // await console.log(container);
-  }, []);
 
   //THEME FUNCTIONS
 
@@ -900,80 +899,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   //RENDERS -------------------------------------------------------------------------
   return (
     <>
-      {/* <Particles
-        id="tsparticles"
-        init={particlesInit}
-        loaded={particlesLoaded}
-        options={{
-          // background: {
-          //   color: {
-          //     // value: "#ffffff",
-          //   },
-          // },
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "repulse",
-              },
-              resize: true,
-            },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: theme.mainpurple,
-            },
-            links: {
-              color: theme.mainpurple,
-              distance: 150,
-              enable: true,
-              opacity: 0.5,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 6,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 5 },
-            },
-          },
-          detectRetina: true,
-        }}
-      /> */}
+      <ParticlesComponent theme={theme} />
       <ModalAgendamento
         action={"SCHEDULELABORATORIO"}
         isVisible={schedulingModalIsVisible}

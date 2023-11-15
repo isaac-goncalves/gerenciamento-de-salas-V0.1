@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import { Helmet } from 'react-helmet'
 
@@ -22,7 +22,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Header, Separator,
-    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper, ContainerElement, StyledButton, FilterWrapper
+    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper, ContainerElement, StyledButton, FilterWrapper, Label, FileInput
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -80,6 +80,8 @@ const Templates: any = ({ theme }: any): any => {
     const [laboratoriosData, setLaboratoriosData] = useState<any>([]);
 
     const [selectedTable, setSelectedTable] = useState<String>('cursos');
+    const [selectedCourse, setSelectedCourse] = React.useState(0);
+
 
     const [modalNewCourseIsVisible, setModalNewCourseIsVisible] = useState(false);
 
@@ -251,6 +253,55 @@ const Templates: any = ({ theme }: any): any => {
         window.open(`${apiUrl}/template/download/${courseId}`);
     }
 
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const fileInput = event.target as HTMLInputElement;
+
+        const file = event.target.files?.[0];
+        if (file ) {
+            
+            sendFileToBackend(file);
+        }
+    };
+
+    const sendFileToBackend = async (selectedFile: File) => {
+
+        console.log(selectedCourse);
+
+        let url = '';
+
+        url = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL) + `/template/upload/` + selectedCourse;
+
+        const formData = new FormData();
+
+        if(selectedFile) {
+            toast.success('O template está sendo processado. Aguarde alguns segundos.');
+        }
+
+        formData.append('file', selectedFile);
+
+        await fetch(url, {
+            method: 'POST',
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // Handle the response from the backend
+
+                if (data.message = "File uploaded and processed successfully") {
+                    toast.success('Template enviado e processado com sucesso!');
+                } else {
+                    toast.error('Foi encontrado um erro ao processar o upload do template. Tente novamente mais tarde.');
+                }
+                console.log(data);
+                //enable other uploads 
+            })
+            .catch((error) => {
+                // Handle errors
+                toast.error('Foi encontrado um erro ao processar o upload do template. Tente novamente mais tarde.');
+                console.error(error);
+            });
+    };
+
     const CoursesTable = ({ data }: any) => {
         return (
             <TableWrapper>
@@ -268,7 +319,7 @@ const Templates: any = ({ theme }: any): any => {
                     </TableHeader>
                     <TableBody>
                         {coursesData.map((course: CourseData) => (
-                            <tr key={course.id}>
+                            <tr key={course.id} onMouseOver={() => setSelectedCourse(course.id)}>
                                 <CenteredTableData>{course.id}</CenteredTableData>
                                 <NowrapText>{course.course_name}</NowrapText>
                                 <CenteredTableData>{6}</CenteredTableData>
@@ -286,7 +337,25 @@ const Templates: any = ({ theme }: any): any => {
                                                 Download
                                             </p>
                                         </EditButton>
-                                        <FileUploadButton action={""} course={course.id} loggedUserRole={userData.userData.role} uploadText='Upload Template' />
+                                        {/* <FileUploadButton action={""} course={course.id} loggedUserRole={userData.userData.role} uploadText='Upload Template' /> */}
+                                        <Label
+                                            htmlFor="fileUpload"
+                                            >
+                                            <AiOutlineUpload
+                                                // onClick={handleFileChange}
+                                                size={20}
+                                            />
+                                            <p>
+                                                Upload Template
+                                            </p>
+                                            <FileInput
+                                                // disabled={loggedUser === 'aluno' || loggedUser == 'guest' ? true : false}
+                                                id='fileUpload'
+                                                data-course-id={course}
+                                                type="file"
+                                                onChange={handleFileChange}
+                                            />
+                                        </Label>
                                         <DeleteButton type="button" onClick={() => handleDelete("course", course)} ><RiDeleteBinLine />
                                             <p>
                                                 Excluir

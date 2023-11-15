@@ -10,11 +10,6 @@ import { ptBR } from 'date-fns/locale';
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
 
-//PARTICLES IMPORTS
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
-import { Theme, type Container, type Engine } from "tsparticles-engine";
-
 const semestresOptions = [
     { value: '1', label: '1º SEMESTRE ADS - 2023' },
     { value: '2', label: '2º SEMESTRE ADS - 2023' },
@@ -22,38 +17,6 @@ const semestresOptions = [
     { value: '4', label: '4º SEMESTRE ADS - 2023' },
     { value: '5', label: '5º SEMESTRE ADS - 2023' },
     { value: '6', label: '6º SEMESTRE ADS - 2023' },
-];
-
-const disciplinaOptions = [
-    { value: "1", label: "Administração Geral" },
-    { value: "2", label: "Algoritmos e Lógica de Programação" },
-    { value: "3", label: "Arquitetura e Organização de Computadores" },
-    { value: "4", label: "Banco de Dados" },
-    { value: "5", label: "Cálculo" },
-    { value: "6", label: "Comunicação e Expressão" },
-    { value: "7", label: "Contabilidade" },
-    { value: "8", label: "Economia e Finanças" },
-    { value: "9", label: "Eletiva - Programação para Dispositivos Móveis" },
-    { value: "10", label: "Engenharia de Software I" },
-    { value: "11", label: "Engenharia de Software II" },
-    { value: "12", label: "Engenharia de Software III" },
-    { value: "13", label: "Estatística Aplicada" },
-    { value: "14", label: "Estruturas de Dados" },
-    { value: "15", label: "Inglês I" },
-    { value: "16", label: "Inglês II" },
-    { value: "17", label: "Inglês III" },
-    { value: "18", label: "Inglês IV" },
-    { value: "19", label: "Interação Humano Computador" },
-    { value: "20", label: "Laboratório de Hardware" },
-    { value: "21", label: "Linguagem de Programação" },
-    { value: "22", label: "Matemática Discreta" },
-    { value: "23", label: "Metodologia da Pesquisa Científico-Tecnológica" },
-    { value: "24", label: "Programação em Microinformática" },
-    { value: "25", label: "Programação Orientada a Objetos" },
-    { value: "26", label: "Sistemas de Informação" },
-    { value: "27", label: "Sistemas Operacionais I" },
-    { value: "28", label: "Sistemas Operacionais II" },
-    { value: "29", label: "Sociedade e Tecnologia" }
 ];
 
 import {
@@ -98,6 +61,7 @@ import { AvatarWrapper, } from '../Navbar/Navbar.styles';
 import Swal from 'sweetalert2';
 import { AiOutlineSave } from 'react-icons/ai';
 import Multiselect from 'react-widgets/esm/Multiselect';
+import ParticlesComponent from '../Components/ParticlesComponent';
 
 const Perfil: any = ({ theme }: any): any => {
 
@@ -139,18 +103,6 @@ const Perfil: any = ({ theme }: any): any => {
     //MULTISELECT OPTIONS
     const [selectedValues, setSelectedValues] = useState([]);
     const [disciplinas, setDisciplinas] = useState([]);
-
-
-    //PARTICLES FUNCTIONS
-    const particlesInit = useCallback(async (engine: Engine) => {
-        console.log(engine);
-
-        await loadSlim(engine);
-    }, []);
-
-    const particlesLoaded = useCallback(async (container: Container | undefined) => {
-        await console.log(container);
-    }, []);
 
     useLayoutEffect(() => {
         console.log('Starting to render stuff...');
@@ -647,7 +599,6 @@ const Perfil: any = ({ theme }: any): any => {
                         {
                             userData.userData.role === "professor" &&
                             <>
-
                                 {/* <InputWrapper>
                                 <label>Disciplina</label>
                                 <StyledSelect value={disciplina} onChange={handleChangeDisciplina}>
@@ -711,80 +662,7 @@ const Perfil: any = ({ theme }: any): any => {
 
     return (
         <>
-            <Particles
-                id="tsparticles"
-                init={particlesInit}
-                loaded={particlesLoaded}
-                options={{
-                    // background: {
-                    //   color: {
-                    //     // value: "#ffffff",
-                    //   },
-                    // },
-                    fpsLimit: 120,
-                    interactivity: {
-                        events: {
-                            onClick: {
-                                enable: true,
-                                mode: "push",
-                            },
-                            onHover: {
-                                enable: true,
-                                mode: "repulse",
-                            },
-                            resize: true,
-                        },
-                        modes: {
-                            push: {
-                                quantity: 4,
-                            },
-                            repulse: {
-                                distance: 200,
-                                duration: 0.4,
-                            },
-                        },
-                    },
-                    particles: {
-                        color: {
-                            value: theme.mainpurple,
-                        },
-                        links: {
-                            color: theme.mainpurple,
-                            distance: 150,
-                            enable: true,
-                            opacity: 0.5,
-                            width: 1,
-                        },
-                        move: {
-                            direction: "none",
-                            enable: true,
-                            outModes: {
-                                default: "bounce",
-                            },
-                            random: false,
-                            speed: 6,
-                            straight: false,
-                        },
-                        number: {
-                            density: {
-                                enable: true,
-                                area: 800,
-                            },
-                            value: 80,
-                        },
-                        opacity: {
-                            value: 0.5,
-                        },
-                        shape: {
-                            type: "circle",
-                        },
-                        size: {
-                            value: { min: 1, max: 5 },
-                        },
-                    },
-                    detectRetina: true,
-                }}
-            />
+            <ParticlesComponent theme={theme} />
             <ToastContainer />
             <Helmet>
                 <title>SGSA - Perfil</title>

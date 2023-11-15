@@ -27,22 +27,17 @@ import eyePassword from '../../../public/images/eyepassword.svg';
 import { Link, Navigate } from "react-router-dom";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { InteractionManager, Particle } from "tsparticles-engine";
-
-//PARTICLES IMPORTS
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
-import { Theme, type Container, type Engine } from "tsparticles-engine";
-
+import ParticlesComponent from "../Components/ParticlesComponent";
 
 interface InputProps {
     hasError: boolean;
 }
 
-interface props {
-    theme: Theme;
+interface LoginProps {
+    theme: any;
 }
 
-const LoginScreen: any = ({ theme }: any): any => {
+const LoginScreen: any = ({ theme }: LoginProps): any => {
     const [email, setEmail] = useState(""); //isaac@gmail.com
     const [password, setPassword] = useState(""); //Password123$
     const [form, setForm] = useState("login");
@@ -57,22 +52,6 @@ const LoginScreen: any = ({ theme }: any): any => {
     const [error, setError] = useState(false);
 
     const [firstLoad, setFirstLoad] = useState(false);
-
-    //PARTICLES FUNCTIONS
-    const particlesInit = useCallback(async (engine: Engine) => {
-        console.log(engine);
-
-        // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
-        // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-        // starting from v2 you can add only the features you need reducing the bundle size
-        //await loadFull(engine);
-        await loadSlim(engine);
-    }, []);
-
-    const particlesLoaded = useCallback(async (container: Container | undefined) => {
-        await console.log(container);
-    }, []);
-
 
     useEffect(() => {
         const localStorageData = localStorage.getItem("gerenciamento-de-salas@v1.2");
@@ -92,14 +71,9 @@ const LoginScreen: any = ({ theme }: any): any => {
         console.log("token does not exists");
     }, []);
 
-
-
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         console.log("submit");
-
-
-
         if (email === "" || password === "") {
             toast.error("Preencha todos os campos");
         } else {
@@ -203,7 +177,7 @@ const LoginScreen: any = ({ theme }: any): any => {
 
                 setTimeout(() => {
                     console.log("redirecting")
-                     window.location.href = "/dashboard";
+                    window.location.href = "/dashboard";
                 }
                     , 4000);
             }
@@ -216,80 +190,7 @@ const LoginScreen: any = ({ theme }: any): any => {
     }
     return (
         <>
-            <Particles
-                id="tsparticles"
-                init={particlesInit}
-                loaded={particlesLoaded}
-                options={{
-                    // background: {
-                    //   color: {
-                    //     // value: "#ffffff",
-                    //   },
-                    // },
-                    fpsLimit: 120,
-                    interactivity: {
-                        events: {
-                            onClick: {
-                                enable: true,
-                                mode: "push",
-                            },
-                            onHover: {
-                                enable: true,
-                                mode: "repulse",
-                            },
-                            resize: true,
-                        },
-                        modes: {
-                            push: {
-                                quantity: 4,
-                            },
-                            repulse: {
-                                distance: 200,
-                                duration: 0.4,
-                            },
-                        },
-                    },
-                    particles: {
-                        color: {
-                            value: theme.mainpurple,
-                        },
-                        links: {
-                            color: theme.mainpurple,
-                            distance: 150,
-                            enable: true,
-                            opacity: 0.5,
-                            width: 1,
-                        },
-                        move: {
-                            direction: "none",
-                            enable: true,
-                            outModes: {
-                                default: "bounce",
-                            },
-                            random: false,
-                            speed: 6,
-                            straight: false,
-                        },
-                        number: {
-                            density: {
-                                enable: true,
-                                area: 800,
-                            },
-                            value: 80,
-                        },
-                        opacity: {
-                            value: 0.5,
-                        },
-                        shape: {
-                            type: "circle",
-                        },
-                        size: {
-                            value: { min: 1, max: 5 },
-                        },
-                    },
-                    detectRetina: true,
-                }}
-            />
+            <ParticlesComponent theme={theme} />
             <ContainerElement>
                 <Helmet>
                     <title>SGSA - login</title>
