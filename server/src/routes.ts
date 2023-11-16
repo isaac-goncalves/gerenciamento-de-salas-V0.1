@@ -70,9 +70,8 @@ routes.post('/professores', new UserController().getProfessores)
 routes.post('/alunos', new UserController().getAlunos)
 
 routes.get('/template/download', new ETLControllers().download)
-routes.get('/template/download:course_id', new ETLControllers().downloadFileById)
+routes.get('/template/download/:course_id', new ETLControllers().downloadFileById)
 routes.post('/template/upload/:course_id', new ETLControllers().upload)
-
 //CREATE AGENDAMENTO
 routes.post('/create/agendamento', new AgendamentoController().create)
 

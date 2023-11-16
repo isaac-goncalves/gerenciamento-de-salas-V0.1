@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle, AiOutlineUserDelete } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu, Disciplina2, Sala2, CurrentMonthText } from '../Dashboard/Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu, Disciplina2, Sala2, CurrentMonthText, SchedulesWrapper } from '../Dashboard/Dashboard.styles'
 
 import ModalAgendamento from '../Components/ModalAgendamento';
 
@@ -444,10 +444,12 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 <>
                   <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
                     className={isCurrentTime ? '' : 'hoverEffect'}>
+                      <SchedulesWrapper>
                     <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
                     <Disciplina2>{disciplina}</Disciplina2>
                     <Sala2>{agendamentoCancelExist ? "Aula cancelada" : null}</Sala2>
                     <Disciplina2>{abbreviateCourseName(item.course_name || "")}</Disciplina2>
+                      </SchedulesWrapper>
                     {
                       !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
                         selectedMethod === 'professor' ?

@@ -168,8 +168,7 @@ export class UserController {
 
         //IF PROFESSOR DOESNT EXISTS, CREATE A NEW ONE
         if (!professorExists) {
-          newProfessor = await professoresRepository.create(NewProfessorObj)
-
+          return response.status(400).json({ error: 'Professor not found' })
           //IF PROFESSOR ALREADY EXISTS, UPDATE IT
         } else {
           newProfessor = professorExists

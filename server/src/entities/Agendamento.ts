@@ -12,9 +12,7 @@ import { Professores } from './Professores'
 
 @Entity()
 export class Agendamento {
-  static id_professor(id_professor: any) {
-    throw new Error('Method not implemented.')
-  }
+  
   @PrimaryGeneratedColumn()
   id: number
 
@@ -51,7 +49,4 @@ export class Agendamento {
   @Column()
   updated_at: Date
 
-  @ManyToOne(() => Professores, professor => professor.agendamentos)
-  @JoinColumn({ name: 'id_professor' }) // the name of the column in your DB
-  professor: Professores
 }

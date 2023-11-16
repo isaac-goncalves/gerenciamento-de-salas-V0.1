@@ -22,20 +22,16 @@ export class ProfessorsController {
     //sort alpoabetically
     try {
       let professores = []
+
+      //grab all professores_ids from table professor_curso and bring all professsors from table professores
+
       if (selectedCourse != null) {
-        professores = await professoresRepository.find({
-          where: {
-            course_id: selectedCourse
-          },
-          order: {
-            name: 'ASC'
-          }
-        })
+        const query = `SELECT * FROM professores WHERE id IN (SELECT id_professor FROM professores_cursos WHERE course_id = ${selectedCourse}) ORDER BY name ASC`
+
+        professores = await professoresRepository.query(query)
       } else {
         professores = await professoresRepository.find({
-          order: {
-            name: 'ASC'
-          }
+          order: { name: 'ASC' }
         })
       }
 

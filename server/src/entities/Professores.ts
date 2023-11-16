@@ -17,9 +17,6 @@ export class Professores {
   @PrimaryGeneratedColumn()
   id: number
 
-  @OneToMany(() => Agendamento, agendamento => agendamento.professor)
-  agendamentos: Agendamento[]
-
   @Column()
   name: string
 
@@ -37,11 +34,6 @@ export class Professores {
     nullable: true
   })
   user_id: number
-
-  @Column({
-    nullable: true
-  })
-  disciplina: number
 
   @Column({
     type: 'boolean',

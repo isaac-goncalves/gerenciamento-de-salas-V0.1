@@ -24,7 +24,7 @@ export class ProfessoresCursos{
   @Column({ nullable: true })
   course_id: number;
 
-  @ManyToOne(() => Professores, professor => professor.agendamentos)
+  @ManyToOne(() => Professores, professor => professor.id)
   @JoinColumn({ name: 'id_professor' }) // the name of the column in your DB
   professor: Professores
 }
