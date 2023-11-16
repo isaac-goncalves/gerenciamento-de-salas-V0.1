@@ -72,11 +72,13 @@ dfLaboratorio = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='K:N'
 dfSemestres = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='P:Q', skiprows=2, nrows=20) #semestres
 dfDiasSemana = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='S:T', skiprows=2, nrows=6) #dias da semana
 
-
+if dfGrade.empty:
+    print('DataFrame is empty!')
+    sys.exit(1)
 
 dfGrade.columns = ['id','horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at']
 dfDisciplinas.columns = ['disciplina', 'id']
-dfProfessores.columns = ['name','id', 'surname', 'email','disciplina']
+dfProfessores.columns = ['name','id', 'surname', 'email', 'disciplina']
 dfLaboratorio.columns = ['descricao','andar','id','capacidade']
 dfSemestres.columns = ['descricao', 'ID']
 dfDiasSemana.columns = ['dia_da_semana','id']
@@ -95,7 +97,7 @@ for df in dataframes:
     df.dropna(inplace=True)
 
 print("Grade")
-print (dfProfessores)
+print (dfGrade)
 
 # Access the data within the specified range
 # print(dfGrade)
@@ -160,8 +162,8 @@ for index, row in dfDisciplinas.iterrows():
 # inserir usando email como chave nao inserir dois na mesma tabela com o mesmo email
 # depois salvar o course id na tabela e associar o course id com o professor a disciplina nao tem 
 
-print("Professoresss")
-print(dfProfessores)
+
+arrayOfProfessoresIds = []
 
 for index, row in dfProfessores.iterrows():
     
@@ -171,11 +173,11 @@ for index, row in dfProfessores.iterrows():
     cursor.execute(query, data)
     
     existing_record = cursor.fetchall()
+    
     # print(existing_record)
     
     if existing_record: 
         # update_query = f"UPDATE professores SET name = '{row['name']}', surname = '{row['surname']}' WHERE email = '{row['email']}';"
-        
        
         # cursor.execute(update_query)
     
@@ -210,18 +212,20 @@ for index, row in dfProfessores.iterrows():
         updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         # Construct the SQL INSERT statement for professores
-        query_professores = f"INSERT INTO professores (course_id, name, surname, email, created_at, updated_at) VALUES ('{course_id}','{name}', '{surname}','{email}', '{created_at}', '{updated_at}');"
+        query_professores = f"INSERT INTO professores (name, surname, email, created_at, updated_at) VALUES ('{name}', '{surname}','{email}', '{created_at}', '{updated_at}');"
         cursor.execute(query_professores)
 
         # Get the last inserted professor ID
-        last_inserted_id = cursor.lastrowid
+        
+        query_last_inserted_id = "SELECT MAX(id) FROM professores;"
+        
+        cursor.execute(query_last_inserted_id)
+        
+        last_inserted_id = cursor.fetchone()[0]
         
         # Now, insert into professores_cursos table
         query_professores_course = f"INSERT INTO professores_cursos (id_professor, course_id) VALUES ('{last_inserted_id}', '{course_id}');"
-        cursor.execute(query_professores_course)
-
-
-
+        cursor.execute(query_professores_course)                
 
 # query_set_professores_sequence = "SELECT setval('professores_id_seq', (SELECT MAX(id) FROM professores));"
 # cursor.execute(query_set_professores_sequence)
@@ -287,27 +291,40 @@ deleteBasedOnID("grade", course_id)
 # cursor.execute(reset_sequence_query_grade)
 
 # lastProfessorId = cursor.execute("SELECT MAX(id) FROM professores;")
-
-for index, row in dfGrade.iterrows():
-    course_id_data = int(course_id)
-    horario_inicio = row['horario_inicio']
-    grade_id = int(row['id'])
-    horario_fim = row['horario_fim']
-    dia_da_semana = row['dia_da_semana']
-    id_professor = int(row['id_professor'])
-    id_disciplina = int(row['id_disciplina'])
-    semestre = row['semestre']
-    id_sala = int(row['id_sala'])
-    created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
-    updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
-    
-    query_grade = "INSERT INTO grade (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id, semestre, id_sala, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);" # Modify the table name as per your requirement
-    
-    data = (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina + lastDisciplinaId, course_id_data, semestre, id_sala, created_at, updated_at)
-    
-    cursor.execute(query_grade, data)
-    
-    # print(course_id)
+try: 
+    for index, row in dfGrade.iterrows():
+        course_id_data = int(course_id)
+        horario_inicio = row['horario_inicio']
+        grade_id = int(row['id'])
+        horario_fim = row['horario_fim']
+        dia_da_semana = row['dia_da_semana']
+        id_professor = int(row['id_professor'])
+        
+        professorEmail = dfProfessores.loc[dfProfessores['id'] == id_professor, 'email'].iloc[0]
+        
+        realProfessorIdQuery = "SELECT id FROM professores WHERE email = %s;"
+        
+        cursor.execute(realProfessorIdQuery, (professorEmail,))
+        
+        realProfessorId = cursor.fetchone()[0]
+        
+        real_id_professor = realProfessorId
+        
+        id_disciplina = int(row['id_disciplina'])
+        semestre = row['semestre']
+        id_sala = int(row['id_sala'])
+        created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
+        updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Current timestamp
+        
+        query_grade = "INSERT INTO grade (grade_id, horario_inicio, horario_fim, dia_da_semana, id_professor, id_disciplina, course_id, semestre, id_sala, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);" # Modify the table name as per your requirement
+        
+        data = (grade_id, horario_inicio, horario_fim, dia_da_semana, real_id_professor, id_disciplina + lastDisciplinaId, course_id_data, semestre, id_sala, created_at, updated_at)
+        
+        cursor.execute(query_grade, data)
+        
+        # print(course_id)
+except (Exception, psycopg2.Error) as error:
+    print("Error in insert operation", error)
 
 #------------------- disciplinas -------------------#
 
@@ -318,7 +335,7 @@ queryGetDisciplinas = "SELECT * FROM disciplinas LIMIT 100;"  # Modify the table
 
 queryGetProfessores = "SELECT * FROM professores LIMIT 100;"  # Modify the table name as per your requirement
 
-queryGetGrade = "SELECT * FROM grade LIMIT 100000;"  # Modify the table name as per your requirement
+queryGetGrade = 'SELECT * FROM grade WHERE course_id = 43'   # Modify the table name as per your requirement
 
 queryGetLaboratorio = "SELECT * FROM laboratorio LIMIT 100;"  # Modify the table name as per your requirement
 
@@ -348,7 +365,7 @@ print("\033[92m {}\033[00m" .format(len(rows)), "Records inserted successfully i
 
 end_time = time.time()
 elapsed_time = end_time - start_time
-print(f"Execution time: {elapsed_time} seconds")
+print(f"Execution ti me: {elapsed_time} seconds")
 
 # Close the cursor and the connection
 cursor.close()
