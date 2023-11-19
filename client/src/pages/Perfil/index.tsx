@@ -64,6 +64,8 @@ import { AiOutlineSave } from 'react-icons/ai';
 import Multiselect from 'react-widgets/esm/Multiselect';
 import ParticlesComponent from '../Components/ParticlesComponent';
 import { DetailsText } from '../Components/ModalAgendamento/ModalEdit.styles';
+import { FaInfoCircle, FaUser } from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
 
 const Perfil: any = ({ theme }: any): any => {
 
@@ -575,32 +577,35 @@ const Perfil: any = ({ theme }: any): any => {
         return (
             <>
                 <ContentWrapper>
+                    <UserRowWrapper>
+                        
+                        <DetailsText>
+                            Name:
+                        </DetailsText>
+                        <UserName>{userData.userData.name || "Sem Nome"}</UserName>
+                    </UserRowWrapper>
                     <Avatar src={userImage} />
                     <UserWrapper>
+
                         <UserRowWrapper>
-                            <DetailsText>
-                                Name:
-                            </DetailsText>
-                            <UserName>{userData.userData.name || "Sem Nome"}</UserName>
-                        </UserRowWrapper>
-                        <UserRowWrapper>
+                        <FaInfoCircle color={theme.mainpurple} size={25}/>
                             <DetailsText>
                                 Info:
                             </DetailsText>
                             <UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>
                         </UserRowWrapper>
                         <UserRowWrapper>
-
                             <DetailsText>
-                                Role:
+                            <FaUser color={theme.mainpurple} size={25}/> Role:
                             </DetailsText>
                             <UserInfo>{userData.userData.role}</UserInfo>
                         </UserRowWrapper>
                         <UserRowWrapper>
+                        <MdEmail color={theme.mainpurple} size={25}/>
                             <DetailsText>
                                 Email:
                             </DetailsText>
-                        <UserInfo>{userData.userData.email}</UserInfo>
+                            <UserInfo>{userData.userData.email}</UserInfo>
                         </UserRowWrapper>
                     </UserWrapper>
                     <ButtonWrapper>

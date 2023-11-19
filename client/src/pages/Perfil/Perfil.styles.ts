@@ -50,13 +50,13 @@ export const Wrapper = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-    margin-top: 2rem;
+    /* margin-top: 1rem; */
     height: 100%;
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     flex-flow: column;
     gap: 1rem;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
 `;
 
@@ -69,11 +69,14 @@ export const UserWrapper = styled.div`
     /* height: 100%; */
     gap: 1rem;
     /* max-width: 25rem; */
+    padding: 1em;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 `;
 
 export const UserName = styled.p`
-    color: ${(props) => props.theme.mainpurple};
-    font-size: 1.3rem;
+    color: ${(props) => props.theme.textcolor};
+    /* font-size: 1.1rem; */
     font-weight: 500;
     white-space: nowrap;
 `;
@@ -82,7 +85,7 @@ export const UserRowWrapper = styled.div`
     display: flex;
     /* align-items: center; */
     /* justify-content: center; */
-    gap: 1rem;
+    gap: 0.4rem;
 `;
 
 export const UserInfo = styled.p`
@@ -153,8 +156,9 @@ export const ButtonWrapper = styled.div`
     justify-content: center;
     flex-direction: column;
     gap: 1rem;
-    margin-bottom: 4rem;
-    margin-top: auto;
+    width: 100%;
+    margin-bottom: 5rem;
+    /* margin-top: auto; */
 `;
 
 export const InputWrapper = styled.div`

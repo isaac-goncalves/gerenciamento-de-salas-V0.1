@@ -43,7 +43,7 @@ function App() {
 
       // const themeResult = userData.theme;
 
-   
+
       setTheme(userData.theme);
     }
 
@@ -152,7 +152,7 @@ function App() {
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
-             <Route path="/grade" element={
+            <Route path="/grade" element={
               <>
                 <Navbar toggleTheme={toggleTheme} />
                 <Grade
@@ -162,7 +162,7 @@ function App() {
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
-             <Route path="/laboratorio" element={
+            <Route path="/laboratorio" element={
               <>
                 <Navbar toggleTheme={toggleTheme} />
                 <Laboratorio
@@ -200,13 +200,15 @@ function App() {
                 {/* <Circles ballCount={4} /> */}
               </>
             } />
-            <Route path="/notification" element={
-              <>
-                <Navbar toggleTheme={toggleTheme} />
-                <NotificationConfig />
-                {/* <Circles ballCount={4} /> */}
-              </>
-            } />
+            {
+              //   <Route path="/notification" element={
+              //     <>
+              //     <Navbar toggleTheme={toggleTheme} />
+              //     <NotificationConfig />
+              //     {/* <Circles ballCount={4} /> */}
+              //   </>
+              // } />
+            }
           </Routes>
         </Router>
         <GlobalStyle />

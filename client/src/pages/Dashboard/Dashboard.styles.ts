@@ -98,6 +98,7 @@ export const CoursesWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 95%;
+    gap: 1rem;
     height: 100%;
     padding: 0.2rem 1rem;
 
@@ -254,7 +255,7 @@ export const StyledSelect = styled.select`
 `;
 
 export const StyledCourseSelect = styled.select`
-    font-size: 0.4rem;
+    /* font-size: 0.4rem; */
     background-color: ${(props) => props.theme.white};
     color: ${(props) => props.theme.textcolor};
     z-index: 99;
@@ -270,13 +271,14 @@ export const StyledCourseSelect = styled.select`
         padding: 0.5rem;
 
         option {
-            font-size: 0.8rem;
         }
+        font-size: 1rem !important;
+        border: 1px solid red;
     }
 
-    option {
+    /* option {
         font-size: 0.8rem;
-    }
+    } */
 
     outline: none;
     transition: border-color 0.3s ease;
@@ -461,6 +463,12 @@ export const DatepickArrowsContainer = styled.div`
         animation: bounce 0.5s;
         transform-origin: center bottom;
     }
+
+    //media query for small screen
+    @media screen and (max-width: 570px) {
+        margin-left: 0rem;
+    }
+
 `;
 
 export const TodayContainer = styled(MdToday)`
@@ -795,12 +803,31 @@ export const Sala = styled.p<StyledComponentSalaProps>`
     padding: 0;
 `;
 
+export const StyledDayNameHeader = styled.p<StyledComponentSalaProps>`
+    color: ${(props) => props.theme.lighterGreen};
+    font-weight: 600;
+    padding: 0;
+    font-size: 1.5rem;
+    white-space: nowrap;
+    transition: color 0.3s ease; /* Adding transition to the color property */
+
+    @media screen and (min-width: 570px) {
+        display: none;
+    }
+
+`;
+
 export const StyledDayName = styled.p<StyledComponentSalaProps>`
     color: ${(props) => props.theme.lighterGreen};
     font-weight: 600;
     padding: 0;
     font-size: 1.5rem;
     white-space: nowrap;
+        
+    @media screen and (max-width: 570px) {
+        display: none;
+    }
+
 `;
 
 interface StyledComponentProps {

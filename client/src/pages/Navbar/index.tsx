@@ -186,13 +186,13 @@ const Navbar = ( {toggleTheme} : any ) => {
                             }
                         </RowWrapper>
                     </MenuLink>
-                    <MenuLink to="/notification" >
+                    {/* <MenuLink to="/notification" >
                         <RowWrapper>
                             <NotificationWrapper/>{
                                 menuOpen && <p>NOTIFICAÇÕES </p>
                             }
                         </RowWrapper>
-                    </MenuLink>
+                    </MenuLink> */}
                     <MenuLink to="#"
                     id="DARKMODE"
                     onClick={() => toggleTheme()}

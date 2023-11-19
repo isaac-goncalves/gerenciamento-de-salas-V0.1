@@ -294,6 +294,14 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       });
       return
     }
+
+    if(userData.userData.role == "aluno"){
+      toast.info('Você precisa estar logado como professor para agendar!', {
+        theme: "dark"
+      });
+      return
+    }
+
     console.log("Clicked")
 
     const daysIds: any = []
@@ -449,7 +457,10 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
               return (
                 <>
-                  <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
+                  <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} 
+                  onClick={
+                    () =>  handleScheduleClick(dayData, item, dayDateObject)
+                  } 
                     className={isCurrentTime ? '' : 'hoverEffect'}>
                       <SchedulesWrapper>
                     <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
@@ -911,7 +922,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       <ParticlesComponent theme={theme} />
       <ModalAgendamento
         action={"SCHEDULELABORATORIO"}
-        isVisible={schedulingModalIsVisible}
+        isVisible={schedulingModalIsVisible }
         onClose={handleCloseModalEdit}
         initialData={editedData}
         daysIds={daysIds}

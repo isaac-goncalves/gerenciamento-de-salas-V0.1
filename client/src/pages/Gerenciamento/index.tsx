@@ -145,11 +145,23 @@ const Gerenciamento: any = ({ theme }: any): any => {
     }
 
     const handleEditClick = (editedData: any) => {
+
+        if (userData.userData.role == 'aluno' || userData.userData.role == "guest") {
+            toast.error('Usuário sem permissão para editar agendamentos');
+            return;
+        }
+
         setEditedData(editedData);
         setEditingModal(true);
     };
 
     const handleDeleteClick = (editedData: any) => {
+
+        if (userData.userData.role == 'aluno' || userData.userData.role == "guest") {
+            toast.error('Usuário sem permissão para excluir agendamentos');
+            return;
+        }
+
         if (userData.userData.role == 'aluno' || userData.userData.role == "guest") {
             toast.error('Usuário sem permissão para excluir agendamentos');
             return;
