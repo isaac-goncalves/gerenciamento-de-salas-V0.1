@@ -126,6 +126,7 @@ const FileUploadButton = ({ course,loggedUserRole, action, uploadText }: FileUpl
         id="fileUpload"
         type="file"
         onChange={handleFileChange}
+        
       />
     </Label>
   );

@@ -236,7 +236,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       }
       fetchCourses();
       fetchSemestreData();
-
     }
   }, []);
 
@@ -339,7 +338,9 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               // console.log(currentTime)
 
               return (
-                <Schedule isCurrentTime={isCurrentTime}
+                <Schedule agendamentoCancelExist={agendamentoCancelExist}
+                  agendamentoDefaultExist={agendamentoDefaultExist}
+                  key={item.id}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
                   <Disciplina agendamentoCancelExist={agendamentoCancelExist}>{disciplina}</Disciplina>
                   <Professor agendamentoCancelExist={agendamentoCancelExist}>{professor}</Professor>

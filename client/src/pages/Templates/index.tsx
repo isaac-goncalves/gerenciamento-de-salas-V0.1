@@ -34,6 +34,7 @@ import FileDownloadButton from '../Components/FileDownloadButton';
 import { CenteredTableData, FilterIcon, TableRowHeader, TableWrapper } from '../Gerenciamento/Perfil.styles';
 import { AiFillEdit, AiOutlineDownload, AiOutlineUpload } from 'react-icons/ai';
 import Swal from 'sweetalert2';
+import ParticlesComponent from '../Components/ParticlesComponent';
 
 const Templates: any = ({ theme }: any): any => {
 
@@ -218,6 +219,12 @@ const Templates: any = ({ theme }: any): any => {
 
 
     const handleDelete = (type: string, deleteData: any) => {
+
+        if (userData.userData.role == 'aluno' || userData.userData.role == 'guest') {
+            toast.error('Você não tem permissão para deletar cursos!');
+            return;
+        }
+
         Swal.fire({
             title: 'Você tem certeza?',
             text: "Você não poderá reverter essa ação!",
@@ -257,8 +264,8 @@ const Templates: any = ({ theme }: any): any => {
         const fileInput = event.target as HTMLInputElement;
 
         const file = event.target.files?.[0];
-        if (file ) {
-            
+        if (file) {
+
             sendFileToBackend(file);
         }
     };
@@ -273,7 +280,7 @@ const Templates: any = ({ theme }: any): any => {
 
         const formData = new FormData();
 
-        if(selectedFile) {
+        if (selectedFile) {
             toast.success('O template está sendo processado. Aguarde alguns segundos.');
         }
 
@@ -340,7 +347,7 @@ const Templates: any = ({ theme }: any): any => {
                                         {/* <FileUploadButton action={""} course={course.id} loggedUserRole={userData.userData.role} uploadText='Upload Template' /> */}
                                         <Label
                                             htmlFor="fileUpload"
-                                            >
+                                        >
                                             <AiOutlineUpload
                                                 // onClick={handleFileChange}
                                                 size={20}
@@ -354,6 +361,7 @@ const Templates: any = ({ theme }: any): any => {
                                                 data-course-id={course}
                                                 type="file"
                                                 onChange={handleFileChange}
+                                                disabled={!(userData.userData.role == 'aluno' || userData.userData.role == 'guest') ? false : true}
                                             />
                                         </Label>
                                         <DeleteButton type="button" onClick={() => handleDelete("course", course)} ><RiDeleteBinLine />
@@ -424,87 +432,19 @@ const Templates: any = ({ theme }: any): any => {
     }
 
     const handleCreateNewCourse = () => {
-        console.log('handleCreateNewCourse');
 
+        if (userData.userData.role == 'aluno' || userData.userData.role == 'guest') {
+            toast.error('Você não tem permissão para criar cursos!');
+            return;
+        }
+
+        console.log('handleCreateNewCourse');
         setModalNewCourseIsVisible(!modalNewCourseIsVisible);
         const [shouldFetchData, setShouldFetchData] = useState(false);
     }
 
     return (<>
-        <Particles
-            id="tsparticles"
-            init={particlesInit}
-            loaded={particlesLoaded}
-            options={{
-                // background: {
-                //   color: {
-                //     // value: "#ffffff",
-                //   },
-                // },
-                fpsLimit: 120,
-                interactivity: {
-                    events: {
-                        onClick: {
-                            enable: true,
-                            mode: "push",
-                        },
-                        onHover: {
-                            enable: true,
-                            mode: "repulse",
-                        },
-                        resize: true,
-                    },
-                    modes: {
-                        push: {
-                            quantity: 4,
-                        },
-                        repulse: {
-                            distance: 200,
-                            duration: 0.4,
-                        },
-                    },
-                },
-                particles: {
-                    color: {
-                        value: theme.mainpurple,
-                    },
-                    links: {
-                        color: theme.mainpurple,
-                        distance: 150,
-                        enable: true,
-                        opacity: 0.5,
-                        width: 1,
-                    },
-                    move: {
-                        direction: "none",
-                        enable: true,
-                        outModes: {
-                            default: "bounce",
-                        },
-                        random: false,
-                        speed: 6,
-                        straight: false,
-                    },
-                    number: {
-                        density: {
-                            enable: true,
-                            area: 800,
-                        },
-                        value: 80,
-                    },
-                    opacity: {
-                        value: 0.5,
-                    },
-                    shape: {
-                        type: "circle",
-                    },
-                    size: {
-                        value: { min: 1, max: 5 },
-                    },
-                },
-                detectRetina: true,
-            }}
-        />
+        <ParticlesComponent theme={theme} />
         <NewCourseModal isVisible={modalNewCourseIsVisible} onClose={handleCreateNewCourse} />
         <ContainerElement>
             <Helmet>
@@ -553,13 +493,13 @@ const Templates: any = ({ theme }: any): any => {
                         <option value="cursos">Cursos</option>
                         <option value="laboratorios">Laboratórios</option>
                     </select>
+                    <StyledButton onClick={handleCreateNewCourse}>Criar novo curso</StyledButton>
                 </FilterWrapper>
                 {selectedTable == 'cursos' ?
                     <CoursesTable /> :
                     <LabsTable />
                 }
                 <ButtonWrapper>
-                    <StyledButton onClick={handleCreateNewCourse}>"CRIAR NOVO CURSO"</StyledButton>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />
                 </ButtonWrapper>
                 {

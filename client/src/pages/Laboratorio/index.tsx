@@ -287,6 +287,13 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
   function handleScheduleClick(dayData: any, item: any, dayDateObject: Date) {
     // console.clear()
+
+    if(userData.userData.role == "guest"){
+      toast.info('Você precisa estar logado para agendar!', {
+        theme: "dark"
+      });
+      return
+    }
     console.log("Clicked")
 
     const daysIds: any = []

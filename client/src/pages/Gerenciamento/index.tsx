@@ -387,7 +387,7 @@ const Gerenciamento: any = ({ theme }: any): any => {
 
     return (
         <>
-           
+
             <ContainerElement>
                 <Helmet>
                     <title>SGSA - Gerenciamento</title>

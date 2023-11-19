@@ -73,6 +73,7 @@ dfSemestres = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='P:Q', 
 dfDiasSemana = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='S:T', skiprows=2, nrows=6) #dias da semana
 
 
+print(dfGrade)
 
 dfGrade.columns = ['id','horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at']
 dfDisciplinas.columns = ['disciplina', 'id']
@@ -80,7 +81,6 @@ dfProfessores.columns = ['name','id', 'surname', 'email', 'disciplina']
 dfLaboratorio.columns = ['descricao','andar','id','capacidade']
 dfSemestres.columns = ['descricao', 'ID']
 dfDiasSemana.columns = ['dia_da_semana','id']
-                
                 
                 
 # dfGrade.dropna(subset=['id', 'horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at'], inplace=True)
@@ -353,12 +353,12 @@ connection.commit()
 
 print("Checking!")
 # Print the fetched data
-for row in rows:
-   print(row)
+# for row in rows:
+#    print(row)
 
 # print("Rows: ", len(rows))
 #print in green 
-print("\033[92m {}\033[00m" .format(len(rows)), "Records inserted successfully into grade table")
+print("\033[92m {}\033[00m" .format(len(rows)), " records in grade table")
 
 
 end_time = time.time()

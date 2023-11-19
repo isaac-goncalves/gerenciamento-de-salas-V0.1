@@ -238,23 +238,17 @@ const Grade: any = ({ theme, themeName }: any) => {
 
   //USE EFFECTS -------------------------------------------------------------------------
   useLayoutEffect(() => {
-    console.log('Starting to render stuff...');
+    // console.log('Starting to render stuff...');
     themetest = theme;
 
     if (userData.token === '' || userData.userData.id === 0) {
-      console.log('userData is null');
+      // console.log('userData is null');
 
       const localUserData = localStorage.getItem('gerenciamento-de-salas@v1.2');
       const userDataJson = JSON.parse(localUserData || '{}');
       const { userData: storedUserData, token } = userDataJson;
 
-      console.log(JSON.stringify(storedUserData));
-      console.log('token' + token);
-
       if (token == null || localUserData == null) {
-
-        console.log(localUserData)
-
 
         toast.error('Você precisa estar logado para acessar essa página!');
         localStorage.removeItem('gerenciamento-de-salas@v1.2');
@@ -262,30 +256,24 @@ const Grade: any = ({ theme, themeName }: any) => {
           window.location.href = '/';
         }, 2000);
       } else {
-        console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
+        // console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
-        fetchCourses();
-        setSelectedSemesterValue(userDataJson.userData.semester);
         fetchProfessors(userDataJson.token)
+        setSelectedSemesterValue(userDataJson.userData.semester);
+
+        if (!userDataJson.userData.semesterverified) {
+          setAskSemesterModalIsVisible(true)
+        }
+
+        fetchCourses();
       }
     }
-  }, [userData]);
+  }, []);
 
 
   useEffect(() => {
 
-    console.log('Starting to render stuff2...');
-
-    console.log(startDate)
-
     if (userData.token !== '' && userData.userData.id !== 0) {
-
-      console.log("Usuário logado!")
-
-      // console.log(selectedMethod)
-      if (!userData.userData.semesterverified) {
-        setAskSemesterModalIsVisible(true)
-      }
 
       //FETCH DATA THAT CHANGES ON THE FILTERS
       if (selectedMethod == "professor") {
@@ -297,7 +285,7 @@ const Grade: any = ({ theme, themeName }: any) => {
 
     }
     else {
-      console.log("Usuário nao esta logado!")
+      // console.log("Usuário nao esta logado!")
     }
 
   }, [selectedSemesterValue, selectedProfessor, selectedMethod, selectedDate, startDate, selectedCourse]);
@@ -324,12 +312,33 @@ const Grade: any = ({ theme, themeName }: any) => {
 
   }, []);
 
+  useEffect(() => {
+    // console.log({
+    //   id: userData.userData.courseId,
+    //   course_name: userData.userData.course_name
+    // })
+    if (userData.userData.semesterverified == true) {
+
+      const courseObjectFromFetch = courses.find((course: any) => {
+        return course.id == userData.userData.courseId
+      })
+
+      console.log(courseObjectFromFetch)
+      if (courseObjectFromFetch) {
+        setSelectedCourse(courseObjectFromFetch)
+      }
+    } else {
+      setSelectedCourse(courses[0])
+    }
+  }
+    , [courses])
+
   //FUNCTIONS ---------------------------------------------------------------------
 
   function handleScheduleClick(dayData: any, item: any, dayDateObject: Date) {
     // console.clear()
-    console.log("Clicked")
-    console.log(item.agendamentos.length)
+    // console.log("Clicked")
+    // console.log(item.agendamentos.length)
 
     const daysIds: any = []
 
@@ -337,13 +346,13 @@ const Grade: any = ({ theme, themeName }: any) => {
       item.id ? daysIds.push(item.id) : null
     })
 
-    console.log(daysIds)
-    console.log(dayDateObject?.toISOString())
+    // console.log(daysIds)
+    // console.log(dayDateObject?.toISOString())
 
     if (item.agendamentos.length > 0) {
       // console.log("Agendamento exist and the item is") 
-      console.log(JSON.stringify(item.agendamentos[0], null, 2))
-      console.log("agendamento exist")
+      // console.log(JSON.stringify(item.agendamentos[0], null, 2))
+      // console.log("agendamento exist")
 
       openEditModal(item.agendamentos[0], daysIds)
     } else {
@@ -378,7 +387,8 @@ const Grade: any = ({ theme, themeName }: any) => {
         ?
         openEditModal(newAgedamentoData, daysIds)
         :
-        console.log("Is not agendating")
+        // console.log("Is not agendating")
+        null
     }
   }
 
@@ -398,13 +408,13 @@ const Grade: any = ({ theme, themeName }: any) => {
     const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
     const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
 
-    console.log("currentWeekday")
-    console.log(dayDateObject)
+    // console.log("currentWeekday")
+    // console.log(dayDateObject)
 
     return (
       <WeekdayContainer>
         <WeekDay>{currentWeekDay}</WeekDay>
-        <SchedulesContainer isCurrentDay={currentDay === dayName}>
+        <SchedulesContainer>
           <h2>{dayName}</h2>
           {
             dayData.map((item: any) => {
@@ -436,7 +446,7 @@ const Grade: any = ({ theme, themeName }: any) => {
               // console.log(currentTime)
 
               return (
-                <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} isCurrentTime={isCurrentTime}
+                <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} agendamentoCancelExist={agendamentoCancelExist} agendamentoDefaultExist={agendamentoDefaultExist} key={item.id}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
                   <Disciplina agendamentoCancelExist={agendamentoCancelExist}>{disciplina}</Disciplina>
                   <Professor agendamentoCancelExist={agendamentoCancelExist}>{professor}</Professor>
@@ -492,8 +502,8 @@ const Grade: any = ({ theme, themeName }: any) => {
     const currentWeekDay = getDayBasedOnWeekdayObj.currentWeekDay
     const dayDateObject = getDayBasedOnWeekdayObj.dayDateObject
 
-    console.log("currentWeekday")
-    console.log(dayDateObject)
+    // console.log("currentWeekday")
+    // console.log(dayDateObject)
 
     return (
       <WeekdayContainer>
@@ -514,13 +524,13 @@ const Grade: any = ({ theme, themeName }: any) => {
                 size={10}
                 loading />
             </WeekDay>
-            <SchedulesContainer isCurrentDay={false}>
+            <SchedulesContainer>
               <h2>{day}</h2>
               {
                 Array(6)
                   .fill(0)
                   .map((_, index) => (
-                    <Schedule isCurrentTime={false} key={index}>
+                    <Schedule key={index}>
                       <PacmanLoader color='#D9D9D9' size={25} loading />
                     </Schedule>
                   ))
@@ -711,16 +721,11 @@ const Grade: any = ({ theme, themeName }: any) => {
     const courseObjectFromFetch = courses.find((course: any) => {
       return course.id == event.target.value
     })
-
     console.log(courseObjectFromFetch)
-
     setSelectedCourse(
       courseObjectFromFetch as any
     )
-
-
   }
-
   //FETCH FUNCTION
   async function fetchProfessors(token: string) {
     console.log("Fetching fetchProfessors...")
@@ -741,6 +746,7 @@ const Grade: any = ({ theme, themeName }: any) => {
   }
 
   async function fetchSemestreData() {
+    // console.log("Fetching fetchSemestreData...")
     fetch(`${apiUrl}/grade/grade`, {
       method: 'POST',
       headers: {
@@ -766,7 +772,7 @@ const Grade: any = ({ theme, themeName }: any) => {
   }
   async function fetchProfessorData() {
     console.log("Fetching fetchProfessorData...")
-    console.log(selectedProfessor)
+    // console.log(selectedProfessor)
     fetch(`${apiUrl}/grade/agendamentos`, {
       method: 'POST',
       headers: {
@@ -777,10 +783,10 @@ const Grade: any = ({ theme, themeName }: any) => {
         // laboratory_id: "2",
       })
     }).then((response) => response.json()).then((data) => {
-      console.log(data)
+      // console.log(data)
 
       const transformedData = groupByWeekday(data)
-      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+      // console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
 
       setTimeout(() => {
         setLoading(true) // teste de loading
@@ -793,6 +799,7 @@ const Grade: any = ({ theme, themeName }: any) => {
     )
   }
   async function fetchData() {
+    console.log("Fetching fetchProfessorData...")
     fetch(`${apiUrl}/grade/dashboard`, {
       method: 'POST',
       headers: {
@@ -820,8 +827,7 @@ const Grade: any = ({ theme, themeName }: any) => {
     fetch(`${apiUrl}/course`, {
       method: 'POST',
     }).then((response) => response.json()).then((data) => {
-      console.log(data)
-      setSelectedCourse(data[0])
+      // console.log(data)
       return setCourses(data)
     }
     )
@@ -831,7 +837,7 @@ const Grade: any = ({ theme, themeName }: any) => {
 
   function getThemeBasedClass(theme: string) {
 
-    console.log(theme)
+    // console.log(theme)
 
     switch (theme) {
       case 'LightTheme':
@@ -845,7 +851,11 @@ const Grade: any = ({ theme, themeName }: any) => {
       default:
         return 'bubbly-button-shadow-white'
     }
+  }
 
+  function handleDefaultCourse(selectedCourse: CourseProps) {
+
+    setSelectedCourse(selectedCourse)
 
   }
 
@@ -854,7 +864,14 @@ const Grade: any = ({ theme, themeName }: any) => {
     <>
       <ParticlesComponent theme={theme} />
       <ModalAgendamento action={userIsScheduling ? "CREATE" : "OPEN"} isVisible={schedulingModalIsVisible} onClose={handleCloseModalEdit} initialData={editedData} daysIds={daysIds} idUserLogado={userData.userData.id} userRole={userData.userData.role} />
-      <ModalAskSemestre isVisible={askSemesterModalIsVisible} onCloseModalAskSemester={handleCloseModalAskSemester} />
+      <ModalAskSemestre
+        handleDefaultCourse={handleDefaultCourse}
+        handleDefaultSemester={handleDefaultCourse}
+
+        courses={courses}
+        isVisible={askSemesterModalIsVisible}
+        onCloseModalAskSemester={handleCloseModalAskSemester}
+      />
       <ToastContainer
         limit={4}
         autoClose={1000}
@@ -928,7 +945,7 @@ const Grade: any = ({ theme, themeName }: any) => {
                   size={20}
                 />
               </FilterIconWrapper>
-              <StyledCourseSelect defaultValue={selectedCourse.course_name} onChange={handleSelectCourse}>
+              <StyledCourseSelect value={selectedCourse.id} onChange={handleSelectCourse}>
                 {courses && courses.length > 0 ? (
                   courses.map((course) => {
                     return (

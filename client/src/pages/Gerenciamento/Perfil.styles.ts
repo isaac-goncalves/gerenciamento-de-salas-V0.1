@@ -106,6 +106,7 @@ export const SearchBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   input {
     width: 80%;
     height: 2.5rem;
@@ -115,8 +116,16 @@ export const SearchBar = styled.div`
     padding: 0 1rem;
     box-sizing: border-box;
     color: ${props => props.theme.textcolor};
+    
+    
   }
-
+  
+  input:focus {
+    outline: none;
+    border: 1px solid ${props => props.theme.mainpurple};
+  }
+  
+  
   button {
     display: flex;
     align-items: center;
@@ -135,6 +144,9 @@ export const SearchBar = styled.div`
     cursor: pointer;
     white-space: nowrap;
   }
+
+  //set border color when selected 
+ 
 `
 
 export const ButtonsWrapper = styled.div`
@@ -198,7 +210,7 @@ export const DeleteButton = styled.button`
 export const TableSelector = styled.div`
   display: flex;
   width: 100%;
-
+  justify-content: flex-end;
   align-items: center;
 
   select {
@@ -210,7 +222,6 @@ export const TableSelector = styled.div`
     padding: 0 1rem;
     box-sizing: border-box;
     color: ${props => props.theme.textcolor};
-    margin-right: 1rem;
     border: 1px solid ${props => props.theme.mainpurple};
   }
 

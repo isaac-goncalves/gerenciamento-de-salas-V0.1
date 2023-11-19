@@ -48,15 +48,15 @@ const Navbar = ( {toggleTheme} : any ) => {
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('gerenciamento-de-salas@v1.2') || '{}');
-        console.clear();
-        console.log(userData);
+        // console.clear();
+        // console.log(userData);
         setUser(userData.userData);
     }, []);
 
 
     const toggleMenu = (isClick: boolean, e : any) => {
 
-        console.log("I RAN");
+        // console.log("I RAN");
 
     const itemID = e.target;
 

@@ -72,9 +72,7 @@ dfLaboratorio = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='K:N'
 dfSemestres = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='P:Q', skiprows=2, nrows=20) #semestres
 dfDiasSemana = pd.read_excel(file_path, sheet_name='Mock_Tables', usecols='S:T', skiprows=2, nrows=6) #dias da semana
 
-if dfGrade.empty:
-    print('DataFrame is empty!')
-    sys.exit(1)
+print(dfLaboratorio)
 
 dfGrade.columns = ['id','horario_inicio', 'horario_fim', 'dia_da_semana', 'id_professor', 'id_disciplina', 'semestre', 'id_sala', 'created_at', 'updated_at']
 dfDisciplinas.columns = ['disciplina', 'id']
@@ -96,8 +94,8 @@ dataframes = [dfGrade, dfDisciplinas, dfProfessores ,dfLaboratorio, dfSemestres,
 for df in dataframes:
     df.dropna(inplace=True)
 
-print("Grade")
-print (dfGrade)
+# f("Grade")
+# print (dfGrade)
 
 # Access the data within the specified range
 # print(dfGrade)
@@ -360,7 +358,7 @@ print("Checking!")
 
 # print("Rows: ", len(rows))
 #print in green 
-print("\033[92m {}\033[00m" .format(len(rows)), "Records inserted successfully into grade table")
+print("\033[92m {}\033[00m" .format(len(rows)), " records in grade table")
 
 
 end_time = time.time()
