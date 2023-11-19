@@ -667,7 +667,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               Dashboard
             </PageName>
             <CourseName>
-
+              {selectedCourse.course_name}
             </CourseName>
             <CourseSemester>
               2º Semestre de 2023
