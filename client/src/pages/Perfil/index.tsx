@@ -45,7 +45,8 @@ import {
     StyledButtonWhatsApp,
     UserWrapper,
     UserInfo,
-    ContainerElement
+    ContainerElement,
+    UserRowWrapper
 } from './Perfil.styles';
 
 import { toast, ToastContainer } from 'react-toastify';
@@ -62,6 +63,7 @@ import Swal from 'sweetalert2';
 import { AiOutlineSave } from 'react-icons/ai';
 import Multiselect from 'react-widgets/esm/Multiselect';
 import ParticlesComponent from '../Components/ParticlesComponent';
+import { DetailsText } from '../Components/ModalAgendamento/ModalEdit.styles';
 
 const Perfil: any = ({ theme }: any): any => {
 
@@ -575,9 +577,31 @@ const Perfil: any = ({ theme }: any): any => {
                 <ContentWrapper>
                     <Avatar src={userImage} />
                     <UserWrapper>
-                        {<UserName>{userData.userData.name}</UserName>}
-                        {<UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>}
-                        {<UserInfo>{userData.userData.role}</UserInfo>}
+                        <UserRowWrapper>
+                            <DetailsText>
+                                Name:
+                            </DetailsText>
+                            <UserName>{userData.userData.name || "Sem Nome"}</UserName>
+                        </UserRowWrapper>
+                        <UserRowWrapper>
+                            <DetailsText>
+                                Info:
+                            </DetailsText>
+                            <UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>
+                        </UserRowWrapper>
+                        <UserRowWrapper>
+
+                            <DetailsText>
+                                Role:
+                            </DetailsText>
+                            <UserInfo>{userData.userData.role}</UserInfo>
+                        </UserRowWrapper>
+                        <UserRowWrapper>
+                            <DetailsText>
+                                Email:
+                            </DetailsText>
+                        <UserInfo>{userData.userData.email}</UserInfo>
+                        </UserRowWrapper>
                     </UserWrapper>
                     <ButtonWrapper>
                         {

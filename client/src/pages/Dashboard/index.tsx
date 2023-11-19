@@ -230,7 +230,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       } else if (userData.userData.id == 0) {
         console.log('userDataJson: ' + JSON.stringify(userDataJson, null, 2));
         setUserData(userDataJson);
-        if (!userDataJson.userData.semesterverified) {
+        if (!userDataJson.userData.semesterverified && userDataJson.userData.role == "guest") {
           setAskSemesterModalIsVisible(true)
         }
       }
@@ -424,7 +424,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                 Array(6)
                   .fill(0)
                   .map((_, index) => (
-                    <Schedule isCurrentTime={false} key={index}>
+                    <Schedule key={index}>
                       <PacmanLoader color='#D9D9D9' size={25} loading />
                     </Schedule>
                   ))

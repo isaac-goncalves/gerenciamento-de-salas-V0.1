@@ -261,7 +261,7 @@ const Grade: any = ({ theme, themeName }: any) => {
         fetchProfessors(userDataJson.token)
         setSelectedSemesterValue(userDataJson.userData.semester);
 
-        if (!userDataJson.userData.semesterverified) {
+        if (!userDataJson.userData.semesterverified && userDataJson.userData.role == "guest") {
           setAskSemesterModalIsVisible(true)
         }
 
