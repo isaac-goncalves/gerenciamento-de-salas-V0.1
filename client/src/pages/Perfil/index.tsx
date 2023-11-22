@@ -616,7 +616,6 @@ const Perfil: any = ({ theme }: any): any => {
             <>
                 <ContentWrapper>
                     <UserRowWrapper>
-
                         <DetailsText>
                             Name:
                         </DetailsText>
