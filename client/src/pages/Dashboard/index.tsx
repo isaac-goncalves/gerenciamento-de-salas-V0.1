@@ -239,7 +239,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     }
   }, []);
 
-
   useEffect(() => {
 
     console.log('Starting to render stuff2...');
@@ -275,6 +274,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         id: userData.userData.courseId,
         course_name: userData.userData.course_name
       })
+
     } else {
       setSelectedCourse(courses[0])
     }

@@ -18,7 +18,10 @@ const semestresOptions = [
     { value: '5', label: '5º SEMESTRE ADS - 2023' },
     { value: '6', label: '6º SEMESTRE ADS - 2023' },
 ];
-
+interface CourseProps {
+    id: number;
+    course_name: string;
+}
 import {
     Avatar,
     Header, Separator,
@@ -51,7 +54,7 @@ import {
 
 import { toast, ToastContainer } from 'react-toastify';
 
-import avatar from '../../../public/images/avatar.png';
+import avatar from '../../../public/images/avatar.jpg';
 
 import ModalAgendamento from '../Components/ModalAgendamento';
 import NewCourseModal from '../Components/ModalDelete'
@@ -86,7 +89,19 @@ const Perfil: any = ({ theme }: any): any => {
     const [professoresData, setProfessoresData] = React.useState<ProfessoresData[]>([])
 
     const [semestre, setSemestre] = useState("");
+    const [courses, setCourses] = useState<CourseProps[]>([
+        {
+            id: 0,
+            course_name: "Selecione um Curso",
+        },
+    ]);
 
+    const [selectedCourse, setSelectedCourse] = useState<CourseProps>(
+        {
+            id: 0,
+            course_name: "Selecione um Curso",
+        },
+    );
     //  
     const [disciplina, setDisciplina] = useState("");
 
@@ -99,11 +114,24 @@ const Perfil: any = ({ theme }: any): any => {
     const [selectedTable, setSelectedTable] = useState('agendamentos');
     const [selectedCategory, setSelectedCategory] = useState('Alunos');
 
+
     const [agendamentoId, setAgendamentoId] = useState<Number>(2);
     const [editedData, setEditedData] = useState<any>({});
 
     const [userImage, setUserImage] = useState<any>(null);
 
+    const handleSelectCourse = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        // console.log(event.target.value)
+        const courseObject: CourseProps = {
+            id: parseInt(event.target.value),
+            course_name: event.target.options[event.target.selectedIndex].text
+        }
+
+        setSelectedCourse(
+            courseObject
+        )
+
+    }
     //MULTISELECT OPTIONS
     const [selectedValues, setSelectedValues] = useState([]);
     const [disciplinas, setDisciplinas] = useState([]);
@@ -132,7 +160,7 @@ const Perfil: any = ({ theme }: any): any => {
                 setUserData(userDataJson);
                 setSemestre(userDataJson.userData.semestre);
                 // setDisciplina(userDataJson.userData.disciplina);
-                fetchUserImage(userDataJson.userData.userId);
+                // fetchUserImage(userDataJson.userData.userId);
 
             }
         }
@@ -174,20 +202,20 @@ const Perfil: any = ({ theme }: any): any => {
         fetchData();
     }, []);
 
-    const fetchUserImage = async (userId: any) => {
-        try {
-            const response = await fetch("http://localhost:8080" + `/usuarios/12`);
-            if (response.ok) {
-                const blob = await response.blob();
-                const imageUrl = URL.createObjectURL(blob);
-                setUserImage(imageUrl);
-            } else {
-                console.error('Failed to fetch user image');
-            }
-        } catch (error) {
-            console.error('Error fetching user image:', error);
-        }
-    };
+    // const fetchUserImage = async (userId: any) => {
+    //     try {
+    //         const response = await fetch("http://localhost:8080" + `/usuarios/12`);
+    //         if (response.ok) {
+    //             const blob = await response.blob();
+    //             const imageUrl = URL.createObjectURL(blob);
+    //             setUserImage(imageUrl);
+    //         } else {
+    //             console.error('Failed to fetch user image');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching user image:', error);
+    //     }
+    // };
 
     async function fetchData() {
         setIsLoading(false);
@@ -215,7 +243,7 @@ const Perfil: any = ({ theme }: any): any => {
                     method: 'post',
                 }).then(res => res.json())
             ]);
-
+            fetchCourses();
             setFetchedUserData(userDataResponse);
             setAppointmentData(appointmentDataResponse);
             setAlunosData(alunosDataResponse);
@@ -249,6 +277,16 @@ const Perfil: any = ({ theme }: any): any => {
             toast.error('Erro ao carregar dados da tabela. Tente novamente mais tarde.')
             setError(true);
         }
+    }
+
+    async function fetchCourses() {
+        console.log("Fetching Courses...")
+        fetch(`${apiUrl}/course`, {
+            method: 'POST',
+        }).then((response) => response.json()).then((data) => {
+            return setCourses(data)
+        }
+        )
     }
 
     async function handleEdit() {
@@ -578,31 +616,30 @@ const Perfil: any = ({ theme }: any): any => {
             <>
                 <ContentWrapper>
                     <UserRowWrapper>
-                        
+
                         <DetailsText>
                             Name:
                         </DetailsText>
                         <UserName>{userData.userData.name || "Sem Nome"}</UserName>
                     </UserRowWrapper>
-                    <Avatar src={userImage} />
+                    <Avatar src={avatar} />
                     <UserWrapper>
-
                         <UserRowWrapper>
-                        <FaInfoCircle color={theme.mainpurple} size={25}/>
                             <DetailsText>
+                            <FaInfoCircle color={theme.mainpurple} size={25} />
                                 Info:
                             </DetailsText>
                             <UserInfo>{userData.userData.role == "aluno" ? `${userData.userData.semestre}º ADS` : userData.userData.role == "professor" ? "professor" : "guest"}</UserInfo>
                         </UserRowWrapper>
                         <UserRowWrapper>
                             <DetailsText>
-                            <FaUser color={theme.mainpurple} size={25}/> Role:
+                                <FaUser color={theme.mainpurple} size={25} />Role:
                             </DetailsText>
                             <UserInfo>{userData.userData.role}</UserInfo>
                         </UserRowWrapper>
                         <UserRowWrapper>
-                        <MdEmail color={theme.mainpurple} size={25}/>
                             <DetailsText>
+                            <MdEmail color={theme.mainpurple} size={25} />
                                 Email:
                             </DetailsText>
                             <UserInfo>{userData.userData.email}</UserInfo>
@@ -611,19 +648,35 @@ const Perfil: any = ({ theme }: any): any => {
                     <ButtonWrapper>
                         {
                             (userData.userData.role === "aluno" || userData.userData.role === "guest") &&
-                            <InputWrapper>
-                                <label>Semestre:</label>
-                                <StyledSelect value={semestre} onChange={handleChange}>
-                                    <option disabled value="">
-                                        Selecione o semestre
-                                    </option>
-                                    {semestresOptions.map((option) => (
-                                        <option key={option.value} value={option.value}>
-                                            {option.label}
+                            <>
+                                <InputWrapper>
+                                    <label>Semestre:</label>
+                                    <StyledSelect value={semestre} onChange={handleChange}>
+                                        <option disabled value="">
+                                            Selecione o semestre
                                         </option>
-                                    ))}
+                                        {semestresOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </StyledSelect>
+                                </InputWrapper>
+                                <StyledSelect value={selectedCourse.id} onChange={handleSelectCourse}>
+                                    {courses && courses.length > 0 ? (
+                                        courses.map((course) => {
+                                            return (
+                                                <option key={course.id} value={course.id}>
+                                                    {course.course_name}
+                                                </option>
+                                            );
+                                        })
+                                    ) : (
+                                        <option value="">No professors available</option>
+                                    )}
                                 </StyledSelect>
-                            </InputWrapper>
+                            </>
+
                         }
                         {
                             userData.userData.role === "professor" &&
@@ -659,15 +712,13 @@ const Perfil: any = ({ theme }: any): any => {
                                 </InputWrapper>
                             </>
                         }
-                        <FileUploadButton userId={userData.userData.user_id} action={"profilepic"} loggedUserRole={userData.userData.role} />
+                        {/* <FileUploadButton uploadText={"Upload user image"} action={"profilepic"} loggedUserRole={userData.userData.role} /> */}
                         <StyledButton
                             onClick={handleEdit}
                         >
-
                             <AiOutlineSave
                                 size={25}
                             />
-
                             Salvar
                         </StyledButton>
                         <StyledButtonWhatsApp onClick={handleClick}>

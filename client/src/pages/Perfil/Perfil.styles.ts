@@ -71,6 +71,7 @@ export const UserWrapper = styled.div`
     /* max-width: 25rem; */
     padding: 1em;
     border-radius: 6px;
+    width: 100%;
     border: 1px solid #ccc;
 `;
 
@@ -83,6 +84,7 @@ export const UserName = styled.p`
 
 export const UserRowWrapper = styled.div`
     display: flex;
+    align-items: center;
     /* align-items: center; */
     /* justify-content: center; */
     gap: 0.4rem;
@@ -158,6 +160,7 @@ export const ButtonWrapper = styled.div`
     gap: 1rem;
     width: 100%;
     margin-bottom: 5rem;
+    /* padding: 0 1rem; */
     /* margin-top: auto; */
 `;
 
@@ -215,9 +218,9 @@ export const StyledButton = styled.button`
     align-items: center;
     justify-content: center;
 
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     height: 2.5rem;
-    max-width: 20rem;
+    width: 100%;
     border: none;
     gap: 0.5rem;
     width: 100%;
@@ -238,7 +241,7 @@ export const StyledButtonWhatsApp = styled.button`
 
     padding: 0.5rem;
     height: 2.5rem;
-    max-width: 20rem;
+    width: 100%;
     border: none;
     gap: 0.5rem;
     width: 100%;
@@ -421,7 +424,7 @@ export const NowrapText = styled.td`
 
 export const Avatar = styled.img`
     border-radius: 50%;
-    border: 2px solid ${(props) => props.theme.mainpurple};
+    border: 4px solid ${(props) => props.theme.mainpurple};
     height: 8rem;
     width: 8rem;
     margin-right: 0.75rem;

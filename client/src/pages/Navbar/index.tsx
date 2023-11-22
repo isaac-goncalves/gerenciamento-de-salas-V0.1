@@ -4,8 +4,7 @@ import styled from 'styled-components'
 
 import { Colors } from '../../colors';
 
-
-import avatar from '../../../public/images/avatar.png';
+import avatar from '../../../public/images/avatar.jpg';
 
 const disciplinaOptions = [
     { value: "1", label: "Administração Geral" },

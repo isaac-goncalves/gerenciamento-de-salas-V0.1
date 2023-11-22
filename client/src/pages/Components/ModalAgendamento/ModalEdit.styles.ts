@@ -219,7 +219,9 @@ export const DetailsWrapper = styled.div`
 
 export const DetailsText = styled.p`
   font-weight: 500;
-  font-size: 1 rem;
+  display: flex;  
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 0.2rem;
   color: ${props => props.theme.mainpurple};
 
