@@ -22,7 +22,7 @@ import PacmanLoader from 'react-spinners/PacmanLoader';
 
 import {
     Header, Separator,
-    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, MainContainer, TemplateImage, PageTitle, ButtonWrapper, ContainerElement, StyledButton, FilterWrapper, Label, FileInput
+    TableSelector, Wrapper, CounterWrapper, EditButton, DeleteButton, ButtonsWrapper, TableHeader, Table, TableData, TableBody, TableRow, CenteredNumber, TableContainer, NowrapText, TemplateImage, PageTitle, ButtonWrapper, ContainerElement, StyledButton, FilterWrapper, Label, FileInput
 } from './Templates.styles';
 
 import { toast, ToastContainer } from 'react-toastify';

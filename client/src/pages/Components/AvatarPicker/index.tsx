@@ -30,19 +30,19 @@ class App extends React.Component {
         };
     }
 
-    render() {
-        return (
-            <div>
-                <Avatar
-                    width={390}
-                    height={295}
-                    onCrop={this.onCrop}
-                    onClose={this.onClose}
-                    onBeforeFileLoad={this.onBeforeFileLoad}
-                    src={this.state.src}
-                />
-                <img src={this.state.preview} alt="Preview" />
-            </div>
-        )
-    }
+    // render() {
+    //     return (
+    //         <div>
+    //             <Avatar
+    //                 width={390}
+    //                 height={295}
+    //                 onCrop={this.onCrop}
+    //                 onClose={this.onClose}
+    //                 onBeforeFileLoad={this.onBeforeFileLoad}
+    //                 src={this.state.src}
+    //             />
+    //             <img src={this.state.preview} alt="Preview" />
+    //         </div>
+    //     )
+    // }
 }

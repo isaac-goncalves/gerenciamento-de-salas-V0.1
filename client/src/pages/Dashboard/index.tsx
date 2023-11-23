@@ -25,7 +25,6 @@ import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, We
 import ModalAgendamento from '../Components/ModalAgendamento';
 
 
-
 import { useCallback } from "react";
 import { Theme, type Container, type Engine, Particle } from "tsparticles-engine";
 
@@ -259,12 +258,12 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
       //FETCH DATA THAT CHANGES ON THE FILTERS
       if (selectedCourse.id != 0) {
-        fetchSemestreData();
       }
     }
     else {
       console.log("Usuário nao esta logado!")
     }
+    fetchSemestreData();
 
   }, [selectedMethod, currentSelectedDate, selectedCourse]);
 
@@ -274,10 +273,10 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         id: userData.userData.courseId,
         course_name: userData.userData.course_name
       })
-
-    } else {
-      setSelectedCourse(courses[0])
     }
+    // } else {
+    //   setSelectedCourse(courses[0])
+    // }
   }
     , [courses])
 

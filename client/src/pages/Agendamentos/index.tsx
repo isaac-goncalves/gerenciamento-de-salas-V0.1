@@ -206,7 +206,11 @@ function printGradeValue(gradeValue: any) {
 
 }
 
-const Agendamentos: React.FC = () => {
+interface AgendamentosProps {
+  theme: any;
+}
+
+const Agendamentos: any = ( {theme} : AgendamentosProps) => {
 
   const [userRole, setUserRole] = useState(''); // User role state
 
@@ -636,14 +640,14 @@ const Agendamentos: React.FC = () => {
       <WeekContainer>
         {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'].map((day) => (
           <WeekdayContainer key={day}>
-            <WeekDay><PacmanLoader color={Colors.lightgrayInput} size={10} loading /></WeekDay>
+            <WeekDay><PacmanLoader color={theme.whiteBackgroundNavbar} size={10} loading /></WeekDay>
             <SchedulesContainer >
               <h2>{day}</h2>
               {Array(6)
                 .fill(0)
                 .map((_, index) => (
                   <Schedule>
-                    <PacmanLoader color={Colors.lightgrayInput} size={25} loading />
+                    <PacmanLoader color={theme.lightgrayInput} size={25} loading />
                   </Schedule>
                 ))}
             </SchedulesContainer>

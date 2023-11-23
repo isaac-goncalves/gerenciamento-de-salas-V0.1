@@ -533,7 +533,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 Array(6)
                   .fill(0)
                   .map((_, index) => (
-                    <Schedule isCurrentTime={false} key={index}>
+                    <Schedule key={index}>
                       <PacmanLoader color='#D9D9D9' size={25} loading />
                     </Schedule>
                   ))

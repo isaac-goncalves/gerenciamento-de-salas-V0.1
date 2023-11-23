@@ -21,7 +21,7 @@ import { toast } from 'react-toastify';
 import Grade from './pages/Grade';
 
 
-const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
+export const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
 function App() {
 
@@ -175,7 +175,7 @@ function App() {
             <Route path="/agendamentos" element={
               <>
                 <Navbar toggleTheme={toggleTheme} />
-                <Agendamentos />
+                <Agendamentos theme={themeArray[theme]}/>
                 {/* <Circles ballCount={4} /> */}
               </>
             } />

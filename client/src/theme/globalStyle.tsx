@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
   }
   
   body {
-    /* background-color: ${(props) => props.theme.mainpurple}; */
+   
     height: 100vh;
     text-align: left;
 

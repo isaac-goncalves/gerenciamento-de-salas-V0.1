@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 
 import { Colors } from '../../colors'
+import { Theme } from 'tsparticles-engine'
 
 export const StyledSelect = styled.select`
   font-size: 1.0rem;
@@ -348,7 +349,7 @@ export const Laboratorio = styled.div`
   align-items: center;
   justify-content: center;
   background-color: ${({ selected }: IProps) =>
-    selected ? Colors.mainpurple : Colors.horariosCard};
+    selected ? props => props.theme.mainpurple : props => props.theme.horariosCard};
   border-radius: 0px 0px 8px 8px;
   width: 95%;
   height: 100%;

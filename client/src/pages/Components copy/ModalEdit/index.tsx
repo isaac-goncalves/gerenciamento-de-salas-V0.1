@@ -199,7 +199,7 @@ const ModalEdit = ({
       setLaboratory(data.reverse())
 
       if (initialData.id_laboratorio) {
-        const lab = data.find((lab) => lab.id === formData.id_laboratorio);
+        const lab = data.find((lab: LaboratoryProps) => lab.id === formData.id_laboratorio);
         setSelectedLaboratory(lab);
       }
 

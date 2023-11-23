@@ -21,7 +21,7 @@ interface ModalProps {
   onClose: Function
   initialData: any
   daysIds: any
-  userRole: string
+  userRole?: string
 }
 
 interface InitialDataProps {
