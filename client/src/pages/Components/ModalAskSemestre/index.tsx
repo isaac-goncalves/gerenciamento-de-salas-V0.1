@@ -92,11 +92,13 @@ const ModalAskSemestre = ({
         setUserData({ userData: storedUserData, token });
       }
     }
-  }, []);
+
+    setSelectedCourse(courses[0])
+  }, [courses]);
 
   //HANDLE CLICKS
 
-  async function handlesumbitDefaultValues() {
+  async function handleSubmitDefaultValues() {
 
     //set userData.userData.SemesterVerified to true and update token
     try {
@@ -178,10 +180,12 @@ const ModalAskSemestre = ({
       course_name: course_name
     }
 
-    if (selectedId) {
+    console.log(courseObject)
+
+   
       setSelectedCourse(courseObject)
       // Update the selectedProfessorId state instead of formData
-    }
+    
   }
 
   return (
@@ -226,7 +230,7 @@ const ModalAskSemestre = ({
             </ProfessorWrapper>
             <ClocktimeAndButoonsWrapper>
               <ButtonsWrapper>
-                <StyledButton onClick={() => handlesumbitDefaultValues()}>
+                <StyledButton onClick={() => handleSubmitDefaultValues()}>
                   OK
                 </StyledButton>
                 <StyledButton onClick={() => onCloseModalAskSemester()}>

@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle, AiOutlineUserDelete } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu, Disciplina2, Sala2, CurrentMonthText, SchedulesWrapper } from '../Dashboard/Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, StyledContextMenu, Disciplina2, Sala2, CurrentMonthText, SchedulesWrapper, LaboratoriosSchedulesWrapper, CapacityWrapper } from '../Dashboard/Dashboard.styles'
 
 import ModalAgendamento from '../Components/ModalAgendamento';
 
@@ -288,14 +288,14 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
   function handleScheduleClick(dayData: any, item: any, dayDateObject: Date) {
     // console.clear()
 
-    if(userData.userData.role == "guest"){
+    if (userData.userData.role == "guest") {
       toast.info('Você precisa estar logado para agendar!', {
         theme: "dark"
       });
       return
     }
 
-    if(userData.userData.role == "aluno"){
+    if (userData.userData.role == "aluno") {
       toast.info('Você precisa estar logado como professor para agendar!', {
         theme: "dark"
       });
@@ -436,12 +436,9 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               // console.log(currentTime)
 
               function abbreviateCourseName(courseName: string) {
-                // Split the course name into words
-
                 if (courseName == "Nenhuma Aula" || courseName == "Intervalo" || courseName == "") {
                   return ""
                 }
-
                 // Use a regular expression to find uppercase letters
                 const uppercaseLetters = courseName.match(/[A-Z]/g);
 
@@ -457,17 +454,19 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
               return (
                 <>
-                  <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)} 
-                  onClick={
-                    () =>  handleScheduleClick(dayData, item, dayDateObject)
-                  } 
+                  <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject) }
+                   agendamentoCancelExist={agendamentoCancelExist} agendamentoDefaultExist={agendamentoDefaultExist}
+                    onClick={
+                      () => handleScheduleClick(dayData, item, dayDateObject)
+                    }
                     className={isCurrentTime ? '' : 'hoverEffect'}>
-                      <SchedulesWrapper>
-                    <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
-                    <Disciplina2>{disciplina}</Disciplina2>
-                    <Sala2>{agendamentoCancelExist ? "Aula cancelada" : null}</Sala2>
-                    <Disciplina2>{abbreviateCourseName(item.course_name || "")}</Disciplina2>
-                      </SchedulesWrapper>
+                    <LaboratoriosSchedulesWrapper>
+                      <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
+                      <Disciplina2>{disciplina}</Disciplina2>
+                      <Disciplina2>{abbreviateCourseName(item.course_name || "")}</Disciplina2>
+                      <Sala2>{agendamentoCancelExist ? "Aula cancelada" : null}</Sala2>
+                      <Sala2> {agendamentoDefaultExist ? "Laboratorio Cancelado" : null}</Sala2>
+                    </LaboratoriosSchedulesWrapper>
                     {
                       !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
                         selectedMethod === 'professor' ?
@@ -497,10 +496,10 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                             : selectedMethod === 'laboratorio' ?
                               <SemestreSalaWrapper>
                                 <Semestre>{semestre}º Semestre</Semestre>
-                                <SalaWrapper>
-                                  <div>{agendamento ? agendamento.capacidade + " Alunos" : ""}</div>
-                                </SalaWrapper>
-                                {agendamentoDefaultExist ? "Laboratorio Cancelado" : null}
+                                <span>|</span>
+                                <CapacityWrapper>
+                                {agendamento ? agendamento.capacidade + " Alunos" : ""}
+                                </CapacityWrapper>
                               </SemestreSalaWrapper>
                               : null
                         :
@@ -922,7 +921,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
       <ParticlesComponent theme={theme} />
       <ModalAgendamento
         action={"SCHEDULELABORATORIO"}
-        isVisible={schedulingModalIsVisible }
+        isVisible={schedulingModalIsVisible}
         onClose={handleCloseModalEdit}
         initialData={editedData}
         daysIds={daysIds}

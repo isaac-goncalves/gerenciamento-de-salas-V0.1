@@ -273,7 +273,7 @@ export const StyledCourseSelect = styled.select`
         option {
         }
         font-size: 1rem !important;
-        border: 1px solid red;
+        /* border: 1px solid red; */
     }
 
     /* option {
@@ -700,13 +700,13 @@ export const Schedule = styled.div<StyledScheduleDisciplinaProps>`
     user-select: none;
 
     ${(props) =>
-        props.agendamentoDefaultExist && props.agendamentoCancelExist ? `` : "border: solid 3px green;"};
+        props.agendamentoDefaultExist && props.agendamentoCancelExist ? `` : "border: solid 2px gray;"};
 
     ${(props) =>
-        props.agendamentoCancelExist ? "border: solid 4px red; " : null};
+        props.agendamentoCancelExist ? "border: solid 4px yellow; " : null};
 
     ${(props) =>
-        props.agendamentoDefaultExist ? `border: solid 4px red;` : "none"};
+        props.agendamentoDefaultExist ? `border: solid 4px yellow;` : "none"};
 
 
     @media screen and (max-width: 570px) {
@@ -746,16 +746,28 @@ export const Disciplina = styled.p<StyledComponentDisciplinaProps>`
     text-decoration: ${(props) =>
         props.agendamentoCancelExist ? "line-through" : "none"};
     font-weight: 500;
+     white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
     /* color: ${(props) => props.theme.textcolor}; */
     color: ${(props) =>
         props.agendamentoCancelExist
             ? (props) => props.theme.textColorDisabled
             : (props) => props.theme.textcolor};
-`;
+    
+
+
+            `;
 
 export const SemestreSalaWrapper = styled.p`
     display: flex;
-    gap: 0.4rem;
+    width: 100%;
+    span {
+        width: 2px
+    }
+    /* align-items: center;
+    justify-content: center; */
 `;
 
 export const Disciplina2 = styled.p`
@@ -777,10 +789,18 @@ export const SchedulesWrapper = styled.div`
     display: flex;
 `;
 
+export const LaboratoriosSchedulesWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    /* border: solid 1px red; */
+`;
+
 export const Semestre = styled.p`
     font-style: italic;
+    /* border: solid 1px red; */
     color: ${(props) => props.theme.mainpurple};
 `;
+
 interface StyledComponentSalaProps {
     agendamento?: boolean;
 }
@@ -789,6 +809,15 @@ export const SalaWrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 0.4rem;
+`;
+
+export const CapacityWrapper = styled.p`
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    /* border: 1px solid red; */
 `;
 
 export const Sala = styled.p<StyledComponentSalaProps>`
@@ -838,7 +867,7 @@ export const Sala2 = styled.p<StyledComponentProps>`
     color: ${(props) =>
         props.agendamento
             ? (props) => props.theme.textColorDisabled
-            : (props) => props.theme.lighterGreen};
+            : (props) => props.theme.mainpurple};
     font-weight: 600;
     font-weight: ${(props) => (props.agendamento ? "500" : "600")};
     text-decoration: ${(props) =>

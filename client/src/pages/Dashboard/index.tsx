@@ -147,12 +147,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
   //STORE FETCHED DATA
   const [grade, setgrade] = useState<any>();
-  const [professores, setProfessores] = useState<ProfessoreProps[]>([
-    {
-      id: 0,
-      name: "Selecione um professor",
-    },
-  ]);
 
   const [courses, setCourses] = useState<CourseProps[]>([
     {
@@ -161,14 +155,12 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     },
   ]);
 
-
   //MODALPROPS
   const [userIsScheduling, setUserIsScheduling] = useState<boolean>(false);
   const [editedData, setEditedData] = useState<any>({});
   const [daysIds, setDaysIds] = useState<any>([]);
   const [schedulingModalIsVisible, setSchedulingModalIsVisible] = React.useState(false)
   const [askSemesterModalIsVisible, setAskSemesterModalIsVisible] = React.useState(false)
-
 
   //USERSESSIONDATA
   const [userData, setUserData] = useState<any>(
@@ -192,17 +184,10 @@ const Dashboard: any = ({ theme, themeName }: any) => {
   );
 
 
-  //WEIRD DATE STUFF
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-
-  const [date, setDate] = useState(new Date());
-  const [currentDay, setCurrentDay] = useState('');
-  const [currentTime, setCurrentTime] = useState('');
 
   // set to nearest Monday
   const [currentSelectedDate, setCurrentSelectedDate] = useState<Date>(new Date());
   // set to nearest Friday
-  const [endDate, setEndDate] = useState<Date | null>(setDay(new Date(), 5));
 
   //USE EFFECTS -------------------------------------------------------------------------
   useLayoutEffect(() => {
@@ -234,11 +219,18 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }
       }
       fetchCourses();
-      fetchSemestreData();
+      if(selectedCourse.id != 0){
+        fetchSemestreData();
+      }
     }
   }, []);
 
   useEffect(() => {
+    // const Hourminustree = new Date();
+
+    // Hourminustree.setHours(Hourminustree.getHours() - 3);
+
+    // setCurrentSelectedDate(Hourminustree);
 
     console.log('Starting to render stuff2...');
 
@@ -248,7 +240,12 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
     if (userData.token !== '' && userData.userData.id !== 0) {
       console.log("Usuário logado!")
-
+      console.log(userData)
+      console.log(selectedCourse.id)
+      if(selectedCourse.id != 0){
+        fetchSemestreData();
+      }
+        
       // if (userData.userData.semesterverified == true) {
       //   setSelectedCourse({
       //     id: userData.userData.courseId,
@@ -257,26 +254,30 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       // } else {
 
       //FETCH DATA THAT CHANGES ON THE FILTERS
-      if (selectedCourse.id != 0) {
-      }
+      
     }
     else {
       console.log("Usuário nao esta logado!")
     }
-    fetchSemestreData();
 
-  }, [selectedMethod, currentSelectedDate, selectedCourse]);
+  }, [selectedMethod, currentSelectedDate, selectedCourse, userData]);
 
   useEffect(() => {
+    console.log(
+      'Starting to render stuff3...'
+    );
+    console.log(
+      userData
+    );
     if (userData.userData.semesterverified == true) {
       setSelectedCourse({
         id: userData.userData.courseId,
         course_name: userData.userData.course_name
       })
     }
-    // } else {
-    //   setSelectedCourse(courses[0])
-    // }
+    else {
+      setSelectedCourse(courses[0])
+    }
   }
     , [courses])
 
@@ -338,7 +339,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
               return (
                 <Schedule agendamentoCancelExist={agendamentoCancelExist}
-                  agendamentoDefaultExist={agendamentoDefaultExist}
+                   agendamentoDefaultExist={agendamentoDefaultExist}
                   key={item.id}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
                   <Disciplina agendamentoCancelExist={agendamentoCancelExist}>{disciplina}</Disciplina>
@@ -485,7 +486,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
   };
 
   const handleCloseModalAskSemester = (semestre: number, couseObject: CourseProps) => {
-
+    
     setAskSemesterModalIsVisible(false);
 
   };
@@ -568,27 +569,31 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
   //FETCH FUNCTION
   async function fetchSemestreData() {
-    fetch(`${apiUrl}/grade/dashboard`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        date: currentSelectedDate, //add localStorage later
-        course_id: selectedCourse.id || 1,
-      })
-    }).then((response) => response.json()).then((data) => {
-      console.log(data)
-      const transformedData = groupBySemester(data)
-      console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
-      setTimeout(() => {
-        setLoading(true) // teste de loading
-      }, 0)
-      // setLoading(true)
-      // console.log(transformedData.segunda[0].agendamentos.professor)
-      return setgrade(transformedData as any)
+
+    if (selectedCourse.id != 1) {
+
+      fetch(`${apiUrl}/grade/dashboard`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          date: currentSelectedDate, //add localStorage later
+          course_id: selectedCourse.id || 1,
+        })
+      }).then((response) => response.json()).then((data) => {
+        console.log(data)
+        const transformedData = groupBySemester(data)
+        console.log("Transformed Data :" + JSON.stringify(transformedData, null, 2))
+        setTimeout(() => {
+          setLoading(true) // teste de loading
+        }, 0)
+        // setLoading(true)
+        // console.log(transformedData.segunda[0].agendamentos.professor)
+        return setgrade(transformedData as any)
+      }
+      )
     }
-    )
   }
 
   async function fetchCourses() {

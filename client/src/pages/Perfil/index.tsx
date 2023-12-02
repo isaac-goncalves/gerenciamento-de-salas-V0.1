@@ -379,7 +379,7 @@ const Perfil: any = ({ theme }: any): any => {
                     ...userData,
                     userData: {
                         ...userData.userData,
-                        semestre: semestre,
+                        semester: Number(semestre),
                         disciplina: disciplina
                     }
                 }
@@ -390,7 +390,7 @@ const Perfil: any = ({ theme }: any): any => {
                     ...userData,
                     userData: {
                         ...userData.userData,
-                        semestre: semestre,
+                        semester: Number(semestre),
                         disciplina: disciplina
                     }
                 }
