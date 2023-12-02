@@ -412,9 +412,9 @@ const Grade: any = ({ theme, themeName }: any) => {
     // console.log(dayDateObject)
 
     return (
-      <WeekdayContainer>
+      <WeekdayContainer key={dayName}>
         <WeekDay>{currentWeekDay}</WeekDay>
-        <SchedulesContainer>
+        <SchedulesContainer  >
           <h2>{dayName}</h2>
           {
             dayData.map((item: any) => {
@@ -439,15 +439,14 @@ const Grade: any = ({ theme, themeName }: any) => {
 
               const agendamento = !agendamentoDefaultExist ? agendamentos && agendamentos.length > 0 ? agendamentos[0] : null : null
 
-              const isCurrentTime = false
               // isWithinClassTime(item.horario_inicio, item.horario_fim);
 
               // console.log(isCurrentTime)
               // console.log(currentTime)
 
               return (
-                <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} agendamentoCancelExist={agendamentoCancelExist} agendamentoDefaultExist={agendamentoDefaultExist} key={item.id}
-                  className={isCurrentTime ? '' : 'hoverEffect'}>
+                <Schedule onClick={() => handleScheduleClick(dayData, item, dayDateObject)} agendamentoCancelExist={agendamentoCancelExist} agendamentoDefaultExist={agendamentoDefaultExist} key={new Date().getTime() + Math.random()}
+                >
                   <Disciplina agendamentoCancelExist={agendamentoCancelExist}>{disciplina}</Disciplina>
                   <Professor agendamentoCancelExist={agendamentoCancelExist}>{professor}</Professor>
                   {

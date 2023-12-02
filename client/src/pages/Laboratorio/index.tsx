@@ -397,7 +397,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
     // console.log(dayDateObject)
 
     return (
-      <WeekdayContainer>
+      <WeekdayContainer key={new Date().getTime() + Math.random()}>
         <WeekDay>{currentWeekDay}</WeekDay>
         <SchedulesContainer>
           <h2>{dayName}</h2>
@@ -453,60 +453,59 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               }
 
               return (
-                <>
-                  <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject) }
-                   agendamentoCancelExist={agendamentoCancelExist} agendamentoDefaultExist={agendamentoDefaultExist}
-                    onClick={
-                      () => handleScheduleClick(dayData, item, dayDateObject)
-                    }
-                    className={isCurrentTime ? '' : 'hoverEffect'}>
-                    <LaboratoriosSchedulesWrapper>
-                      <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
-                      <Disciplina2>{disciplina}</Disciplina2>
-                      <Disciplina2>{abbreviateCourseName(item.course_name || "")}</Disciplina2>
-                      <Sala2>{agendamentoCancelExist ? "Aula cancelada" : null}</Sala2>
-                      <Sala2> {agendamentoDefaultExist ? "Laboratorio Cancelado" : null}</Sala2>
-                    </LaboratoriosSchedulesWrapper>
-                    {
-                      !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
-                        selectedMethod === 'professor' ?
-                          <SemestreSalaWrapper>
-                            <Semestre>{semestre}º Semestre</Semestre>
-                            <SalaWrapper>
-                              <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                              {agendamento && agendamento.laboratorio && (
-                                <>
-                                  <MdKeyboardDoubleArrowRight />
-                                  <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                                </>
-                              )}
-                            </SalaWrapper>
-                          </SemestreSalaWrapper>
-                          :
-                          selectedMethod === 'semestre' ?
-                            <SalaWrapper>
-                              <Sala agendamento={agendamento}>{laboratorio}</Sala>
-                              {agendamento && agendamento.laboratorio && (
-                                <>
-                                  <MdKeyboardDoubleArrowRight />
-                                  <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
-                                </>
-                              )}
-                            </SalaWrapper>
-                            : selectedMethod === 'laboratorio' ?
-                              <SemestreSalaWrapper>
-                                <Semestre>{semestre}º Semestre</Semestre>
-                                <span>|</span>
-                                <CapacityWrapper>
-                                {agendamento ? agendamento.capacidade + " Alunos" : ""}
-                                </CapacityWrapper>
-                              </SemestreSalaWrapper>
-                              : null
+                <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)}
+                  agendamentoCancelExist={agendamentoCancelExist} agendamentoDefaultExist={agendamentoDefaultExist}
+                  onClick={
+                    () => handleScheduleClick(dayData, item, dayDateObject)
+                  }
+                  className={isCurrentTime ? '' : 'hoverEffect'}
+                  key={new Date().getTime() + Math.random()}>
+                  <LaboratoriosSchedulesWrapper>
+                    <Professor agendamentoCancelExist={agendamentoCancelExist}>{getProfessorName(id_professor || 0)}</Professor>
+                    <Disciplina2>{disciplina}</Disciplina2>
+                    <Disciplina2>{abbreviateCourseName(item.course_name || "")}</Disciplina2>
+                    <Sala2>{agendamentoCancelExist ? "Aula cancelada" : null}</Sala2>
+                    <Sala2> {agendamentoDefaultExist ? "Laboratorio Cancelado" : null}</Sala2>
+                  </LaboratoriosSchedulesWrapper>
+                  {
+                    !(disciplina == "Nenhuma Aula" || disciplina == "Intervalo") ?
+                      selectedMethod === 'professor' ?
+                        <SemestreSalaWrapper>
+                          <Semestre>{semestre}º Semestre</Semestre>
+                          <SalaWrapper>
+                            <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                            {agendamento && agendamento.laboratorio && (
+                              <>
+                                <MdKeyboardDoubleArrowRight />
+                                <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                              </>
+                            )}
+                          </SalaWrapper>
+                        </SemestreSalaWrapper>
                         :
-                        null
-                    }
-                  </Schedule>
-                </>
+                        selectedMethod === 'semestre' ?
+                          <SalaWrapper>
+                            <Sala agendamento={agendamento}>{laboratorio}</Sala>
+                            {agendamento && agendamento.laboratorio && (
+                              <>
+                                <MdKeyboardDoubleArrowRight />
+                                <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
+                              </>
+                            )}
+                          </SalaWrapper>
+                          : selectedMethod === 'laboratorio' ?
+                            <SemestreSalaWrapper>
+                              <Semestre>{semestre}º Semestre</Semestre>
+                              <span>|</span>
+                              <CapacityWrapper>
+                                {agendamento ? agendamento.capacidade + " Alunos" : ""}
+                              </CapacityWrapper>
+                            </SemestreSalaWrapper>
+                            : null
+                      :
+                      null
+                  }
+                </Schedule>
               );
             })}
         </SchedulesContainer>
@@ -532,7 +531,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
                 Array(6)
                   .fill(0)
                   .map((_, index) => (
-                    <Schedule key={index}>
+                    <Schedule key={new Date().getTime() + Math.random()}>
                       <PacmanLoader color='#D9D9D9' size={25} loading />
                     </Schedule>
                   ))

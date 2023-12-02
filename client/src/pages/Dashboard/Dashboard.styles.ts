@@ -824,7 +824,7 @@ export const Sala = styled.p<StyledComponentSalaProps>`
     color: ${(props) =>
         props.agendamento
             ? (props) => props.theme.textColorDisabled
-            : (props) => props.theme.lighterGreen};
+            : (props) => props.theme.mainpurple};
     font-weight: 600;
     font-weight: ${(props) => (props.agendamento ? "500" : "600")};
     text-decoration: ${(props) =>
@@ -847,7 +847,7 @@ export const StyledDayNameHeader = styled.p<StyledComponentSalaProps>`
 `;
 
 export const StyledDayName = styled.p<StyledComponentSalaProps>`
-    color: ${(props) => props.theme.lighterGreen};
+    color: ${(props) => props.theme.mainpurple};
     font-weight: 600;
     padding: 0;
     font-size: 1.5rem;
@@ -876,7 +876,7 @@ export const Sala2 = styled.p<StyledComponentProps>`
 `;
 
 export const SalaAgendada = styled.p`
-    color: ${(props) => props.theme.lighterGreen};
+    color: ${(props) => props.theme.mainpurple};
     font-weight: 600;
     white-space: nowrap;
     padding: 0;

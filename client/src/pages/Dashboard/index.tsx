@@ -530,6 +530,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     // setCurrentSelectedDate(monday);
     // setEndDate(friday);
   };
+  
   const getDayBasedOnWeekday: any = (dayName: string, startDate: any) => {
     const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const dayIndex = days.indexOf(dayName);
@@ -640,6 +641,22 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     }
   }
 
+  function getCurrentSemester(date: Date) {
+    const currentMonth = date.getMonth() + 1;
+    const currentYear = date.getFullYear();
+
+    let message = '';
+
+    if (currentMonth >= 1 && currentMonth <= 6) {
+      message = '1º Semestre';
+    } else if (currentMonth >= 7 && currentMonth <= 12) {
+      message = '2º Semestre';
+    }
+
+    return `${message} - ${currentYear}`;
+
+  }
+
   //RENDERS -------------------------------------------------------------------------
   return (
     <>
@@ -675,7 +692,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
               {selectedCourse.course_name}
             </CourseName>
             <CourseSemester>
-              2º Semestre de 2023
+              {getCurrentSemester(currentSelectedDate)}
             </CourseSemester>
           </CoursesWrapper>
           <DatePickWrapper>
