@@ -45,6 +45,7 @@ import { on } from 'events';
 import banner from '../../../public/images/banner.jpg';
 import ModalAskSemestre from '../Components/ModalAskSemestre';
 import ParticlesComponent from '../Components/ParticlesComponent';
+import { getCurrentSemester } from '../Dashboard';
 
 
 interface ScheduleItem {
@@ -899,7 +900,7 @@ const Grade: any = ({ theme, themeName }: any) => {
               {selectedCourse.course_name}
             </CourseName>
             <CourseSemester>
-              2º Semestre de 2023
+            {getCurrentSemester(startDate || new Date())}
             </CourseSemester>
           </CoursesWrapper>
           <DatePickWrapper>

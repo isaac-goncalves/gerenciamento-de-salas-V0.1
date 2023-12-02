@@ -37,6 +37,7 @@ import { on } from 'events';
 import { GiCancel } from 'react-icons/gi';
 import Swal from 'sweetalert2';
 import ParticlesComponent from '../Components/ParticlesComponent';
+import { getCurrentSemester } from '../Dashboard';
 
 interface ScheduleItem {
   id: number;
@@ -932,7 +933,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
         autoClose={1000}
       />
       <MainContainer>
-        <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
+        {/* <CalltoActionButton className={`${getThemeBasedClass(themeName)} + bubbly-button ${isAnimating ? 'animate' : ''}`} backgroundColor={userIsScheduling} onClick={handleActionButtonClick}>
           {
             userData.userData.role == "aluno" || userData.userData.role == "guest" &&
             <FaFilter size={35} color='white' />
@@ -942,7 +943,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
             userData.userData.role == "professor" &&
             <MdOutlineModeEdit size={40} color='white' />
           }
-        </CalltoActionButton>
+        </CalltoActionButton> */}
         <Helmet>
           <title>SGSA - Laboratorio</title>
         </Helmet>
@@ -955,7 +956,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               {selectedLaboratorio.descricao}
             </CourseName>
             <CourseSemester>
-              2º Semestre de 2023
+            {getCurrentSemester(startDate || new Date())}
             </CourseSemester>
           </CoursesWrapper>
           <DatePickWrapper>

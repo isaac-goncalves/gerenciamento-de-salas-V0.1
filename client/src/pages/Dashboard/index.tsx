@@ -85,6 +85,22 @@ type GroupedData = {
 
 export var themetest = null;
 
+export function getCurrentSemester(date: Date) {
+  const currentMonth = date.getMonth() + 1;
+  const currentYear = date.getFullYear();
+
+  let message = '';
+
+  if (currentMonth >= 1 && currentMonth <= 6) {
+    message = '1º Semestre';
+  } else if (currentMonth >= 7 && currentMonth <= 12) {
+    message = '2º Semestre';
+  }
+
+  return `${message} - ${currentYear}`;
+
+}
+
 function groupBySemester(fetchedData: ScheduleItem[]): GroupedData {
   const semestresString = ["semestre1", "semestre2", "semestre3", "semestre4", "semestre5", "semestre6"];
   const totalItemsPerDay = 6;
@@ -641,21 +657,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     }
   }
 
-  function getCurrentSemester(date: Date) {
-    const currentMonth = date.getMonth() + 1;
-    const currentYear = date.getFullYear();
-
-    let message = '';
-
-    if (currentMonth >= 1 && currentMonth <= 6) {
-      message = '1º Semestre';
-    } else if (currentMonth >= 7 && currentMonth <= 12) {
-      message = '2º Semestre';
-    }
-
-    return `${message} - ${currentYear}`;
-
-  }
+  
 
   //RENDERS -------------------------------------------------------------------------
   return (
