@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, StyledCourseSelect } from '../Dashboard/Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, StyledCourseSelect, WeekdayBannerContainer } from '../Dashboard/Dashboard.styles'
 
 import ModalAgendamento from '../Components/ModalAgendamento';
 
@@ -42,10 +42,10 @@ import { StyledButton } from '../Perfil/Perfil.styles';
 import { FaFilter } from 'react-icons/fa';
 import { on } from 'events';
 
-import banner from '../../../public/images/banner.jpg';
 import ModalAskSemestre from '../Components/ModalAskSemestre';
 import ParticlesComponent from '../Components/ParticlesComponent';
 import { getCurrentSemester } from '../Dashboard';
+import CardWithChangingPictures from '../Components/CardWithChangingPictures';
 
 
 interface ScheduleItem {
@@ -506,9 +506,13 @@ const Grade: any = ({ theme, themeName }: any) => {
     // console.log(dayDateObject)
 
     return (
-      <WeekdayContainer>
-        <FatecBanner src={banner} />
-      </WeekdayContainer>
+      <WeekdayBannerContainer>
+         <WeekDay>
+          Hoje na FATEC
+        </WeekDay>
+        {/* <FatecBanner src={banner} /> */}
+        <CardWithChangingPictures/>
+      </WeekdayBannerContainer>
     )
   };
 

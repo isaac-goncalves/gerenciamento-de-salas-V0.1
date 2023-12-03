@@ -8,6 +8,8 @@ import { MdChevronLeft, MdChevronRight, MdToday } from "react-icons/md";
 import { TbChevronDown } from "react-icons/tb";
 import { FaFilter } from "react-icons/fa";
 
+
+
 interface CalltoActionButtonProps {
     backgroundColor: boolean;
 }
@@ -120,7 +122,7 @@ export const ClassesContainer = styled.div`
     text-align: center;
     flex-direction: row;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     background-color: ${(props) => props.theme.white};
     /* background-color: blue  ;// alternate color */
     padding: 1rem;
@@ -342,6 +344,28 @@ export const DatePickWrapper = styled.div`
     border-radius: 12px;
     padding: 0.5rem 1rem;
     margin-bottom: 1rem;
+    /* padding: 1rem 1rem; */
+
+    @media screen and (max-width: 750px) {
+        width: 98%;
+        padding: 0.25rem 0.8rem;
+    }
+`;
+
+export const StyledCNNWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 98%;
+    @media screen and (max-width: 570px) {
+        gap: 0rem;
+    }
+    
+    background-color: ${(props) => props.theme.white};
+    border-radius: 12px;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1.0rem;
     /* padding: 1rem 1rem; */
 
     @media screen and (max-width: 750px) {
@@ -592,6 +616,7 @@ export const WeekContainer = styled.div`
 
 export const WeekdayContainer = styled.div`
     min-width: 10rem;
+    max-width: 20rem;
 
     /* border: solid 1px red; */
 
@@ -601,6 +626,52 @@ export const WeekdayContainer = styled.div`
     flex-direction: column;
     align-items: center;
     border-radius: 8px;
+    user-select: none;
+    /* background-color: cyan; //remove later */
+    padding-bottom: 0.1rem;
+    @media screen and (max-width: 570px) {
+        min-width: 16rem;
+    }
+    h2 {
+        @media screen and (max-width: 570px) {
+            font-size: 1rem;
+        }
+
+        font-weight: 500;
+        text-transform: uppercase;
+        color: ${(props) => props.theme.textcolor};
+    }
+
+    :hover {
+        /* transform: scale(1.01);
+    transition: 0.1s; */
+
+        // add soft shadow
+
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+
+        background-color: ${(props) => props.theme.lightgrayInput};
+        p {
+            /* color: ${(props) => props.theme.white}; */
+        }
+    }
+
+    //css for when i stop hovering
+`;
+
+export const WeekdayBannerContainer = styled.div`
+    min-width: 15rem;
+    max-width: 20rem;
+
+    /* border: solid 1px red; */
+
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
     user-select: none;
     /* background-color: cyan; //remove later */
     padding-bottom: 0.1rem;
@@ -833,8 +904,8 @@ export const Sala = styled.p<StyledComponentSalaProps>`
 `;
 
 export const StyledDayNameHeader = styled.p<StyledComponentSalaProps>`
-    color: ${(props) => props.theme.lighterGreen};
-    font-weight: 600;
+    color: ${(props) => props.theme.mainpurple};
+    font-weight: 500;
     padding: 0;
     font-size: 1.5rem;
     white-space: nowrap;
@@ -848,10 +919,27 @@ export const StyledDayNameHeader = styled.p<StyledComponentSalaProps>`
 
 export const StyledDayName = styled.p<StyledComponentSalaProps>`
     color: ${(props) => props.theme.mainpurple};
-    font-weight: 600;
+    font-weight: 500;
     padding: 0;
-    font-size: 1.5rem;
+    /* width: 100%; */
+    font-size: 1.0rem;
     white-space: nowrap;
+    @media screen and (max-width: 570px) {
+        display: none;
+    }
+
+`;
+
+export const StyledCNNContent = styled.p<StyledComponentSalaProps>`
+    color: ${(props) => props.theme.textcolor};
+    font-weight: 500;
+    padding: 0;
+    font-size: 1.0rem;
+    white-space: nowrap;
+    display: flex;
+    width: 100%;
+    /* border: 1px solid red; */
+    overflow: hidden;
         
     @media screen and (max-width: 570px) {
         display: none;

@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName, StyledCourseSelect, StyledDayNameHeader } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName, StyledCourseSelect, StyledDayNameHeader, WeekdayBannerContainer, StyledCNNContent, StyledCNNWrapper } from './Dashboard.styles'
 
 import ModalAgendamento from '../Components/ModalAgendamento';
 
@@ -41,9 +41,10 @@ import { StyledButton } from '../Perfil/Perfil.styles';
 import { FaFilter, FaHeart } from 'react-icons/fa';
 import { on } from 'events';
 
-import banner from '../../../public/images/banner.jpg';
 import ModalAskSemestre from '../Components/ModalAskSemestre';
 import ParticlesComponent from '../Components/ParticlesComponent';
+import CardWithChangingPictures from '../Components/CardWithChangingPictures';
+import TextScroller from '../Components/TextScroller';
 
 
 interface ScheduleItem {
@@ -235,7 +236,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
         }
       }
       fetchCourses();
-      if(selectedCourse.id != 0){
+      if (selectedCourse.id != 0) {
         fetchSemestreData();
       }
     }
@@ -258,10 +259,10 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       console.log("Usuário logado!")
       console.log(userData)
       console.log(selectedCourse.id)
-      if(selectedCourse.id != 0){
+      if (selectedCourse.id != 0) {
         fetchSemestreData();
       }
-        
+
       // if (userData.userData.semesterverified == true) {
       //   setSelectedCourse({
       //     id: userData.userData.courseId,
@@ -270,7 +271,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
       // } else {
 
       //FETCH DATA THAT CHANGES ON THE FILTERS
-      
+
     }
     else {
       console.log("Usuário nao esta logado!")
@@ -355,7 +356,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
               return (
                 <Schedule agendamentoCancelExist={agendamentoCancelExist}
-                   agendamentoDefaultExist={agendamentoDefaultExist}
+                  agendamentoDefaultExist={agendamentoDefaultExist}
                   key={item.id}
                   className={isCurrentTime ? '' : 'hoverEffect'}>
                   <Disciplina agendamentoCancelExist={agendamentoCancelExist}>{disciplina}</Disciplina>
@@ -416,9 +417,13 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     console.log(dayDateObject)
 
     return (
-      <WeekdayContainer>
-        <FatecBanner src={banner} />
-      </WeekdayContainer>
+      <WeekdayBannerContainer>
+        <WeekDay>
+          Hoje na FATEC
+        </WeekDay>
+        {/* <FatecBanner src={banner} /> */}
+        <CardWithChangingPictures />
+      </WeekdayBannerContainer>
     )
   };
 
@@ -502,7 +507,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
   };
 
   const handleCloseModalAskSemester = (semestre: number, couseObject: CourseProps) => {
-    
+
     setAskSemesterModalIsVisible(false);
 
   };
@@ -546,7 +551,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     // setCurrentSelectedDate(monday);
     // setEndDate(friday);
   };
-  
+
   const getDayBasedOnWeekday: any = (dayName: string, startDate: any) => {
     const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const dayIndex = days.indexOf(dayName);
@@ -657,7 +662,6 @@ const Dashboard: any = ({ theme, themeName }: any) => {
     }
   }
 
-  
 
   //RENDERS -------------------------------------------------------------------------
   return (
@@ -806,6 +810,15 @@ const Dashboard: any = ({ theme, themeName }: any) => {
 
 
         </ClassesContainer>
+        <StyledCNNWrapper>
+          <StyledDayName >Fatec Tabaté: Uma Escola para o Futuro</StyledDayName>
+          <p>|</p>
+          <StyledCNNContent >
+            <TextScroller
+              text="Com a abertura de inscrições e os próximos eventos, a Fatec Tabaté demonstra sua posição como uma referência em educação tecnológica. A instituição segue o ritmo das mudanças do mercado e prepara seus alunos para o mundo do trabalho de hoje e de amanhã. Inscreva-se já e fique por dentro das novidades da tecnologia do futuro."
+            />
+          </StyledCNNContent>
+        </StyledCNNWrapper>
       </MainContainer>
     </>
   );
