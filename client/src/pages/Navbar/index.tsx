@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Colors } from '../../colors';
 
 import avatar from '../../../public/images/avatar.jpg';
+import { abbreviateCourseName } from '../Laboratorio';
 
 const disciplinaOptions = [
     { value: "1", label: "Administração Geral" },
@@ -38,7 +39,7 @@ const disciplinaOptions = [
     { value: "29", label: "Sociedade e Tecnologia" }
 ];
 
-const Navbar = ( {toggleTheme} : any ) => {
+const Navbar = ({ toggleTheme }: any) => {
 
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const [user, setUser] = useState<any>({});
@@ -53,19 +54,19 @@ const Navbar = ( {toggleTheme} : any ) => {
     }, []);
 
 
-    const toggleMenu = (isClick: boolean, e : any) => {
+    const toggleMenu = (isClick: boolean, e: any) => {
 
         // console.log("I RAN");
 
-    const itemID = e.target;
+        const itemID = e.target;
 
-    if (itemID == "DARKMODE") {
-        return;
-    }
+        if (itemID == "DARKMODE") {
+            return;
+        }
 
-    const viewWidth = window.innerWidth;
+        const viewWidth = window.innerWidth;
 
-    const viewWidthIsMobile = viewWidth <= 768;
+        const viewWidthIsMobile = viewWidth <= 768;
 
         if (viewWidthIsMobile && !isClick) {
             return;
@@ -89,7 +90,7 @@ const Navbar = ( {toggleTheme} : any ) => {
 
         switch (user.role) {
             case 'aluno':
-                return `${user.semestre}º ADS`;
+                return `${user.semestre}º ${abbreviateCourseName(user.course_name || "")}`;
             case 'professor':
                 return user.nomeDisciplina[0] || "Não encontrado";
             default:
@@ -107,6 +108,18 @@ const Navbar = ( {toggleTheme} : any ) => {
 
     }
 
+    function retornarSomenteAsIniciais(sobrenome: string) {
+   
+        const nome = sobrenome.split(" ");
+        const iniciais = nome.map((nome) => {
+            return nome[0];
+        });
+
+        return iniciais.join(" ") + ".";
+
+
+    }
+
     return (
         <>
             <PrimaryNav menuOpen={menuOpen} onMouseEnter={() => toggleMenu(false, "")} onMouseLeave={closeMenu}>
@@ -114,9 +127,18 @@ const Navbar = ( {toggleTheme} : any ) => {
                     <Avatar src={avatar} />
                     {menuOpen && <>
                         <UserWrapper>
-                            {<UserName>{user.name}</UserName>}
-                            {<UserInfo>{user.role == "aluno" ? `${user.semestre}º ADS` : user.role == "professor" ? "professor" : "guest"}</UserInfo>}
-                            {<UserInfo>{getDescription()}</UserInfo>}
+                            {<UserName>{user.name} {retornarSomenteAsIniciais(user.surname)}</UserName>}
+                            {<UserInfo>
+                                <span>
+                                    Função:
+                                </span>
+                                {user.role == "aluno" ? "Aluno" : user.role == "professor" ? "Professor" : "Guest"}</UserInfo>}
+                            {/* {<UserInfo>{user.role == "aluno" ? `${user.semestre}º ADS` : user.role == "professor" ? "professor" : "guest"}</UserInfo>}///////////// */}
+                            {<UserInfo>
+                                <span>
+                                    Curso:
+                                </span>
+                                {getDescription()}</UserInfo>}
                         </UserWrapper>
                     </>
                     }
@@ -125,12 +147,12 @@ const Navbar = ( {toggleTheme} : any ) => {
                 <Menu>
                     <HamburgerDiv onClick={(e) => toggleMenu(true, e)}>
                         <RowWrapper >
-                            <HamburgerWrapper/>
+                            <HamburgerWrapper />
                         </RowWrapper>
                     </HamburgerDiv>
                     <MenuLink to="/dashboard"  >
                         <RowWrapper >
-                            <DashboardWrapper/>
+                            <DashboardWrapper />
                             {
                                 menuOpen && <p>DASHBOARD</p>
                             }
@@ -138,7 +160,7 @@ const Navbar = ( {toggleTheme} : any ) => {
                     </MenuLink>
                     <MenuLink to="/grade"  >
                         <RowWrapper >
-                            <SchedulesWrapper/>
+                            <SchedulesWrapper />
                             {
                                 menuOpen && <p>GRADE</p>
                             }
@@ -146,7 +168,7 @@ const Navbar = ( {toggleTheme} : any ) => {
                     </MenuLink>
                     <MenuLink to="/laboratorio"  >
                         <RowWrapper >
-                            <LaboratoriosWrapper/>
+                            <LaboratoriosWrapper />
                             {
                                 menuOpen && <p>LABORATÓRIOS</p>
                             }
@@ -165,7 +187,7 @@ const Navbar = ( {toggleTheme} : any ) => {
                     </MenuLink> */}
                     <MenuLink to="/perfil" >
                         <RowWrapper>
-                            <ProfileWrapper/>
+                            <ProfileWrapper />
                             {
                                 menuOpen && <p>PERFIL</p>
                             }
@@ -173,14 +195,14 @@ const Navbar = ( {toggleTheme} : any ) => {
                     </MenuLink>
                     <MenuLink to="/gerenciamento" >
                         <RowWrapper>
-                            <GerenciamentoWrapper/>{
+                            <GerenciamentoWrapper />{
                                 menuOpen && <p>GERENCIAMENTO</p>
                             }
                         </RowWrapper>
                     </MenuLink>
                     <MenuLink to="/templates" >
                         <RowWrapper>
-                            <TemplateWrapper/>{
+                            <TemplateWrapper />{
                                 menuOpen && <p>TEMPLATES</p>
                             }
                         </RowWrapper>
@@ -193,11 +215,11 @@ const Navbar = ( {toggleTheme} : any ) => {
                         </RowWrapper>
                     </MenuLink> */}
                     <MenuLink to="#"
-                    id="DARKMODE"
-                    onClick={() => toggleTheme()}
+                        id="DARKMODE"
+                        onClick={() => toggleTheme()}
                     >
                         <RowWrapper>
-                            <DarmodeWrapper/>
+                            <DarmodeWrapper />
                             {
                                 menuOpen && <p>DARKMODE</p>
                             }
@@ -207,7 +229,7 @@ const Navbar = ( {toggleTheme} : any ) => {
                         onClick={() => handleLogout()}
                     >
                         <RowWrapper>
-                            <LogoutWrapper/>
+                            <LogoutWrapper />
                             {
                                 menuOpen && <p>LOGOUT</p>
                             }

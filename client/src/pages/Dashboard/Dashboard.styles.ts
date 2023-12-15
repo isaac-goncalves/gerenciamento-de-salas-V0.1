@@ -372,6 +372,8 @@ export const StyledCNNWrapper = styled.div`
         width: 98%;
         padding: 0.25rem 0.8rem;
     }
+
+   
 `;
 
 export const DatepickContainer = styled.div`

@@ -169,7 +169,7 @@ export const CalendarIcon = styled.img`
 
 export const UserName = styled.p`
   color: ${props => props.theme.mainpurple};
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 500;
   white-space: nowrap;
 `
@@ -177,6 +177,14 @@ export const UserName = styled.p`
 export const UserInfo = styled.p`
   color: ${props => props.theme.textcolor};
   font-size: 0, 875rem;
+
+  span {
+    color: ${props => props.theme.mainpurple};
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+
+
 `
 
 export const UserWrapper = styled.div``

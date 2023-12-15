@@ -14,6 +14,7 @@ const ScrollingTextContainer = styled.div`
   width: 100%;
   overflow: hidden;
   border: 1px solid #ccc;
+  border-radius: 5px;
 `;
 
 const ScrollingText = styled.div`

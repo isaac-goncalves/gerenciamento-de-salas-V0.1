@@ -122,6 +122,24 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
 
   return finalGroupedData;
 }
+
+export function abbreviateCourseName(courseName: string) {
+  if (courseName == "Nenhuma Aula" || courseName == "Intervalo" || courseName == "") {
+    return ""
+  }
+  // Use a regular expression to find uppercase letters
+  const uppercaseLetters = courseName.match(/[A-Z]/g);
+
+  // Check if there are any uppercase letters
+  if (uppercaseLetters) {
+    // Join the uppercase letters to form the abbreviation
+    const abbreviation = uppercaseLetters.join('');
+    return abbreviation;
+  } else {
+    return "null"; // No uppercase letters found
+  }
+}
+
 //COMPONENTS -------------------------------------------------------------------------
 const Laboratorio: any = ({ theme, themeName }: any) => {
   const [loading, setLoading] = useState(false);
@@ -446,22 +464,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
               // console.log(agendamento)
               // console.log(currentTime)
 
-              function abbreviateCourseName(courseName: string) {
-                if (courseName == "Nenhuma Aula" || courseName == "Intervalo" || courseName == "") {
-                  return ""
-                }
-                // Use a regular expression to find uppercase letters
-                const uppercaseLetters = courseName.match(/[A-Z]/g);
-
-                // Check if there are any uppercase letters
-                if (uppercaseLetters) {
-                  // Join the uppercase letters to form the abbreviation
-                  const abbreviation = uppercaseLetters.join('');
-                  return abbreviation;
-                } else {
-                  return "null"; // No uppercase letters found
-                }
-              }
+              
 
               return (
                 <Schedule onContextMenu={(e) => handleContextMenu(e, item, dayDateObject)}
