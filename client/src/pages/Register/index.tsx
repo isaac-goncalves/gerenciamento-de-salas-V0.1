@@ -244,10 +244,6 @@ const RegisterScreen: any = ({ theme }: any): any => {
             return;
         }
 
-
-
-
-
         const IsProfessor = (role === "professor") ? true : false;
 
         try {
@@ -265,8 +261,6 @@ const RegisterScreen: any = ({ theme }: any): any => {
                 course_id: selectedCourse.id
             }
 
-            console.log(params);
-
             const response = await fetch(`${apiUrl}/register`, {
                 method: "POST",
                 headers: {
@@ -279,6 +273,17 @@ const RegisterScreen: any = ({ theme }: any): any => {
             if (data) {
                 console.log("received data");
                 if (data.error) {
+
+                    if (data.error === "Professor not found") {
+                        toast.error("Email de professor não encontrado na base de dados!🎲");
+                        return;
+                    }
+
+                    if (data.error === "User already exists") {
+                        toast.error("Email já cadastrado!🎲");
+                        return;
+                    }
+
                     toast.error(data.error);
                     return;
                 }

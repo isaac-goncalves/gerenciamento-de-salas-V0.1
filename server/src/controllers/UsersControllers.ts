@@ -109,6 +109,22 @@ export class UserController {
                     .json({ error: "User already exists" });
             }
 
+            let professorExists = {} as any;
+            if (role === "professor") {
+                //VERIFY IF PROFESSOR ALREADY EXISTS
+                professorExists = await professoresRepository.findOneBy({
+                    email,
+                });
+
+                //IF PROFESSOR DOESNT EXISTS, CREATE A NEW ONE
+                if (!professorExists) {
+                    return response
+                        .status(400)
+                        .json({ error: "Professor not found" });
+                    //IF PROFESSOR ALREADY EXISTS, UPDATE IT
+                }
+            }
+
             //ENCRYPT PASSWORD
             const encriptedPassword = await bcrypt.hash(password, 8);
 
@@ -166,38 +182,13 @@ export class UserController {
 
                 //CASE USER IS PROFESSOR
             } else if (role === "professor") {
-                //CREATE PROFESSOR
-                const NewProfessorObj = {
-                    name,
-                    surname,
-                    email,
-                    semestre: semester,
-                    course_id: course_id,
-                    user_id: savedUser.id,
-                    created_at: new Date(),
-                    updated_at: new Date(),
-                };
-
-                //VERIFY IF PROFESSOR ALREADY EXISTS
-                const professorExists = await professoresRepository.findOneBy({
-                    email,
-                });
-
                 let newProfessor = {} as any;
 
-                //IF PROFESSOR DOESNT EXISTS, CREATE A NEW ONE
-                if (!professorExists) {
-                    return response
-                        .status(400)
-                        .json({ error: "Professor not found" });
-                    //IF PROFESSOR ALREADY EXISTS, UPDATE IT
-                } else {
-                    newProfessor = professorExists;
-                    //save user id on professor table as user_id search by email
-                    professoresRepository.update(newProfessor.id, {
-                        user_id: savedUser.id,
-                    });
-                }
+                newProfessor = professorExists;
+                //save user id on professor table as user_id search by email
+                professoresRepository.update(newProfessor.id, {
+                    user_id: savedUser.id,
+                });
 
                 // SAVE PROFESSOR ON DATABASE
                 const savedProfessor = await professoresRepository.save(
@@ -230,6 +221,7 @@ export class UserController {
                 const professorWithDisciplinas = {
                     ...savedProfessor,
                     disciplina: discipline,
+                    role: role,
                     theme: 1,
                 };
 
@@ -239,6 +231,7 @@ export class UserController {
 
                 const professorWithCourseName = {
                     ...professorWithDisciplinas,
+                    course_id: course_id,
                     course_name: courseName?.course_name || "no course name",
                 };
 

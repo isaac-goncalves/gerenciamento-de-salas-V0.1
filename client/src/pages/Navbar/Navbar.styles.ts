@@ -48,10 +48,13 @@ export const PrimaryNav = styled.nav`
 export const AvatarWrapper = styled.div`
   display: flex;
   width: 100%;
+  justify-content: center;
+  align-items: center;
   flex-direction: row;
-  margin: 1rem 1rem;
+  /* margin: 1rem 1rem; */
   align-items: center;
 
+  /* border : 1px solid ${props => props.theme.navbarpurpleborder}; */
   @media screen and (max-width: 570px) {
     display: none;
   }
@@ -157,7 +160,7 @@ export const Avatar = styled.img`
   border: 2px solid ${props => props.theme.mainpurple};
   height: 3rem;
   width: 3rem;
-  margin-right: 0.75rem;
+  margin: 0.75rem;
   object-fit: cover;
 `
 
@@ -187,7 +190,12 @@ export const UserInfo = styled.p`
 
 `
 
-export const UserWrapper = styled.div``
+export const UserWrapper = styled.div`
+display: flex;
+flex-direction: column;
+width: 100%;
+
+`
 
 export const MenuLink = styled(Link)`
   cursor: pointer;

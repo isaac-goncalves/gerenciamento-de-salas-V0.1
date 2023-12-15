@@ -1,48 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { PrimaryNav, MenuLink, Menu, AvatarWrapper, RowWrapper, Avatar, UserInfo, UserName, UserWrapper, CalendarIcon, HamburgerWrapper, HamburgerDiv, SchedulesWrapper, ProfileWrapper, GerenciamentoWrapper, TemplateWrapper, NotificationWrapper, DarmodeWrapper, LogoutWrapper, LaboratoriosWrapper, DashboardWrapper } from './Navbar.styles'
-import styled from 'styled-components'
-
-import { Colors } from '../../colors';
-
+const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 import avatar from '../../../public/images/avatar.jpg';
 import { abbreviateCourseName } from '../Laboratorio';
 
-const disciplinaOptions = [
-    { value: "1", label: "Administração Geral" },
-    { value: "2", label: "Algoritmos e Lógica de Programação" },
-    { value: "3", label: "Arquitetura e Organização de Computadores" },
-    { value: "4", label: "Banco de Dados" },
-    { value: "5", label: "Cálculo" },
-    { value: "6", label: "Comunicação e Expressão" },
-    { value: "7", label: "Contabilidade" },
-    { value: "8", label: "Economia e Finanças" },
-    { value: "9", label: "Eletiva - Programação para Dispositivos Móveis" },
-    { value: "10", label: "Engenharia de Software I" },
-    { value: "11", label: "Engenharia de Software II" },
-    { value: "12", label: "Engenharia de Software III" },
-    { value: "13", label: "Estatística Aplicada" },
-    { value: "14", label: "Estruturas de Dados" },
-    { value: "15", label: "Inglês I" },
-    { value: "16", label: "Inglês II" },
-    { value: "17", label: "Inglês III" },
-    { value: "18", label: "Inglês IV" },
-    { value: "19", label: "Interação Humano Computador" },
-    { value: "20", label: "Laboratório de Hardware" },
-    { value: "21", label: "Linguagem de Programação" },
-    { value: "22", label: "Matemática Discreta" },
-    { value: "23", label: "Metodologia da Pesquisa Científico-Tecnológica" },
-    { value: "24", label: "Programação em Microinformática" },
-    { value: "25", label: "Programação Orientada a Objetos" },
-    { value: "26", label: "Sistemas de Informação" },
-    { value: "27", label: "Sistemas Operacionais I" },
-    { value: "28", label: "Sistemas Operacionais II" },
-    { value: "29", label: "Sociedade e Tecnologia" }
-];
+
 
 const Navbar = ({ toggleTheme }: any) => {
 
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const [user, setUser] = useState<any>({});
+    const [disciplinas, setDisciplinas] = useState<any>([]);
 
     //cretae useffect the get the user data from local storage and store the data on a state 
 
@@ -51,8 +19,43 @@ const Navbar = ({ toggleTheme }: any) => {
         // console.clear();
         // console.log(userData);
         setUser(userData.userData);
+        fetchDisciplinas()
     }, []);
 
+
+
+    async function fetchDisciplinas() {
+        console.log("Fetching fetchDisciplinas...")
+        // console.log(process.env.REACT_APP_API_KEY)
+        await fetch(`${apiUrl}/disciplinas`, {
+            method: 'POST'
+
+        }).then((response) => response.json()).then((data) => {
+            console.log(data)
+
+            let transformedData: any = []
+
+            data.forEach((elemento: any) => {
+                if (elemento.descricao !== "-") {
+
+
+                    let dataObject = {
+                        id: elemento.id,
+                        disciplina: elemento.descricao
+                    }
+
+                    return transformedData.push(dataObject)
+                }
+            });
+
+            transformedData.sort()
+            console.log(transformedData)
+            setDisciplinas(transformedData);
+
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 
     const toggleMenu = (isClick: boolean, e: any) => {
 
@@ -92,24 +95,26 @@ const Navbar = ({ toggleTheme }: any) => {
             case 'aluno':
                 return `${user.semestre}º ${abbreviateCourseName(user.course_name || "")}`;
             case 'professor':
-                return user.nomeDisciplina[0] || "Não encontrado";
-            default:
-                return 'guest';
+                return getDisciplina()
+                    ||
+                    "Não encontrado";
+            case 'guest':
+                return user.course_name || "Não encontrado";
         }
     }
 
     function getDisciplina() {
 
-        const disciplina = disciplinaOptions.filter((disciplina) => {
-            return disciplina.value == user.disciplina;
+        const disciplina = disciplinas.filter((disciplina: any) => {
+            return disciplina.id == user.disciplina[0];
         });
 
-        return disciplina[0].label;
+        return disciplina[0].disciplina;
 
     }
 
     function retornarSomenteAsIniciais(sobrenome: string) {
-   
+
         const nome = sobrenome.split(" ");
         const iniciais = nome.map((nome) => {
             return nome[0];
@@ -136,7 +141,7 @@ const Navbar = ({ toggleTheme }: any) => {
                             {/* {<UserInfo>{user.role == "aluno" ? `${user.semestre}º ADS` : user.role == "professor" ? "professor" : "guest"}</UserInfo>}///////////// */}
                             {<UserInfo>
                                 <span>
-                                    Curso:
+                                    {user.role == "aluno" ? "Curso:" : user.role == "professor" ? "Disciplina:" : "Curso:"}
                                 </span>
                                 {getDescription()}</UserInfo>}
                         </UserWrapper>

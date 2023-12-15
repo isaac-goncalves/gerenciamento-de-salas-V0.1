@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet';
 
+import { FaPlay, FaPause } from 'react-icons/fa';
+
 import './ButtonAnimation.scss'; // Import your SCSS file
 
 const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
@@ -9,6 +11,8 @@ const apiUrl = String(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 console.log(import.meta.env.VITE_REACT_LOCAL_APP_API_BASE_URL);
 
 import PacmanLoader from 'react-spinners/PacmanLoader';
+
+import Moonloader from 'react-spinners/Moonloader';
 
 import { Colors } from '../../colors';
 
@@ -20,7 +24,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName, StyledCourseSelect, StyledDayNameHeader, WeekdayBannerContainer, StyledCNNContent, StyledCNNWrapper, ArrowIcon } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName, StyledCourseSelect, StyledDayNameHeader, WeekdayBannerContainer, StyledCNNContent, StyledCNNWrapper, ArrowIcon, StyledPlayButton } from './Dashboard.styles'
 
 import ModalAgendamento from '../Components/ModalAgendamento';
 
@@ -161,6 +165,8 @@ function groupBySemester(fetchedData: ScheduleItem[]): GroupedData {
 const Dashboard: any = ({ theme, themeName }: any) => {
   const [loading, setLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+
 
   //STORE FETCHED DATA
   const [grade, setgrade] = useState<any>();
@@ -298,7 +304,41 @@ const Dashboard: any = ({ theme, themeName }: any) => {
   }
     , [courses])
 
+    useEffect(() => {
+      let intervalId: NodeJS.Timeout | undefined;
+    
+      if (isPlaying) {
+        intervalId = setInterval(() => {
+          // Lógica para trocar o filtro a cada 10 segundos
+          // Aqui você pode colocar sua lógica para alterar os filtros
+          // Por exemplo, mudar o valor de selectedMethod ou selectedCourse
+          // Simulação de mudança de filtro a cada 10 segundos
+    
+          // Encontrar o índice do curso atual
+          const currentIndex = courses.findIndex(
+            (course) => course.id === selectedCourse.id
+          );
+    
+          // Calcular o próximo índice
+          const nextIndex = (currentIndex + 1) % courses.length;
+    
+          // Definir o próximo curso
+          setSelectedCourse(courses[nextIndex]);
+    
+          console.log('Trocar filtro...');
+        }, 10000);
+      } else {
+        clearInterval(intervalId);
+      }
+    
+      return () => clearInterval(intervalId);
+    }, [isPlaying, selectedCourse.id, courses]);
+
   //FUNCTIONS ---------------------------------------------------------------------
+
+  const handlePlayPause = () => {
+    setIsPlaying((prevState) => !prevState);
+  };
 
   function areDatesOnSameDayMonthYear(date1: Date, date2: Date) {
     return (
@@ -377,7 +417,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                               {
                                 agendamento && agendamento.laboratorio && (
                                   <>
-                                   <ArrowIcon />
+                                    <ArrowIcon />
                                     <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
                                   </>
                                 )}
@@ -389,7 +429,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                             {
                               agendamento && agendamento.laboratorio && (
                                 <>
-                                   <ArrowIcon  size={20}/>
+                                  <ArrowIcon size={20} />
                                   <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
                                 </>
                               )}
@@ -739,6 +779,10 @@ const Dashboard: any = ({ theme, themeName }: any) => {
             </DatepickContainer>
             <StyledDayName >{capitalizeFirstLetter(String(currentSelectedDate.toLocaleDateString('pt-BR', { weekday: 'long', timeZone: 'UTC' })) || null)}</StyledDayName>
             <FilterWrapper>
+            {isPlaying ? <Moonloader size={20}/> : null}
+              <StyledPlayButton onClick={handlePlayPause}>
+                {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
+              </StyledPlayButton>
               <FilterIconWrapper>
                 <FilterIcon
                   size={20}

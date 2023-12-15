@@ -195,6 +195,26 @@ export const FilterWrapper = styled.h2`
         }
     }
 `;
+
+export const StyledPlayButton = styled.button`
+    border: none;
+    color :${(props) => props.theme.mainpurple};
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 4px;
+    padding: 0.5rem;
+
+    &:hover {
+        background-color: ${(props) => props.theme.hoverCard};
+    }
+
+
+`
+
 export const FilterIconWrapper = styled.div`
     display: flex;
     align-items: center;

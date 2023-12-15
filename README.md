@@ -47,3 +47,21 @@ Node.js: Backend development platform.
 TypeScript: Typed superset of JavaScript.
 TypeORM: Object-relational mapping for TypeScript.
 Python: Powerful language for data processing and ETL.
+
+
+command to embue to projects via iframe:
+
+// Create a new iframe element
+const iframe = document.createElement('iframe');
+iframe.src = 'https://guiding-impala-capital.ngrok-free.app/dashboard';
+iframe.width = '100%';
+iframe.height = '850px';
+iframe.frameBorder = '0';
+
+// Find the specific td using the provided selector
+const targetTd = document.querySelector('#TABELAINTERNA_MPAGE > tbody > tr:nth-child(1) > td:nth-child(2)');
+
+if (targetTd) {
+  // Replace the targeted td with the new iframe element
+  targetTd.replaceWith(iframe);
+}
