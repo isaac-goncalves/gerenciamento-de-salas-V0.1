@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import registerLogo from '../../../public/images/register/registerlogo.svg';
 
-import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye, ContainerElement, InitialName, SecondName } from "./Register.styles"
+import { AddressWrapper, RegisterLogo, Button, ButtonsWrapper, ContactWrapper, Form, ImageContainer, Input, LoginContainer, PasswordContainer, ContentContainer, InputWrapper, NameWrapper, StyledSelect, RadioWrapper, EyeIcon, InputVisibleEye, ContainerElement, InitialName, SecondName, LoginSugestionWrapper } from "./Register.styles"
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import Particles from "react-tsparticles";
 
@@ -29,14 +29,15 @@ import { Theme, type Container, type Engine } from "tsparticles-engine";
 import "react-widgets/styles.css";
 
 import Multiselect from "react-widgets/Multiselect";
+import ParticlesComponent from '../Components/ParticlesComponent';
 
 const semestresOptions = [
-    { value: '1', label: '1º SEMESTRE ADS - 2023' },
-    { value: '2', label: '2º SEMESTRE ADS - 2023' },
-    { value: '3', label: '3º SEMESTRE ADS - 2023' },
-    { value: '4', label: '4º SEMESTRE ADS - 2023' },
-    { value: '5', label: '5º SEMESTRE ADS - 2023' },
-    { value: '6', label: '6º SEMESTRE ADS - 2023' },
+    { value: '1', label: '1º SEMESTRE' },
+    { value: '2', label: '2º SEMESTRE' },
+    { value: '3', label: '3º SEMESTRE' },
+    { value: '4', label: '4º SEMESTRE' },
+    { value: '5', label: '5º SEMESTRE' },
+    { value: '6', label: '6º SEMESTRE' },
 ];
 
 interface CourseProps {
@@ -294,9 +295,9 @@ const RegisterScreen: any = ({ theme }: any): any => {
                 localStorage.setItem("gerenciamento-de-salas@v1.2", JSON.stringify(obj));
                 toast.success("Registro realizado com sucesso!");
                 setConfetti(true);
-                // setTimeout(() => {
-                //     window.location.href = "/dashboard";
-                // }, 4000);
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 3000);
 
             }
             else {
@@ -328,80 +329,7 @@ const RegisterScreen: any = ({ theme }: any): any => {
 
     return (
         <>
-            <Particles
-                id="tsparticles"
-                init={particlesInit}
-                loaded={particlesLoaded}
-                options={{
-                    // background: {
-                    //   color: {
-                    //     // value: "#ffffff",
-                    //   },
-                    // },
-                    fpsLimit: 120,
-                    interactivity: {
-                        events: {
-                            onClick: {
-                                enable: true,
-                                mode: "push",
-                            },
-                            onHover: {
-                                enable: true,
-                                mode: "repulse",
-                            },
-                            resize: true,
-                        },
-                        modes: {
-                            push: {
-                                quantity: 4,
-                            },
-                            repulse: {
-                                distance: 200,
-                                duration: 0.4,
-                            },
-                        },
-                    },
-                    particles: {
-                        color: {
-                            value: theme.mainpurple,
-                        },
-                        links: {
-                            color: theme.mainpurple,
-                            distance: 150,
-                            enable: true,
-                            opacity: 0.5,
-                            width: 1,
-                        },
-                        move: {
-                            direction: "none",
-                            enable: true,
-                            outModes: {
-                                default: "bounce",
-                            },
-                            random: false,
-                            speed: 6,
-                            straight: false,
-                        },
-                        number: {
-                            density: {
-                                enable: true,
-                                area: 800,
-                            },
-                            value: 80,
-                        },
-                        opacity: {
-                            value: 0.5,
-                        },
-                        shape: {
-                            type: "circle",
-                        },
-                        size: {
-                            value: { min: 1, max: 5 },
-                        },
-                    },
-                    detectRetina: true,
-                }}
-            />
+            <ParticlesComponent theme={theme} />
             <ToastContainer />
             <Helmet>
                 <title>SGSA - Registrar</title>
@@ -425,7 +353,7 @@ const RegisterScreen: any = ({ theme }: any): any => {
                             <h1>Preencha o Formulário para se Registrar!</h1>
                             <NameWrapper>
                                 <InitialName>
-                                    <label>Nome</label>
+                                    <label>Nome:</label>
                                     <Input
                                         type="text"
                                         placeholder=""
@@ -434,7 +362,7 @@ const RegisterScreen: any = ({ theme }: any): any => {
                                     />
                                 </InitialName>
                                 <SecondName>
-                                    <label>Sobrenome</label>
+                                    <label>Sobrenome:</label>
                                     <Input
                                         type="text"
                                         placeholder=""
@@ -444,6 +372,9 @@ const RegisterScreen: any = ({ theme }: any): any => {
                                 </SecondName>
                             </NameWrapper>
                             <RadioWrapper>
+                                <label>
+                                    Função:
+                                </label>
                                 <input
                                     type="radio"
                                     id="aluno"
@@ -490,8 +421,10 @@ const RegisterScreen: any = ({ theme }: any): any => {
                                 }
                                 {role === "professor" &&
                                     <>
-
                                         <InputWrapper>
+                                            <label>
+                                                Disciplinas:
+                                            </label>
                                             {/* //styled muyltiselect */}
                                             <Multiselect
                                                 dataKey="id"
@@ -504,29 +437,31 @@ const RegisterScreen: any = ({ theme }: any): any => {
                                                     setSelectedValues(value)
                                                 }
                                                 }
-
                                             />
                                         </InputWrapper>
-
                                     </>
-
                                 }
                             </>
-                            <StyledSelect value={selectedCourse.id} onChange={handleSelectCourse}>
-                                {courses && courses.length > 0 ? (
-                                    courses.map((course) => {
-                                        return (
-                                            <option key={course.id} value={course.id}>
-                                                {course.course_name}
-                                            </option>
-                                        );
-                                    })
-                                ) : (
-                                    <option value="">No professors available</option>
-                                )}
-                            </StyledSelect>
                             <InputWrapper>
-                                <label>Email</label>
+                                <label>
+                                    Curso:
+                                </label>
+                                <StyledSelect value={selectedCourse.id} onChange={handleSelectCourse}>
+                                    {courses && courses.length > 0 ? (
+                                        courses.map((course) => {
+                                            return (
+                                                <option key={course.id} value={course.id}>
+                                                    {course.course_name}
+                                                </option>
+                                            );
+                                        })
+                                    ) : (
+                                        <option value="">No professors available</option>
+                                    )}
+                                </StyledSelect>
+                            </InputWrapper>
+                            <InputWrapper>
+                                <label>Email:</label>
                                 <Input
                                     type="text"
                                     placeholder=""
@@ -564,6 +499,9 @@ const RegisterScreen: any = ({ theme }: any): any => {
                                     </InputVisibleEye>
                                 </InputWrapper>
                             </PasswordContainer>
+                            <LoginSugestionWrapper>
+                                Já tem uma conta? <a href="/">Entrar</a>
+                            </LoginSugestionWrapper>
                             <ButtonsWrapper>
                                 <Button type="submit">Registrar</Button>
                             </ButtonsWrapper>

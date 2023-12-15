@@ -1,0 +1,63 @@
+09:46:10.507  (UTC): [INFO] [MainForm.InitializeLogger] 
+------
+------
+Program Launched at: 06:46(UTC)
+------
+------
+
+09:46:11.148  (UTC): [INFO] [<Form1_Load>d__31.MoveNext] Starting AndroidSideloader Application
+09:46:11.274  (UTC): [INFO] [Sideloader.downloadFiles] Checking for Local rclone...
+09:46:11.275  (UTC): [INFO] [Sideloader.downloadFiles] Current RCLONE Version 1.62.2
+09:46:11.294  (UTC): [INFO] [<Form1_Load>d__31.MoveNext] Attempting to Initalize ADB Server
+09:46:11.302  (UTC): [INFO] [ADB.RunAdbCommandToString] Running command: kill-server
+09:46:11.707  (UTC): [INFO] [ADB.RunAdbCommandToString] Running command: start-server
+09:46:17.378  (UTC): [ERROR] [ADB.RunAdbCommandToString] * daemon not running; starting now at tcp:5037
+* daemon started successfully
+
+
+09:46:17.818  (UTC): [INFO] [RCLONE.runRcloneCommand_DownloadConfig] Running Rclone command: listremotes --config vrp.download.config
+09:46:18.551  (UTC): [INFO] [MainForm.initMirrors] Loaded following mirrors: 
+09:46:18.559  (UTC): [INFO] [SideloaderRCLONE.updateDownloadConfig] Attempting to Update Download Config
+09:46:19.656  (UTC): [INFO] [SideloaderRCLONE.updateDownloadConfig] Retrieved updated config from: https://vrpirates.wiki/downloads/vrp.download.config
+09:46:19.659  (UTC): [INFO] [SideloaderRCLONE.updateDownloadConfig] Online Config Hash: d41d8cd98f00b204e9800998ecf8427e; Local Config Hash: d41d8cd98f00b204e9800998ecf8427e
+09:46:19.659  (UTC): [INFO] [SideloaderRCLONE.updateDownloadConfig] Updated Config Hash matches last download. Not updating.
+09:46:19.660  (UTC): [INFO] [SideloaderRCLONE.updateUploadConfig] Attempting to Update Upload Config
+09:46:19.912  (UTC): [INFO] [SideloaderRCLONE.updateUploadConfig] Retrieved updated config from: https://vrpirates.wiki/downloads/vrp.upload.config
+09:46:19.914  (UTC): [INFO] [SideloaderRCLONE.updateUploadConfig] Upload config updated successfully.
+09:46:19.937  (UTC): [INFO] [SideloaderRCLONE.initGames] Initializing Games List
+09:46:19.937  (UTC): [INFO] [RCLONE.runRcloneCommand_DownloadConfig] Running Rclone command: cat ":Quest Games/VRP-GameList.txt" --config vrp.download.config
+09:53:19.016  (UTC): [INFO] [MainForm.InitializeLogger] 
+------
+------
+Program Launched at: 06:53(UTC)
+------
+------
+
+09:53:19.470  (UTC): [INFO] [<Form1_Load>d__31.MoveNext] Starting AndroidSideloader Application
+09:53:19.588  (UTC): [INFO] [Sideloader.downloadFiles] Checking for Local rclone...
+09:53:19.589  (UTC): [INFO] [Sideloader.downloadFiles] Current RCLONE Version 1.62.2
+09:53:22.641  (UTC): [INFO] [RCLONE.runRcloneCommand_UploadConfig] Running Rclone command: copy "CurrentDirectory\CA053F0A69A12A5DF6F6789B35A2D91FF985DB7C2F91C6A3DE7D1E907FE4B3D0.log" RSL-gameuploads:CrashLogs --config vrp.upload.config
+09:53:30.054  (UTC): [ERROR] [RCLONE.runRcloneCommand_UploadConfig] 2023/12/10 18:53:29 ERROR : ftp://ganymede.whatbox.ca:11385/CrashLogs: SetModTime is not supported
+2023/12/10 18:53:30 ERROR : CA053F0A69A12A5DF6F6789B35A2D91FF985DB7C2F91C6A3DE7D1E907FE4B3D0.log: Failed to copy: update getinfo: object not found
+2023/12/10 18:53:30 ERROR : Attempt 1/1 failed with 1 errors and: update getinfo: object not found
+2023/12/10 18:53:30 Failed to copy: update getinfo: object not found
+
+
+09:53:31.792  (UTC): [INFO] [<Form1_Load>d__31.MoveNext] Attempting to Initalize ADB Server
+09:53:31.800  (UTC): [INFO] [ADB.RunAdbCommandToString] Running command: kill-server
+09:53:32.212  (UTC): [INFO] [ADB.RunAdbCommandToString] Running command: start-server
+09:53:37.742  (UTC): [ERROR] [ADB.RunAdbCommandToString] * daemon not running; starting now at tcp:5037
+* daemon started successfully
+
+
+09:53:37.992  (UTC): [INFO] [RCLONE.runRcloneCommand_DownloadConfig] Running Rclone command: listremotes --config vrp.download.config
+09:53:38.527  (UTC): [INFO] [MainForm.initMirrors] Loaded following mirrors: 
+09:53:38.552  (UTC): [INFO] [SideloaderRCLONE.updateDownloadConfig] Attempting to Update Download Config
+09:53:39.564  (UTC): [INFO] [SideloaderRCLONE.updateDownloadConfig] Retrieved updated config from: https://vrpirates.wiki/downloads/vrp.download.config
+09:53:39.566  (UTC): [INFO] [SideloaderRCLONE.updateDownloadConfig] Online Config Hash: d41d8cd98f00b204e9800998ecf8427e; Local Config Hash: d41d8cd98f00b204e9800998ecf8427e
+09:53:39.567  (UTC): [INFO] [SideloaderRCLONE.updateDownloadConfig] Updated Config Hash matches last download. Not updating.
+09:53:39.567  (UTC): [INFO] [SideloaderRCLONE.updateUploadConfig] Attempting to Update Upload Config
+09:53:39.813  (UTC): [INFO] [SideloaderRCLONE.updateUploadConfig] Retrieved updated config from: https://vrpirates.wiki/downloads/vrp.upload.config
+09:53:39.814  (UTC): [INFO] [SideloaderRCLONE.updateUploadConfig] Upload config updated successfully.
+09:53:39.820  (UTC): [INFO] [SideloaderRCLONE.initGames] Initializing Games List
+09:53:39.820  (UTC): [INFO] [RCLONE.runRcloneCommand_DownloadConfig] Running Rclone command: cat ":Quest Games/VRP-GameList.txt" --config vrp.download.config

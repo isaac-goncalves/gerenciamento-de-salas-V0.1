@@ -75,9 +75,9 @@ export var themetest = null;
 
 function groupByWeekday(data: ScheduleItem[]): GroupedData {
   const daysOfWeek = ["segunda", "terca", "quarta", "quinta", "sexta"];
+  const clockTimesArray = ['18:45:00', '19:35:00', '20:35:00', '21:25:00', '22:15:00'];
   const totalItemsPerDay = 6;
 
-  // Initialize groupedData with each day of the week and an empty array
   const groupedData: GroupedData = {
     segunda: [],
     terca: [],
@@ -86,31 +86,41 @@ function groupByWeekday(data: ScheduleItem[]): GroupedData {
     sexta: [],
   };
 
+  const finalGroupedData: GroupedData = {
+    segunda: [],
+    terca: [],
+    quarta: [],
+    quinta: [],
+    sexta: [],
+  };
+
+  // Populate groupedData by day
   for (const item of data) {
     const dayIndex = parseInt(item.dia_da_semana) - 1;
     const day = daysOfWeek[dayIndex];
-
     groupedData[day].push(item);
   }
 
-  for (const day in groupedData) {
-    const currentDayLength = groupedData[day].length;
+  // Construct finalGroupedData based on clockTimesArray
+  for (const day of daysOfWeek) {
+    for (const time of clockTimesArray) {
+      const gradeExisteNesteHorario = groupedData[day].find((grade) => grade.horario_inicio === time);
 
-    // Add "Nenhuma Aula" for remaining slots, except after the interval
-    for (let i = currentDayLength; i < totalItemsPerDay - 1; i++) {
-      groupedData[day].push({
-        disciplina: "Nenhuma Aula",
-        semestre: ''
-      });
+      if (gradeExisteNesteHorario) {
+        finalGroupedData[day].push(gradeExisteNesteHorario);
+      } else {
+        finalGroupedData[day].push({
+          disciplina: "Nenhuma Aula",
+          semestre: ''
+        });
+      }
     }
-
-    // Add interval as the third item
-    groupedData[day].splice(2, 0, {
-      disciplina: "Intervalo",
-      semestre: ''
-    });
   }
-  return groupedData;
+
+  console.log("finalGroupedData");
+  console.log(finalGroupedData);
+
+  return finalGroupedData;
 }
 //COMPONENTS -------------------------------------------------------------------------
 const Laboratorio: any = ({ theme, themeName }: any) => {
@@ -703,7 +713,7 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
 
     console.log("I have been changed")
 
-    console.log(laboratoryData)
+    // console.log(laboratoryData)
 
     const chosenlaboratorioObject = laboratoryData.filter((item: any) => {
       if (item.numero_sala == event.target.value) {
@@ -1064,7 +1074,6 @@ const Laboratorio: any = ({ theme, themeName }: any) => {
             <p>18:45</p>
             <p>19:35</p>
             <p>20:25</p>
-            <p>20:35</p>
             <p>21:25</p>
             <p>22:15</p>
           </ClockContainer>

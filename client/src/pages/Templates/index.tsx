@@ -431,6 +431,49 @@ const Templates: any = ({ theme }: any): any => {
         )
     }
 
+    const MensagensTemporariasTable = ({ data }: any) => {
+        return (
+            <TableWrapper>
+              <Table>
+                <TableHeader>
+                  <TableRowHeader>
+                    <th>ID</th>
+                    <th>Titulo</th>
+                    <th>Conteudo</th>
+                    <th>Created At</th>
+                    <th>Expiry Date</th>
+                    <th>ACTIONS</th>
+                  </TableRowHeader>
+                </TableHeader>
+                <TableBody>
+                  {data.map((message: any) => (
+                    <tr key={message.id}>
+                      <CenteredTableData>{message.id}</CenteredTableData>
+                      <CenteredTableData>{message.title}</CenteredTableData>
+                      <CenteredTableData>{message.content}</CenteredTableData>
+                      <CenteredTableData>{message.createdAt}</CenteredTableData>
+                      <CenteredTableData>{message.expiryDate}</CenteredTableData>
+                      <CenteredTableData>
+                        <ButtonsWrapper>
+                          <EditButton type="button" >
+                            <AiFillEdit />
+                            <p>Edit</p>
+                          </EditButton>
+                          {/* Add any other necessary actions */}
+                          <DeleteButton type="button">
+                            <RiDeleteBinLine />
+                            <p>Delete</p>
+                          </DeleteButton>
+                        </ButtonsWrapper>
+                      </CenteredTableData>
+                    </tr>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableWrapper>
+          );
+    };
+
     const handleCreateNewCourse = () => {
 
         if (userData.userData.role == 'aluno' || userData.userData.role == 'guest') {
@@ -492,13 +535,25 @@ const Templates: any = ({ theme }: any): any => {
                     <select name="table" id="table" onChange={(e) => setSelectedTable(e.target.value)}>
                         <option value="cursos">Cursos</option>
                         <option value="laboratorios">Laboratórios</option>
+                        <option value="mensagens-temporarias">Mensagens Temporarias</option>
                     </select>
                     <StyledButton onClick={handleCreateNewCourse}>Criar novo curso</StyledButton>
                 </FilterWrapper>
                 {selectedTable == 'cursos' ?
                     <CoursesTable /> :
-                    <LabsTable />
+                    null
                 }
+                {selectedTable == 'laboratorios' ?
+                    <LabsTable /> :
+                    null
+                }
+                {selectedTable == 'mensagens-temporarias' ?
+                    <MensagensTemporariasTable /> :
+                    null
+                }
+
+
+
                 <ButtonWrapper>
                     <FileDownloadButton buttonText={"Download Template Vazio"} fileName={templateFileName} fileUrl={templateFileUrl} />
                 </ButtonWrapper>

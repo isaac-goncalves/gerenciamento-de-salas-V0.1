@@ -113,7 +113,7 @@ export const ScheduleCell = styled.div`
   padding: 0.4rem 0; // #TODO
   gap: 0.3rem;
 
-  border: 1px solid red;
+  /* border: 1px solid red; */
 
   @media screen and (min-width: 875px) {
     :hover {

@@ -43,6 +43,8 @@ const LoginScreen: any = ({ theme }: LoginProps): any => {
     const [form, setForm] = useState("login");
     const [role, setRole] = useState("");
 
+    const [mantenhaMeConectado, setMantenhaMeConectado] = useState(true);
+
     const [showPassword, setShowPassword] = useState(false);
 
     const { width, height } = useWindowSize()
@@ -265,7 +267,10 @@ const LoginScreen: any = ({ theme }: LoginProps): any => {
                             </InputsWrapper>
                             <MantenhaMeConectadoWrapper>
                                 <div>
-                                    <input type="checkbox" />
+                                    <input type="checkbox" 
+                                     checked={mantenhaMeConectado}
+                                        onChange={(event: any) => setMantenhaMeConectado(event.target.checked)}
+                                    />
                                     <p>Mantenha-me conectado</p>
                                 </div>
                                 <EsqueceuSenha>Esqueceu sua senha?</EsqueceuSenha>

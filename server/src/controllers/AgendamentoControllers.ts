@@ -48,8 +48,8 @@ export class AgendamentoController {
 
       console.log(horariosImportadosGrade)
 
-      const horario_inicio = horariosImportadosGrade[0].horario_inicio
-      const horario_fim = horariosImportadosGrade[0].horario_fim
+      const horario_inicio = horariosImportadosGrade[0].horario_inicio || ''
+      const horario_fim = horariosImportadosGrade[0].horario_fim || ''
 
       try {
         const newAgendamento = agendamentosRepository.create({

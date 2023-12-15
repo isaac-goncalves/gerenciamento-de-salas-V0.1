@@ -452,7 +452,7 @@ const ModalAgendamento = ({
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: `${action === "CREATE" ? "Criar" : "Editar"}`,
+      confirmButtonText: `${action === "CREATE" ? "Editar" : "Criar"}`,
       cancelButtonText: 'Cancelar'
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -465,9 +465,9 @@ const ModalAgendamento = ({
         await updateAgendamento(uuidAgendamento)
 
         Swal.fire(
-          `${action === "CREATE" ? "Criado" : "Editado"
+          `${action === "CREATE" ? "Criado" : "Criado"
           }!`,
-          `O agendamento foi ${action === "CREATE" ? "criado" : "editado"
+          `O agendamento foi ${action === "CREATE" ? "criado" : "criado"
           } com sucesso.`,
           'success'
         )

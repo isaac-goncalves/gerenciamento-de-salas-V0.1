@@ -41,11 +41,9 @@ function App() {
 
       console.log(userData.theme)
 
-      // const themeResult = userData.theme;
-
-
       setTheme(userData.theme);
-    }
+    }else 
+    setTheme(0)
 
   }
     , [])

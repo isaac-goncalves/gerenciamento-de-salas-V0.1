@@ -69,6 +69,7 @@ export const LoginContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  
   justify-content: space-around;
   z-index: 99;
 `
@@ -195,7 +196,7 @@ export const Form = styled.form`
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.08);
+box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
   input {
     height: 2.5rem;

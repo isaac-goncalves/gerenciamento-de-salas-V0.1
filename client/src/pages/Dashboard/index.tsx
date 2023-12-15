@@ -20,7 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { AiFillHeart, AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName, StyledCourseSelect, StyledDayNameHeader, WeekdayBannerContainer, StyledCNNContent, StyledCNNWrapper } from './Dashboard.styles'
+import { MainContainer, Header, CourseName, ClassesContainer, ClockContainer, WeekdayContainer, SchedulesContainer, Schedule, WeekContainer, CourseSemester, DateIcon, CoursesWrapper, DatePickWrapper, DatepickContainer, Sala, Disciplina, Professor, SalaAgendada, SalaWrapper, DatepickArrowsContainer, CalendarWrapper, StyledDatePicker, WeekDay, FilterWrapper, StyledSelect, Semestre, SemestreSalaWrapper, PageName, CurrentMonth, PularParaHojeText, ButtonConfimarAgendamento, FilterIconWrapper, CalltoActionButton, StyledImageButton, PacmanLoaderWrapper, TodayContainer, LeftArrow, RightArrow, DownArrow, FilterIcon, StyledSelectValue, FatecBanner, CurrentMonthText, CockAndMainContainerWrapper, StyledDayName, StyledCourseSelect, StyledDayNameHeader, WeekdayBannerContainer, StyledCNNContent, StyledCNNWrapper, ArrowIcon } from './Dashboard.styles'
 
 import ModalAgendamento from '../Components/ModalAgendamento';
 
@@ -377,7 +377,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                               {
                                 agendamento && agendamento.laboratorio && (
                                   <>
-                                    <MdKeyboardDoubleArrowRight />
+                                   <ArrowIcon />
                                     <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
                                   </>
                                 )}
@@ -389,7 +389,7 @@ const Dashboard: any = ({ theme, themeName }: any) => {
                             {
                               agendamento && agendamento.laboratorio && (
                                 <>
-                                  <MdKeyboardDoubleArrowRight />
+                                   <ArrowIcon  size={20}/>
                                   <SalaAgendada>{agendamento.laboratorio}</SalaAgendada>
                                 </>
                               )}

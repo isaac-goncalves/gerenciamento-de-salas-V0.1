@@ -42,7 +42,7 @@ export const ModalContent = styled.div`
   align-items: center;
   width: 70%;
   height: 85%;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 
   @media screen and (max-width: 875px) {
     flex-direction: column;

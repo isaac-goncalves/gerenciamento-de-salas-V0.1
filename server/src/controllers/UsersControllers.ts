@@ -150,15 +150,17 @@ export class UserController {
                     id: course_id,
                 });
 
-                const alunoWithCourseName = {
+                const alunoWithAllData = {
                     ...newAluno,
+                    role: role,
                     course_name: courseName?.course_name || "no course name",
+                    theme: 1,
                 };
 
                 //RETURN USER DATA
                 return response.status(201).json({
                     message: "Aluno created",
-                    userData: alunoWithCourseName,
+                    userData: alunoWithAllData,
                     token: token,
                 });
 

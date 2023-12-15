@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 
 import { Colors } from "../../colors";
 import PacmanLoader from "react-spinners/PacmanLoader";
-import { MdChevronLeft, MdChevronRight, MdToday } from "react-icons/md";
+import { MdChevronLeft, MdChevronRight, MdKeyboardDoubleArrowRight, MdOutlineArrowRightAlt, MdToday } from "react-icons/md";
 import { TbChevronDown } from "react-icons/tb";
 import { FaFilter } from "react-icons/fa";
 
@@ -598,6 +598,8 @@ export const WeekContainer = styled.div`
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    align-items: center;
+    justify-content: center;
     /* background-color:red; */
     height: 100%;
     width: 100%;
@@ -766,7 +768,7 @@ export const Schedule = styled.div<StyledScheduleDisciplinaProps>`
     width: 95%;
     height: 100%;
     min-height: 4rem;
-    padding: 0.4rem 0;
+    padding: 0.4rem 0.4rem;
     gap: 0.1rem;
     user-select: none;
 
@@ -879,7 +881,10 @@ interface StyledComponentSalaProps {
 export const SalaWrapper = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.4rem;
+    width: 100%;
+    /* border: 1px solid red; */
 `;
 
 export const CapacityWrapper = styled.p`
@@ -901,6 +906,19 @@ export const Sala = styled.p<StyledComponentSalaProps>`
     text-decoration: ${(props) =>
         props.agendamento ? "line-through" : "none"};
     padding: 0;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    justify-content: center;
+
+`;
+
+export const ArrowIcon = styled(MdKeyboardDoubleArrowRight )`
+    color: ${(props) => props.theme.mainpurple};
+    font-size: 1.5rem;
+    display: flex;
+    width: 50%;
 `;
 
 export const StyledDayNameHeader = styled.p<StyledComponentSalaProps>`
