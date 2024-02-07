@@ -270,3 +270,31 @@ export const RowWrapper = styled.div`
     }
   }
 `
+
+
+5 anos de experiência na área de TI, com destaque em projetos inovadores e desafiadores.
+Experiência sólida em desenvolvimento Front-End utilizando HTML, CSS e React, incluindo TypeScript e ES6.
+Competência Back-End em NodeJS, utilizando a biblioteca Express.js, e conhecimento em bancos de dados MongoDB e MySQL com Sequelize.
+Participação ativa no desenvolvimento de sistemas de integração, como o Webhook API para Chatbots na LG Eletronics.
+Realização do Front-End de sistemas complexos, automatizando controle de licenças e monitoramento de infraestrutura através de dashboards.
+Participação em projetos na Embraer, contribuindo para sistemas de gerenciamento de projeto com PHP, Java e AngularJS.
+Reconhecimento por impactar positivamente o sistema de gerenciamento de projetos, utilizado por 4k de engenheiros na área de defesa e comercial.
+Projeto de Chatbot integrado para a LG Eletronics, que participou de uma premiação de inovação, demonstrando habilidades excepcionais em desenvolvimento e criatividade.
+Familiaridade com tecnologias de versionamento, como Git, e experiência em deploy na Google Cloud.
+Conhecimento em Linux, experiência em administração de URAs e máquinas virtuais, além do uso efetivo do Jira para controle de chamados e registro de atividades.
+Participação em competições técnicas, como a maratona de programação HackaEmbraer, destacando-se como estagiário de engenharia de software na Embraer.
+Buscando constantemente maximizar o potencial e explorar novas fronteiras, com uma abordagem entusiasmada e focada em resultados.
+
+EMBRAER - Mar/2023 - Presente
+
+Cargo: Estagiário de Engenharia de Software
+
+Principais atividades:
+
+Colaboração ativa no desenvolvimento de sistemas de gerenciamento de projeto de engenharia utilizando PHP, JavaScript e AngularJS. Impactando positivamente cerca que 5 mil de engenheiros da defesa e aviação comercial que utilizam as interfaces por mim criadas e aprimoradas ativamente. 
+Participação ativa em projetos de estágio, focados no aprimoramento de sistemas e processos na área de engenharia, incluindo o desenvolvimento de um sistema de gerenciamento de ausências utilizando Java e Angular 2+.
+Destaque na participação e contribuição para a equipe na maratona de programação HackaEmbraer.
+Experiência prática na adoção da metodologia Scrum para o desenvolvimento de projetos.
+Administração do ambiente Jira para toda a empresa, garantindo operações eficientes e integridade do sistema.
+Utilização eficiente do banco de dados MySQL para armazenamento e manipulação de dados, demonstrando sólido conhecimento em gerenciamento de bancos de dados relacionais.
+Demonstração consistente de potencial na programação, entregando soluções inovadoras e eficientes no ambiente de engenharia de software.
